@@ -126,6 +126,42 @@ Sort gaps by leverage descending. Take top 3. For each, write a one-line concret
 - **Connected tool missing a reference guide?** "Research the API once, save endpoints + auth + common queries to `references/{tool}-api.md`."
 - **Need a recurring trigger?** "Add a hook to `.claude/settings.json`, or write a skill named `daily-*` you run each morning."
 
+### Step 3.5: Token Efficiency Scan
+
+Run this scan independently of the Four Cs scoring. Its sole goal is to surface token waste and suggest concrete fixes.
+
+**Check each of the following:**
+
+**1. CLAUDE.md size**
+Count lines. Flag thresholds:
+- < 150 lines → Lean (good)
+- 150–250 lines → Acceptable
+- > 250 lines → Heavy — loaded every session whether needed or not. Flag sections that could move to a skill or reference file.
+
+**2. Reference file read frequency**
+For each file in `references/`, check how many skills reference it (grep `references/` across all SKILL.md files).
+- Referenced in 3+ skills AND > 100 lines → candidate to extract core patterns into CLAUDE.md
+- Referenced in 0–1 skills AND > 150 lines → low-value load — flag for archiving or trimming
+- Flag the top 3 heaviest files (by line count) that are read on a per-run basis
+
+**3. Memory file weight**
+Check `MEMORY.md` line count (truncated at 200 — warn if approaching). Check individual memory files in `memory/` for bloat (> 50 lines each is unusual for a memory entry). Flag stale entries (type: project with dates > 60 days old).
+
+**4. Duplicate context**
+Look for the same information in multiple places: CLAUDE.md + a reference file + a memory file all describing the same thing. Flag duplicates — one source of truth is cheaper than three.
+
+**5. Skills that always read large files**
+For each skill, count the reference files listed in its "References" table. Skills that always read 3+ large files (> 100 lines each) are heavy per-run. Flag these and note which referenced content could be condensed.
+
+**Score each finding:**
+- 🔴 High impact: > 500 tokens wasted per average session
+- 🟡 Medium: 200–500 tokens per session
+- 🟢 Low: < 200 tokens per session
+
+Estimate tokens as: lines × 10 (rough average for mixed code/text files).
+
+---
+
 ### Step 4: Output the report
 
 Print directly in chat (Markdown). Format:
@@ -161,6 +197,27 @@ Cadence        {bar}  {n}/25  {label}
    → {concrete next-step}
 
 ## Suggested next: {single most leveraged action}
+
+---
+
+## Token Efficiency
+
+**CLAUDE.md:** {n} lines — {Lean / Acceptable / Heavy}
+**Memory:** {n} entries, MEMORY.md at {n}/200 lines
+**Top token sinks this session:**
+
+| File | Lines | Est. tokens | Load frequency | Impact |
+|---|---|---|---|---|
+| {file} | {n} | ~{n} | {always/per-run/on-demand} | 🔴/🟡/🟢 |
+
+**Findings:**
+- {specific finding — name the file, the waste, and why}
+- {specific finding}
+- {specific finding or "None — system is lean"}
+
+**Suggestions:**
+1. {concrete fix — e.g. "Move GWS auth pattern (40 lines) to CLAUDE.md — saves ~400 tokens on every GWS read"}
+2. {concrete fix or "None"}
 
 ---
 Structural gaps only. To explore CAPABILITY gaps (what your AIOS could DO that it can't yet), run /level-up after this audit.
