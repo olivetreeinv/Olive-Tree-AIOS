@@ -37,6 +37,7 @@ Read `references/removed-framework.md` once. It's how Brian thinks about AI work
 - `/deal-analysis` — Underwrite a deal. Reads OM/T-12/Rent Roll, calculates metrics, compares against hard thresholds, outputs PURSUE LOI / MORE INFO NEEDED / PASS. Can be run standalone or called by `/lets-get-to-work`. Uses `scripts/deal_analysis.py`.
 - `/lets-get-to-work` — Full weekly deal pipeline in one session. Scans for new listings, checks broker follow-ups, reviews inbound deal emails, runs deal analysis, and drafts LOIs. Nothing sends without Brian's approval. Run every Monday. Uses `scripts/broker_search.py`, `broker_followup.py`, `deal_inbox.py`, `deal_analysis.py`.
 - `/pitch-deck [deal name]` — Build a deal-specific LP pitch deck in Canva. Runs after market research returns PURSUE. Copies the master template, outputs a slide-by-slide content brief, exports PDF on demand. Uses `scripts/canva_api.py` + Canva Connect API.
+- `/govcon` — Government contracting pipeline coach. Checks the live bid pipeline at localhost:8000, surfaces next actions per bid, drafts subcontractor outreach scripts and emails, and updates bid status. Run any time you want to know what to do next on a bid. App must be running first.
 
 ## Where things live
 

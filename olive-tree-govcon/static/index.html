@@ -1,0 +1,2131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Olive Tree GovCon — Federal Bid Opportunities</title>
+  <style>
+    /* ── Design tokens ─────────────────────────────────────────────────────── */
+    :root {
+      --bg:           #FFFFFF;
+      --bg-elevated:  #FBFBFD;
+      --bg-dark:      #1D1D1F;
+      --text:         #1D1D1F;
+      --text-muted:   #86868B;
+      --text-light:   #FFFFFF;
+      --accent:       #0071E3;
+      --accent-hover: #0077ED;
+      --border:       #D2D2D7;
+      --border-light: rgba(210,210,215,0.5);
+      --success:      #34C759;
+      --warning:      #FF9F0A;
+      --danger:       #FF3B30;
+      --radius:       18px;
+      --radius-sm:    10px;
+      --radius-pill:  980px;
+      --shadow-card:  0 2px 16px rgba(0,0,0,0.07), 0 0 0 1px rgba(0,0,0,0.04);
+      --shadow-hover: 0 12px 40px rgba(0,0,0,0.13), 0 0 0 1px rgba(0,0,0,0.04);
+      --ease:         cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ── Reset ─────────────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+                   "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ── Nav ────────────────────────────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 52px;
+      background: rgba(251,251,253,0.9);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid var(--border-light);
+    }
+    .nav-logo {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+                   "Helvetica Neue", Arial, sans-serif;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.01em;
+    }
+
+    /* ── Hero ───────────────────────────────────────────────────────────────── */
+    .hero {
+      background: var(--bg-dark);
+      padding: 112px 48px 80px;
+      text-align: center;
+    }
+    .hero-eyebrow {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+    .hero-title {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+                   "Helvetica Neue", Arial, sans-serif;
+      font-size: clamp(48px, 7.5vw, 88px);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.04;
+      color: var(--text-light);
+      margin-bottom: 20px;
+    }
+    .hero-title em {
+      font-style: normal;
+      background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      font-size: 19px;
+      font-weight: 400;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.58);
+      max-width: 460px;
+      margin: 0 auto 56px;
+    }
+
+    /* ── Filter card ────────────────────────────────────────────────────────── */
+    .filter-card {
+      background: var(--bg-elevated);
+      max-width: 980px;
+      margin: 0 auto;
+      border-radius: var(--radius);
+      padding: 36px 40px 28px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+    }
+    .filter-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1.4fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .field-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .field-input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 15px;
+      font-family: inherit;
+      color: var(--text);
+      background: var(--bg);
+      outline: none;
+      transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .field-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0,113,227,0.15);
+    }
+    select.field-input {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7'%3E%3Cpath d='M1 1l4.5 5L10 1' stroke='%2386868B' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 38px;
+      cursor: pointer;
+    }
+
+    .filter-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .btn-search {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 36px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-pill);
+      font-size: 15px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.2s var(--ease), transform 0.15s var(--ease),
+                  box-shadow 0.2s var(--ease);
+      box-shadow: 0 4px 16px rgba(0,113,227,0.35);
+    }
+    .btn-search:hover { background: var(--accent-hover); box-shadow: 0 6px 24px rgba(0,113,227,0.45); }
+    .btn-search:active { transform: scale(0.97); }
+    .btn-search:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+    /* ── Main content ───────────────────────────────────────────────────────── */
+    .main {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 64px 48px 96px;
+    }
+
+    /* ── Stats bar ──────────────────────────────────────────────────────────── */
+    .stats-bar {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      margin-bottom: 52px;
+      padding-bottom: 36px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .stat-primary { display: flex; flex-direction: column; }
+    .stat-primary .num {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      color: var(--text);
+    }
+    .stat-primary .lbl { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+    .stat-divider { width: 1px; height: 44px; background: var(--border); }
+    .stat-item { display: flex; align-items: center; gap: 10px; }
+    .stat-dot {
+      width: 9px; height: 9px;
+      border-radius: 50%; flex-shrink: 0;
+    }
+    .stat-dot.yes { background: var(--success); }
+    .stat-dot.unclear { background: var(--warning); }
+    .stat-dot.no { background: var(--danger); }
+    .stat-dot.pending { background: var(--border); }
+    .stat-item .num {
+      font-size: 22px; font-weight: 600; letter-spacing: -0.02em; color: var(--text);
+    }
+    .stat-item .lbl { font-size: 13px; color: var(--text-muted); }
+
+    /* ── Cards grid ─────────────────────────────────────────────────────────── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 20px;
+    }
+
+    /* ── Card ───────────────────────────────────────────────────────────────── */
+    .card {
+      background: var(--bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(22px);
+      animation: fadeUp 0.5s var(--ease) forwards;
+      transition: box-shadow 0.3s var(--ease), transform 0.3s var(--ease);
+      display: flex;
+      flex-direction: column;
+    }
+    .card:hover { box-shadow: var(--shadow-hover); transform: translateY(-3px); }
+
+    .card-body { padding: 22px 20px 16px; flex: 1; }
+    .card-footer { margin-top: auto; }
+
+    .card-tags {
+      display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px;
+    }
+    .tag {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 3px 9px; border-radius: 5px;
+      background: var(--bg-elevated);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+    .tag.accent {
+      background: rgba(0,113,227,0.07);
+      color: var(--accent);
+      border-color: rgba(0,113,227,0.18);
+    }
+
+    .card-title {
+      font-size: 16px; font-weight: 600; line-height: 1.4;
+      color: var(--text); margin-bottom: 8px;
+      display: -webkit-box; -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .card-agency {
+      font-size: 13px; color: var(--text-muted);
+      margin-bottom: 18px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    .card-dates { display: flex; gap: 24px; margin-bottom: 16px; }
+    .date-item { display: flex; flex-direction: column; gap: 3px; }
+    .date-key {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .date-val { font-size: 14px; font-weight: 500; color: var(--text); }
+    .date-val.urgent { color: var(--danger); }
+    .date-val.soon   { color: var(--warning); }
+
+    .card-naics { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; }
+
+    /* Status pill */
+    .status-pill {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 5px 13px; border-radius: var(--radius-pill);
+      font-size: 13px; font-weight: 500;
+    }
+    .status-pill .dot {
+      width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+    }
+    .status-pill.yes    { background: rgba(52,199,89,0.12);  color: #1c7a34; }
+    .status-pill.yes .dot  { background: var(--success); }
+    .status-pill.unclear{ background: rgba(255,159,10,0.12); color: #8a5600; }
+    .status-pill.unclear .dot { background: var(--warning); }
+    .status-pill.no     { background: rgba(255,59,48,0.10);  color: #b02a22; }
+    .status-pill.no .dot   { background: var(--danger); }
+    .status-pill.pending{
+      background: var(--bg-elevated); color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+    .status-pill.pending .dot { background: var(--border); }
+
+    /* Card footer */
+    .card-footer {
+      display: flex; flex-direction: column; gap: 10px;
+      padding: 14px 20px 16px;
+      border-top: 1px solid var(--border-light);
+    }
+    .card-footer-actions {
+      display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+    }
+    .card-footer-primary {
+      display: flex;
+    }
+    .btn-proposal {
+      flex: 1;
+      justify-content: center;
+      padding: 10px 0;
+      border-radius: var(--radius-sm);
+      font-size: 14px; font-weight: 500;
+      background: var(--accent); color: #fff; border: none;
+      cursor: pointer; font-family: inherit;
+      display: flex; align-items: center; gap: 6px;
+      transition: background 0.2s var(--ease);
+    }
+    .btn-proposal:hover { background: var(--accent-hover); }
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 18px; border-radius: var(--radius-pill);
+      font-size: 13px; font-weight: 500; font-family: inherit;
+      cursor: pointer; border: none; text-decoration: none;
+      transition: background 0.2s var(--ease), transform 0.15s var(--ease);
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-ghost {
+      background: var(--bg-elevated); color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { background: #ECECF0; }
+    .btn-blue { background: var(--accent); color: #fff; }
+    .btn-blue:hover { background: var(--accent-hover); }
+    .btn-blue:disabled { opacity: 0.45; cursor: not-allowed; }
+    .no-docs { font-size: 12px; color: var(--text-muted); margin-left: auto; }
+
+    /* ── Analysis panel ─────────────────────────────────────────────────────── */
+    .analysis-panel {
+      background: var(--bg-elevated);
+      border-top: 1px solid var(--border-light);
+      padding: 24px 26px;
+      animation: slideDown 0.28s var(--ease);
+    }
+    .analysis-section-label {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 10px;
+    }
+    .analysis-header-row {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; gap: 12px;
+      margin-bottom: 16px;
+    }
+    .evidence-block {
+      display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px;
+    }
+    .evidence-item {
+      font-size: 13px; color: var(--text-muted);
+      line-height: 1.55;
+      padding: 10px 14px;
+      background: rgba(0,0,0,0.03);
+      border-radius: 8px;
+      border-left: 3px solid var(--border);
+    }
+    .far-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .far-chip {
+      font-size: 11px; font-weight: 500;
+      font-family: "SF Mono", "Menlo", "Monaco", "Courier New", monospace;
+      padding: 3px 9px; border-radius: 5px;
+      background: rgba(0,113,227,0.08); color: var(--accent);
+    }
+    .sbk-alert {
+      display: flex; align-items: flex-start; gap: 8px;
+      padding: 10px 14px; border-radius: 8px;
+      background: rgba(255,159,10,0.1);
+      font-size: 13px; color: #7a4e00;
+      margin-top: 8px;
+    }
+    .sbk-icon { flex-shrink: 0; margin-top: 1px; }
+
+    /* ── Empty / loading / error states ────────────────────────────────────── */
+    .center-state {
+      text-align: center;
+      padding: 80px 40px;
+    }
+    .center-state h2 {
+      font-size: 24px; font-weight: 600;
+      color: var(--text); margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+    .center-state p { font-size: 15px; color: var(--text-muted); }
+    .center-state .hint { font-size: 13px; color: var(--text-muted); margin-top: 8px; }
+    .center-icon { font-size: 52px; margin-bottom: 20px; opacity: 0.25; }
+
+    .spinner {
+      width: 36px; height: 36px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+      margin: 0 auto 24px;
+    }
+    .spinner-sm {
+      display: inline-block;
+      width: 14px; height: 14px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+      vertical-align: middle;
+    }
+
+    /* ── Keyframes ──────────────────────────────────────────────────────────── */
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ── Quick-filter pill strip ────────────────────────────────────────────── */
+    .quick-filters {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      max-width: 980px;
+      margin: 20px auto 0;
+      flex-wrap: wrap;
+      padding: 0 2px;
+    }
+    .quick-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      flex-shrink: 0;
+      margin-right: 4px;
+    }
+    .qf-pill {
+      padding: 6px 16px;
+      border-radius: var(--radius-pill);
+      font-size: 13px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.07);
+      color: rgba(255,255,255,0.7);
+      transition: background 0.2s var(--ease), color 0.2s var(--ease),
+                  border-color 0.2s var(--ease), transform 0.15s var(--ease);
+    }
+    .qf-pill:hover {
+      background: rgba(255,255,255,0.14);
+      color: #fff;
+      border-color: rgba(255,255,255,0.3);
+    }
+    .qf-pill.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+    .qf-pill:active { transform: scale(0.95); }
+
+    /* ── Tab bar ────────────────────────────────────────────────────────────── */
+    .tab-bar {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 48px;
+      gap: 0;
+    }
+    .tab-btn {
+      padding: 12px 28px;
+      font-size: 14px;
+      font-weight: 500;
+      font-family: inherit;
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      cursor: pointer;
+      transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { color: var(--text); border-bottom-color: var(--accent); }
+
+    /* ── Entity search panel ─────────────────────────────────────────────────── */
+    .entity-search-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 36px;
+      max-width: 600px;
+    }
+    .entity-input {
+      flex: 1;
+      padding: 12px 18px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-pill);
+      font-size: 15px;
+      font-family: inherit;
+      color: var(--text);
+      background: var(--bg);
+      outline: none;
+      transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+    }
+    .entity-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0,113,227,0.15);
+    }
+    .entity-card-meta {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .entity-card-meta span { display: flex; align-items: center; gap: 4px; }
+    .excl-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 13px; border-radius: var(--radius-pill);
+      font-size: 13px; font-weight: 500;
+      background: rgba(255,59,48,0.10); color: #b02a22;
+      margin-top: 10px;
+    }
+    .excl-badge .dot { width:6px; height:6px; border-radius:50%; background:var(--danger); flex-shrink:0; }
+    .clear-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 13px; border-radius: var(--radius-pill);
+      font-size: 13px; font-weight: 500;
+      background: rgba(52,199,89,0.12); color: #1c7a34;
+      margin-top: 10px;
+    }
+    .clear-badge .dot { width:6px; height:6px; border-radius:50%; background:var(--success); flex-shrink:0; }
+    .excl-detail {
+      margin-top: 12px; padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      background: rgba(255,59,48,0.05);
+      border-left: 3px solid var(--danger);
+      font-size: 13px; color: var(--text-muted); line-height: 1.55;
+    }
+    .db-not-ready {
+      text-align: center; padding: 64px 40px;
+      border: 1.5px dashed var(--border); border-radius: var(--radius);
+    }
+    .db-not-ready h3 { font-size: 20px; font-weight: 600; margin-bottom: 10px; }
+    .db-not-ready p  { font-size: 14px; color: var(--text-muted); margin-bottom: 8px; }
+    .db-not-ready code {
+      display: inline-block; margin-top: 12px;
+      padding: 10px 18px; border-radius: var(--radius-sm);
+      background: var(--bg-elevated); border: 1px solid var(--border);
+      font-size: 13px; font-family: "SF Mono", Menlo, monospace; color: var(--text);
+    }
+    .db-stats-row {
+      display: flex; gap: 24px; flex-wrap: wrap;
+      font-size: 13px; color: var(--text-muted); margin-bottom: 32px;
+    }
+    .db-stats-row strong { color: var(--text); }
+
+    /* ── Custom tooltips ────────────────────────────────────────────────────── */
+    [data-tip] { position: relative; }
+    [data-tip]::after {
+      content: attr(data-tip);
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1D1D1F;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.4;
+      white-space: nowrap;
+      max-width: 220px;
+      white-space: normal;
+      text-align: center;
+      padding: 7px 10px;
+      border-radius: 8px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      z-index: 999;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+    [data-tip]:hover::after { opacity: 1; }
+
+    /* ── Go/No-Go badge ─────────────────────────────────────────────────────── */
+    .gng-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 11px; border-radius: var(--radius-pill);
+      font-size: 12px; font-weight: 600; letter-spacing: 0.03em;
+    }
+    .gng-GO      { background: rgba(52,199,89,0.12);  color: #1c7a34; }
+    .gng-NO-GO   { background: rgba(255,59,48,0.10);  color: #b02a22; }
+    .gng-NEEDS-REVIEW { background: rgba(255,159,10,0.12); color: #8a5600; }
+
+    /* ── Pricing panel ───────────────────────────────────────────────────────── */
+    .pricing-panel {
+      background: var(--bg-elevated);
+      border-top: 1px solid var(--border-light);
+      padding: 20px 26px;
+      animation: slideDown 0.28s var(--ease);
+    }
+    .pricing-award-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding: 6px 0; border-bottom: 1px solid var(--border-light);
+      font-size: 13px;
+    }
+    .pricing-award-row:last-child { border-bottom: none; }
+    .pricing-rec {
+      margin-top: 14px; padding: 12px 14px; border-radius: 8px;
+      background: rgba(0,113,227,0.06); font-size: 13px; color: var(--text);
+      border-left: 3px solid var(--accent);
+    }
+
+    /* ── Proposal modal ─────────────────────────────────────────────────────── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px;
+    }
+    .modal {
+      background: var(--bg);
+      border-radius: var(--radius);
+      box-shadow: 0 32px 80px rgba(0,0,0,0.3);
+      width: 100%; max-width: 780px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 36px 40px 32px;
+    }
+    .modal-title {
+      font-size: 22px; font-weight: 700; letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+    .modal-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; }
+    .modal-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+    .modal-field { display: flex; flex-direction: column; gap: 6px; }
+    .modal-field label { font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-muted); }
+    .modal-field input {
+      padding: 10px 14px; border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm); font-size: 15px; font-family: inherit;
+      color: var(--text); background: var(--bg); outline: none;
+      transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+    }
+    .modal-field input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,113,227,0.15); }
+    .modal-actions { display: flex; gap: 12px; justify-content: flex-end; }
+
+    .proposal-output { margin-top: 28px; }
+    .proposal-tab-bar { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+    .proposal-tab {
+      padding: 9px 20px; font-size: 13px; font-weight: 500; font-family: inherit;
+      color: var(--text-muted); background: none; border: none;
+      border-bottom: 2px solid transparent; margin-bottom: -1px;
+      cursor: pointer; transition: color 0.2s, border-color 0.2s;
+    }
+    .proposal-tab:hover { color: var(--text); }
+    .proposal-tab.active { color: var(--text); border-bottom-color: var(--accent); }
+    .proposal-content {
+      white-space: pre-wrap; font-size: 13px; line-height: 1.7;
+      color: var(--text); background: var(--bg-elevated);
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      padding: 20px; max-height: 420px; overflow-y: auto;
+      font-family: "SF Mono", Menlo, monospace;
+    }
+    .copy-btn {
+      margin-top: 10px; padding: 7px 18px;
+      border-radius: var(--radius-pill); font-size: 12px; font-weight: 500;
+      font-family: inherit; cursor: pointer; border: 1px solid var(--border);
+      background: var(--bg-elevated); color: var(--text);
+      transition: background 0.2s;
+    }
+    .copy-btn:hover { background: #ECECF0; }
+
+    /* ── Top 20 cards ───────────────────────────────────────────────────────── */
+    .top20-card {
+      background: var(--bg); border-radius: var(--radius);
+      box-shadow: var(--shadow-card); padding: 20px 24px;
+      margin-bottom: 12px; display: flex; gap: 20px; align-items: flex-start;
+      transition: box-shadow 0.2s var(--ease);
+    }
+    .top20-card:hover { box-shadow: var(--shadow-hover); }
+    .top20-rank {
+      font-size: 13px; font-weight: 700; color: var(--text-muted);
+      width: 28px; flex-shrink: 0; padding-top: 2px; text-align: right;
+    }
+    .top20-rank.top3 { color: var(--accent); font-size: 15px; }
+    .score-badge {
+      display: flex; flex-direction: column; align-items: center;
+      background: var(--bg-elevated); border: 1.5px solid var(--border);
+      border-radius: 12px; padding: 10px 14px; flex-shrink: 0; min-width: 62px;
+    }
+    .score-badge .num {
+      font-size: 22px; font-weight: 700; letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .score-badge .num.high   { color: #1c7a34; }
+    .score-badge .num.mid    { color: #8a5600; }
+    .score-badge .num.low    { color: var(--text-muted); }
+    .score-badge .lbl { font-size: 9px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-muted); margin-top: 3px; }
+    .top20-body { flex: 1; min-width: 0; }
+    .top20-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; line-height: 1.4; }
+    .top20-meta  { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
+    .top20-reasons { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .reason-chip {
+      font-size: 11px; font-weight: 500; padding: 3px 9px;
+      border-radius: 5px; background: rgba(0,113,227,0.07);
+      color: var(--accent); border: 1px solid rgba(0,113,227,0.15);
+    }
+    .top20-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+    /* ── Pipeline cards ─────────────────────────────────────────────────────── */
+    .pipeline-card {
+      background: var(--bg); border-radius: var(--radius);
+      box-shadow: var(--shadow-card); padding: 22px 26px 18px;
+      margin-bottom: 14px;
+      display: flex; gap: 20px; align-items: flex-start;
+    }
+    .pipeline-card-body { flex: 1; min-width: 0; }
+    .pipeline-card-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+    .pipeline-card-meta  { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+    .pipeline-card-nums  { display: flex; gap: 24px; flex-wrap: wrap; font-size: 13px; }
+    .pipeline-num { display: flex; flex-direction: column; gap: 2px; }
+    .pipeline-num .lbl { font-size: 10px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-muted); }
+    .pipeline-num .val { font-size: 15px; font-weight: 600; color: var(--text); }
+    .pipeline-num .val.profit { color: #1c7a34; }
+    .status-select {
+      padding: 6px 10px; border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm); font-size: 13px; font-family: inherit;
+      color: var(--text); background: var(--bg); cursor: pointer; outline: none;
+    }
+    .pipeline-summary-row {
+      display: flex; gap: 32px; flex-wrap: wrap; margin-bottom: 32px;
+    }
+    .pip-stat { display: flex; flex-direction: column; gap: 2px; }
+    .pip-stat .num { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; }
+    .pip-stat .lbl { font-size: 12px; color: var(--text-muted); }
+
+    /* ── Responsive ─────────────────────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      nav { padding: 0 20px; }
+      .hero { padding: 80px 20px 60px; }
+      .filter-card { padding: 24px 20px 20px; }
+      .filter-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .main { padding: 40px 20px 64px; }
+      .cards-grid { grid-template-columns: 1fr; }
+      .stats-bar { gap: 20px; }
+    }
+    @media (max-width: 480px) {
+      .filter-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navigation ────────────────────────────────────────────────────────── -->
+<nav>
+  <a href="/" class="nav-logo">Olive <span>Tree</span> GovCon</a>
+  <span class="nav-meta" id="nav-meta"></span>
+</nav>
+
+<!-- ── Hero ──────────────────────────────────────────────────────────────── -->
+<div class="hero">
+  <p class="hero-eyebrow">Federal Contracting Intelligence</p>
+  <h1 class="hero-title">Find Federal<br><em>Bid Opportunities.</em></h1>
+  <p class="hero-sub">Discover Invitations for Bid on SAM.gov and instantly flag subcontracting eligibility in the attached solicitation documents.</p>
+
+  <div class="filter-card">
+    <div class="filter-grid">
+
+      <div class="field">
+        <label class="field-label" for="f-state">State</label>
+        <select class="field-input" id="f-state"></select>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="f-naics">Trade / Service</label>
+        <select class="field-input" id="f-naics" onchange="syncQfPills()">
+          <option value="">All Trades</option>
+          <optgroup label="🏗 Remodeling &amp; Construction">
+            <option value="236118">236118 — Residential Remodelers</option>
+            <option value="236220">236220 — Commercial Building Construction</option>
+            <option value="238110">238110 — Poured Concrete</option>
+            <option value="238130">238130 — Framing</option>
+            <option value="238140">238140 — Masonry</option>
+            <option value="238160">238160 — Roofing</option>
+            <option value="238170">238170 — Siding</option>
+            <option value="238190">238190 — Exterior Trades (Other)</option>
+          </optgroup>
+          <optgroup label="⚡ MEP (Mechanical / Electrical / Plumbing)">
+            <option value="238210">238210 — Electrical</option>
+            <option value="238220">238220 — Plumbing &amp; HVAC</option>
+            <option value="238290">238290 — Other Building Equipment</option>
+          </optgroup>
+          <optgroup label="🎨 Finishes &amp; Interior">
+            <option value="238310">238310 — Drywall &amp; Insulation</option>
+            <option value="238320">238320 — Painting &amp; Wall Covering</option>
+            <option value="238330">238330 — Flooring</option>
+            <option value="238340">238340 — Tile &amp; Terrazzo</option>
+            <option value="238350">238350 — Finish Carpentry</option>
+            <option value="238390">238390 — Other Finishing Trades</option>
+            <option value="238990">238990 — Specialty Trades (Other)</option>
+          </optgroup>
+          <optgroup label="🌿 Grounds &amp; Exterior Services">
+            <option value="561730">561730 — Landscaping</option>
+            <option value="561710">561710 — Pest Control</option>
+            <option value="238910">238910 — Site Prep &amp; Excavation</option>
+          </optgroup>
+          <optgroup label="🧹 Facility Services">
+            <option value="561720">561720 — Janitorial &amp; Cleaning</option>
+            <option value="561740">561740 — Carpet &amp; Upholstery Cleaning</option>
+            <option value="561790">561790 — Other Building Services</option>
+            <option value="561210">561210 — Facilities Support Services</option>
+          </optgroup>
+          <optgroup label="🏠 Property Management">
+            <option value="531311">531311 — Residential Property Management</option>
+            <option value="531312">531312 — Nonresidential Property Management</option>
+            <option value="541350">541350 — Building Inspection Services</option>
+          </optgroup>
+          <optgroup label="🚛 Moving &amp; Relocation">
+            <option value="484210">484210 — Household &amp; Office Moving</option>
+            <option value="812990">812990 — All Other Personal Services</option>
+          </optgroup>
+          <optgroup label="☣️ Environmental">
+            <option value="562112">562112 — Hazardous Waste Collection</option>
+            <option value="562910">562910 — Remediation Services</option>
+          </optgroup>
+        </select>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="f-limit">Max Results</label>
+        <select class="field-input" id="f-limit">
+          <option value="10">10</option>
+          <option value="25" selected>25</option>
+          <option value="50">50</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="filter-footer">
+      <button class="btn-search" id="search-btn" onclick="runSearch()">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M11 11l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        Search Opportunities
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Quick-filter pill strip ──────────────────────────────────────── -->
+  <div class="quick-filters" id="qf-strip">
+    <span class="quick-label">Quick Filters</span>
+    <button class="qf-pill active" data-naics="" onclick="quickFilter(this)">All Trades</button>
+    <button class="qf-pill" data-naics="562112" onclick="quickFilter(this)">Hazardous Waste</button>
+    <button class="qf-pill" data-naics="484210" onclick="quickFilter(this)">Moving</button>
+    <button class="qf-pill" data-naics="531311" onclick="quickFilter(this)">Property Mgmt</button>
+    <button class="qf-pill" data-naics="812990" onclick="quickFilter(this)">Personal Services</button>
+    <button class="qf-pill" data-naics="561730" onclick="quickFilter(this)">Landscaping</button>
+    <button class="qf-pill" data-naics="238320" onclick="quickFilter(this)">Painting</button>
+    <button class="qf-pill" data-naics="561720" onclick="quickFilter(this)">Janitorial</button>
+    <button class="qf-pill" data-naics="238220" onclick="quickFilter(this)">HVAC</button>
+    <button class="qf-pill" data-naics="238160" onclick="quickFilter(this)">Roofing</button>
+    <button class="qf-pill" data-naics="562910" onclick="quickFilter(this)">Remediation</button>
+    <button class="qf-pill" data-naics="541350" onclick="quickFilter(this)">Inspections</button>
+  </div>
+</div>
+
+<!-- ── Main ──────────────────────────────────────────────────────────────── -->
+<div class="main">
+
+  <!-- Tab bar -->
+  <div class="tab-bar">
+    <button class="tab-btn active" id="tab-opps"      onclick="switchTab('opportunities')">Opportunities</button>
+    <button class="tab-btn"        id="tab-top20"     onclick="switchTab('top20')">Top 20 Picks</button>
+    <button class="tab-btn"        id="tab-pipeline"  onclick="switchTab('pipeline')">Bid Pipeline</button>
+  </div>
+
+  <!-- ── Opportunities pane ── -->
+  <div id="pane-opportunities">
+    <div id="stats-container" style="display:none">
+      <div class="stats-bar" id="stats-bar"></div>
+    </div>
+    <div id="results-container">
+      <div class="center-state">
+        <div class="center-icon">🌿</div>
+        <h2>Ready to Search</h2>
+        <p>Configure your filters above and click Search to surface federal bid opportunities.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Top 20 Picks pane ── -->
+  <div id="pane-top20" style="display:none">
+    <div id="top20-container">
+      <div class="center-state">
+        <div class="center-icon">🎯</div>
+        <h2>Loading Top 20…</h2>
+        <p>Scoring opportunities across all your NAICS codes.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Bid Pipeline pane ── -->
+  <div id="pane-pipeline" style="display:none">
+    <div id="pipeline-summary" style="margin-bottom:36px"></div>
+    <div style="display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap" id="pipeline-filter-bar">
+      <button class="qf-pill active" style="background:var(--accent);color:#fff;border-color:var(--accent)" data-status="" onclick="loadPipeline('')">All</button>
+      <button class="qf-pill" data-status="researching"   onclick="loadPipeline('researching')">Researching</button>
+      <button class="qf-pill" data-status="sub_contacted" onclick="loadPipeline('sub_contacted')">Sub Contacted</button>
+      <button class="qf-pill" data-status="quoted"        onclick="loadPipeline('quoted')">Quoted</button>
+      <button class="qf-pill" data-status="submitted"     onclick="loadPipeline('submitted')">Submitted</button>
+      <button class="qf-pill" data-status="won"           onclick="loadPipeline('won')">Won</button>
+      <button class="qf-pill" data-status="lost"          onclick="loadPipeline('lost')">Lost</button>
+      <button class="qf-pill" data-status="skipped"       onclick="loadPipeline('skipped')">Skipped</button>
+    </div>
+    <div id="pipeline-bids"></div>
+  </div>
+
+
+</div>
+
+<!-- ── Proposal Modal ────────────────────────────────────────────────────── -->
+<div id="proposal-modal" class="modal-overlay" style="display:none" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-title">Generate Proposal</div>
+    <div class="modal-sub" id="proposal-modal-sub">Enter your sub quote and target bid price to generate a full proposal package.</div>
+
+    <div id="proposal-form">
+      <div class="modal-fields">
+        <div class="modal-field">
+          <label>Subcontractor Name</label>
+          <input type="text" id="pm-sub-name" placeholder="e.g. Smith Landscaping LLC">
+        </div>
+        <div class="modal-field">
+          <label>Sub Quote ($)</label>
+          <input type="number" id="pm-sub-quote" placeholder="e.g. 42000" min="0" step="100">
+        </div>
+        <div class="modal-field">
+          <label>Our Bid Price ($)</label>
+          <input type="number" id="pm-our-bid" placeholder="e.g. 58000" min="0" step="100">
+        </div>
+        <div class="modal-field">
+          <label>Past Price Ceiling ($) <span style="font-weight:400;text-transform:none;letter-spacing:0">optional</span></label>
+          <input type="number" id="pm-past-price" placeholder="From USASpending research" min="0" step="100">
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-blue" id="pm-generate-btn" onclick="generateProposal()">Generate Proposal</button>
+      </div>
+    </div>
+
+    <div class="proposal-output" id="proposal-output" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div style="font-size:15px;font-weight:600">Proposal Package Ready</div>
+        <button class="btn btn-ghost" onclick="resetModal()" style="font-size:12px">Start Over</button>
+      </div>
+      <div class="proposal-tab-bar">
+        <button class="proposal-tab active" onclick="switchPTab(this,'pt-proposal')">Proposal</button>
+        <button class="proposal-tab" onclick="switchPTab(this,'pt-script')">Phone Script</button>
+        <button class="proposal-tab" onclick="switchPTab(this,'pt-email')">Email Template</button>
+        <button class="proposal-tab" onclick="switchPTab(this,'pt-rationale')">Pricing Notes</button>
+      </div>
+      <div id="pt-proposal"   class="proposal-content"></div>
+      <div id="pt-script"     class="proposal-content" style="display:none"></div>
+      <div id="pt-email"      class="proposal-content" style="display:none"></div>
+      <div id="pt-rationale"  class="proposal-content" style="display:none"></div>
+      <button class="copy-btn" onclick="copyActive()">Copy to Clipboard</button>
+      <div style="margin-top:16px;padding:12px 14px;background:rgba(52,199,89,0.08);border-radius:8px;font-size:13px;color:#1c7a34;">
+        Bid saved to pipeline. Go to SAM.gov to submit your proposal.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+let _proposalNoticeId = null;
+const _oppMap = {};  // noticeId → full opp object
+
+/* ── States ──────────────────────────────────────────────────────────────── */
+// Each entry: [display label, region key for backend, emoji, [state pairs]]
+const REGIONS = [
+  ['Northeast',    'NORTHEAST',    '🗽', [
+    ['CT','Connecticut'],['ME','Maine'],['MA','Massachusetts'],
+    ['NH','New Hampshire'],['NJ','New Jersey'],['NY','New York'],
+    ['PA','Pennsylvania'],['RI','Rhode Island'],['VT','Vermont'],
+  ]],
+  ['Southeast',    'SOUTHEAST',    '🌴', [
+    ['AL','Alabama'],['AR','Arkansas'],['DC','District of Columbia'],
+    ['DE','Delaware'],['FL','Florida'],['GA','Georgia'],
+    ['KY','Kentucky'],['LA','Louisiana'],['MD','Maryland'],
+    ['MS','Mississippi'],['NC','North Carolina'],['SC','South Carolina'],
+    ['TN','Tennessee'],['VA','Virginia'],['WV','West Virginia'],
+  ]],
+  ['Midwest',      'MIDWEST',      '🏙', [
+    ['IL','Illinois'],['IN','Indiana'],['IA','Iowa'],['KS','Kansas'],
+    ['MI','Michigan'],['MN','Minnesota'],['MO','Missouri'],['NE','Nebraska'],
+    ['ND','North Dakota'],['OH','Ohio'],['SD','South Dakota'],['WI','Wisconsin'],
+  ]],
+  ['Southwest',    'SOUTHWEST',    '🤠', [
+    ['AZ','Arizona'],['NM','New Mexico'],['OK','Oklahoma'],['TX','Texas'],
+  ]],
+  ['Mountain West','MOUNTAIN_WEST','🏔', [
+    ['CO','Colorado'],['ID','Idaho'],['MT','Montana'],
+    ['NV','Nevada'],['UT','Utah'],['WY','Wyoming'],
+  ]],
+  ['Pacific',      'PACIFIC',      '🌲', [
+    ['AK','Alaska'],['CA','California'],['HI','Hawaii'],
+    ['OR','Oregon'],['WA','Washington'],
+  ]],
+];
+
+(function initStates() {
+  const el = document.getElementById('f-state');
+
+  // ── Top-level pinned options ─────────────────────────────────────────────────
+  const allOpt = document.createElement('option');
+  allOpt.value = '';
+  allOpt.textContent = '🌐 All States (National)';
+  el.appendChild(allOpt);
+
+  // ── One optgroup per region, with a "Region" option at the top ───────────────
+  REGIONS.forEach(([label, key, emoji, states]) => {
+    const group = document.createElement('optgroup');
+    group.label = `${emoji} ${label}`;
+
+    // Region-wide sentinel option
+    const regionOpt = document.createElement('option');
+    regionOpt.value = key;
+    regionOpt.textContent = `${emoji} All ${label}`;
+    if (key === 'SOUTHEAST') regionOpt.selected = true;
+    group.appendChild(regionOpt);
+
+    // Individual states
+    states.forEach(([code, name]) => {
+      const opt = document.createElement('option');
+      opt.value = code;
+      opt.textContent = name;
+      group.appendChild(opt);
+    });
+
+    el.appendChild(group);
+  });
+})();
+
+/* ── Escape helpers ──────────────────────────────────────────────────────── */
+function esc(str) {
+  const d = document.createElement('div');
+  d.appendChild(document.createTextNode(String(str ?? '')));
+  return d.innerHTML;
+}
+function escAttr(str) {
+  return String(str ?? '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+/* ── Date utils ──────────────────────────────────────────────────────────── */
+function fmtDate(s) {
+  if (!s) return '—';
+  try {
+    return new Date(s).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+  } catch { return s; }
+}
+function daysLeft(s) {
+  if (!s) return null;
+  return Math.ceil((new Date(s) - Date.now()) / 86400000);
+}
+function urgencyClass(s) {
+  const d = daysLeft(s);
+  if (d === null) return '';
+  if (d < 0)  return 'urgent';
+  if (d <= 7) return 'urgent';
+  if (d <= 14) return 'soon';
+  return '';
+}
+function daysTag(s) {
+  const d = daysLeft(s);
+  if (d === null) return '';
+  if (d < 0)  return 'Closed';
+  if (d === 0) return 'Due today';
+  if (d === 1) return '1 day left';
+  return `${d} days left`;
+}
+
+/* ── Agency path ─────────────────────────────────────────────────────────── */
+function agencyName(opp) {
+  const path = opp.fullParentPathName || '';
+  if (path) return path.split('>')[0].trim();
+  return (opp.organizationHierarchy || [])[0]?.name || 'Unknown Agency';
+}
+
+/* ── Status pill labels ──────────────────────────────────────────────────── */
+function subkLabel(s) {
+  if (s === 'yes')     return 'Subcontracting Allowed';
+  if (s === 'no')      return 'Self-Performance Required';
+  if (s === 'unclear') return 'Subcontracting Unclear';
+  return 'Not Yet Analyzed';
+}
+
+/* ── Search ──────────────────────────────────────────────────────────────── */
+async function runSearch() {
+  const state  = document.getElementById('f-state').value;
+  const naics  = document.getElementById('f-naics').value.trim();
+  const limit  = document.getElementById('f-limit').value;
+
+  const btn = document.getElementById('search-btn');
+  btn.disabled = true;
+  btn.innerHTML = `<span class="spinner-sm"></span>&nbsp; Searching…`;
+
+  showLoading();
+
+  const params = new URLSearchParams({ state, days_back: 30, limit, analyze: false });
+  if (naics) params.set('naics', naics);
+
+  try {
+    const resp = await fetch(`/api/opportunities?${params}`);
+    if (!resp.ok) {
+      const body = await resp.json().catch(() => ({ detail: resp.statusText }));
+      if (resp.status === 429) {
+        showQuotaError(body.detail || 'SAM.gov daily API quota exhausted.');
+        return;
+      }
+      throw new Error(body.detail || `HTTP ${resp.status}`);
+    }
+    const data = await resp.json();
+    const opps = data.opportunities || [];
+    renderResults(opps, data.cached);
+    document.getElementById('nav-meta').textContent =
+      `${opps.length} results · ${new Date().toLocaleTimeString()}${data.cached ? ' · cached' : ''}`;
+  } catch (err) {
+    showError(err.message);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = `
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M11 11l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      Search Opportunities`;
+  }
+}
+
+/* ── Render all results ──────────────────────────────────────────────────── */
+function renderResults(opps, cached) {
+  const statsContainer = document.getElementById('stats-container');
+  const resultsContainer = document.getElementById('results-container');
+
+  if (!opps.length) {
+    statsContainer.style.display = 'none';
+    resultsContainer.innerHTML = `
+      <div class="center-state">
+        <div class="center-icon">🔍</div>
+        <h2>No Opportunities Found</h2>
+        <p>Try a different state, a wider date range, or remove the NAICS filter.</p>
+      </div>`;
+    return;
+  }
+
+  /* Cached data banner */
+  const cachedBanner = cached ? `
+    <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;
+      background:rgba(255,159,10,0.1);border:1px solid rgba(255,159,10,0.25);
+      border-radius:10px;margin-bottom:28px;font-size:13px;color:#7a4e00">
+      <span style="font-size:16px">🕐</span>
+      <span><strong>Showing cached results</strong> — SAM.gov daily API quota is exhausted.
+      Fresh results available after midnight UTC.</span>
+    </div>` : '';
+
+  /* Stats */
+  const counts = { yes: 0, unclear: 0, no: 0, pending: 0 };
+  opps.forEach(o => {
+    const s = o.analysis?.subcontractors_allowed ?? 'pending';
+    counts[s] = (counts[s] || 0) + 1;
+  });
+
+  statsContainer.style.display = 'block';
+  document.getElementById('stats-bar').innerHTML = `
+    <div class="stat-primary">
+      <span class="num">${opps.length}</span>
+      <span class="lbl">Opportunities</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <div class="stat-dot yes"></div>
+      <div><div class="num">${counts.yes}</div><div class="lbl">Subk Allowed</div></div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-dot unclear"></div>
+      <div><div class="num">${counts.unclear}</div><div class="lbl">Unclear</div></div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-dot no"></div>
+      <div><div class="num">${counts.no}</div><div class="lbl">Self-Perform</div></div>
+    </div>
+    ${counts.pending ? `
+    <div class="stat-item">
+      <div class="stat-dot pending"></div>
+      <div><div class="num">${counts.pending}</div><div class="lbl">Not Analyzed</div></div>
+    </div>` : ''}
+  `;
+
+  /* Cards */
+  const grid = document.createElement('div');
+  grid.className = 'cards-grid';
+  opps.forEach((opp, i) => grid.appendChild(buildCard(opp, i)));
+
+  resultsContainer.innerHTML = cachedBanner;
+  resultsContainer.appendChild(grid);
+}
+
+/* ── Notice type label ───────────────────────────────────────────────────── */
+const TYPE_LABELS = {
+  k: 'Combined',
+  o: 'Solicitation',
+  p: 'Presolicitation',
+  r: 'Sources Sought',
+  s: 'Special Notice',
+  a: 'Award Notice',
+  i: 'Intent to Bundle',
+  j: 'Justification',
+  m: 'Modification',
+  u: 'Justification',
+};
+const TYPE_COLORS = {
+  k: 'accent', o: 'accent', p: '', r: '', s: '', a: '', i: '', j: '', m: '', u: '',
+};
+function noticeTypeLabel(opp) {
+  const raw = (opp.baseType || opp.type || '').toLowerCase().trim();
+  if (!raw) return { label: 'Solicitation', color: 'accent' };
+  if (raw.includes('invitation for bid') || raw.includes('sealed bid')) return { label: 'IFB', color: 'accent' };
+  if (raw.includes('request for quote') || raw === 'rfq') return { label: 'RFQ', color: 'accent' };
+  if (raw.includes('request for proposal') || raw === 'rfp') return { label: 'RFP', color: '' };
+  if (raw.includes('combined')) return { label: 'Combined', color: 'accent' };
+  if (raw.includes('sources sought')) return { label: 'Sources Sought', color: '' };
+  if (raw.includes('presolicitation')) return { label: 'Pre-Sol', color: '' };
+  if (raw.includes('award')) return { label: 'Award', color: '' };
+  if (raw.includes('modification')) return { label: 'Modification', color: '' };
+  if (raw.includes('solicitation')) return { label: 'Solicitation', color: 'accent' };
+  // Fall back to code lookup
+  const code = raw.length === 1 ? raw : null;
+  if (code && TYPE_LABELS[code]) return { label: TYPE_LABELS[code], color: TYPE_COLORS[code] };
+  return { label: raw.slice(0,16), color: '' };
+}
+
+/* ── Build a single card ─────────────────────────────────────────────────── */
+function buildCard(opp, index) {
+  const noticeId   = opp.noticeId || opp.opportunityId || '';
+  const title      = opp.title || 'Untitled Opportunity';
+  const agency     = agencyName(opp);
+  const setAside   = opp.typeOfSetAsideDescription || '';
+  const naicsCode  = opp.naicsCode || '';
+  const naicsLabel = opp.naics_label
+    ? `${opp.naics_label} · ${naicsCode}`
+    : naicsCode ? `NAICS ${naicsCode}` : '';
+  const uiLink     = opp.uiLink || '#';
+  const hasDocs    = (opp.resourceLinks || []).length > 0;
+  const posted     = fmtDate(opp.postedDate);
+  const deadline   = opp.responseDeadLine;
+  const analysis   = opp.analysis;
+  const status     = analysis?.subcontractors_allowed ?? 'pending';
+
+  if (noticeId) _oppMap[noticeId] = opp;
+
+  const card = document.createElement('article');
+  card.className = 'card';
+  card.dataset.noticeId = noticeId;
+  card.style.animationDelay = `${Math.min(index * 0.04, 0.5)}s`;
+
+  const deadlineCls = urgencyClass(deadline);
+  const deadlineFmt = deadline ? fmtDate(deadline) : 'No deadline listed';
+  const tag         = daysTag(deadline);
+
+  /* Safe NAICS display */
+  const safeSet  = setAside ? setAside.replace(/\s*\(.*?\)\s*/g, '').trim() : '';
+  const typeInfo = noticeTypeLabel(opp);
+
+  card.innerHTML = `
+    <div class="card-body">
+      <div class="card-tags">
+        <span class="tag ${typeInfo.color}">${esc(typeInfo.label)}</span>
+        ${safeSet ? `<span class="tag accent">${esc(safeSet)}</span>` : ''}
+      </div>
+      <h3 class="card-title" title="${escAttr(title)}">${esc(title)}</h3>
+      <p class="card-agency">${esc(agency)}</p>
+      <div class="card-dates">
+        <div class="date-item">
+          <div class="date-key">Posted</div>
+          <div class="date-val">${posted}</div>
+        </div>
+        <div class="date-item">
+          <div class="date-key">Response Due</div>
+          <div class="date-val ${deadlineCls}">
+            ${esc(deadlineFmt)}
+            ${tag ? `<br><span style="font-size:11px;font-weight:400">${esc(tag)}</span>` : ''}
+          </div>
+        </div>
+      </div>
+      ${naicsLabel ? `<p class="card-naics">${esc(naicsLabel)}</p>` : ''}
+      <div class="status-pill-wrap">
+        <span class="status-pill ${escAttr(status)}">
+          <span class="dot"></span>
+          <span class="pill-text">${esc(subkLabel(status))}</span>
+        </span>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="card-footer-actions">
+        <a href="${escAttr(uiLink)}" target="_blank" rel="noopener noreferrer"
+           class="btn btn-ghost" style="font-size:12px;padding:6px 12px"
+           data-tip="Open the full solicitation on SAM.gov">SAM.gov ↗</a>
+        ${hasDocs
+          ? `<button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" data-tip="AI reads the docs and returns a GO/NO-GO verdict, scope summary, and submission checklist" onclick="analyzeCard('${escAttr(noticeId)}', this)">Analyze</button>`
+          : `<span class="no-docs" data-tip="No documents attached to this solicitation">No docs</span>`
+        }
+        <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" data-tip="Look up what the government paid for this work in the past to set your pricing ceiling" onclick="researchPricing('${escAttr(noticeId)}','${escAttr(naicsCode)}','${escAttr(opp.placeOfPerformance?.state?.code || '')}',this)">Pricing</button>
+        <button class="btn btn-ghost track-btn" style="font-size:12px;padding:6px 12px" data-tip="Add this bid to your pipeline to track it from research through win or loss" onclick="trackBid(_oppMap['${escAttr(noticeId)}'])">Track</button>
+      </div>
+      <div class="card-footer-primary">
+        <button class="btn-proposal"
+          data-tip="Enter sub quote and bid price — Claude writes the full proposal, phone script, and email template"
+          onclick="openProposalModal('${escAttr(noticeId)}','${escAttr(title)}')">
+          Generate Proposal →
+        </button>
+      </div>
+    </div>
+    <div class="analysis-panel" style="display:none"></div>
+  `;
+
+  /* If pre-analyzed, show panel immediately */
+  if (analysis) {
+    const panel = card.querySelector('.analysis-panel');
+    panel.style.display = 'block';
+    fillAnalysisPanel(panel, analysis);
+  }
+
+  return card;
+}
+
+/* ── On-demand analyze ───────────────────────────────────────────────────── */
+async function analyzeCard(noticeId, btn) {
+  const card  = document.querySelector(`[data-notice-id="${CSS.escape(noticeId)}"]`);
+  const panel = card.querySelector('.analysis-panel');
+
+  btn.disabled = true;
+  btn.textContent = 'Analyzing…';
+  panel.style.display = 'block';
+  panel.innerHTML = `
+    <div style="text-align:center;padding:28px 20px">
+      <div class="spinner" style="width:28px;height:28px;border-width:2.5px;margin:0 auto 14px"></div>
+      <p style="font-size:13px;color:var(--text-muted)">Downloading &amp; scanning solicitation documents…</p>
+    </div>`;
+
+  try {
+    const resp = await fetch(`/api/opportunity/${encodeURIComponent(noticeId)}/analyze`);
+    if (!resp.ok) {
+      const body = await resp.json().catch(() => ({ detail: resp.statusText }));
+      throw new Error(body.detail || `HTTP ${resp.status}`);
+    }
+    const analysis = await resp.json();
+
+    fillAnalysisPanel(panel, analysis);
+
+    /* Update the status pill in the card body */
+    const pill = card.querySelector('.status-pill');
+    if (pill) {
+      pill.className = `status-pill ${analysis.subcontractors_allowed}`;
+      const pt = pill.querySelector('.pill-text');
+      if (pt) pt.textContent = subkLabel(analysis.subcontractors_allowed);
+    }
+
+    btn.textContent = 'Re-analyze';
+  } catch (err) {
+    panel.innerHTML = `
+      <div style="padding:20px 26px">
+        <p style="font-size:13px;color:var(--danger)">
+          <strong>Analysis failed:</strong> ${esc(err.message)}
+        </p>
+      </div>`;
+    btn.textContent = 'Analyze';
+  }
+  btn.disabled = false;
+}
+
+/* ── Fill analysis panel ─────────────────────────────────────────────────── */
+function fillAnalysisPanel(panel, analysis) {
+  const status = analysis.subcontractors_allowed;
+  const evidence = analysis.evidence || [];
+  const far = analysis.far_clauses_found || [];
+  const sbk = analysis.small_business_subk_plan_required;
+
+  const evidenceHtml = evidence.length
+    ? evidence.map(e => `<div class="evidence-item">${esc(e)}</div>`).join('')
+    : `<p style="font-size:13px;color:var(--text-muted)">No specific subcontracting clauses detected in the document text.</p>`;
+
+  const farHtml = far.length
+    ? `<div class="analysis-section-label" style="margin-top:16px">FAR Clauses Referenced</div>
+       <div class="far-chips">${far.map(c => `<span class="far-chip">${esc(c)}</span>`).join('')}</div>`
+    : '';
+
+  const sbkHtml = sbk
+    ? `<div class="sbk-alert">
+         <svg class="sbk-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+           <path d="M8 1.5L14.5 13H1.5L8 1.5Z" stroke="#FF9F0A" stroke-width="1.4" fill="none"/>
+           <path d="M8 6v3.5" stroke="#FF9F0A" stroke-width="1.4" stroke-linecap="round"/>
+           <circle cx="8" cy="11.5" r="0.75" fill="#FF9F0A"/>
+         </svg>
+         Small Business Subcontracting Plan may be required — FAR 52.219-9 or "subcontracting plan" language detected.
+       </div>`
+    : '';
+
+  const gng      = analysis.go_no_go || '';
+  const gngReason = analysis.go_no_go_reason || '';
+  const scope    = analysis.scope_summary || '';
+  const checklist = analysis.submission_checklist || [];
+
+  const gngHtml = gng ? `
+    <span class="gng-badge gng-${escAttr(gng)}" style="margin-left:8px">${esc(gng)}</span>` : '';
+
+  const scopeHtml = scope ? `
+    <div class="analysis-section-label" style="margin-top:14px">Scope Summary</div>
+    <div class="evidence-item" style="margin-bottom:12px">${esc(scope)}</div>` : '';
+
+  const checklistHtml = checklist.length ? `
+    <div class="analysis-section-label" style="margin-top:14px">Submission Checklist</div>
+    <ul style="margin:0;padding-left:18px;font-size:13px;color:var(--text-muted);line-height:1.8">
+      ${checklist.map(item => `<li>${esc(item)}</li>`).join('')}
+    </ul>` : '';
+
+  panel.innerHTML = `
+    <div class="analysis-header-row">
+      <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px">
+        <div class="analysis-section-label" style="margin:0">Document Analysis</div>
+        ${gngHtml}
+      </div>
+      <span class="status-pill ${escAttr(status)}" style="flex-shrink:0">
+        <span class="dot"></span>
+        <span>${esc(subkLabel(status))}</span>
+      </span>
+    </div>
+    ${gngReason ? `<p style="font-size:13px;color:var(--text-muted);margin-bottom:14px">${esc(gngReason)}</p>` : ''}
+    ${scopeHtml}
+    <div class="analysis-section-label" style="margin-top:${scope ? 14 : 0}px">Supporting Evidence</div>
+    <div class="evidence-block">${evidenceHtml}</div>
+    ${checklistHtml}
+    ${farHtml}
+    ${sbkHtml}
+  `;
+}
+
+/* ── Loading / error states ──────────────────────────────────────────────── */
+function showLoading() {
+  document.getElementById('stats-container').style.display = 'none';
+  document.getElementById('results-container').innerHTML = `
+    <div class="center-state">
+      <div class="spinner"></div>
+      <h2>Searching SAM.gov</h2>
+      <p>Fetching opportunities from the last 30 days…</p>
+    </div>`;
+}
+
+function showError(msg) {
+  document.getElementById('stats-container').style.display = 'none';
+  document.getElementById('results-container').innerHTML = `
+    <div class="center-state">
+      <div class="center-icon">⚠️</div>
+      <h2>Search Failed</h2>
+      <p>${esc(msg)}</p>
+      <p class="hint">Verify your SAM_API_KEY in .env and that SAM.gov is reachable.</p>
+    </div>`;
+}
+
+function showQuotaError(msg) {
+  document.getElementById('stats-container').style.display = 'none';
+  document.getElementById('results-container').innerHTML = `
+    <div class="center-state">
+      <div class="center-icon">🕐</div>
+      <h2>Daily API Quota Reached</h2>
+      <p style="max-width:520px;text-align:center">${esc(msg)}</p>
+      <p class="hint" style="margin-top:12px">
+        Switch back to a state you already searched today — those results are cached locally
+        and will load instantly without hitting the API.
+      </p>
+    </div>`;
+}
+
+/* ── Quick-filter pills ──────────────────────────────────────────────────── */
+function quickFilter(pill) {
+  document.getElementById('f-naics').value = pill.dataset.naics;
+  syncQfPills();
+  runSearch();
+}
+
+function syncQfPills() {
+  const val = document.getElementById('f-naics').value;
+  document.querySelectorAll('.qf-pill').forEach(p => {
+    p.classList.toggle('active', p.dataset.naics === val);
+  });
+}
+
+/* ── Keyboard shortcut ───────────────────────────────────────────────────── */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) runSearch();
+});
+
+/* ── Auto-search on load (Change 4) ─────────────────────────────────────── */
+runSearch();
+
+/* ── Tab switching ───────────────────────────────────────────────────────── */
+function switchTab(tab) {
+  ['opportunities','top20','pipeline'].forEach(t => {
+    document.getElementById(`pane-${t}`).style.display = t === tab ? '' : 'none';
+    const btnId = t === 'opportunities' ? 'tab-opps' : `tab-${t}`;
+    document.getElementById(btnId).classList.toggle('active', t === tab);
+  });
+  if (tab === 'top20')    loadTop20();
+  if (tab === 'pipeline') loadPipeline('');
+}
+
+/* ── Entity DB status ────────────────────────────────────────────────────── */
+async function loadEntityDbStatus() {
+  const el = document.getElementById('entity-db-status');
+  try {
+    const resp = await fetch('/api/entities/stats');
+    const s = await resp.json();
+    if (!s.ready) {
+      el.innerHTML = `
+        <div class="db-not-ready">
+          <div class="center-icon" style="font-size:36px;opacity:0.25">🏛</div>
+          <h3>Entity Database Not Loaded</h3>
+          <p>Download the SAM.gov bulk extracts first. This only needs to run once (then monthly for entities, daily for exclusions).</p>
+          <code>python refresh.py all</code>
+          <p style="margin-top:16px;font-size:13px;color:var(--text-muted)">
+            Entity Management extract is ~500 MB — allow 5–15 min depending on connection speed.
+          </p>
+        </div>`;
+    } else {
+      const ei = s.last_entity_import;
+      const xi = s.last_exclusion_import;
+      el.innerHTML = `
+        <div class="db-stats-row">
+          <span><strong>${s.entity_count.toLocaleString()}</strong> registered entities</span>
+          <span><strong>${s.exclusion_count.toLocaleString()}</strong> exclusion records</span>
+          ${ei ? `<span>Entities updated <strong>${ei.finished_at.slice(0,10)}</strong></span>` : ''}
+          ${xi ? `<span>Exclusions updated <strong>${xi.finished_at.slice(0,10)}</strong></span>` : ''}
+        </div>`;
+    }
+  } catch {
+    el.innerHTML = '';
+  }
+}
+
+/* ── Entity search ───────────────────────────────────────────────────────── */
+async function entitySearch() {
+  const q = document.getElementById('entity-q').value.trim();
+  if (q.length < 2) return;
+
+  const container = document.getElementById('entity-results');
+  container.innerHTML = `
+    <div class="center-state" style="padding:48px 0">
+      <div class="spinner"></div>
+      <p>Searching entity database…</p>
+    </div>`;
+
+  try {
+    const resp = await fetch(`/api/entities/search?q=${encodeURIComponent(q)}`);
+    if (resp.status === 503) {
+      const body = await resp.json();
+      container.innerHTML = `
+        <div class="db-not-ready">
+          <h3>Database Not Ready</h3>
+          <p>${esc(body.detail)}</p>
+          <code>python refresh.py all</code>
+        </div>`;
+      return;
+    }
+    if (!resp.ok) throw new Error((await resp.json().catch(() => ({}))).detail || resp.statusText);
+
+    const data = await resp.json();
+    renderEntityResults(data.results, q);
+  } catch (err) {
+    container.innerHTML = `
+      <div class="center-state">
+        <div class="center-icon">⚠️</div>
+        <h2>Search Failed</h2>
+        <p>${esc(err.message)}</p>
+      </div>`;
+  }
+}
+
+/* ── Bid scoring ─────────────────────────────────────────────────────────── */
+const SERVICE_NAICS = ['484','531','541','561','562','812'];
+const CONSTRUCTION_NAICS = ['236','238'];
+
+function scoreBid(opp) {
+  let score = 0;
+  const reasons = []; // { label, tip }
+
+  // Notice type (25 pts)
+  const typeInfo = noticeTypeLabel(opp);
+  if (typeInfo.label === 'RFQ') {
+    score += 25;
+    reasons.push({ label: 'RFQ', tip: 'Request for Quote — under $350K, no past performance required. Just submit a price.' });
+  } else if (typeInfo.label === 'IFB') {
+    score += 22;
+    reasons.push({ label: 'IFB', tip: 'Invitation for Bid — sealed bid, lowest responsive price wins. No relationship or past performance needed.' });
+  } else if (['Combined','Solicitation'].includes(typeInfo.label)) {
+    score += 15;
+  } else if (typeInfo.label === 'RFP') {
+    score += 8;
+  }
+
+  // Deadline (20 pts)
+  const days = daysLeft(opp.responseDeadLine);
+  if (days === null) { score += 8; }
+  else if (days >= 21) {
+    score += 20;
+    reasons.push({ label: `${days}d left`, tip: `${days} days until the response deadline — enough time to find and quote a subcontractor and write the proposal.` });
+  } else if (days >= 14) {
+    score += 16;
+    reasons.push({ label: `${days}d left`, tip: `${days} days left — tight but workable. Move fast on finding a sub.` });
+  } else if (days >= 7) {
+    score += 10;
+    reasons.push({ label: `${days}d left`, tip: `${days} days left — very tight. Only pursue if you already have a sub lined up.` });
+  } else if (days >= 3) { score += 4; }
+
+  // Set-aside (20 pts)
+  const sa = (opp.typeOfSetAsideDescription || '').toLowerCase();
+  if (sa && (sa.includes('small business') || sa.includes('8(a)') ||
+             sa.includes('wosb') || sa.includes('sdvosb') || sa.includes('hubzone'))) {
+    score += 20;
+    reasons.push({ label: 'Set-aside', tip: 'Reserved for small businesses only — large corporations cannot bid. Dramatically reduces your competition.' });
+  }
+
+  // Has documents (15 pts)
+  if ((opp.resourceLinks || []).length > 0) {
+    score += 15;
+    reasons.push({ label: 'Has docs', tip: 'Solicitation documents are attached — you can run the Analyze tool to get a GO/NO-GO verdict and submission checklist before committing.' });
+  }
+
+  // NAICS type (20 pts)
+  const naics = String(opp.naicsCode || '');
+  if (SERVICE_NAICS.some(p => naics.startsWith(p))) {
+    score += 20;
+    reasons.push({ label: 'Service contract', tip: 'Service contracts are easiest to subcontract — find a local business, get a quote, mark it up, submit. No manufacturing or complex equipment needed.' });
+  } else if (CONSTRUCTION_NAICS.some(p => naics.startsWith(p))) {
+    score += 10;
+    reasons.push({ label: 'Trades contract', tip: 'Construction/trades contract — subcontractors are easy to find but may require licensed contractors depending on the scope.' });
+  }
+
+  return { score: Math.min(score, 100), reasons };
+}
+
+/* ── Top 20 tab ──────────────────────────────────────────────────────────── */
+async function loadTop20() {
+  const container = document.getElementById('top20-container');
+  container.innerHTML = `
+    <div class="center-state">
+      <div class="spinner"></div>
+      <h2>Scoring Opportunities</h2>
+      <p>Fetching and ranking bids across all your NAICS codes…</p>
+    </div>`;
+
+  try {
+    const resp = await fetch('/api/opportunities?state=SOUTHEAST&days_back=30&limit=100&analyze=false');
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data = await resp.json();
+    const opps = data.opportunities || [];
+
+    if (!opps.length) {
+      container.innerHTML = `
+        <div class="center-state">
+          <div class="center-icon">🔍</div>
+          <h2>No Results</h2>
+          <p>Run a search first to populate the cache, then come back here.</p>
+        </div>`;
+      return;
+    }
+
+    const scored = opps
+      .map(opp => ({ opp, ...scoreBid(opp) }))
+      .filter(s => s.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 20);
+
+    renderTop20(scored);
+  } catch (err) {
+    container.innerHTML = `
+      <div class="center-state">
+        <div class="center-icon">⚠️</div>
+        <h2>Error</h2>
+        <p>${esc(err.message)}</p>
+      </div>`;
+  }
+}
+
+function typeChipTip(label) {
+  const tips = {
+    'RFQ':         'Request for Quote — under $350K, price only, no past performance required.',
+    'IFB':         'Invitation for Bid — sealed bid, lowest responsive price wins.',
+    'RFP':         'Request for Proposal — typically over $150K, may require past performance and a technical narrative.',
+    'Combined':    'Combined Synopsis/Solicitation — combines the presolicitation notice and solicitation in one posting.',
+    'Solicitation':'Standard solicitation — could be RFQ, RFP, or IFB. Check the attached documents.',
+    'Pre-Sol':     'Presolicitation — the government is signaling intent to bid but has not yet posted the formal solicitation.',
+    'Sources Sought': 'Market research only — not a real bid. The government is checking who can do the work before writing the solicitation.',
+    'Award':       'Contract already awarded — not biddable.',
+    'Modification':'Amendment to an existing contract — not a new bid opportunity.',
+  };
+  return tips[label] || 'Federal contract notice type.';
+}
+
+function renderTop20(scored) {
+  const container = document.getElementById('top20-container');
+
+  const header = `
+    <div style="margin-bottom:32px">
+      <div style="font-size:22px;font-weight:700;letter-spacing:-0.02em;margin-bottom:6px">Top 20 Bid Picks</div>
+      <div style="font-size:14px;color:var(--text-muted)">Ranked by bid win potential — notice type, deadline, set-aside, and contract type.</div>
+    </div>`;
+
+  const cards = scored.map(({ opp, score, reasons }, i) => {
+    const rank     = i + 1;
+    const title    = opp.title || 'Untitled';
+    const agency   = agencyName(opp);
+    const naicsLbl = opp.naics_label ? `${opp.naics_label} · ${opp.naicsCode}` : (opp.naicsCode || '');
+    const state    = opp.placeOfPerformance?.state?.code || '';
+    const days     = daysLeft(opp.responseDeadLine);
+    const daysStr  = days !== null ? (days < 0 ? 'Closed' : `${days}d left`) : 'No deadline';
+    const uiLink   = opp.uiLink || '#';
+    const noticeId = opp.noticeId || opp.opportunityId || '';
+    const typeInfo = noticeTypeLabel(opp);
+    const safeSet  = (opp.typeOfSetAsideDescription || '').replace(/\s*\(.*?\)\s*/g,'').trim();
+
+    if (noticeId) _oppMap[noticeId] = opp;
+
+    const scoreClass = score >= 70 ? 'high' : score >= 45 ? 'mid' : 'low';
+    const rankClass  = rank <= 3 ? 'top3' : '';
+    const reasonChips = reasons.map(r => `<span class="reason-chip" data-tip="${escAttr(r.tip)}">${esc(r.label)}</span>`).join('');
+
+    return `
+      <div class="top20-card">
+        <div class="top20-rank ${rankClass}">#${rank}</div>
+        <div class="score-badge" data-tip="Scoring: Notice type (25pts) + Deadline (20pts) + Set-aside (20pts) + Has documents (15pts) + Service contract (20pts)">
+          <div class="num ${scoreClass}">${score}</div>
+          <div class="lbl">Score</div>
+        </div>
+        <div class="top20-body">
+          <div class="top20-title">${esc(title)}</div>
+          <div class="top20-meta">${esc(agency)}${naicsLbl ? ' · ' + esc(naicsLbl) : ''}${state ? ' · ' + esc(state) : ''} · ${esc(daysStr)}${safeSet ? ' · <strong>' + esc(safeSet) + '</strong>' : ''}</div>
+          <div class="top20-reasons">
+            <span class="reason-chip" style="background:rgba(0,113,227,0.12)" data-tip="${escAttr(typeChipTip(typeInfo.label))}">${esc(typeInfo.label)}</span>
+            ${reasonChips}
+          </div>
+          <div class="top20-actions">
+            <a href="${escAttr(uiLink)}" target="_blank" rel="noopener"
+               class="btn btn-ghost" style="font-size:12px;padding:6px 12px"
+               data-tip="Open on SAM.gov">SAM.gov ↗</a>
+            <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px"
+              data-tip="Look up past pricing on USASpending.gov"
+              onclick="researchPricing('${escAttr(noticeId)}','${escAttr(opp.naicsCode||'')}','${escAttr(state)}',this)">Pricing</button>
+            <button class="btn btn-ghost track-btn" style="font-size:12px;padding:6px 12px"
+              data-tip="Add to Bid Pipeline"
+              onclick="trackBid(_oppMap['${escAttr(noticeId)}'])">Track</button>
+            <button class="btn-proposal" style="padding:8px 20px;border-radius:var(--radius-pill);font-size:13px;flex:0"
+              data-tip="Generate proposal with Claude"
+              onclick="openProposalModal('${escAttr(noticeId)}','${escAttr(title)}')">Proposal</button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+
+  container.innerHTML = header + cards;
+}
+
+/* ── USASpending pricing research ────────────────────────────────────────── */
+async function researchPricing(noticeId, naics, state, btn) {
+  const card = document.querySelector(`[data-notice-id="${CSS.escape(noticeId)}"]`);
+  let panel = card.querySelector('.pricing-panel');
+  if (panel) { panel.remove(); return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Loading…';
+
+  const params = new URLSearchParams({ limit: 8 });
+  if (state) params.set('state', state);
+
+  try {
+    const resp = await fetch(`/api/pricing/${encodeURIComponent(naics)}?${params}`);
+    const data = await resp.json();
+
+    panel = document.createElement('div');
+    panel.className = 'pricing-panel';
+
+    const s = data.summary || {};
+    const awards = (data.awards || []).filter(a => !a.error && a.amount > 0);
+
+    let html = `<div class="analysis-section-label">Past Pricing — NAICS ${esc(naics)}${state ? ' · ' + esc(state) : ''}</div>`;
+
+    if (s.ceiling) {
+      html += `<div class="pricing-rec">${esc(s.recommendation)}</div>`;
+      html += `<div style="margin-top:16px">`;
+      awards.slice(0, 5).forEach(a => {
+        html += `<div class="pricing-award-row">
+          <span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-right:12px">${esc(a.recipient)}</span>
+          <span style="color:var(--text-muted);font-size:12px;margin-right:12px">${esc(a.start_date?.slice(0,4) || '')}</span>
+          <span style="font-weight:600">$${Number(a.amount).toLocaleString()}</span>
+        </div>`;
+      });
+      html += `</div>`;
+    } else {
+      html += `<p style="font-size:13px;color:var(--text-muted)">No past pricing data found for this NAICS code${state ? ' in ' + state : ''}.</p>`;
+    }
+
+    // Pre-fill the proposal modal with the ceiling if available
+    if (s.ceiling) {
+      document.getElementById('pm-past-price').value = Math.round(s.ceiling);
+    }
+
+    panel.innerHTML = html;
+    const analysisPanel = card.querySelector('.analysis-panel');
+    if (analysisPanel) {
+      card.insertBefore(panel, analysisPanel);
+    } else {
+      card.appendChild(panel);
+    }
+  } catch (err) {
+    console.error(err);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Pricing';
+  }
+}
+
+/* ── Proposal modal ──────────────────────────────────────────────────────── */
+function openProposalModal(noticeId, title) {
+  _proposalNoticeId = noticeId;
+  document.getElementById('proposal-modal-sub').textContent = title || 'Enter pricing details to generate your proposal package.';
+  document.getElementById('proposal-form').style.display = '';
+  document.getElementById('proposal-output').style.display = 'none';
+  document.getElementById('pm-sub-name').value = '';
+  document.getElementById('pm-sub-quote').value = '';
+  document.getElementById('pm-our-bid').value = '';
+  document.getElementById('proposal-modal').style.display = 'flex';
+}
+
+function closeModal() {
+  document.getElementById('proposal-modal').style.display = 'none';
+  _proposalNoticeId = null;
+}
+
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('proposal-modal')) closeModal();
+}
+
+function resetModal() {
+  document.getElementById('proposal-form').style.display = '';
+  document.getElementById('proposal-output').style.display = 'none';
+}
+
+async function generateProposal() {
+  const subQuote  = parseFloat(document.getElementById('pm-sub-quote').value);
+  const ourBid    = parseFloat(document.getElementById('pm-our-bid').value);
+  const pastPrice = parseFloat(document.getElementById('pm-past-price').value) || null;
+  const subName   = document.getElementById('pm-sub-name').value.trim() || null;
+
+  if (!subQuote || !ourBid) {
+    alert('Sub quote and our bid price are required.');
+    return;
+  }
+  if (ourBid <= subQuote) {
+    alert('Your bid must be higher than the sub quote to generate profit.');
+    return;
+  }
+
+  const btn = document.getElementById('pm-generate-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner-sm"></span>&nbsp; Generating…';
+
+  try {
+    const resp = await fetch(`/api/opportunity/${encodeURIComponent(_proposalNoticeId)}/proposal`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sub_quote: subQuote, our_bid: ourBid, past_price_ceiling: pastPrice, sub_name: subName }),
+    });
+    if (!resp.ok) {
+      const body = await resp.json().catch(() => ({}));
+      throw new Error(body.detail || `HTTP ${resp.status}`);
+    }
+    const data = await resp.json();
+
+    document.getElementById('pt-proposal').textContent   = data.proposal_text || '';
+    document.getElementById('pt-script').textContent     = data.sub_outreach_script || '';
+    document.getElementById('pt-email').textContent      = data.sub_email_template || '';
+    document.getElementById('pt-rationale').textContent  = data.pricing_rationale || '';
+
+    document.getElementById('proposal-form').style.display   = 'none';
+    document.getElementById('proposal-output').style.display = '';
+  } catch (err) {
+    alert('Error generating proposal: ' + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = 'Generate Proposal';
+  }
+}
+
+function switchPTab(btn, targetId) {
+  document.querySelectorAll('.proposal-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  ['pt-proposal','pt-script','pt-email','pt-rationale'].forEach(id => {
+    document.getElementById(id).style.display = id === targetId ? '' : 'none';
+  });
+}
+
+function copyActive() {
+  const active = document.querySelector('.proposal-content:not([style*="display:none"])');
+  if (!active) return;
+  navigator.clipboard.writeText(active.textContent).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy to Clipboard', 2000);
+  });
+}
+
+/* ── Bid Pipeline ────────────────────────────────────────────────────────── */
+async function loadPipeline(filterStatus) {
+  document.querySelectorAll('#pipeline-filter-bar .qf-pill').forEach(p => {
+    p.classList.toggle('active', p.dataset.status === filterStatus);
+    p.style.background = p.dataset.status === filterStatus ? 'var(--accent)' : '';
+    p.style.color      = p.dataset.status === filterStatus ? '#fff' : '';
+    p.style.borderColor = p.dataset.status === filterStatus ? 'var(--accent)' : '';
+  });
+
+  const params = filterStatus ? `?status=${filterStatus}` : '';
+  try {
+    const resp = await fetch(`/api/bids${params}`);
+    const data = await resp.json();
+    renderPipeline(data.bids || [], data.summary || {});
+  } catch (err) {
+    document.getElementById('pipeline-bids').innerHTML = `<p style="color:var(--danger)">${esc(err.message)}</p>`;
+  }
+}
+
+function renderPipeline(bids, summary) {
+  const counts = summary.counts || {};
+
+  const totalWon = counts.won || 0;
+  const totalSubmitted = (counts.submitted||0) + (counts.won||0) + (counts.lost||0);
+  const hitRate = summary.hit_rate || '—';
+
+  document.getElementById('pipeline-summary').innerHTML = `
+    <div class="pipeline-summary-row">
+      <div class="pip-stat"><div class="num">${summary.total || 0}</div><div class="lbl">Total Bids</div></div>
+      <div class="pip-stat"><div class="num">${counts.submitted || 0}</div><div class="lbl">Submitted</div></div>
+      <div class="pip-stat"><div class="num">${totalWon}</div><div class="lbl">Won</div></div>
+      <div class="pip-stat"><div class="num">${hitRate}</div><div class="lbl">Hit Rate</div></div>
+    </div>`;
+
+  const container = document.getElementById('pipeline-bids');
+  if (!bids.length) {
+    container.innerHTML = `
+      <div class="center-state">
+        <div class="center-icon" style="font-size:40px;opacity:0.2">📋</div>
+        <h2>No Bids Yet</h2>
+        <p>Find an opportunity and click "Track" to add it to your pipeline.</p>
+      </div>`;
+    return;
+  }
+
+  const STATUSES = ['researching','sub_contacted','quoted','submitted','won','lost','skipped'];
+
+  container.innerHTML = bids.map(bid => {
+    const profit = bid.gross_profit ? `<div class="pipeline-num"><div class="lbl">Gross Profit</div><div class="val profit">$${Number(bid.gross_profit).toLocaleString()}</div></div>` : '';
+    const ourBid = bid.our_bid ? `<div class="pipeline-num"><div class="lbl">Our Bid</div><div class="val">$${Number(bid.our_bid).toLocaleString()}</div></div>` : '';
+    const subQ   = bid.sub_quote ? `<div class="pipeline-num"><div class="lbl">Sub Quote</div><div class="val">$${Number(bid.sub_quote).toLocaleString()}</div></div>` : '';
+    const opts   = STATUSES.map(s => `<option value="${s}" ${s === bid.status ? 'selected' : ''}>${s.replace('_',' ')}</option>`).join('');
+
+    return `
+      <div class="pipeline-card">
+        <div class="pipeline-card-body">
+          <div class="pipeline-card-title">${esc(bid.title || 'Untitled')}</div>
+          <div class="pipeline-card-meta">${esc(bid.agency || '')}${bid.naics_code ? ' · NAICS ' + esc(bid.naics_code) : ''}${bid.state ? ' · ' + esc(bid.state) : ''}</div>
+          <div class="pipeline-card-nums">
+            ${ourBid}${subQ}${profit}
+            ${bid.sub_name ? `<div class="pipeline-num"><div class="lbl">Subcontractor</div><div class="val">${esc(bid.sub_name)}</div></div>` : ''}
+          </div>
+          ${bid.notes ? `<div style="margin-top:10px;font-size:12px;color:var(--text-muted)">${esc(bid.notes)}</div>` : ''}
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end;flex-shrink:0">
+          <select class="status-select" onchange="updateBidStatus('${esc(bid.notice_id)}', this.value)">${opts}</select>
+          ${bid.sam_link ? `<a href="${esc(bid.sam_link)}" target="_blank" rel="noopener" class="btn btn-ghost" style="font-size:12px;padding:6px 14px">SAM.gov</a>` : ''}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+async function updateBidStatus(noticeId, status) {
+  await fetch(`/api/bids/${encodeURIComponent(noticeId)}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ status }),
+  });
+}
+
+async function trackBid(opp) {
+  const agency = (opp.fullParentPathName || '').split('>')[0].trim() || 'Unknown Agency';
+  await fetch('/api/bids', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      notice_id:  opp.noticeId || opp.opportunityId,
+      title:      opp.title || '',
+      agency:     agency,
+      naics_code: opp.naicsCode || '',
+      state:      opp.placeOfPerformance?.state?.code || '',
+      deadline:   opp.responseDeadLine || null,
+      sam_link:   opp.uiLink || null,
+    }),
+  });
+  // Visual feedback
+  const btn = document.querySelector(`[data-notice-id="${CSS.escape(opp.noticeId || opp.opportunityId)}"] .track-btn`);
+  if (btn) { btn.textContent = 'Tracked ✓'; btn.disabled = true; }
+}
+
+function renderEntityResults(results, q) {
+  const container = document.getElementById('entity-results');
+
+  if (!results.length) {
+    container.innerHTML = `
+      <div class="center-state">
+        <div class="center-icon">🔍</div>
+        <h2>No Entities Found</h2>
+        <p>No match for "${esc(q)}". Try a different UEI, CAGE code, or partial name.</p>
+      </div>`;
+    return;
+  }
+
+  const grid = document.createElement('div');
+  grid.className = 'cards-grid';
+
+  results.forEach((e, i) => {
+    const card = document.createElement('article');
+    card.className = 'card';
+    card.style.animationDelay = `${i * 0.04}s`;
+
+    const addr = [e.addr_line1, e.city, e.state, e.zip, e.country]
+      .filter(Boolean).join(', ');
+
+    const exclHtml = e.excluded
+      ? `<div class="excl-badge"><span class="dot"></span>Excluded from Federal Contracting</div>
+         ${e.exclusions.slice(0,3).map(x => `
+           <div class="excl-detail">
+             <strong>${esc(x.exclusion_type || 'Exclusion')}</strong>
+             ${x.excluding_agency ? ` · ${esc(x.excluding_agency)}` : ''}
+             ${x.exclusion_date   ? ` · From ${x.exclusion_date.slice(0,10)}` : ''}
+             ${x.termination_date ? ` · Until ${x.termination_date.slice(0,10)}` : ''}
+           </div>`).join('')}`
+      : `<div class="clear-badge"><span class="dot"></span>No Active Exclusions</div>`;
+
+    const regCls = (e.reg_status || '').toLowerCase().includes('active')
+      ? 'tag accent' : 'tag';
+
+    card.innerHTML = `
+      <div class="card-body">
+        <div class="card-tags">
+          ${e.reg_status ? `<span class="${regCls}">${esc(e.reg_status)}</span>` : ''}
+          ${e.entity_type ? `<span class="tag">${esc(e.entity_type)}</span>` : ''}
+        </div>
+        <h3 class="card-title">${esc(e.legal_name || '—')}</h3>
+        ${e.dba_name ? `<p class="card-agency">DBA: ${esc(e.dba_name)}</p>` : ''}
+        <div class="entity-card-meta">
+          ${e.uei       ? `<span>🔑 <strong>UEI</strong> ${esc(e.uei)}</span>` : ''}
+          ${e.cage_code ? `<span>🏷 <strong>CAGE</strong> ${esc(e.cage_code)}</span>` : ''}
+          ${e.expiry_date ? `<span>📅 Expires ${esc(e.expiry_date.slice(0,10))}</span>` : ''}
+        </div>
+        ${addr ? `<p class="card-naics">${esc(addr)}</p>` : ''}
+        ${exclHtml}
+      </div>`;
+
+    grid.appendChild(card);
+  });
+
+  container.innerHTML = `
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:24px">
+      ${results.length} result${results.length !== 1 ? 's' : ''} for "${esc(q)}"
+    </p>`;
+  container.appendChild(grid);
+}
+</script>
+</body>
+</html>
