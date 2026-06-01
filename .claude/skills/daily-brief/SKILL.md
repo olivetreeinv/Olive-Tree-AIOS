@@ -27,6 +27,7 @@ Runs a morning intelligence pull from Brian's connected systems. Surfaces the da
 | `connections.md` | Which tools are live vs. pending | Read |
 | `decisions/log.md` | Recent decisions (last 3 entries) | Read (if exists) |
 | `references/voice.md` | Brian's voice for draft output | Read |
+| `logs/auto-commit.log` | Last night's AIOS auto-commit status | Read (last line) |
 
 **GoHighLevel (CRM):** Not yet scripted. When `scripts/ghl_pipeline.py` exists and returns data, insert an LP Pipeline section automatically. Until then, skip silently — do not mention the gap in the brief output.
 
@@ -266,6 +267,12 @@ Print directly in chat. No preamble. Start with the date header.
 Deal under contract    ● {status}
 LP commitments ($400K) ● {status}
 Broker pipeline (3+)   ● {status}
+
+## AIOS Sync
+{last line from logs/auto-commit.log — e.g. "[2026-05-29 21:00] Committed: 3 files changed" or "No changes — skipped." If file missing: omit section.}
+
+## Standing Reminder
+● Look into mobile capability / control for AIOS
 
 ## #1 Action Today
 {one sentence}
