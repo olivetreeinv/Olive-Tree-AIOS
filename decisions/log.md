@@ -99,3 +99,23 @@ Keep it terse. Future-you will thank present-you for capturing the *why*, not ju
 **Owner:** Brian Norton
 
 ---
+
+## 2026-06-08 — Realigned deal acquisition thresholds to Multifamily Mentor criteria
+
+**Decision:** Changed the deal-analysis screening floors and unit policy after comparing our output to the "Multifamily Mentor AI" ChatGPT agent on a real Smyrna address:
+- DSCR: >1.20 → **≥1.25**
+- Cash-on-Cash (yr 3–4): ≥8% → **≥6%**
+- Property IRR floor: 15% → **≥16%**
+- Equity Multiple floor: 2.09x → **≥1.8x** (2.09x retained as the *target*, not the reject line)
+- LP IRR: added **≥14%** as a documented target (not yet enforced — needs the LP waterfall modeled)
+- Unit count: 15–50 still preferred, but **analysis floor lowered to 5+ doors** (warn 5–14, hard-fail below 5)
+
+Applied in `scripts/deal_analysis.py` (`THRESHOLDS` dict + score gate) and synced across `references/knowledge-base-metrics.md`, `references/knowledge-base.md`, and `references/buy-box.md`.
+
+**Why:** These are acquisition *screening floors* (minimum to stay alive), not goals. Brian's 18.21% ROI / 2.09x EM targets are unchanged. The looser CoC/EM floors keep marginal-but-workable deals in the funnel for a closer look rather than auto-rejecting them; the tighter DSCR/IRR floors reflect lender reality and a higher return bar. Validated on the Smyrna deal — even with looser floors it still correctly PASSED (75% rule + DSCR fails), so the screen kept its teeth.
+
+**Alternatives considered:** Keep the stricter 8% CoC / 2.09x EM as hard rejects. Rejected — too aggressive for a first-pass screen; better to flag-and-review than auto-kill.
+
+**Owner:** Brian Norton
+
+---

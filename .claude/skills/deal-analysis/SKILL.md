@@ -9,7 +9,7 @@ Reads available deal documents (OM, T-12, Rent Roll) — from email attachments,
 
 Designed to be called by `/lets-get-to-work` or run standalone when Brian sends a deal for evaluation.
 
-**Output:** `PURSUE LOI` / `MORE INFO NEEDED` / `PASS` — with every number shown.
+**Output:** `PURSUE LOI` / `MORE INFO NEEDED` / `PASS` — agent-style format: Quick Verdict traffic lights → financials → letter-grade Scorecard → Callouts → Photos. Every number shown.
 
 ---
 
@@ -184,15 +184,18 @@ IRR ≈ Estimate from equity multiple over 5-year hold:
 
 ### Step 5: Compare against thresholds
 
-| Metric | Threshold | Source |
+| Metric | Screening floor | Source |
 |---|---|---|
-| Cash-on-cash return | 8%+ by Year 3–4 | knowledge-base-metrics.md |
-| Project IRR | 15–20%+ | knowledge-base-metrics.md |
-| Equity Multiple | 2.09x+ | buy-box.md |
-| 75% Rule | All-in ≤ 75% stabilized value | knowledge-base-metrics.md |
+| Cash-on-cash return | ≥6% by Year 3–4 | knowledge-base-metrics.md |
+| Property IRR | ≥16% | knowledge-base-metrics.md |
+| Equity Multiple | ≥1.8x (target 2.09x) | knowledge-base-metrics.md |
+| DSCR | ≥1.25 | knowledge-base-metrics.md |
+| 75% Rule | All-in < 75% stabilized value | knowledge-base-metrics.md |
 | 1% Rule | Monthly rent > 1% price/unit | knowledge-base-metrics.md |
-| DSCR | > 1.20 | knowledge-base-metrics.md |
-| Price/unit | Within market range in buy-box.md | buy-box.md |
+| Unit count | 5+ to analyze (15–50 preferred) | buy-box.md |
+| Price/unit | Within market range | buy-box.md |
+
+*Floors are the auto-reject line, not the goal — targets stay higher (18.21% ROI, 2.09x EM). LP IRR ≥14% is a tracked target, not yet computed (needs the LP waterfall).*
 
 **Recommendation logic:**
 - All thresholds pass → **PURSUE LOI**
@@ -207,6 +210,9 @@ IRR ≈ Estimate from equity multiple over 5-year hold:
 **Asking:** $[price] | **Units:** [n] | **Price/Unit:** $[n] | **Vintage:** [year]
 **Docs:** T-12 [✅/❌] | Rent Roll [✅/❌] | OM [✅/❌]
 
+### Quick Verdict
+🟢/🟡/🔴 Basis · 🟢/🟡/🔴 Returns · 🟢/🟡/🔴 This Deal
+
 ---
 ### Financials
 
@@ -215,14 +221,30 @@ IRR ≈ Estimate from equity multiple over 5-year hold:
 | NOI | $[n] | $[n] | — | — |
 | Entry Cap | [n]% | — | — | — |
 | Exit Cap (est.) | — | [n]% | — | — |
-| DSCR | [n] | — | > 1.20 | ✅/❌ |
+| DSCR | [n] | — | ≥ 1.25 | ✅/❌ |
 | Cash-on-Cash (Yr 1) | [n]% | — | — | — |
-| Cash-on-Cash (Yr 3) | — | [n]% | 8%+ | ✅/❌ |
-| IRR (est., 5yr) | — | [n]% | 15–20%+ | ✅/❌ |
-| Equity Multiple | — | [n]x | 2.09x | ✅/❌ |
+| Cash-on-Cash (Yr 3) | — | [n]% | ≥ 6% | ✅/❌ |
+| IRR (est.) | — | [n]% | ≥ 16% | ✅/❌ |
+| Equity Multiple | — | [n]x | ≥ 1.8x | ✅/❌ |
 | 75% Rule | [all-in $n] | $[stabilized] | < 75% | ✅/❌ |
 | 1% Rule | $[rent/unit] | — | > 1% of PPU | ✅/❌ |
 | Price/Unit | $[n] | — | $[range] for [mkt] | ✅/❌ |
+
+### Scorecard
+| Category | Grade | Note |
+|---|---|---|
+| Deal Economics | A–F | IRR / EM |
+| Basis (PPU) | A–F | $/unit vs band |
+| Leverage / DSCR | A–F | DSCR |
+| Value-Add Upside | A–F | rent lift current→proforma |
+| Physical Risk | A–F | vintage |
+| **OVERALL** | — | PURSUE / CONDITIONAL / PASS |
+
+### Callouts
+- [Auto-flagged: pre-1980 vintage, sub-15 units, DSCR below floor, 75% rule, rent upside, basis above band]
+
+### Photos
+📸 Property (Google Maps link) · 🗺️ Area · 🏙️ Community — free Wikipedia images via `scripts/deal_photos.py`
 
 ### Value-Add Story
 [Summary: rent gap vs. market, deferred maintenance scope, expected rent bumps post-reno, timeline to stabilization]
@@ -314,3 +336,5 @@ This skill returns:
 - **Always log.** Even a clear Pass gets logged — it's useful for broker relationship tracking.
 - **Flag low-confidence assumptions.** If you're estimating expenses or market rents without docs, say so clearly.
 - **Deal Analyzer is authoritative.** Once docs are available, populate the Excel model. The manual calculations in Step 4 are for speed — Brian uses the full model for final decisions.
+- **Photos auto-resolve.** `deal_analysis.py` calls `scripts/deal_photos.py` for the 3-photo block (area + community = free Wikipedia images, property = Google Maps link). No API key. Listing portals (apartments.com/Crexi) 403 our sandbox, so we don't scrape them.
+- **Floors vs. grades.** Pass/fail thresholds are KB-sourced; the Scorecard's A–F grade *scales* are code defaults, not yet KB-grounded (tracked follow-up).

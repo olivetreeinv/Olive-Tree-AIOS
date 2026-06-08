@@ -7,14 +7,15 @@
 
 ## Quick Reference — Key Numbers
 
-**Deal thresholds (hard filters):**
-- Cash-on-cash: ≥8% by year 3–4 | IRR: 15–20%+ | DSCR: >1.20
+**Deal thresholds (acquisition screening floors — minimums, not targets):**
+- Cash-on-cash: ≥6% by year 3–4 | Property IRR: ≥16% | DSCR: ≥1.25 | Equity multiple: ≥1.8x | LP IRR: ≥14%
+- *Targets remain higher: 18.21% ROI, 2.09x EM. Floors are the auto-reject line.*
 - 75% Rule: all-in cost < 75% of stabilized value
 - 10x NOI Rule: purchase price ≤ 10× NOI
 
 **Deal structure (standard):** 6% pref → 70/30 LP/GP. Target: 18.21% annual ROI, 2.09× equity multiple.
 
-**Buy box:** 15–50 units, $1M–$3M, value-add only. Active markets → `references/buy-box.md`.
+**Buy box:** 15–50 units preferred (analysis floor 5+), $1M–$3M. Active markets → `references/buy-box.md`.
 
 **Stage 4 cadence:** Underwrite 3–5 deals/week → submit 1–3 LOIs/week. Funnel: 150 reviewed → 15 deep-dives → 5 LOIs → 1 deal.
 
@@ -38,12 +39,14 @@
 ### Deal-level filters:
 | Metric | Threshold | Notes |
 |---|---|---|
-| Cash-on-cash return | 8%+ by year 3–4 | After reno complete and stabilized |
-| Project IRR | 15–20%+ | 5-year hold |
+| Cash-on-cash return | ≥6% by year 3–4 | Screening floor (after reno + stabilized); target higher |
+| Property IRR | ≥16% | Levered, 5–6 yr hold |
+| Equity multiple | ≥1.8x | Screening floor; target 2.09x |
+| LP IRR | ≥14% | Needs LP waterfall (6% pref → 70/30) — not yet modeled |
 | 75% Rule | All-in cost < 75% of stabilized value | Hard filter |
 | 1% Rule | Avg monthly rent/unit > 1% of purchase price/unit | Quick sanity check |
 | 10x NOI Rule | Purchase price ≤ 10x NOI | Implies ≥10% cap rate on purchase |
-| DSCR | > 1.20 | Debt service coverage ratio |
+| DSCR | ≥1.25 | Debt service coverage ratio |
 
 **20:1 NOI ratio:** For every $1 in NOI = $20 in value (assumes 5% cap rate). Use to estimate value.
 

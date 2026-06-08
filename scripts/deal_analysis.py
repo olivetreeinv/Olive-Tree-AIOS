@@ -71,13 +71,18 @@ BUY_BOX = {
     "35806": {"market": "Huntsville Growth, AL",  "ppu_min": 0,      "ppu_max": 999999},
 }
 
-# Hard thresholds
+# Hard thresholds — acquisition screening floors (Multifamily Mentor criteria).
+# These are the minimums to stay alive, NOT the goal. Targets remain higher:
+# 18.21% annual ROI, 2.09x equity multiple (see references/knowledge-base-metrics.md).
 THRESHOLDS = {
-    "coc_yr3":        0.08,   # 8%+ by year 3-4
-    "irr":            0.15,   # 15%+
-    "equity_multiple": 2.09,
-    "dscr":           1.20,
+    "coc_yr3":        0.06,   # ≥6% cash-on-cash by year 3-4
+    "irr":            0.16,   # ≥16% property (levered) IRR
+    "equity_multiple": 1.80,  # ≥1.8x floor (target 2.09x)
+    "dscr":           1.25,   # ≥1.25
     "rule_75_pct":    0.75,   # all-in ≤ 75% of stabilized value
+    "min_units":      5,      # analyze 5+ doors; 15-50 is buy-box preference
+    # LP IRR ≥14% is a target but not yet computed — needs the LP waterfall
+    # (6% pref → 70/30 split). Tracked as a follow-up, not enforced here.
 }
 
 # T-12 parsing keywords — shared by openpyxl and pandas parsers
@@ -340,6 +345,8 @@ def calculate_metrics(args):
         "rule_10x_noi":      rule_10x_noi,
         "rule_10x_pass":     rule_10x_pass,
         "ppu_in_range":      ppu_in_range,
+        "yr1_gpr":           yr1_gpr,
+        "yr2_gpr":           yr2_gpr,
     }
 
 
@@ -364,6 +371,16 @@ def score_deal(metrics, zip_str):
 
     if zip_str and zip_str not in BUY_BOX:
         fails.append(f"ZIP {zip_str} is outside the active buy box")
+
+    units = metrics.get("units")
+    sub15_note = None
+    if units is not None:
+        if units < THRESHOLDS["min_units"]:
+            fails.append(f"Unit count {units} below analysis floor of {THRESHOLDS['min_units']}")
+        elif units < 15:
+            # Informational only — Brian analyzes 5–14 too. Must NOT skew the
+            # recommendation, so it's appended after the verdict is computed.
+            sub15_note = f"Unit count {units} below 15–50 buy-box preference (OK to analyze)"
 
     chk("DSCR",            metrics["dscr"],            THRESHOLDS["dscr"])
     chk("Cash-on-Cash Yr3", metrics["coc_yr3"],        THRESHOLDS["coc_yr3"])
@@ -397,6 +414,10 @@ def score_deal(metrics, zip_str):
     else:
         rec = "PASS"
 
+    # Display-only note, added after scoring so it can't tip the verdict.
+    if sub15_note:
+        warnings.append(sub15_note)
+
     return rec, passes, fails, warnings
 
 
@@ -409,6 +430,128 @@ def fmt_num(v, prefix="$"):
     if isinstance(v, float) and v < 100:
         return f"{v:.2f}x"
     return f"{prefix}{v:,.0f}"
+
+
+# ─────────────────────────────────────────────
+# Agent-style scorecard, callouts, quick verdict
+# ─────────────────────────────────────────────
+
+def _light(grade):
+    """Letter grade → traffic light. None/unknown → white."""
+    return {"A": "🟢", "B": "🟢", "C": "🟡", "D": "🔴", "F": "🔴"}.get(grade, "⚪")
+
+
+def _grade_economics(irr):
+    if irr is None:
+        return None
+    return "A" if irr >= 0.20 else "B" if irr >= 0.16 else "C" if irr >= 0.12 else "D" if irr >= 0.08 else "F"
+
+
+def _grade_dscr(d):
+    if d is None:
+        return None
+    return "A" if d >= 1.40 else "B" if d >= 1.25 else "C" if d >= 1.15 else "D" if d >= 1.00 else "F"
+
+
+def _grade_basis(ppu, bb):
+    """Grade price/unit against the market's buy-box band. Open band → N/A."""
+    if ppu is None:
+        return None, "—"
+    if not bb or bb.get("ppu_min", 0) == 0:
+        return None, f"${ppu:,.0f}/unit"
+    lo, hi = bb["ppu_min"], bb["ppu_max"]
+    note = f"${ppu:,.0f}/unit (band ${lo/1000:.0f}–{hi/1000:.0f}K)"
+    if ppu <= lo:
+        return "A", note
+    if ppu <= (lo + hi) / 2:
+        return "B", note
+    if ppu <= hi:
+        return "C", note
+    return ("D" if ppu <= hi * 1.2 else "F"), note
+
+
+def _grade_value_add(metrics):
+    """Grade rent upside = proforma vs current GPR."""
+    cur, pro = metrics.get("yr1_gpr"), metrics.get("yr2_gpr")
+    if not cur or not pro or pro <= cur:
+        return None, "—"
+    gap = (pro - cur) / cur
+    note = f"+{gap:.0%} rent lift (current→proforma)"
+    return ("A" if gap >= 0.25 else "B" if gap >= 0.15 else "C" if gap >= 0.08 else "D"), note
+
+
+def _grade_physical(vintage):
+    try:
+        v = int(vintage) if vintage else None
+    except (TypeError, ValueError):
+        v = None
+    if not v:
+        return None, "vintage unknown"
+    note = f"built {v}"
+    return ("A" if v >= 2000 else "B" if v >= 1990 else "C" if v >= 1980 else "D" if v >= 1970 else "F"), note
+
+
+def build_scorecard(metrics, args):
+    """Category letter grades from available metrics. None grade renders as N/A."""
+    irr, em = metrics.get("irr_estimate"), metrics.get("equity_multiple")
+    econ_note = f"IRR {fmt_pct(irr)}, EM {em:.2f}x" if em else fmt_pct(irr)
+    bb = BUY_BOX.get(str(getattr(args, "zip", "") or ""))
+    bg, bnote = _grade_basis(metrics.get("ppu"), bb)
+    vg, vnote = _grade_value_add(metrics)
+    pg, pnote = _grade_physical(getattr(args, "vintage", None))
+    return [
+        ("Deal Economics",  _grade_economics(irr),       econ_note),
+        ("Basis (PPU)",     bg,                          bnote),
+        ("Leverage / DSCR", _grade_dscr(metrics.get("dscr")), fmt_num(metrics.get("dscr"), "")),
+        ("Value-Add Upside", vg,                         vnote),
+        ("Physical Risk",   pg,                          pnote),
+    ]
+
+
+def build_callouts(metrics, args):
+    """The handful of things a coach would flag out loud. Empty if nothing notable."""
+    outs = []
+    try:
+        v = int(getattr(args, "vintage", None)) if getattr(args, "vintage", None) else None
+    except (TypeError, ValueError):
+        v = None
+    if v and v < 1980:
+        outs.append(f"Pre-1980 vintage ({v}) → sewer scope, electrical panel, roof age BEFORE any LOI")
+    units = metrics.get("units")
+    if units and units < 15:
+        outs.append(f"{units} units — below 15–50 preference; every vacancy swings occupancy hard")
+    d = metrics.get("dscr")
+    if d is not None and d < THRESHOLDS["dscr"]:
+        outs.append(f"DSCR {d:.2f} below {THRESHOLDS['dscr']:.2f} — lender will cap leverage")
+    if metrics.get("rule_75_pass") is False and metrics.get("rule_75_ratio"):
+        outs.append(f"All-in {metrics['rule_75_ratio']:.0%} of stabilized value — thin vs the 75% rule")
+    cur, pro = metrics.get("yr1_gpr"), metrics.get("yr2_gpr")
+    if cur and pro and pro > cur * 1.12:
+        outs.append(f"Rent upside ~{(pro-cur)/cur:.0%} current→proforma — the value-add thesis")
+    bb = BUY_BOX.get(str(getattr(args, "zip", "") or ""))
+    ppu = metrics.get("ppu")
+    if bb and bb.get("ppu_min", 0) > 0 and ppu and ppu > bb["ppu_max"]:
+        outs.append(f"Basis ${ppu:,.0f}/unit above the buy-box ceiling ${bb['ppu_max']:,.0f}")
+    return outs
+
+
+def quick_verdict(metrics, rec, args):
+    """Three traffic-light lines: Basis, Returns, This Deal."""
+    pairs = (("dscr", "dscr"), ("coc_yr3", "coc_yr3"),
+             ("irr_estimate", "irr"), ("equity_multiple", "equity_multiple"))
+    fails = sum(1 for mk, tk in pairs
+                if metrics.get(mk) is not None and metrics[mk] < THRESHOLDS[tk])
+    ret_light = "🟢" if fails == 0 else "🟡" if fails <= 2 else "🔴"
+    ret_text = "all return floors clear" if fails == 0 else f"{fails} of 4 return floors missed"
+    bb = BUY_BOX.get(str(getattr(args, "zip", "") or ""))
+    bg, bnote = _grade_basis(metrics.get("ppu"), bb)
+    overall = {"PURSUE_LOI": ("🟢", "GO"), "MORE_INFO": ("🟡", "CONDITIONAL GO"),
+               "PASS": ("🔴", "PASS")}[rec]
+    return [
+        (_light(bg),  "Basis",     bnote),
+        (ret_light,   "Returns",   ret_text),
+        (overall[0],  "This Deal", overall[1]),
+    ]
 
 
 def print_analysis(args, metrics, rec, passes, fails, warnings):
@@ -432,6 +575,11 @@ def print_analysis(args, metrics, rec, passes, fails, warnings):
         print(f"  Repair   : ${metrics['repair']:,.0f}  |  All-in: ${metrics['all_in']:,.0f}")
     print()
 
+    print("  QUICK VERDICT")
+    for emoji, label, text in quick_verdict(metrics, rec, args):
+        print(f"  {emoji} {label:<10} {text}")
+    print()
+
     print("  FINANCIALS")
     print(f"  {'Metric':<22} {'Current':>12} {'Stabilized':>12} {'Threshold':>12} {'Status':>8}")
     print(f"  {'-'*22} {'-'*12} {'-'*12} {'-'*12} {'-'*8}")
@@ -446,19 +594,19 @@ def print_analysis(args, metrics, rec, passes, fails, warnings):
     row("Exit Cap (est.)",
         "—", f"{metrics['exit_cap']:.2f}%" if metrics["exit_cap"] else "N/A", "—", "—")
     row("DSCR",
-        fmt_num(metrics["dscr"], ""), "—", "> 1.20",
-        "✅" if metrics["dscr"] and metrics["dscr"] >= 1.20 else "❌" if metrics["dscr"] else "—")
+        fmt_num(metrics["dscr"], ""), "—", f"≥ {THRESHOLDS['dscr']:.2f}",
+        "✅" if metrics["dscr"] and metrics["dscr"] >= THRESHOLDS["dscr"] else "❌" if metrics["dscr"] else "—")
     row("Cash-on-Cash Yr1",
         fmt_pct(metrics["coc_yr1"]), "—", "—", "—")
     row("Cash-on-Cash Yr3",
-        "—", fmt_pct(metrics["coc_yr3"]), "≥ 8.0%",
-        "✅" if metrics["coc_yr3"] and metrics["coc_yr3"] >= 0.08 else "❌" if metrics["coc_yr3"] else "—")
+        "—", fmt_pct(metrics["coc_yr3"]), f"≥ {THRESHOLDS['coc_yr3']:.1%}",
+        "✅" if metrics["coc_yr3"] and metrics["coc_yr3"] >= THRESHOLDS["coc_yr3"] else "❌" if metrics["coc_yr3"] else "—")
     row("IRR (est.)",
-        "—", fmt_pct(metrics["irr_estimate"]), "≥ 15.0%",
-        "✅" if metrics["irr_estimate"] and metrics["irr_estimate"] >= 0.15 else "❌" if metrics["irr_estimate"] else "—")
+        "—", fmt_pct(metrics["irr_estimate"]), f"≥ {THRESHOLDS['irr']:.1%}",
+        "✅" if metrics["irr_estimate"] and metrics["irr_estimate"] >= THRESHOLDS["irr"] else "❌" if metrics["irr_estimate"] else "—")
     row("Equity Multiple",
-        "—", fmt_num(metrics["equity_multiple"], ""), "≥ 2.09x",
-        "✅" if metrics["equity_multiple"] and metrics["equity_multiple"] >= 2.09 else "❌" if metrics["equity_multiple"] else "—")
+        "—", fmt_num(metrics["equity_multiple"], ""), f"≥ {THRESHOLDS['equity_multiple']:.2f}x",
+        "✅" if metrics["equity_multiple"] and metrics["equity_multiple"] >= THRESHOLDS["equity_multiple"] else "❌" if metrics["equity_multiple"] else "—")
     row("75% Rule",
         "—", f"{metrics['rule_75_ratio']:.1%}" if metrics["rule_75_ratio"] else "N/A",
         "< 75.0%",
@@ -516,6 +664,38 @@ def print_analysis(args, metrics, rec, passes, fails, warnings):
         print("  WARNINGS / MISSING DATA:")
         for w in warnings:
             print(f"    ⚠️  {w}")
+
+    # ── Scorecard (agent-style category grades) ──
+    print()
+    print("  SCORECARD")
+    for cat, grade, note in build_scorecard(metrics, args):
+        print(f"  {cat:<18} {(grade or 'N/A'):<3} {note}")
+    overall = {"PURSUE_LOI": "GO", "MORE_INFO": "CONDITIONAL GO", "PASS": "PASS"}[rec]
+    print(f"  {'─'*46}")
+    print(f"  {'OVERALL':<18} {rec_emoji}  {overall}")
+
+    # ── Callouts ──
+    callouts = build_callouts(metrics, args)
+    if callouts:
+        print()
+        print("  ⚠️  CALLOUTS")
+        for c in callouts:
+            print(f"    • {c}")
+
+    # ── Photos (best-effort; a network hiccup must never break the analysis) ──
+    try:
+        from deal_photos import resolve_photos
+        labels = {"property": "📸 Property", "area": "🗺️ Area", "community": "🏙️ Community"}
+        photos = resolve_photos(addr or prop or "", zip_s)
+        print()
+        print("  PHOTOS")
+        for k in ("property", "area", "community"):
+            p = photos.get(k)
+            if p:
+                tag = "  (embeds as image)" if p["kind"] == "image" else ""
+                print(f"    {labels[k]:<13}: {p['url']}{tag}")
+    except Exception:
+        pass
 
     print()
     print(f"  {'─'*56}")
