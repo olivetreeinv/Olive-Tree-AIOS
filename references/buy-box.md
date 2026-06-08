@@ -29,7 +29,7 @@ These apply regardless of market. A deal that misses any of these is a pass befo
 
 | Criterion | Requirement |
 |---|---|
-| **Unit count** | 15–50 units |
+| **Unit count** | 15–50 preferred · analysis floor 5+ |
 | **Purchase price** | $1M–$3M |
 | **Property type** | Multifamily (apartment buildings, townhome-style communities) |
 | **Strategy** | Value-add or stabilized with operational upside — not fully priced stabilized assets |
