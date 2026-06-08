@@ -12,16 +12,14 @@ Usage:
 
 import argparse
 import base64
-import json
 import re
-import subprocess
-import sys
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date, datetime, timedelta
 
 import requests
 from bs4 import BeautifulSoup
+from gws_auth import get_token
 
 # ─────────────────────────────────────────────
 # Config
@@ -70,21 +68,6 @@ EMAIL_QUERIES = {
 # Auth
 # ─────────────────────────────────────────────
 
-def get_token():
-    result = subprocess.run(
-        ["gws", "auth", "export", "--unmasked"],
-        capture_output=True, text=True, check=True
-    )
-    creds = json.loads(result.stdout)
-    resp = requests.post("https://oauth2.googleapis.com/token", data={
-        "client_id":     creds["client_id"],
-        "client_secret": creds["client_secret"],
-        "refresh_token": creds["refresh_token"],
-        "grant_type":    "refresh_token",
-    })
-    resp.raise_for_status()
-    return resp.json()["access_token"]
-
 def auth(token):
     return {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
 
@@ -97,7 +80,8 @@ def search_messages(token, query, days=7):
     full_query = f"{query} after:{after}"
     r = requests.get(f"{GMAIL_BASE}/messages",
                      headers=auth(token),
-                     params={"q": full_query, "maxResults": 100})
+                     params={"q": full_query, "maxResults": 100},
+                     timeout=30)
     r.raise_for_status()
     return r.json().get("messages", [])
 
@@ -105,7 +89,8 @@ def search_messages(token, query, days=7):
 def get_message(token, msg_id):
     r = requests.get(f"{GMAIL_BASE}/messages/{msg_id}",
                      headers=auth(token),
-                     params={"format": "full"})
+                     params={"format": "full"},
+                     timeout=30)
     r.raise_for_status()
     return r.json()
 
@@ -165,25 +150,20 @@ def find_listing_url(text, source):
 
 
 def check_availability(url, timeout=8):
-    """
-    Returns: 'available', 'unavailable', or 'unverified'.
-    HEAD first for speed; GET first 5000 bytes to check sold signals if HEAD is 200.
-    """
+    """Returns: 'available', 'unavailable', or 'unverified'."""
     if not url:
         return "unverified"
     try:
-        r = requests.head(url, headers=AVAILABILITY_HEADERS, timeout=timeout, allow_redirects=True)
-        if r.status_code == 404:
-            return "unavailable"
-        if r.status_code not in (200, 301, 302, 303):
-            return "unverified"
-        # Read first 5000 bytes for sold signals
-        r2 = requests.get(url, headers=AVAILABILITY_HEADERS, timeout=timeout, stream=True)
-        content = b""
-        for chunk in r2.iter_content(chunk_size=1024):
-            content += chunk
-            if len(content) >= 5000:
-                break
+        with requests.get(url, headers=AVAILABILITY_HEADERS, timeout=timeout, stream=True) as r:
+            if r.status_code == 404:
+                return "unavailable"
+            if r.status_code not in (200, 301, 302, 303):
+                return "unverified"
+            content = bytearray()
+            for chunk in r.iter_content(chunk_size=1024):
+                content += chunk
+                if len(content) >= 5000:
+                    break
         text_lower = content.decode("utf-8", errors="replace").lower()
         if any(sig in text_lower for sig in SOLD_SIGNALS):
             return "unavailable"
@@ -371,18 +351,23 @@ def read_sheet(token, sheet_name, range_="A1:Z500"):
     r = requests.get(
         f"{SHEETS_BASE}/{SPREADSHEET_ID}/values/{sheet_name}!{range_}",
         headers=auth(token),
+        timeout=30,
     )
     r.raise_for_status()
     return r.json().get("values", [])
 
 
-def append_row(token, sheet_name, row):
-    body = {"values": [row], "majorDimension": "ROWS"}
+def append_rows(token, sheet_name, rows):
+    """Append one or more rows to a sheet in a single API call."""
+    if not rows:
+        return
+    body = {"values": rows, "majorDimension": "ROWS"}
     r = requests.post(
         f"{SHEETS_BASE}/{SPREADSHEET_ID}/values/{sheet_name}!A1:append",
         headers=auth(token),
         params={"valueInputOption": "USER_ENTERED", "insertDataOption": "INSERT_ROWS"},
         json=body,
+        timeout=30,
     )
     r.raise_for_status()
 
@@ -428,7 +413,7 @@ def is_duplicate_broker(broker_email, broker_name, existing_emails, existing_nam
 # Logging to sheets
 # ─────────────────────────────────────────────
 
-def log_deal(token, listing, dry_run=False):
+def build_deal_row(listing):
     units_str = str(listing["units"]) if listing["units"] else ""
     price_str = listing["price"]
     price_per_unit = ""
@@ -436,7 +421,7 @@ def log_deal(token, listing, dry_run=False):
         try:
             raw = int(listing["price"].replace("$","").replace(",",""))
             price_per_unit = f"${raw // listing['units']:,}"
-        except:
+        except (ValueError, TypeError, ZeroDivisionError):
             pass
 
     # Notes: flag buy box, unit range, and availability
@@ -475,14 +460,11 @@ def log_deal(token, listing, dry_run=False):
         TODAY,                                  # Last Updated
         notes_str,                              # Notes
     ]
-
-    if not dry_run:
-        append_row(token, "Deal Sourcing", row)
     return row
 
 
-def log_broker(token, broker_name, broker_email, broker_phone, brokerage,
-               markets, listing_count, dry_run=False):
+def build_broker_row(broker_name, broker_email, broker_phone, brokerage,
+                     markets, listing_count):
     row = [
         brokerage,                        # Brokerage
         broker_name,                      # Broker Name
@@ -498,8 +480,6 @@ def log_broker(token, broker_name, broker_email, broker_phone, brokerage,
         "New — Found via Alert",          # Status
         f"Auto-added: {listing_count} listings found via {brokerage or 'email alert'}",
     ]
-    if not dry_run:
-        append_row(token, "Brokers List", row)
     return row
 
 # ─────────────────────────────────────────────
@@ -525,14 +505,16 @@ def run(days=7, dry_run=False):
         messages = search_messages(token, query, days=days)
         print(f"{source.upper()}: {len(messages)} alert email(s) found")
 
-        for msg_meta in messages:
+        def fetch_and_parse(msg_meta, _source=source):
             msg = get_message(token, msg_meta["id"])
             plain, html = extract_body(msg)
             text = html_to_text(html) if html else plain
+            return _source, msg_meta["id"], parse_listing_from_email(text, _source)
 
-            listings = parse_listing_from_email(text, source)
-            print(f"  → Parsed {len(listings)} listing(s) from message {msg_meta['id'][:8]}...")
-            all_listings.extend(listings)
+        with ThreadPoolExecutor(max_workers=5) as executor:
+            for _source, msg_id, listings in executor.map(fetch_and_parse, messages):
+                print(f"  → Parsed {len(listings)} listing(s) from message {msg_id[:8]}...")
+                all_listings.extend(listings)
 
     if not all_listings:
         print("\nNo listings parsed from emails.")
@@ -579,19 +561,21 @@ def run(days=7, dry_run=False):
     print(f"NEW DEALS — OUT OF BUY BOX: {len(outbox_deals)} (will be logged as Pass)")
     print(f"SKIPPED (duplicates):        {len(skipped)}")
 
-    # Log all new deals
-    logged_deals = 0
+    # Collect all new deal rows, then append in a single batched call
+    deal_rows = []
     for listing in new_deals:
-        row = log_deal(token, listing, dry_run=dry_run)
-        logged_deals += 1
+        deal_rows.append(build_deal_row(listing))
         flag = "✅" if listing["in_buy_box"] else "⚠️ "
         print(f"  {flag} Deal: {listing['property_name'] or listing['address']} "
               f"({listing['zip']}) — {listing['units'] or '?'} units — {listing['price']}")
+    if not dry_run:
+        append_rows(token, "Deal Sourcing", deal_rows)
+    logged_deals = len(deal_rows)
 
     # Evaluate brokers — only add if 2+ listings AND not already in sheet
     print(f"\n{'='*50}")
     print(f"BROKER EVALUATION (threshold: {MIN_BROKER_LISTINGS}+ listings)")
-    new_brokers = 0
+    broker_rows = []
     for key, listings in broker_listings.items():
         # Get broker info from the first listing with a non-empty email/name
         sample = listings[0]
@@ -612,10 +596,12 @@ def run(days=7, dry_run=False):
             print(f"  ↩️  {b_name or b_email} — already in Brokers List. Skipped.")
             continue
 
-        row = log_broker(token, b_name, b_email, b_phone, brokerage,
-                         markets, count, dry_run=dry_run)
-        new_brokers += 1
+        broker_rows.append(build_broker_row(b_name, b_email, b_phone, brokerage,
+                                            markets, count))
         print(f"  ✅ Added broker: {b_name or b_email} ({brokerage}) — {count} listings in {', '.join(sorted(markets))}")
+    if not dry_run:
+        append_rows(token, "Brokers List", broker_rows)
+    new_brokers = len(broker_rows)
 
     print(f"\n{'='*50}")
     if dry_run:

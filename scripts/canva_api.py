@@ -53,25 +53,49 @@ def _headers():
 
 
 def _update_env(key: str, value: str):
-    """Update a single key in .env without touching other lines."""
+    """Update a single key in .env without touching other lines (atomic write)."""
+    value = value.replace("\n", "").replace("\r", "")  # guard against stray newlines
     content = ENV_FILE.read_text()
     pattern = rf"^{re.escape(key)}=.*$"
     replacement = f"{key}={value}"
     if re.search(pattern, content, flags=re.MULTILINE):
-        content = re.sub(pattern, replacement, content, flags=re.MULTILINE)
+        # re.sub treats backslashes in the replacement specially — pass a function
+        content = re.sub(pattern, lambda _m: replacement, content, flags=re.MULTILINE)
     else:
         content = content.rstrip("\n") + f"\n{replacement}\n"
-    ENV_FILE.write_text(content)
+    # Write to a temp file in the same dir, then atomically replace
+    tmp = ENV_FILE.with_suffix(ENV_FILE.suffix + ".tmp")
+    tmp.write_text(content)
+    os.replace(tmp, ENV_FILE)
+
+
+# ── Request helpers with auto-refresh ─────────────────────────────────────────
+
+def _get(path, **kwargs):
+    kwargs.setdefault("timeout", 30)
+    r = requests.get(f"{BASE_URL}{path}", headers=_headers(), **kwargs)
+    if r.status_code == 401:
+        refresh_token()
+        r = requests.get(f"{BASE_URL}{path}", headers=_headers(), **kwargs)
+    return r
+
+
+def _post(path, **kwargs):
+    kwargs.setdefault("timeout", 30)
+    r = requests.post(f"{BASE_URL}{path}", headers=_headers(), **kwargs)
+    if r.status_code == 401:
+        refresh_token()
+        r = requests.post(f"{BASE_URL}{path}", headers=_headers(), **kwargs)
+    return r
 
 
 # ── Core functions ─────────────────────────────────────────────────────────────
 
 def verify_token():
     """Verify the current access token works."""
-    r = requests.get(f"{BASE_URL}/users/me", headers=_headers())
+    r = requests.get(f"{BASE_URL}/users/me", headers=_headers(), timeout=30)
     if r.status_code == 200:
         data = r.json()
-        # Canva Connect API returns team_user with user_id and team_id
         team_user = data.get("team_user", {})
         user_id = team_user.get("user_id", "?")
         team_id = team_user.get("team_id", "?")
@@ -97,6 +121,7 @@ def refresh_token():
             "grant_type": "refresh_token",
             "refresh_token": os.getenv("CANVA_REFRESH_TOKEN", ""),
         },
+        timeout=30,
     )
     if r.status_code != 200:
         print(f"✗ Refresh failed ({r.status_code}): {r.text}")
@@ -122,11 +147,7 @@ def refresh_token():
 
 def get_design_info(design_id: str) -> dict:
     """Return design metadata: title, edit_url, view_url, dimensions."""
-    r = requests.get(f"{BASE_URL}/designs/{design_id}", headers=_headers())
-    if r.status_code == 401:
-        print("⚠ Token expired — auto-refreshing...")
-        refresh_token()
-        r = requests.get(f"{BASE_URL}/designs/{design_id}", headers=_headers())
+    r = _get(f"/designs/{design_id}")
     if r.status_code != 200:
         print(f"✗ Failed to get design {design_id}: {r.status_code} {r.text}")
         sys.exit(1)
@@ -139,37 +160,10 @@ def copy_design(source_id: str, title: str) -> dict:
     Note: uses the /designs endpoint with type='design' (preview feature).
     Falls back to creating a blank presentation if copy fails.
     """
-    payload = {
-        "asset_type": "design",
+    r = _post("/designs", json={
         "design_type": {"type": "presentation"},
         "title": title,
-    }
-    # Attempt copy via source design_id
-    copy_payload = {
-        "design_type": {"type": "presentation"},
-        "title": title,
-        "asset_type": "design",
-    }
-    # Use the copy endpoint structure Canva supports
-    r = requests.post(
-        f"{BASE_URL}/designs",
-        headers=_headers(),
-        json={
-            "design_type": {"type": "presentation"},
-            "title": title,
-        },
-    )
-    if r.status_code == 401:
-        print("⚠ Token expired — auto-refreshing...")
-        refresh_token()
-        r = requests.post(
-            f"{BASE_URL}/designs",
-            headers=_headers(),
-            json={
-                "design_type": {"type": "presentation"},
-                "title": title,
-            },
-        )
+    })
     if r.status_code not in (200, 201):
         print(f"✗ Failed to create design: {r.status_code} {r.text}")
         sys.exit(1)
@@ -183,25 +177,10 @@ def copy_design(source_id: str, title: str) -> dict:
 def export_design_pdf(design_id: str) -> str:
     """Export a design as PDF. Returns the download URL."""
     # Start export job
-    r = requests.post(
-        f"{BASE_URL}/exports",
-        headers=_headers(),
-        json={
-            "design_id": design_id,
-            "format": {"type": "pdf", "export_quality": "pro"},
-        },
-    )
-    if r.status_code == 401:
-        print("⚠ Token expired — auto-refreshing...")
-        refresh_token()
-        r = requests.post(
-            f"{BASE_URL}/exports",
-            headers=_headers(),
-            json={
-                "design_id": design_id,
-                "format": {"type": "pdf", "export_quality": "pro"},
-            },
-        )
+    r = _post("/exports", json={
+        "design_id": design_id,
+        "format": {"type": "pdf", "export_quality": "pro"},
+    })
     if r.status_code not in (200, 201):
         print(f"✗ Export job failed: {r.status_code} {r.text}")
         sys.exit(1)
@@ -215,7 +194,7 @@ def export_design_pdf(design_id: str) -> str:
     for _ in range(30):
         time.sleep(2)
         print(".", end="", flush=True)
-        status_r = requests.get(f"{BASE_URL}/exports/{job_id}", headers=_headers())
+        status_r = _get(f"/exports/{job_id}")
         status = status_r.json().get("job", {})
         if status.get("status") == "success":
             urls = status.get("result", {}).get("urls", [])
@@ -232,15 +211,7 @@ def export_design_pdf(design_id: str) -> str:
 
 def list_designs(limit: int = 20):
     """List recent designs."""
-    r = requests.get(
-        f"{BASE_URL}/designs",
-        headers=_headers(),
-        params={"limit": limit},
-    )
-    if r.status_code == 401:
-        print("⚠ Token expired — auto-refreshing...")
-        refresh_token()
-        r = requests.get(f"{BASE_URL}/designs", headers=_headers(), params={"limit": limit})
+    r = _get("/designs", params={"limit": limit})
     if r.status_code != 200:
         print(f"✗ Failed: {r.status_code} {r.text}")
         sys.exit(1)

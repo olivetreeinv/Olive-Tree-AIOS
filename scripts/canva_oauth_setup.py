@@ -15,6 +15,7 @@ import sys
 import base64
 import hashlib
 import secrets
+import time
 import urllib.parse
 import webbrowser
 import http.server
@@ -89,6 +90,7 @@ def exchange_code(client_id, client_secret, code, verifier):
             "code_verifier": verifier,
             "client_id": client_id,
         },
+        timeout=30,
     )
     if r.status_code != 200:
         print(f"\n✗ Token exchange failed: {r.status_code} {r.text}")
@@ -149,51 +151,63 @@ def main():
     }
     auth_url = f"{AUTHORIZE_URL}?{urllib.parse.urlencode(auth_params)}"
 
-    # Start local callback server
+    # Start local callback server — always cleaned up in the finally block
     server = http.server.HTTPServer(("127.0.0.1", REDIRECT_PORT), CallbackHandler)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
 
-    print("\n── Canva OAuth Setup ─────────────────────────────────────────")
-    print("Opening browser for authorization...")
-    print(f"\nIf browser doesn't open, visit:\n{auth_url}\n")
-    webbrowser.open(auth_url)
+    try:
+        print("\n── Canva OAuth Setup ─────────────────────────────────────────")
+        print("Opening browser for authorization...")
+        print(f"\nIf browser doesn't open, visit:\n{auth_url}\n")
+        webbrowser.open(auth_url)
 
-    # Wait for callback
-    print("Waiting for authorization callback...", end="", flush=True)
-    while auth_code is None:
-        import time; time.sleep(0.5)
-        print(".", end="", flush=True)
-    server.shutdown()
-    print(" done.\n")
+        # Wait for callback (with a hard timeout so we never hang forever)
+        print("Waiting for authorization callback...", end="", flush=True)
+        deadline = time.time() + 180  # 3 minutes
+        while auth_code is None:
+            if time.time() > deadline:
+                print("\n✗ Timed out waiting for authorization (180s). Aborting.")
+                sys.exit(1)
+            time.sleep(0.5)
+            print(".", end="", flush=True)
+        print(" done.\n")
 
-    # Exchange code for tokens
-    print("Exchanging code for tokens...")
-    tokens = exchange_code(client_id, client_secret, auth_code, verifier)
+        if auth_state != state:
+            print("✗ State mismatch — possible CSRF. Aborting.")
+            sys.exit(1)
 
-    access_token = tokens.get("access_token")
-    refresh_token = tokens.get("refresh_token")
-    expires_in = tokens.get("expires_in", "unknown")
+        # Exchange code for tokens
+        print("Exchanging code for tokens...")
+        tokens = exchange_code(client_id, client_secret, auth_code, verifier)
 
-    print(f"✓ Access token received (expires in {expires_in}s)")
-    print(f"✓ Refresh token received")
+        access_token = tokens.get("access_token")
+        refresh_token = tokens.get("refresh_token")
+        expires_in = tokens.get("expires_in", "unknown")
 
-    # Save to .env
-    update_env(access_token, refresh_token)
+        print(f"✓ Access token received (expires in {expires_in}s)")
+        print(f"✓ Refresh token received")
 
-    # Verify connection
-    print("\nVerifying connection...")
-    r = requests.get(
-        "https://api.canva.com/rest/v1/users/me",
-        headers={"Authorization": f"Bearer {access_token}"}
-    )
-    if r.status_code == 200:
-        user = r.json().get("user", {})
-        print(f"✓ Connected as: {user.get('display_name', 'unknown')} ({user.get('email', '')})")
-        print("\n── Setup complete! ───────────────────────────────────────────")
-        print("Canva is ready. Run 'source .env' to load the new tokens.\n")
-    else:
-        print(f"⚠ Token saved but verification returned {r.status_code} — check scopes")
+        # Save to .env
+        update_env(access_token, refresh_token)
+
+        # Verify connection
+        print("\nVerifying connection...")
+        r = requests.get(
+            "https://api.canva.com/rest/v1/users/me",
+            headers={"Authorization": f"Bearer {access_token}"},
+            timeout=30,
+        )
+        if r.status_code == 200:
+            user = r.json().get("user", {})
+            print(f"✓ Connected as: {user.get('display_name', 'unknown')} ({user.get('email', '')})")
+            print("\n── Setup complete! ───────────────────────────────────────────")
+            print("Canva is ready. Run 'source .env' to load the new tokens.\n")
+        else:
+            print(f"⚠ Token saved but verification returned {r.status_code} — check scopes")
+    finally:
+        server.shutdown()
+        server.server_close()
 
 if __name__ == "__main__":
     main()

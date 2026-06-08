@@ -38,7 +38,15 @@
       "Bash(git stash list)",
       "Bash(git tag *)",
       "Bash(git rev-parse *)",
-      "Bash(python3 * --dry-run *)"
+      "Bash(python3 * --dry-run *)",
+      "Bash(curl * localhost:8000*)",
+      "Bash(curl * http://localhost:8000*)",
+      "Bash(curl * sheets.googleapis.com*)",
+      "Bash(curl * oauth2.googleapis.com*)",
+      "Bash(curl * api.sam.gov*)",
+      "Bash(curl * api.usaspending.gov*)",
+      "Bash(gws auth export*)",
+      "Bash(python3 *)"
     ]
   }
 }

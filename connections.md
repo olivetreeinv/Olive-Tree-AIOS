@@ -15,6 +15,9 @@ Registry of every system your AIOS can reach. Filled by `/onboard` from Q4-Q7 an
 | 7 | Knowledge / files | Google Drive + Sheets | gws cli | OAuth — gws auth login | 2026-05-28 |
 | — | Community / Learning | Multifamily Schooled | not yet connected | — | — |
 | — | Design / Content | Canva | key+ref | OAuth — tokens in `.env`, refresh via `scripts/canva_oauth_setup.py` | 2026-05-27 |
+| — | Design / Content — AI Video | Higgsfield | cli | `hf auth login` (browser device flow) — run once, token stored locally | 2026-06-07 |
+| — | Deal Sourcing — MLS Data | FMLS (Bridge Interactive API) | key+ref | Bearer token — `FMLS_API_TOKEN` + `FMLS_DATASET_ID` in `.env` — not yet obtained. Contact Data@FMLS.com to activate. `references/fmls-api.md` | — |
+| — | Code Review | Codex CLI (via `openai.chatgpt` VS Code ext) | cli+ref | Device auth — `codex login --device-auth` (uses ChatGPT/Codex plan, no API key). Wrapper: `scripts/codex_review.sh`. `references/codex-review.md` | 2026-06-08 |
 
 **Mechanism options:** `mcp` (MCP server), `script` (Python/Bash hitting an API, in `scripts/`), `export` (CSV/JSON dump pipeline), `key+ref` (`.env` key + `references/{tool}-api.md` guide), `not yet connected`.
 

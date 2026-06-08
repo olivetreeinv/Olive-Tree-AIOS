@@ -60,15 +60,30 @@ Run daily brief first? (y/n)
 
 **If no (or any pipeline selection):** Skip straight to scope.
 
+**Scope prompt — map calendar to phases first:**
+
+If the daily brief was run (or calendar was already pulled), map today's scheduled blocks to pipeline phases and lead with a suggestion:
+
+| Calendar block | Suggested phase |
+|---|---|
+| "Deal Sourcing" | Phase 1–2 (new listings + follow-ups) |
+| "Underwrite / Deep Work" | Phase 3–4 (inbound emails + deal analysis) |
+| "Shortlist + Strategy" | Phase 4–5 (deal analysis + LOI) |
+| All three blocks (full deal day) | Full pipeline |
+| No relevant blocks | Show generic menu |
+
+Format:
 ```
-What's the focus today?
+Based on your calendar today — [block name] at [time] — I'd suggest:
+
+  → [Phase X: description]
+
+Run that, or pick something else?
 
   1. Full pipeline — all phases (~15 min)
   2. New listings + follow-ups only (Phases 1–2)
   3. Inbound emails + deal analysis only (Phases 3–4)
   4. Draft an LOI — tell me the deal name
-
-Reply with a number, or describe what you need.
 ```
 
 Proceed to selected phases only.
