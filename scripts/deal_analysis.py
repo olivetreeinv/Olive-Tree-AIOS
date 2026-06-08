@@ -37,13 +37,13 @@ import base64
 import importlib
 import io
 import json
-import subprocess
 import sys
-import tempfile
 import os
+from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime
 
 import requests
+from gws_auth import get_token
 
 # ─────────────────────────────────────────────
 # Config
@@ -110,22 +110,6 @@ DEAL_SOURCING_HEADERS = [
 # ─────────────────────────────────────────────
 # Auth
 # ─────────────────────────────────────────────
-
-def get_token():
-    result = subprocess.run(
-        ["gws", "auth", "export", "--unmasked"],
-        capture_output=True, text=True, check=True
-    )
-    creds = json.loads(result.stdout)
-    resp = requests.post("https://oauth2.googleapis.com/token", data={
-        "client_id":     creds["client_id"],
-        "client_secret": creds["client_secret"],
-        "refresh_token": creds["refresh_token"],
-        "grant_type":    "refresh_token",
-    })
-    resp.raise_for_status()
-    return resp.json()["access_token"]
-
 
 def auth(token):
     return {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
@@ -596,7 +580,8 @@ def log_deal(token, args, metrics=None):
         f"{SHEETS_BASE}/{SPREADSHEET_ID}/values/Deal%20Sourcing!A:U:append",
         headers=auth(token),
         params={"valueInputOption": "USER_ENTERED", "insertDataOption": "INSERT_ROWS"},
-        json={"values": [row]}
+        json={"values": [row]},
+        timeout=30,
     )
     r.raise_for_status()
     result = r.json()
@@ -612,7 +597,8 @@ def log_deal(token, args, metrics=None):
 def deal_exists(token, prop, address):
     r = requests.get(
         f"{SHEETS_BASE}/{SPREADSHEET_ID}/values/Deal%20Sourcing!A:D",
-        headers=auth(token)
+        headers=auth(token),
+        timeout=30,
     )
     r.raise_for_status()
     rows = r.json().get("values", [])
@@ -631,18 +617,19 @@ def deal_exists(token, prop, address):
 # ─────────────────────────────────────────────
 
 def fetch_doc(token, drive_id, dest_path=None):
-    r = requests.get(
+    if dest_path is None:
+        dest_path = f"/tmp/deal_doc_{drive_id}.xlsx"
+    with requests.get(
         f"{DRIVE_BASE}/{drive_id}",
         headers={"Authorization": f"Bearer {token}"},
         params={"alt": "media"},
-        stream=True
-    )
-    r.raise_for_status()
-    if dest_path is None:
-        dest_path = f"/tmp/deal_doc_{drive_id}.xlsx"
-    with open(dest_path, "wb") as f:
-        for chunk in r.iter_content(chunk_size=8192):
-            f.write(chunk)
+        stream=True,
+        timeout=60,
+    ) as r:
+        r.raise_for_status()
+        with open(dest_path, "wb") as f:
+            for chunk in r.iter_content(chunk_size=8192):
+                f.write(chunk)
     print(f"✅ Downloaded {drive_id} → {dest_path}")
     return dest_path
 
@@ -690,7 +677,7 @@ def fetch_gmail_attachments(token, message_id, dest_dir="/tmp"):
     """
     hdrs = {"Authorization": f"Bearer {token}"}
 
-    msg = requests.get(f"{GMAIL_BASE}/messages/{message_id}?format=full", headers=hdrs)
+    msg = requests.get(f"{GMAIL_BASE}/messages/{message_id}?format=full", headers=hdrs, timeout=30)
     msg.raise_for_status()
     payload = msg.json().get("payload", {})
 
@@ -709,25 +696,38 @@ def fetch_gmail_attachments(token, message_id, dest_dir="/tmp"):
 
     result = {"t12": None, "rent-roll": None, "om": None, "other": []}
 
+    # Keep only downloadable deal attachments (xlsx/xls/pdf)
+    wanted = []
     for part in attachment_parts:
         fname = part["filename"]
         ext   = fname.rsplit(".", 1)[-1].lower() if "." in fname else ""
         mime  = part.get("mimeType", "")
-
         if ext not in ("xlsx", "xls", "pdf") and mime not in (EXCEL_MIMES | PDF_MIMES):
             print(f"  Skipping: {fname}")
             continue
+        wanted.append(part)
 
+    def download(part):
+        # Sanitize the filename — never trust an email-supplied path (traversal/overwrite)
+        fname  = os.path.basename(part["filename"]) or "attachment"
         att_id = part["body"]["attachmentId"]
-        att = requests.get(f"{GMAIL_BASE}/messages/{message_id}/attachments/{att_id}", headers=hdrs)
+        att = requests.get(
+            f"{GMAIL_BASE}/messages/{message_id}/attachments/{att_id}",
+            headers=hdrs, timeout=60,
+        )
         att.raise_for_status()
         data = base64.urlsafe_b64decode(att.json()["data"])
-
         dest = os.path.join(dest_dir, fname)
         with open(dest, "wb") as f:
             f.write(data)
         print(f"✅ Saved → {dest}")
+        return fname, dest
 
+    # Download independent attachments in parallel
+    with ThreadPoolExecutor(max_workers=5) as executor:
+        downloaded = list(executor.map(download, wanted))
+
+    for fname, dest in downloaded:
         doc_type = _classify_attachment(fname)
         if doc_type in ("t12", "rent-roll", "om"):
             result[doc_type] = dest
@@ -766,13 +766,15 @@ def detect_excel_type_openpyxl(path):
     """Detect 'rent-roll' or 't12' by scanning first 30 rows with openpyxl."""
     openpyxl = _require_openpyxl()
     wb = openpyxl.load_workbook(path, data_only=True, read_only=True)
-    ws = wb[wb.sheetnames[0]]
-    parts = []
-    for i, row in enumerate(ws.iter_rows(values_only=True)):
-        if i >= 30:
-            break
-        parts.extend(str(v).lower() for v in row if v is not None)
-    wb.close()
+    try:
+        ws = wb[wb.sheetnames[0]]
+        parts = []
+        for i, row in enumerate(ws.iter_rows(values_only=True)):
+            if i >= 30:
+                break
+            parts.extend(str(v).lower() for v in row if v is not None)
+    finally:
+        wb.close()
     text = " ".join(parts)
     rr  = sum(w in text for w in _EXCEL_RR_SIGNALS)
     t12 = sum(w in text for w in _EXCEL_T12_SIGNALS)
@@ -913,8 +915,8 @@ def parse_rent_roll_openpyxl(path):
 def detect_excel_type(path):
     """Guess 'rent-roll' or 't12' by scanning column/row headers."""
     pd = _require_pandas()
-    xl = pd.ExcelFile(path)
-    df = xl.parse(xl.sheet_names[0], header=None, nrows=30)
+    with pd.ExcelFile(path) as xl:
+        df = xl.parse(xl.sheet_names[0], header=None, nrows=30)
     text = " ".join(str(v).lower() for row in df.values for v in row)
     rr  = sum(w in text for w in _EXCEL_RR_SIGNALS)
     t12 = sum(w in text for w in _EXCEL_T12_SIGNALS)
@@ -931,38 +933,38 @@ def parse_t12(path):
     result = {"current_gpr": None, "current_opex": None, "current_noi": None,
               "vacancy_annual": None, "source": "T-12"}
 
-    xl = pd.ExcelFile(path)
-    for sheet_name in xl.sheet_names:
-        df = xl.parse(sheet_name, header=None)
+    with pd.ExcelFile(path) as xl:
+        for sheet_name in xl.sheet_names:
+            df = xl.parse(sheet_name, header=None)
 
-        for _, row in df.iterrows():
-            label = str(row.iloc[0]).lower().strip() if len(row) > 0 else ""
+            for _, row in df.iterrows():
+                label = str(row.iloc[0]).lower().strip() if len(row) > 0 else ""
 
-            nums = []
-            for v in row.iloc[1:]:
-                try:
-                    f = float(v)
-                    if f > 0:
-                        nums.append(f)
-                except (TypeError, ValueError):
-                    pass
-            if not nums:
-                continue
+                nums = []
+                for v in row.iloc[1:]:
+                    try:
+                        f = float(v)
+                        if f > 0:
+                            nums.append(f)
+                    except (TypeError, ValueError):
+                        pass
+                if not nums:
+                    continue
 
-            median_val = sorted(nums)[len(nums) // 2]
-            annual = nums[-1] if (len(nums) > 1 and nums[-1] >= median_val * 8) else sum(nums[:12])
+                median_val = sorted(nums)[len(nums) // 2]
+                annual = nums[-1] if (len(nums) > 1 and nums[-1] >= median_val * 8) else sum(nums[:12])
 
-            if any(label.startswith(k) for k in _T12_INCOME_KEYS) and result["current_gpr"] is None:
-                result["current_gpr"] = annual
-            elif any(label.startswith(k) for k in _T12_EXPENSE_KEYS) and result["current_opex"] is None:
-                result["current_opex"] = annual
-            elif any(label.startswith(k) for k in _T12_NOI_KEYS) and result["current_noi"] is None:
-                result["current_noi"] = annual
-            elif any(label.startswith(k) for k in _T12_VACANCY_KEYS) and result["vacancy_annual"] is None:
-                result["vacancy_annual"] = annual
+                if any(label.startswith(k) for k in _T12_INCOME_KEYS) and result["current_gpr"] is None:
+                    result["current_gpr"] = annual
+                elif any(label.startswith(k) for k in _T12_EXPENSE_KEYS) and result["current_opex"] is None:
+                    result["current_opex"] = annual
+                elif any(label.startswith(k) for k in _T12_NOI_KEYS) and result["current_noi"] is None:
+                    result["current_noi"] = annual
+                elif any(label.startswith(k) for k in _T12_VACANCY_KEYS) and result["vacancy_annual"] is None:
+                    result["vacancy_annual"] = annual
 
-        if result["current_gpr"] or result["current_noi"]:
-            break
+            if result["current_gpr"] or result["current_noi"]:
+                break
 
     # Derive missing values
     if result["current_noi"] and result["current_gpr"] and result["current_opex"] is None:
@@ -982,56 +984,56 @@ def parse_rent_roll(path):
 
     result = {"units": 0, "current_gpr": 0.0, "unit_mix": [], "source": "Rent Roll"}
 
-    xl = pd.ExcelFile(path)
-    for sheet_name in xl.sheet_names:
-        df_raw = xl.parse(sheet_name, header=None)
+    with pd.ExcelFile(path) as xl:
+        for sheet_name in xl.sheet_names:
+            df_raw = xl.parse(sheet_name, header=None)
 
-        header_row = None
-        for i, row in df_raw.iterrows():
-            row_text = [str(v).lower().strip() for v in row]
-            hits = sum(1 for v in row_text if any(k in v for k in _RR_ANCHOR_COLS))
-            if hits >= 2:
-                header_row = i
-                break
-        if header_row is None:
-            continue
+            header_row = None
+            for i, row in df_raw.iterrows():
+                row_text = [str(v).lower().strip() for v in row]
+                hits = sum(1 for v in row_text if any(k in v for k in _RR_ANCHOR_COLS))
+                if hits >= 2:
+                    header_row = i
+                    break
+            if header_row is None:
+                continue
 
-        df = xl.parse(sheet_name, header=header_row)
-        df.columns = [str(c).lower().strip() for c in df.columns]
+            df = xl.parse(sheet_name, header=header_row)
+            df.columns = [str(c).lower().strip() for c in df.columns]
 
-        rent_col   = next((c for c in df.columns if any(k in c for k in _RR_RENT_COLS)), None)
-        market_col = next((c for c in df.columns if any(k in c for k in _RR_MARKET_COLS)), None)
-        bed_col    = next((c for c in df.columns if any(k in c for k in _RR_BED_COLS)), None)
+            rent_col   = next((c for c in df.columns if any(k in c for k in _RR_RENT_COLS)), None)
+            market_col = next((c for c in df.columns if any(k in c for k in _RR_MARKET_COLS)), None)
+            bed_col    = next((c for c in df.columns if any(k in c for k in _RR_BED_COLS)), None)
 
-        if rent_col is None:
-            continue
+            if rent_col is None:
+                continue
 
-        df[rent_col] = pd.to_numeric(df[rent_col], errors="coerce")
-        df = df[df[rent_col] > 0].copy()
+            df[rent_col] = pd.to_numeric(df[rent_col], errors="coerce")
+            df = df[df[rent_col] > 0].copy()
 
-        if df.empty:
-            continue
+            if df.empty:
+                continue
 
-        result["units"] = len(df)
-        result["current_gpr"] = float(df[rent_col].sum())
+            result["units"] = len(df)
+            result["current_gpr"] = float(df[rent_col].sum())
 
-        if bed_col:
-            df[bed_col] = df[bed_col].astype(str).str.strip()
-            agg = {"count": (rent_col, "count"), "avg_rent": (rent_col, "mean")}
-            if market_col:
-                df[market_col] = pd.to_numeric(df[market_col], errors="coerce")
-                agg["avg_market"] = (market_col, "mean")
-            mix = df.groupby(bed_col).agg(**agg).reset_index()
-            for _, row in mix.iterrows():
-                entry = {
-                    "type": str(row[bed_col]),
-                    "count": int(row["count"]),
-                    "current_rent": round(float(row["avg_rent"]), 0),
-                }
-                if market_col and "avg_market" in row and not pd.isna(row["avg_market"]):
-                    entry["market_rent"] = round(float(row["avg_market"]), 0)
-                result["unit_mix"].append(entry)
-        break
+            if bed_col:
+                df[bed_col] = df[bed_col].astype(str).str.strip()
+                agg = {"count": (rent_col, "count"), "avg_rent": (rent_col, "mean")}
+                if market_col:
+                    df[market_col] = pd.to_numeric(df[market_col], errors="coerce")
+                    agg["avg_market"] = (market_col, "mean")
+                mix = df.groupby(bed_col).agg(**agg).reset_index()
+                for _, row in mix.iterrows():
+                    entry = {
+                        "type": str(row[bed_col]),
+                        "count": int(row["count"]),
+                        "current_rent": round(float(row["avg_rent"]), 0),
+                    }
+                    if market_col and "avg_market" in row and not pd.isna(row["avg_market"]):
+                        entry["market_rent"] = round(float(row["avg_market"]), 0)
+                    result["unit_mix"].append(entry)
+            break
 
     return result
 
@@ -1425,7 +1427,10 @@ def populate_analyzer(token, args, metrics=None):
     # so all formulas calculate live and the file is directly editable.
     sheet_name = f"{address or prop} - Deal Analyzer 0-50"
     out_path   = f"/tmp/{TODAY_ISO}_deal_analyzer_output.xlsx"
-    wb.save(out_path)
+    try:
+        wb.save(out_path)
+    finally:
+        wb.close()
     print(f"\nUploading as Google Sheet: '{sheet_name}'...")
 
     with open(out_path, "rb") as f:
@@ -1448,7 +1453,8 @@ def populate_analyzer(token, args, metrics=None):
             "Authorization": f"Bearer {token}",
             "Content-Type": f"multipart/related; boundary={boundary}",
         },
-        data=body
+        data=body,
+        timeout=120,
     )
     r.raise_for_status()
     file_id = r.json().get("id")

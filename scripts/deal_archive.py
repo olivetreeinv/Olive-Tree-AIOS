@@ -23,12 +23,13 @@ Usage:
 import argparse
 import json
 import os
-import subprocess
 import sys
 import tempfile
+from concurrent.futures import ThreadPoolExecutor
 from datetime import date
 
 import requests
+from gws_auth import get_token
 
 PARENT_FOLDER_ID = "1pLWVMaLPy-8Rt1NGQsX2wg2oNDonWC-p"
 DRIVE_BASE  = "https://www.googleapis.com/drive/v3/files"
@@ -48,27 +49,12 @@ MIME_MAP = {
 }
 
 
-def get_token():
-    result = subprocess.run(
-        ["gws", "auth", "export", "--unmasked"],
-        capture_output=True, text=True, check=True
-    )
-    creds = json.loads(result.stdout)
-    resp = requests.post("https://oauth2.googleapis.com/token", data={
-        "client_id":     creds["client_id"],
-        "client_secret": creds["client_secret"],
-        "refresh_token": creds["refresh_token"],
-        "grant_type":    "refresh_token",
-    })
-    resp.raise_for_status()
-    return resp.json()["access_token"]
-
-
 def create_folder(token, name, parent_id):
     r = requests.post(
         DRIVE_BASE,
         headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
-        json={"name": name, "mimeType": "application/vnd.google-apps.folder", "parents": [parent_id]}
+        json={"name": name, "mimeType": "application/vnd.google-apps.folder", "parents": [parent_id]},
+        timeout=30,
     )
     r.raise_for_status()
     return r.json()["id"]
@@ -96,7 +82,8 @@ def upload_file(token, folder_id, filepath, display_name=None):
             "Authorization": f"Bearer {token}",
             "Content-Type": f"multipart/related; boundary={boundary}",
         },
-        data=body
+        data=body,
+        timeout=120,
     )
     r.raise_for_status()
     return r.json().get("id")
@@ -186,17 +173,24 @@ def archive_deal(token, address, property_name="", metrics=None, notes="", files
     finally:
         os.unlink(tmp_path)
 
-    # Upload additional files
+    # Upload additional files (independent — run in parallel)
+    existing = [fp for fp in files if os.path.exists(fp)]
     skipped = 0
-    for filepath in files:
-        if not os.path.exists(filepath):
-            print(f"⚠️  Not found, skipping: {filepath}")
+    for fp in files:
+        if fp not in existing:
+            print(f"⚠️  Not found, skipping: {fp}")
             skipped += 1
-            continue
-        upload_file(token, folder_id, filepath)
-        print(f"✅ Uploaded: {os.path.basename(filepath)}")
 
-    uploaded = len(files) - skipped + 1
+    def _upload(filepath):
+        upload_file(token, folder_id, filepath)
+        return filepath
+
+    if existing:
+        with ThreadPoolExecutor(max_workers=5) as executor:
+            for filepath in executor.map(_upload, existing):
+                print(f"✅ Uploaded: {os.path.basename(filepath)}")
+
+    uploaded = len(existing) + 1  # +1 for the Deal Summary
     print(f"\n{uploaded} file(s) archived → '{folder_name}'\n")
     return folder_id
 

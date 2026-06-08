@@ -14,12 +14,12 @@ Usage:
 """
 
 import argparse
-import json
-import subprocess
 import sys
-from datetime import date, datetime
+from concurrent.futures import ThreadPoolExecutor
+from datetime import date, datetime, timedelta
 
 import requests
+from gws_auth import get_token
 
 # ─────────────────────────────────────────────
 # Config
@@ -97,22 +97,6 @@ COL = {
 # Auth
 # ─────────────────────────────────────────────
 
-def get_token():
-    result = subprocess.run(
-        ["gws", "auth", "export", "--unmasked"],
-        capture_output=True, text=True, check=True
-    )
-    creds = json.loads(result.stdout)
-    resp = requests.post("https://oauth2.googleapis.com/token", data={
-        "client_id":     creds["client_id"],
-        "client_secret": creds["client_secret"],
-        "refresh_token": creds["refresh_token"],
-        "grant_type":    "refresh_token",
-    })
-    resp.raise_for_status()
-    return resp.json()["access_token"]
-
-
 def auth_headers(token):
     return {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
 
@@ -124,7 +108,8 @@ def auth_headers(token):
 def get_brokers(token):
     r = requests.get(
         f"{SHEETS_BASE}/{SPREADSHEET_ID}/values/Brokers%20List!A:M",
-        headers=auth_headers(token)
+        headers=auth_headers(token),
+        timeout=30,
     )
     r.raise_for_status()
     rows = r.json().get("values", [])
@@ -304,43 +289,41 @@ def send_email(token, draft):
     r = requests.post(
         f"{GMAIL_BASE}/messages/send",
         headers=auth_headers(token),
-        json={"raw": raw}
+        json={"raw": raw},
+        timeout=30,
     )
     r.raise_for_status()
     return r.json()
 
 
-def update_broker_after_send(token, row_num):
-    from datetime import timedelta
+def build_after_send_data(row_num, current_sent=0):
+    """Build the batchUpdate range entries for one broker after a send."""
     next_fup = (TODAY + timedelta(days=FOLLOW_UP_INTERVAL_DAYS)).strftime("%m/%d/%Y")
-
-    # Read current deals_sent
-    r = requests.get(
-        f"{SHEETS_BASE}/{SPREADSHEET_ID}/values/Brokers%20List!I{row_num}:K{row_num}",
-        headers=auth_headers(token)
-    )
-    r.raise_for_status()
-    vals = r.json().get("values", [[]])[0] if r.json().get("values") else []
-    try:
-        current_sent = int(vals[0]) if vals else 0
-    except (ValueError, IndexError):
-        current_sent = 0
     new_sent = current_sent + 1
+    data = [
+        {"range": f"Brokers List!I{row_num}", "values": [[new_sent]]},
+        {"range": f"Brokers List!J{row_num}", "values": [[TODAY_STR]]},
+        {"range": f"Brokers List!K{row_num}", "values": [[next_fup]]},
+    ]
+    return data, new_sent, next_fup
 
-    update_body = {
-        "valueInputOption": "USER_ENTERED",
-        "data": [
-            {"range": f"Brokers List!I{row_num}", "values": [[new_sent]]},
-            {"range": f"Brokers List!J{row_num}", "values": [[TODAY_STR]]},
-            {"range": f"Brokers List!K{row_num}", "values": [[next_fup]]},
-        ]
-    }
-    r2 = requests.post(
+
+def batch_update_sheet(token, data_entries):
+    """Apply all range updates in a single Sheets batchUpdate call."""
+    if not data_entries:
+        return
+    r = requests.post(
         f"{SHEETS_BASE}/{SPREADSHEET_ID}/values:batchUpdate",
         headers=auth_headers(token),
-        json=update_body
+        json={"valueInputOption": "USER_ENTERED", "data": data_entries},
+        timeout=30,
     )
-    r2.raise_for_status()
+    r.raise_for_status()
+
+
+def update_broker_after_send(token, row_num, current_sent=0):
+    data, new_sent, next_fup = build_after_send_data(row_num, current_sent)
+    batch_update_sheet(token, data)
     print(f"✅ Updated broker row {row_num}: sent={new_sent}, next={next_fup}")
 
 
@@ -367,6 +350,11 @@ def main():
         print(f"ERROR: Auth failed — {e}")
         print("Run: gws auth login -s gmail,sheets")
         sys.exit(1)
+
+    # --mark-sent updates a single row — no need to fetch/filter the whole sheet
+    if args.mark_sent is not None:
+        update_broker_after_send(token, args.mark_sent)
+        return
 
     brokers = get_brokers(token)
     overdue = [b for b in brokers if is_overdue(b["data"])]
@@ -410,30 +398,59 @@ def main():
                 print(f"⚠️  Skipped {draft['to_name']} — no email address on file.")
                 return
             broker_row = overdue[args.send]["row"]
+            current_sent_val = overdue[args.send]["data"][COL["deals_sent"]]
+            try:
+                current_sent_int = int(current_sent_val) if current_sent_val else 0
+            except (ValueError, TypeError):
+                current_sent_int = 0
             print(f"Sending to {draft['to_name']} <{draft['to_email']}>...")
             send_email(token, draft)
-            update_broker_after_send(token, broker_row)
+            update_broker_after_send(token, broker_row, current_sent_int)
             print(f"✅ Sent: {draft['subject']}")
             return
 
         if args.send_all:
-            sent, skipped = 0, 0
+            # Build the work list, skipping brokers with no email
+            jobs = []
+            skipped = 0
             for d, b in zip(drafts, overdue):
                 if not d["to_email"]:
                     print(f"⚠️  Skipped {d['to_name'] or 'unknown'} — no email address on file.")
                     skipped += 1
                     continue
-                print(f"Sending to {d['to_name']} <{d['to_email']}>...")
-                send_email(token, d)
-                update_broker_after_send(token, b["row"])
-                print(f"✅ Sent: {d['subject']}")
-                sent += 1
-            print(f"\n📬 Done — {sent} sent, {skipped} skipped (no email).")
-            return
+                b_sent_val = b["data"][COL["deals_sent"]]
+                try:
+                    b_sent_int = int(b_sent_val) if b_sent_val else 0
+                except (ValueError, TypeError):
+                    b_sent_int = 0
+                jobs.append((d, b["row"], b_sent_int))
 
-    if args.mark_sent is not None:
-        update_broker_after_send(token, args.mark_sent)
-        return
+            # Send emails in parallel; collect successes for one batched sheet update
+            def _send(job):
+                d, row, sent_int = job
+                try:
+                    send_email(token, d)
+                    return (True, d, row, sent_int, None)
+                except Exception as e:
+                    return (False, d, row, sent_int, e)
+
+            sent = 0
+            update_data = []
+            with ThreadPoolExecutor(max_workers=5) as executor:
+                for ok, d, row, sent_int, err in executor.map(_send, jobs):
+                    if ok:
+                        data, _, _ = build_after_send_data(row, sent_int)
+                        update_data.extend(data)
+                        sent += 1
+                        print(f"✅ Sent: {d['to_name']} — {d['subject']}")
+                    else:
+                        skipped += 1
+                        print(f"❌ Failed: {d['to_name']} <{d['to_email']}> — {err}")
+
+            # One Sheets batchUpdate for every successfully sent broker
+            batch_update_sheet(token, update_data)
+            print(f"\n📬 Done — {sent} sent, {skipped} skipped/failed.")
+            return
 
 
 if __name__ == "__main__":

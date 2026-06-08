@@ -121,7 +121,8 @@ def lookup(address, beds, baths=None, building_type=None, om_rent=None):
         delta_mean = (om_rent - result["mean"]) if result["mean"] else None
         pct_mean   = ((om_rent / result["mean"] - 1) * 100) if result["mean"] else None
 
-        if om_rent > result["percentile_75"]:
+        p75 = result.get("percentile_75")
+        if p75 is not None and om_rent > p75:
             assessment = "AGGRESSIVE — above 75th percentile"
         elif om_rent >= result["median"]:
             assessment = "REASONABLE — at or above median"
@@ -138,6 +139,11 @@ def lookup(address, beds, baths=None, building_type=None, om_rent=None):
         })
 
     return result
+
+
+def _money(v):
+    """Format a nullable numeric as $X,XXX/mo — safe on partial API responses."""
+    return f"${v:,.0f}" if isinstance(v, (int, float)) else "N/A"
 
 
 def print_report(result, beds, baths=None):
@@ -159,12 +165,12 @@ def print_report(result, beds, baths=None):
     print()
     print(f"  {'Metric':<24} {'Rent/mo':>10}")
     print(f"  {'─'*24} {'─'*10}")
-    print(f"  {'Mean':<24} {'${:,.0f}'.format(result['mean']):>10}")
-    print(f"  {'Median':<24} {'${:,.0f}'.format(result['median']):>10}")
-    print(f"  {'25th Percentile':<24} {'${:,.0f}'.format(result['percentile_25']):>10}")
-    print(f"  {'75th Percentile':<24} {'${:,.0f}'.format(result['percentile_75']):>10}")
-    print(f"  {'Min':<24} {'${:,.0f}'.format(result['min']):>10}")
-    print(f"  {'Max':<24} {'${:,.0f}'.format(result['max']):>10}")
+    print(f"  {'Mean':<24} {_money(result.get('mean')):>10}")
+    print(f"  {'Median':<24} {_money(result.get('median')):>10}")
+    print(f"  {'25th Percentile':<24} {_money(result.get('percentile_25')):>10}")
+    print(f"  {'75th Percentile':<24} {_money(result.get('percentile_75')):>10}")
+    print(f"  {'Min':<24} {_money(result.get('min')):>10}")
+    print(f"  {'Max':<24} {_money(result.get('max')):>10}")
 
     if result.get("om_rent"):
         sign_m = "+" if result["vs_median"] >= 0 else ""

@@ -14,14 +14,14 @@ Usage:
 
 import argparse
 import base64
-import json
 import re
-import subprocess
 import sys
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta
 
 import requests
 from bs4 import BeautifulSoup
+from gws_auth import get_token
 
 # ─────────────────────────────────────────────
 # Config
@@ -54,22 +54,6 @@ DEAL_QUERIES = [
 # Auth
 # ─────────────────────────────────────────────
 
-def get_token():
-    result = subprocess.run(
-        ["gws", "auth", "export", "--unmasked"],
-        capture_output=True, text=True, check=True
-    )
-    creds = json.loads(result.stdout)
-    resp = requests.post("https://oauth2.googleapis.com/token", data={
-        "client_id":     creds["client_id"],
-        "client_secret": creds["client_secret"],
-        "refresh_token": creds["refresh_token"],
-        "grant_type":    "refresh_token",
-    })
-    resp.raise_for_status()
-    return resp.json()["access_token"]
-
-
 def auth_headers(token):
     return {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
 
@@ -84,27 +68,19 @@ def search_messages(token, query, days):
     r = requests.get(
         f"{GMAIL_BASE}/messages",
         headers=auth_headers(token),
-        params={"q": full_query, "maxResults": 50}
+        params={"q": full_query, "maxResults": 50},
+        timeout=30,
     )
     r.raise_for_status()
     return r.json().get("messages", [])
-
-
-def get_message_meta(token, msg_id):
-    r = requests.get(
-        f"{GMAIL_BASE}/messages/{msg_id}",
-        headers=auth_headers(token),
-        params={"format": "metadata", "metadataHeaders": ["From", "Subject", "Date"]}
-    )
-    r.raise_for_status()
-    return r.json()
 
 
 def get_message_full(token, msg_id):
     r = requests.get(
         f"{GMAIL_BASE}/messages/{msg_id}",
         headers=auth_headers(token),
-        params={"format": "full"}
+        params={"format": "full"},
+        timeout=30,
     )
     r.raise_for_status()
     return r.json()
@@ -207,7 +183,8 @@ def check_buy_box(subject, preview):
 def get_known_brokers(token):
     r = requests.get(
         f"{SHEETS_BASE}/{SPREADSHEET_ID}/values/Brokers%20List!B:C",
-        headers=auth_headers(token)
+        headers=auth_headers(token),
+        timeout=30,
     )
     r.raise_for_status()
     rows = r.json().get("values", [])
@@ -230,50 +207,58 @@ def parse_sender(from_header):
 # ─────────────────────────────────────────────
 
 def scan_inbox(token, days, dry_run):
-    # Gather message IDs from all queries, deduplicate
+    # Run all search queries in parallel, then deduplicate message IDs
     all_ids = {}
-    for query in DEAL_QUERIES:
-        msgs = search_messages(token, query, days)
-        for m in msgs:
-            all_ids[m["id"]] = True
+    with ThreadPoolExecutor(max_workers=len(DEAL_QUERIES)) as executor:
+        for msgs in executor.map(lambda q: search_messages(token, q, days), DEAL_QUERIES):
+            for m in msgs:
+                all_ids[m["id"]] = True
 
     if not all_ids:
         print(f"📥 No deal emails found in the last {days} days.")
         return []
 
-    # Load known broker emails
+    # Load known broker emails (sheet read can overlap with message fetches)
     known_brokers = {} if dry_run else get_known_brokers(token)
 
-    results = []
-    for msg_id in list(all_ids.keys())[:30]:  # cap at 30
+    # Fetch the (capped) full messages in parallel
+    msg_ids = list(all_ids.keys())[:30]
+
+    def _fetch(msg_id):
         try:
-            msg = get_message_full(token, msg_id)
+            return msg_id, get_message_full(token, msg_id)
         except Exception:
-            continue
+            return msg_id, None
 
-        from_header = extract_header(msg, "From")
-        subject     = extract_header(msg, "Subject")
-        date_str    = extract_header(msg, "Date")
-        sender_name, sender_email = parse_sender(from_header)
-        preview     = extract_body_preview(msg)
-        attachments = has_attachments(msg)
+    results = []
+    with ThreadPoolExecutor(max_workers=8) as executor:
+        for msg_id, msg in executor.map(_fetch, msg_ids):
+            if msg is None:
+                continue
 
-        bb_status, bb_zip, bb_market = check_buy_box(subject, preview)
-        known_name = known_brokers.get(sender_email, None)
+            from_header = extract_header(msg, "From")
+            subject     = extract_header(msg, "Subject")
+            date_str    = extract_header(msg, "Date")
+            sender_name, sender_email = parse_sender(from_header)
+            preview     = extract_body_preview(msg)
+            attachments = has_attachments(msg)
 
-        results.append({
-            "id":           msg_id,
-            "from_name":    sender_name or known_name or "Unknown",
-            "from_email":   sender_email,
-            "subject":      subject,
-            "date":         date_str,
-            "preview":      preview,
-            "attachments":  attachments,
-            "bb_status":    bb_status,
-            "bb_zip":       bb_zip,
-            "bb_market":    bb_market,
-            "known_broker": known_name is not None,
-        })
+            bb_status, bb_zip, bb_market = check_buy_box(subject, preview)
+            known_name = known_brokers.get(sender_email, None)
+
+            results.append({
+                "id":           msg_id,
+                "from_name":    sender_name or known_name or "Unknown",
+                "from_email":   sender_email,
+                "subject":      subject,
+                "date":         date_str,
+                "preview":      preview,
+                "attachments":  attachments,
+                "bb_status":    bb_status,
+                "bb_zip":       bb_zip,
+                "bb_market":    bb_market,
+                "known_broker": known_name is not None,
+            })
 
     # Sort: IN_BOX first, then POSSIBLE, then UNKNOWN
     order = {"IN_BOX": 0, "POSSIBLE": 1, "UNKNOWN": 2}
@@ -362,7 +347,8 @@ def send_doc_request(token, draft):
     r = requests.post(
         f"{GMAIL_BASE}/messages/send",
         headers=auth_headers(token),
-        json={"raw": raw}
+        json={"raw": raw},
+        timeout=30,
     )
     r.raise_for_status()
     return r.json()

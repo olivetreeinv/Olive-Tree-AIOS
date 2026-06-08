@@ -29,7 +29,7 @@ def get_access_token():
     try:
         result = subprocess.run(
             ["gws", "auth", "export", "--unmasked"],
-            capture_output=True, text=True, check=True
+            capture_output=True, text=True, check=True, timeout=30
         )
         creds = json.loads(result.stdout)
     except Exception as e:
@@ -42,7 +42,7 @@ def get_access_token():
         "client_secret": creds["client_secret"],
         "refresh_token": creds["refresh_token"],
         "grant_type": "refresh_token",
-    })
+    }, timeout=10)
     resp.raise_for_status()
     return resp.json()["access_token"]
 
@@ -57,29 +57,36 @@ def headers(token):
 
 def get_sheet_ids(token):
     """Return {sheet_title: sheet_id} for all tabs."""
-    r = requests.get(f"{BASE_URL}/{SPREADSHEET_ID}", headers=headers(token))
+    r = requests.get(f"{BASE_URL}/{SPREADSHEET_ID}", headers=headers(token), timeout=30)
     r.raise_for_status()
     return {s["properties"]["title"]: s["properties"]["sheetId"]
             for s in r.json().get("sheets", [])}
 
 
-def clear_and_write(token, sheet_name, rows):
-    """Clear a sheet and write rows starting at A1."""
-    # Clear
-    requests.post(
-        f"{BASE_URL}/{SPREADSHEET_ID}/values/{sheet_name}:clear",
-        headers=headers(token)
-    )
-    # Write
-    body = {"values": rows, "majorDimension": "ROWS"}
-    r = requests.put(
-        f"{BASE_URL}/{SPREADSHEET_ID}/values/{sheet_name}!A1",
+def batch_clear(token, sheet_names):
+    """Clear multiple sheets in a single API call."""
+    body = {"ranges": list(sheet_names)}
+    r = requests.post(
+        f"{BASE_URL}/{SPREADSHEET_ID}/values:batchClear",
         headers=headers(token),
-        params={"valueInputOption": "USER_ENTERED"},
-        json=body
+        json=body,
+        timeout=30,
     )
     r.raise_for_status()
-    return r.json()
+
+
+def batch_write(token, sheet_to_rows):
+    """Write rows to multiple sheets (each starting at A1) in one batchUpdate."""
+    data = [{"range": f"{name}!A1", "majorDimension": "ROWS", "values": rows}
+            for name, rows in sheet_to_rows.items()]
+    body = {"valueInputOption": "USER_ENTERED", "data": data}
+    r = requests.post(
+        f"{BASE_URL}/{SPREADSHEET_ID}/values:batchUpdate",
+        headers=headers(token),
+        json=body,
+        timeout=30,
+    )
+    r.raise_for_status()
 
 
 def append_row(token, sheet_name, row):
@@ -89,15 +96,16 @@ def append_row(token, sheet_name, row):
         f"{BASE_URL}/{SPREADSHEET_ID}/values/{sheet_name}!A1:append",
         headers=headers(token),
         params={"valueInputOption": "USER_ENTERED", "insertDataOption": "INSERT_ROWS"},
-        json=body
+        json=body,
+        timeout=30,
     )
     r.raise_for_status()
     return r.json()
 
 
-def format_sheet(token, sheet_id):
-    """Bold + freeze header row, set font to Arial 10."""
-    body = {"requests": [
+def build_format_requests(sheet_id):
+    """Return the batchUpdate requests to bold+freeze a header row."""
+    return [
         {
             "repeatCell": {
                 "range": {"sheetId": sheet_id, "startRowIndex": 0, "endRowIndex": 1},
@@ -123,25 +131,38 @@ def format_sheet(token, sheet_id):
                 "fields": "pixelSize"
             }
         }
-    ]}
+    ]
+
+
+def batch_update(token, requests_list):
+    """Apply a list of spreadsheet batchUpdate requests in one call."""
+    if not requests_list:
+        return
     r = requests.post(
         f"{BASE_URL}/{SPREADSHEET_ID}:batchUpdate",
         headers=headers(token),
-        json=body
+        json={"requests": requests_list},
+        timeout=30,
     )
     r.raise_for_status()
 
 
-def ensure_sheet_exists(token, title):
-    """Create a new sheet tab if it doesn't exist. Returns sheet_id."""
-    sheet_ids = get_sheet_ids(token)
+def ensure_sheet_exists(token, title, sheet_ids=None):
+    """Create a new sheet tab if it doesn't exist. Returns (sheet_id, sheet_ids map).
+
+    Pass a known sheet_ids map to avoid a redundant metadata fetch.
+    """
+    if sheet_ids is None:
+        sheet_ids = get_sheet_ids(token)
     if title in sheet_ids:
-        return sheet_ids[title]
+        return sheet_ids[title], sheet_ids
     body = {"requests": [{"addSheet": {"properties": {"title": title}}}]}
     r = requests.post(f"{BASE_URL}/{SPREADSHEET_ID}:batchUpdate",
-                      headers=headers(token), json=body)
+                      headers=headers(token), json=body, timeout=30)
     r.raise_for_status()
-    return get_sheet_ids(token)[title]
+    new_id = r.json()["replies"][0]["addSheet"]["properties"]["sheetId"]
+    sheet_ids[title] = new_id
+    return new_id, sheet_ids
 
 
 # ─────────────────────────────────────────────
@@ -274,9 +295,8 @@ def cmd_rebuild():
     print("Reading sheet IDs...")
     sheet_ids = get_sheet_ids(token)
 
-    # Ensure Reference tab exists
-    ref_id = ensure_sheet_exists(token, "Reference")
-    sheet_ids = get_sheet_ids(token)
+    # Ensure Reference tab exists (reuses the map we already fetched)
+    _, sheet_ids = ensure_sheet_exists(token, "Reference", sheet_ids)
 
     sheets = {
         "Deal Sourcing": (DEAL_HEADERS, DEAL_DATA),
@@ -285,13 +305,19 @@ def cmd_rebuild():
         "Reference":     ([], REFERENCE_DATA),
     }
 
+    # Build all row payloads, then clear + write + format in batched calls
+    sheet_to_rows = {}
+    format_requests = []
     for sheet_name, (headers_row, data_rows) in sheets.items():
         print(f"Rebuilding: {sheet_name}...")
-        rows = ([headers_row] + data_rows) if headers_row else data_rows
-        clear_and_write(token, sheet_name, rows)
+        sheet_to_rows[sheet_name] = ([headers_row] + data_rows) if headers_row else data_rows
         sid = sheet_ids.get(sheet_name)
         if sid is not None and headers_row:
-            format_sheet(token, sid)
+            format_requests.extend(build_format_requests(sid))
+
+    batch_clear(token, sheet_to_rows.keys())
+    batch_write(token, sheet_to_rows)
+    batch_update(token, format_requests)
 
     print("\n✅ Done. All 4 tabs rebuilt:")
     print("   • Deal Sourcing  — 4 deals migrated, new schema applied")
@@ -358,8 +384,8 @@ def cmd_add_pm():
 
 
 def cmd_refresh_token():
-    token = get_access_token()
-    print(f"✅ Token refreshed successfully. (first 20 chars: {token[:20]}...)")
+    get_access_token()
+    print("✅ Token refreshed successfully.")
 
 
 # ─────────────────────────────────────────────
