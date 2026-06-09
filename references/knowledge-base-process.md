@@ -46,6 +46,8 @@
 - Send deals to team/mentor for review
 - Submit 1–3 LOIs/week
 - Build ongoing rapport with brokers (even when LOIs lose)
+- Log all prospects reviewed and outcomes — measure your own funnel ratio against 150:15:5:1 benchmark
+- Resist rushing into a bad deal to hit a timeline — the #1 common mistake alongside complete inaction
 
 ### Broker sourcing channels:
 1. **Crexi** — On-market listings to identify brokers, then convert to off-market
@@ -114,11 +116,13 @@
 - [ ] Ask broker about seller motivation and competitive offers
 - [ ] Follow up within 24 hours of sending each LOI
 - [ ] Log all offers in CRM
+- [ ] Include "and/or assigns" in Purchaser name on all contracts (preserves entity flexibility for syndication)
+- [ ] Engage syndication attorney at or before LOI acceptance — not after PSA is signed
 
 ### Negotiation targets:
 - Price
-- Earnest money (amount + hard/soft schedule)
-- Due diligence period length
+- Earnest money: two-tranche structure (Initial Deposit ~$25–50K due within 3 business days; Second Deposit at end of inspection period; both fully refundable during inspection period)
+- Due diligence period: 30–45 days is market standard; 30 calendar days typical in PSA
 - Closing timeline
 
 ---
@@ -154,10 +158,14 @@
 - [ ] Form legal entities (Property LLC, GP, LP/investor entities)
 - [ ] Obtain EINs for each entity
 - [ ] Open bank accounts
-- [ ] File Form D (SEC)
+- [ ] File Form D with SEC within 15 days of first investor sale — hard deadline
+- [ ] File required Blue Sky (state-level) securities notices for each state where investors reside
 - [ ] Create PPM, operating agreement, subscription agreement
 - [ ] Create DocuSign version for investors
 - [ ] Create wire instructions
+- [ ] Decide 506(b) vs. 506(c): 506(b) allows up to 35 non-accredited sophisticated investors but no general solicitation; 506(c) allows general solicitation but requires verified accreditation of all investors
+- [ ] Class A (LP) = preferred return + economic rights, non-voting; Class B (GP) = voting control
+- [ ] Three attorney roles required: (1) transaction attorney for closing, (2) securities attorney for PPM/offering docs, (3) business attorney for entity structuring — do not consolidate
 
 ---
 
@@ -212,6 +220,13 @@
 - [ ] Verification of RUBS and CapEx expenditures
 - [ ] All current work orders + last 24 months of work orders
 - [ ] Updated bank statements, payroll, delinquency reports
+- [ ] Loss-run history (5 years of insurance claims) — reveals recurring physical issues and underwriting for new policy
+- [ ] UCC search — confirms no creditor holds a security interest in seller's personal property tied to the deal
+- [ ] HAP contract review (if Section 8 units) — must be assumed or terminated; tied to specific property
+- [ ] Laundry lease review — flag as hard gate during title review; cross-reference Schedule B
+- [ ] Check for pending special assessments (municipality or HOA) — not on P&L but real cash drain
+- [ ] Verify flood zone status; request elevation certificate; if none, pull flood policy declarations page and underwrite flood insurance as a known line item
+- [ ] Reimbursement items (legal, appraisal, DD, rate lock, background checks) must be in Sources & Uses model at underwriting — not treated as closing surprises
 
 **Key questions for seller:**
 - Any major plumbing/sewer repairs in last 5 years?
@@ -253,12 +268,31 @@
 ### Post-closing (first 90 days):
 - [ ] Notify investors with closing binder + settlement docs
 - [ ] Schedule weekly calls with property manager
-- [ ] Get access to PM software owner portal
+- [ ] Get access to PM software owner portal (Appfolio, Buildium, Yardi, RentManager, or Resman — non-negotiable)
 - [ ] Request 4 weekly reports: unit availability, work orders, delinquencies, lease expirations
+- [ ] Give PM one week post-close to audit true vacancy — actual count often differs from seller's reported figure
 - [ ] Begin 90-day business plan execution + kick off renovations
 - [ ] Establish monthly lender reporting
 - [ ] Visit property monthly for first 90 days → quarterly after stabilization
 - [ ] Bind insurance + update lender/partners
+- [ ] Bind three Accord certificates: Accord 25 (Liability), Accord 27 (Property mortgagees), Accord 28 (Commercial Property) — all must name lender and PM company
+
+### Property manager selection (do this before going under contract):
+
+**Sweet spot:** PM portfolio of 100–1,000 units. Below 100 = under-resourced. Above 1,000 = you get deprioritized.
+
+**Non-negotiable requirements:**
+- Owner portal access to income/expense reports, invoices, and before/after photos
+- PM software: Appfolio, Buildium, Yardi, RentManager, or Resman
+- Fees charged on collected rent only — not scheduled rent
+
+**Standard fee structure:** ~10% of collected rent + 50% of first month's rent for new tenant placements. Significantly lower fees = red flag; prioritize quality over cost.
+
+**Vacancy benchmarks:** Quality units lease within 2–3 weeks. Minor make-ready (paint/flooring) within 30 days. Larger renos within 30–60 days.
+
+**Positive signals:** PM company owners also invest locally (aligned incentives). Team-based structure with a dedicated POC per property.
+
+**Vetting test:** Ask for a ballpark paint-and-flooring cost for a 2BR/900 sq. ft. unit. A manager who can't give a rough range lacks local vendor relationships.
 
 ### Manage the manager — not the property. Track weekly:
 - Leasing velocity | Renovation progress | Expense control | CapEx schedule
