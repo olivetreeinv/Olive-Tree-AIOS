@@ -138,3 +138,23 @@ Applied in `scripts/deal_analysis.py` (`THRESHOLDS` dict + score gate) and synce
 **Owner:** Brian Norton
 
 ---
+
+## 2026-06-09 — Automated the Daily Brief as a cloud routine (laptop-off, weekday 8am email)
+
+**Decision:** Stood up a `/schedule` **cloud routine** (`trig_01UBdd7vKdi69SiSHiUM8u7c`) that runs `/daily-brief` every weekday and emails the result to brian@olivetreeinv.io — running on Anthropic's cloud, so it works with the computer off. Email only, no SMS. Sign-off on the AIOS wrapper email is **-Olive**.
+
+**How it works:**
+- New script `scripts/daily_brief_cloud.py` — stdlib-only (urllib; no `requests`, no `gws` CLI, no MCP). Modes: `fetch` (today's calendar + last-24h Gmail deal/investor/starred buckets as JSON), `send` (emails the finished brief), and `guard --hour` (DST gate). Reads Google OAuth creds from `GOOGLE_*` env vars and hits Google REST directly.
+- Routine flow: `guard` → `fetch` → format per `.claude/skills/daily-brief/SKILL.md` in Brian's voice → `send`. Model: Sonnet 4.6.
+- **DST handled automatically:** cron `0 12,13 * * 1-5` fires at both 12:00 and 13:00 UTC; the guard lets only the firing that is 8am Eastern proceed and aborts the other. Lands at 8am ET year-round with no manual cron swaps.
+- Tested end-to-end locally 2026-06-09 (real fetch + real send both confirmed). `/code-review` pass: no correctness bugs.
+
+**Why direct API, not MCP:** Cloud routines can't attach Google's first-party Gmail/Calendar integrations as MCP, and even where MCP auto-attached, direct API via env-var creds is cleaner and honors Brian's standing "always direct API, never MCP" rule — no exception needed.
+
+**Setup path:** GitHub connected via the Claude GitHub App browser flow (the `/web-setup` slash command wasn't exposed in Brian's VSCode extension; `gh` CLI was already authed). Gmail + Calendar connected as claude.ai connectors.
+
+**Remaining manual step (Brian):** add `GOOGLE_CLIENT_ID/SECRET/REFRESH_TOKEN` to the cloud environment's Environment Variables (values from `gws auth export --unmasked`). Until then each run emails a graceful "missing GOOGLE_* env vars" note.
+
+**Alternatives considered:** (1) `/loop` — rejected, runs locally so dies when the laptop is off. (2) Gmail/Calendar MCP for the routine — rejected, direct API is cleaner and rule-compliant. (3) Email-to-SMS gateway / Twilio for texting — deferred; email only for now. (4) Single-hour cron + manual DST swap — rejected in favor of the self-correcting two-firing + guard design.
+
+**Owner:** Brian Norton
