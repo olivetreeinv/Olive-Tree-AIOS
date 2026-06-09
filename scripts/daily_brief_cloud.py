@@ -35,6 +35,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import datetime, timedelta
+from email.header import Header
 
 # Trust the system CA store first — on the Claude Code cloud sandbox, outbound
 # HTTPS goes through a TLS-inspecting proxy whose CA lives in the system store
@@ -221,10 +222,12 @@ def cmd_send(args):
     else:
         body = sys.stdin.read()
 
+    # Subject headers must be ASCII; MIME encoded-word for any non-ASCII (em-dash etc.)
+    subject = Header(args.subject, "utf-8").encode()
     msg = (
         f"From: brian@olivetreeinv.io\r\n"
         f"To: {args.to}\r\n"
-        f"Subject: {args.subject}\r\n"
+        f"Subject: {subject}\r\n"
         f"Content-Type: text/plain; charset=UTF-8\r\n\r\n"
         f"{body}"
     )
