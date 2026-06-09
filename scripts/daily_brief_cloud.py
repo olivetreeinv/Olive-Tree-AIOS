@@ -36,11 +36,17 @@ import urllib.parse
 import urllib.request
 from datetime import datetime, timedelta
 
+# Trust the system CA store first — on the Claude Code cloud sandbox, outbound
+# HTTPS goes through a TLS-inspecting proxy whose CA lives in the system store
+# (and/or SSL_CERT_FILE). Then additionally trust certifi's bundle, which some
+# local Python builds (e.g. python.org macOS) need because their system store is
+# empty. Additive load_verify_locations means both are trusted.
+_SSL_CTX = ssl.create_default_context()
 try:
     import certifi
-    _SSL_CTX = ssl.create_default_context(cafile=certifi.where())
-except ImportError:  # cloud VM and most Linux: system CA store works
-    _SSL_CTX = ssl.create_default_context()
+    _SSL_CTX.load_verify_locations(cafile=certifi.where())
+except Exception:
+    pass
 
 try:
     from zoneinfo import ZoneInfo
