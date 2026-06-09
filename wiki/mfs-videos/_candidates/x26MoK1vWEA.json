@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan walks through a complete deal analysis framework using a real 17-unit Cincinnati property ($2M asking price) as a case study. He demonstrates how to plug property data into a deal analyzer spreadsheet, evaluate three key metrics (IRR, cash-on-cash, equity multiple), and determine whether a deal meets investment thresholds of 14-20% IRR and 6-10% cash-on-cash return. He then shows how to negotiate price downward when a deal doesn't work at asking price, and introduces the critical concept of leveraging on-market deals to access off-market/pre-market opportunities through broker relationships.",
+  "takeaways": [
+    "Target IRR between 14-20% annual rate; cash-on-cash return 6-10% per year; equity multiple 1.8-2.0x as primary deal filters",
+    "Debt Service Coverage Ratio (DCR) must be 1.15-1.25 minimum for commercial loans (5+ units); banks underwrite the property, not the borrower",
+    "On-market deals represent only 40% of available market; 60% are off-market/pre-market deals that typically make better financial sense",
+    "Use broker relationships strategically: tour 3 properties in 48 hours, meet property managers and lenders during same trip to build local market intelligence",
+    "When deal doesn't pencil at asking price, adjust these levers in order: (1) interest rate down, (2) down payment percentage, (3) rental rate increases, (4) purchase price reduction",
+    "Closing costs should include 2-3% acquisition fee for deal assembly, which can offset initial cash outlay",
+    "Write Letter of Intent (LOI) at your maximum price even if below asking; use rejection as entry point to ask broker for pre-market deal access"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Create standardized 5-50 unit deal analyzer with IRR/cash-on-cash/equity multiple as three primary filter metrics before deeper analysis",
+      "evidence": "Justin showed simple Excel spreadsheet with blue (input) vs. black (hardcoded) cells; emphasized starting simple with basic deal analyzer before moving to detailed version; demonstrated plugging offering memo data directly into analyzer to test deal viability"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Systematically adjust deal levers in specific sequence (rates \u2192 down payment \u2192 rental increases \u2192 price) rather than arbitrary tweaks",
+      "evidence": "Justin methodically showed: 6.25% to 5.75% interest rate improved metrics slightly; increasing down payment to 35% improved DCR but hurt cash-on-cash; raising rents $100/month (9950\u219210050) moved metrics into playable range; finally reducing price from $250k to $185k-190k made all metrics align"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Schedule 3 property tours within 48-hour market visit window and use that trip to build relationships with property managers, lenders, and brokers simultaneously",
+      "evidence": "Justin described exact process: call broker to schedule tour, ask for property manager recommendations, ask for local lender recommendations, meet both during same trip; explicitly stated 'now I have the Brokers so now I'm making relationship with broker property management crew construction crew and now I have couple lenders local and I did that within 48 hours'"
+    }
+  ],
+  "id": "x26MoK1vWEA",
+  "title": "$20,000 Down Multifamily Investment: 17-Unit Apartment Complex Case Study | Justin Brennan",
+  "duration": 3678
+}

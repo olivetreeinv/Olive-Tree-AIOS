@@ -1,0 +1,46 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan provides an in-depth walkthrough of analyzing a 33-unit Class C apartment complex (The Oasis) in Phoenix, Arizona listed at $7 million. The session covers how to read operating memorandums, stress-test financial projections, understand debt coverage ratios, and use proformas to determine if a deal makes sense regardless of asking price. Key insight: commercial multifamily financing is based on property financials (not borrower financials), which changes deal analysis fundamentally.",
+  "takeaways": [
+    "Five critical steps to buying apartments: finding deals, analyzing properly, raising capital (debt + equity), closing escrow, and asset management",
+    "5+ units threshold: banks underwrite on property financials, not borrower financials; non-recourse loans where property (not you) pays mortgage",
+    "Properties valued as: NOI \u00f7 cap rate = property value; buy at higher cap rate, renovate/increase rents to lower cap rate, sell at lower cap rate for profit spread",
+    "Stress test using debt service coverage ratio (DCR) minimum 1.25x: NOI must be 125% of annual debt payments or bank won't finance",
+    "Expense ratio: target 30-31% of effective gross income (EGI) for Class C properties; verify property taxes and insurance with local brokers/assessors",
+    "Interest-only loan periods (2-3 years minimum): prioritizes investor cash flow over principal paydown since property sold in 3-5 year hold",
+    "Cost segregation study ($5-8k): accelerates building depreciation over 3-5 years instead of 27.5 years, creating paper losses that offset capital gains/ordinary income for tax professionals",
+    "Only buy in top 75 MSAs (Metropolitan Statistical Areas) with strong job/population growth; avoid tertiary markets that collapse during recessions",
+    "Current market metrics for Phoenix: 5-6% cap rate range, 5.75-6.5% interest rates, $100-200k per unit acquisition prices, target 2%+ cap rate spread between acquisition and disposition"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Use 5% vacancy loss + 1-2% other losses (concessions/bad debt) = 7% total economic loss assumption when underwriting",
+      "evidence": "Justin states 'I always will underwrite to a five and the reason why is because the bank's going to underwrite to a 5' and shows how to calculate total economic loss percentage in proforma"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Verify DCR \u22651.25x before proceeding with deal; if DCR drops below 1.25 with interest rate changes, reduce purchase price until DCR meets minimum",
+      "evidence": "Justin demonstrates live: 'so the bank is going to want to make sure that number is 1.25 times more than your debt service' and shows adjusting purchase price from $7M to $6.2M when interest rates rise to maintain 1.25 DCR"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Use sensitivity analysis on interest rates (test 5%, 5.75%, 6%, 6.5%) to establish maximum offer price rather than anchoring to seller's ask",
+      "evidence": "Justin shows changing interest rate from 5.75% to 6% drops max purchase price from $6.7M to $6.2M, demonstrating 'it's not about opinion...the numbers either make sense or they don't'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Maintain 2% minimum spread between acquisition cap rate and projected disposition cap rate (buy at 6%, sell at 4-5%) to ensure profit capture",
+      "evidence": "Justin states 'you want it to be as low as possible when selling' and shows buying at 6% cap rate and selling at 4% generates significantly higher IRR than buying at 6% and selling at 6%"
+    },
+    {
+      "skill": "market-research",
+      "change": "Confirm market cap rates, property tax assessment impact on expenses, and insurance costs with local commercial brokers/assessors before underwriting",
+      "evidence": "Justin emphasizes: 'property taxes same thing big big big numbers...you want to have an insurance broker that you can run it before you would actually close' and shows property tax/insurance changed due to county reassessment on sale"
+    }
+  ],
+  "id": "d61DVAoqqIM",
+  "title": "Unlocking The Secrets Of Multifamily Investing: A Real-life 33-unit Case Study With Justin Brennan",
+  "duration": 4491
+}
