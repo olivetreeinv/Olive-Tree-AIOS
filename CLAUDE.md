@@ -83,6 +83,20 @@ Run `/audit` to see full coverage gaps.
 
 Auth pattern and common API calls → `references/google-workspace-api.md`.
 
+## Second-opinion research (Perplexity)
+
+When Brian asks which stack/tool/architecture fits a task or scenario — or any question where a live, cited outside view sharpens the call — pull a second opinion from Perplexity's Sonar API via `scripts/perplexity.py`:
+
+```bash
+python3 scripts/perplexity.py "your question" [--model sonar-pro|sonar|sonar-reasoning]
+```
+
+It returns a web-grounded answer plus numbered sources. Fold it into your own reasoning — don't just relay it. Lead with your recommendation; use Perplexity to confirm, challenge, or add citations.
+
+- **Reach for it** on stack/tooling/architecture tradeoffs, fast-moving tech where recency matters, or when Brian wants sourced backing.
+- **Don't** default to it for what your own knowledge or built-in WebSearch already cover — it's usage-billed (per-query, separate from any subscription). Flag the cost if a session would fan out many calls.
+- Needs `PERPLEXITY_API_KEY` in `.env`. If unset, the free fallback is built-in WebSearch.
+
 ## How you work with Brian
 
 ### The fundamentals
