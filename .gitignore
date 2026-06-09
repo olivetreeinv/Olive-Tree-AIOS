@@ -7,3 +7,10 @@ node_modules/
 .claude/settings.local.json
 audits/
 .codex-review/
+
+# Obsidian editor config (machine-specific)
+.obsidian/
+wiki/.obsidian/
+
+# Raw source docs processed into the wiki (kept local)
+wiki/raw/
