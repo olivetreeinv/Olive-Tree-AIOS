@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan walks through a live case study of a mentee's 16-unit multifamily deal in Phoenix (at best-and-final offer stage for $3M purchase). The session covers offer strategy, debt assumption vs. refinancing analysis, capital raise structuring, and how to position the deal competitively while maintaining underwriting discipline.",
+  "takeaways": [
+    "Competition on deals is good\u2014if you're the only offer, question if it's actually a good deal; assume existing 2.6M loan at 6.63% fixed with 48 months interest-only beats new 2.3M loan at 6.25% due to better cash flow",
+    "Use 10% of total equity requirement as your initial GP contribution (~$56k on $557k total equity)\u2014this keeps your returns strong while raising the rest from LPs",
+    "Submit 50k earnest money deposit (roughly 1.5-2% on $3M purchase) and request 60-day close with optional 30-day extension for additional 10k deposit",
+    "Don't increase offer price speculatively; instead, model conservative 2024-2025 rents, then project 5-6% annual growth starting 2026 when rent growth is expected to materialize",
+    "Call broker before final LOI submission to confirm: how many competing offers exist, where pricing is trading, and whether you can stick to your underwriting without moving",
+    "Arizona/Nevada markets are attractive for low property taxes (~$450/unit insurance vs $2500-3000 in Florida, $750-1500 in Texas) and no income tax\u2014focus on markets with job/population growth",
+    "Tax benefit packaging: emphasize to investors that cost segregation study (~$6k) can generate $80-95k in year-one K1 write-offs on $100k invested, effectively offering 12-15% cash return plus tax shelter"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Model conservative rent assumptions through 2025, then apply 5-6% growth starting 2026 based on Phoenix market fundamentals rather than projecting flat growth through hold period",
+      "evidence": "Justin: 'on your numbers starting in 2026 I would bump your rents quite a bit so if you're looking at those numbers for down the road 2024 2025 are pretty static and flat but your 2026 numbers and your rent growth...should be bumped up a decent amount I'd be pushing them 2026 2027 2028'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Compare loan assumption vs. refinance by calculating full 5-year cash flow impact, not just rate comparison; here interest-only at 6.63% on $2.6M outperforms 6.25% new loan at $2.3M principal-and-interest",
+      "evidence": "Justin analysis: 2.6M assumable loan 'interest only up until that date which is four years give or take' vs. new loan 'this payment is going to be much higher than this one so the cash flow is going to be much better in this option'"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Call the broker pre-submission to validate competitive positioning and confirm the offer remains in range; don't assume you know where other offers stand",
+      "evidence": "Justin: 'Get on the phone with the broker...and say hey this is kind of where we're planning on coming in...you know where are you seeing things Trend...find out how many other offers are on the table right now'"
+    }
+  ],
+  "id": "ZuIKwQ071Uo",
+  "title": "LIVE Class. How to win an offer 16 unit multifamily deal with Justin Brennan",
+  "duration": 3628
+}
