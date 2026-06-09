@@ -163,10 +163,43 @@ def cache_bid(notice_id, data, token, folder_id, existing_file_id=None):
 
 ---
 
+## Feature 0b — Top 20 Refresh (run every session, before pipeline triage)
+
+Every `/govcon` run must refresh the Top 20 tab in the sheet. This replaces the previous contents each run.
+
+**Source:** `olive-tree-govcon/cache.db` → `opportunity_store` table (2,877+ rows). Always check this BEFORE hitting SAM.gov API — Brian runs the web app separately and it keeps the cache populated.
+
+**Filter:** `typeOfSetAside == 'SBA'` only. Deadline ≥ today minus 3 days (catch anything closing imminently).
+
+**Scoring (100pts max):**
+- Notice type: Combined Synopsis/RFQ = 25, Solicitation = 20, Presolicitation = 10
+- Deadline: 5–21 days = 20, 22+ days = 10, 0–4 days = 5, past = -10
+- SE region (GA/FL/AL/SC/NC/TN/KY/VA/MS/AR) = 20
+- Has resource documents = 15
+- Target NAICS match = 20
+
+**Deduplication:** Group by title + city + state — keep highest-scoring notice ID only.
+
+**Column map — Top 20 tab:**
+`A=Rank | B=Score | C=Status | D=Title | E=NAICS | F=Trade | G=City | H=State | I=Deadline | J=Days Left | K=Action | L=SAM.gov Link`
+
+**Status labels:**
+- `⛔ EXPIRED` — past deadline → Action = "Let Go"
+- `🔴 TODAY` — deadline today → Action = "Act Now or Let Go"
+- `🟡 URGENT` — 1–7 days → Action = "Action This Week"
+- `🟢 ACTIVE` — 8+ days → Action = "Plan & Source Sub"
+
+After writing the sheet, surface the triage summary inline:
+- What to **let go** (expired/today/1-2 days with no sub already contacted)
+- What to **action this week** (🟡)
+- What to **plan** (🟢) — full ranked list
+
+---
+
 ## Feature 1 — Pipeline (Google Sheets)
 
 **Sheet:** `1y7eQTpmY6V5O22f_bgZUjFNgkWuOcoZbGPGWMz5ECGw`
-**Tabs:** `Bids` (pipeline) · `Sub Outreach` (candidates + scripts per bid) · `Bid Documents` (all attachments with download links)
+**Tabs:** `Bids` (pipeline) · `Sub Outreach` · `Bid Documents` · `Top 20`
 
 ### Column map — Bids tab
 `A=Notice ID | B=Title | C=Trade | D=NAICS | E=State | F=Deadline | G=Days Left | H=Status | I=Sub Name | J=Sub Contact | K=Sub Quote | L=Our Bid | M=Gross Profit | N=Set-Aside | O=Notes | P=SAM.gov Link`
@@ -399,6 +432,31 @@ Under 150 words. Subject + body. Sign off: -Brian, brian@olivetreeinv.io
 4. For each bid in Sheets: if notice_id is in Drive cache, use cached data for scope/POC/requirements. If not in cache, fetch from SAM.gov and write to cache.
 5. Flag any bids where `pws_text` is "Pending" — SAM.gov quota may be needed to fill them.
 
+### Step 1b — Cleanup expired bids (every run, before triage)
+For each row in Pipeline where deadline < today, do ALL of the following:
+
+**Sheets:**
+1. Remove from **Pipeline** tab (match Notice ID, col B)
+2. Remove matching rows from **Sub Scripts** tab (match Notice ID, col B)
+3. Remove matching rows from **Bid Documents** tab (match Notice ID, col B)
+
+**Drive — Bid Cache** (`1nBGkN44a0i39RxNq9s9pYCzBEPRsoVwg`):
+4. Find `{notice_id}.json` in the cache folder and delete it
+
+**Drive — Bid Documents** (`19aSf82IahDnbi0G4vBQj2qFZ7sUVDCuT`):
+5. Search for any files whose name starts with the notice ID or bid title prefix and delete them
+   - Query: `name contains '{first 20 chars of title}' and '{FOLDER_ID}' in parents and trashed=false`
+   - Delete each match via `DELETE https://www.googleapis.com/drive/v3/files/{file_id}`
+
+Track all removals per location. Report in the run summary (see Step 6).
+
+**Drive folder IDs:**
+- Bid Cache (JSON): `1nBGkN44a0i39RxNq9s9pYCzBEPRsoVwg`
+- Bid Documents (PDFs): `19aSf82IahDnbi0G4vBQj2qFZ7sUVDCuT`
+
+### Step 1c — Refresh Top 20 (every run, after cleanup)
+Query `olive-tree-govcon/cache.db` → `opportunity_store`. Score all SBA opps. Deduplicate by title+city+state. Write top 20 to `Top 20` sheet tab (overwrite). Then surface triage inline per Feature 0b.
+
 ### Step 2 — Triage each bid by status (column H)
 
 #### `researching`
@@ -497,6 +555,14 @@ When Brian wants fresh opportunities:
 
 ```
 # GovCon Pipeline — {date}
+
+## 🗂 This Run — What Changed
+- Pipeline: [removed X expired | added X new | updated X rows]
+- Top 20: [refreshed — X active SBA opps scored]
+- Sub Scripts: [removed X rows for expired bids | added X new scripts]
+- Bid Documents tab: [removed X rows for expired bids | added X new docs]
+- Drive / Bid Cache: [deleted X JSON files for expired bids]
+- Drive / Bid Documents: [deleted X PDF files for expired bids]
 
 ## Summary
 {X} active bids · {X} need action today
