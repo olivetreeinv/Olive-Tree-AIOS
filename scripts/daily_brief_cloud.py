@@ -190,6 +190,23 @@ def cmd_fetch(_args):
     print(json.dumps(result, indent=2, ensure_ascii=False))
 
 
+def cmd_guard(args):
+    """Exit 0 if the current Eastern hour matches --hour, else exit 3.
+
+    Lets a UTC-only cron fire at both candidate hours (e.g. 12:00 and 13:00 UTC)
+    and run only at the one that is the target local time — auto-handling DST
+    with no cron edits across the spring/fall switch.
+    """
+    if ZoneInfo:
+        hour = datetime.now(ZoneInfo(EASTERN)).hour
+    else:
+        hour = datetime.now().hour
+    if hour == args.hour:
+        sys.exit(0)
+    print(f"skip: Eastern hour is {hour:02d}, not {args.hour:02d}")
+    sys.exit(3)
+
+
 def cmd_send(args):
     token = get_token()
     if args.body_file and args.body_file != "-":
@@ -220,6 +237,9 @@ def main():
 
     sub.add_parser("fetch", help="Print today's calendar + last-24h Gmail buckets as JSON")
 
+    p_guard = sub.add_parser("guard", help="Exit 0 only if current Eastern hour == --hour (else exit 3)")
+    p_guard.add_argument("--hour", type=int, required=True, help="Target Eastern hour (0-23)")
+
     p_send = sub.add_parser("send", help="Email the finished brief")
     p_send.add_argument("--to", required=True)
     p_send.add_argument("--subject", required=True)
@@ -228,6 +248,8 @@ def main():
     args = parser.parse_args()
     if args.cmd == "fetch":
         cmd_fetch(args)
+    elif args.cmd == "guard":
+        cmd_guard(args)
     elif args.cmd == "send":
         cmd_send(args)
 
