@@ -119,3 +119,22 @@ Applied in `scripts/deal_analysis.py` (`THRESHOLDS` dict + score gate) and synce
 **Owner:** Brian Norton
 
 ---
+
+## 2026-06-09 — Added underwriting-discipline rules to the deal knowledge base
+
+**Decision:** Expanded `references/knowledge-base-metrics.md` and `knowledge-base-process.md` with hard-won underwriting rules that were previously implicit:
+- **Property tax reassessment risk:** model reassessment at full acquisition price in Year 3 (not the seller's current tax bill) — in reassessment states taxes can jump 50–90%+ after a sale.
+- **Exit cap sensitivity:** always run a sensitivity table; stress-test exit at going-in cap **+0.50% minimum**.
+- **Sub-1.0x DSCR at acquisition:** value-add deals often go in below 1.0x — model an I/O period explicitly; never assume lender approval without it.
+- **Return on Cost (ROC):** NOI ÷ total project cost; target a **150bps+ spread over exit cap** to justify execution risk.
+- **CapEx benchmark:** $1.20–$1.30 annual rent increase per $1 of CapEx (20–30% rent lift per dollar).
+- **Market filter:** added employer diversity (no single-employer towns; Fortune 500 presence = strong signal).
+- **PM selection (process):** 100–1,000 unit portfolio sweet spot, ~10% + 50% first-month fee benchmark, 2–3 week lease-up targets.
+
+**Why:** These are the traps that quietly kill value-add returns — reassessment and exit-cap expansion especially. Encoding them in the KB means every deal skill that reads it applies the discipline automatically, instead of relying on memory deal-by-deal. Directly serves the Q3 constraint (deal sourcing + underwriting drag).
+
+**Alternatives considered:** Leave them as tribal knowledge / apply ad hoc. Rejected — the whole point of the KB is that the deal skills inherit the rules without re-deriving them each run.
+
+**Owner:** Brian Norton
+
+---
