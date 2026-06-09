@@ -1779,7 +1779,7 @@ function renderTop20(scored) {
     const reasonChips = reasons.map(r => `<span class="reason-chip" data-tip="${escAttr(r.tip)}">${esc(r.label)}</span>`).join('');
 
     return `
-      <div class="top20-card">
+      <div class="top20-card" data-notice-id="${escAttr(noticeId)}">
         <div class="top20-rank ${rankClass}">#${rank}</div>
         <div class="score-badge" data-tip="Scoring: Notice type (25pts) + Deadline (20pts) + Set-aside (20pts) + Has documents (15pts) + Service contract (20pts)">
           <div class="num ${scoreClass}">${score}</div>
