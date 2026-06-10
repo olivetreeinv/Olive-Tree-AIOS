@@ -34,6 +34,12 @@ New listings → Broker follow-ups → Inbound deal emails → Document requests
 
 ### Phase 0: Session Kickoff
 
+**Sync Fathom meetings first (silent):**
+```bash
+cd "/Users/olivetree/Documents/Olive AIOS" && source .env && python3 scripts/fathom_sync.py --days 7
+```
+Run before anything else. Logs the last 7 days of meetings to the Meetings sheet and `wiki/meetings/` so call notes are current before pipeline review. If it errors, skip silently.
+
 **First-run check (2026-05-29 build — remove after first confirmed run):**
 Three new automations shipped. Before running the pipeline, surface this prompt:
 
@@ -41,7 +47,7 @@ Three new automations shipped. Before running the pipeline, surface this prompt:
 ⚙️ 3 new automations are live — first run since build on 2026-05-29.
 
 Validate each during this session:
-  1. Availability checks — broker_search.py should filter unavailable listings automatically
+  1. Availability checks — deal_search.py should filter unavailable listings automatically
   2. Email personalization — broker_followup.py drafts should match Tier (A/B/C) without manual edits
   3. Doc requests — deal_inbox.py --doc-request [n] should generate a ready-to-send draft
 
@@ -66,9 +72,9 @@ If the daily brief was run (or calendar was already pulled), map today's schedul
 
 | Calendar block | Suggested phase |
 |---|---|
-| "Deal Sourcing" | Phase 1–2 (new listings + follow-ups) |
-| "Underwrite / Deep Work" | Phase 3–4 (inbound emails + deal analysis) |
-| "Shortlist + Strategy" | Phase 4–5 (deal analysis + LOI) |
+| "Deal Sourcing" | Phases 1–3 (new listings + broker discovery + follow-ups) |
+| "Underwrite / Deep Work" | Phases 4–5 (inbound emails + deal analysis) |
+| "Shortlist + Strategy" | Phases 5–6 (deal analysis + LOI) |
 | All three blocks (full deal day) | Full pipeline |
 | No relevant blocks | Show generic menu |
 
@@ -80,9 +86,9 @@ Based on your calendar today — [block name] at [time] — I'd suggest:
 
 Run that, or pick something else?
 
-  1. Full pipeline — all phases (~15 min)
-  2. New listings + follow-ups only (Phases 1–2)
-  3. Inbound emails + deal analysis only (Phases 3–4)
+  1. Full pipeline — all phases (~20 min)
+  2. New listings + broker discovery + follow-ups (Phases 1–3)
+  3. Inbound emails + deal analysis only (Phases 4–5)
   4. Draft an LOI — tell me the deal name
 ```
 
@@ -92,10 +98,10 @@ Proceed to selected phases only.
 
 ### Phase 1: Scan for New Listings
 
-Run the broker-search script to pull new listings from Gmail alerts (Crexi + LoopNet):
+Run the deal-search script to pull new listings from Crexi API, LoopNet email alerts, and FMLS API:
 
 ```bash
-python3 scripts/broker_search.py --days 7
+python3 scripts/deal_search.py --days 7
 ```
 
 After the scan, present a summary:
@@ -116,14 +122,46 @@ All logged to Deal Sourcing tab.
 Any of these worth a closer look? (list numbers, or 'none')
 ```
 
-If Brian identifies a deal → jump to Phase 4 for that deal.
+If Brian identifies a deal → jump to Phase 5 for that deal.
 If none → continue to Phase 2.
 
 ---
 
-### Phase 2: Broker Follow-Ups
+### Phase 2: Discover New Brokers
 
-Pull the Brokers List from the Deal Sourcing spreadsheet (`1VxOlof56s8GosrWkSctL-FMm7AoJKJ6YtM3GllMKVH4`, Brokers List tab).
+Scan Crexi, LoopNet, and FMLS for brokers with 2+ active multifamily listings who are not yet in the Brokers List:
+
+```bash
+python3 scripts/broker_search.py
+```
+
+No buy-box filter — any broker with 2+ MF listings on any platform qualifies. The goal is network width, not deal fit.
+
+After the scan, present a summary:
+
+```
+🔍 New Brokers — [date]
+
+NEW BROKERS ADDED ([n]):
+1. [Name] — [Brokerage] | [n] listings on [Platform(s)] | [markets]
+2. ...
+
+ALREADY IN LIST ([n] matched, skipped)
+
+SINGLE-LISTING BROKERS ([n] — not yet qualifying):
+- [Name] — 1 listing on [Platform] in [zip/market]
+
+New brokers added to Brokers List as Tier B. Ready to queue outreach? (y/n)
+```
+
+If yes → draft outreach using the broker call script from `/broker-search` SKILL.md.
+Then continue to Phase 3.
+
+---
+
+### Phase 3: Broker Follow-Ups
+
+Pull the Brokers List from the Deal Sourcing spreadsheet (`1VxOlof56s8GosrWkSctL-FMm7AoJKJ6YtM3GllMKVH4`, Brokers List tab). New brokers added in Phase 2 will appear here — prioritize outreach to them first.
 
 Flag brokers where:
 - `Next Follow-Up` ≤ today's date, AND
@@ -168,9 +206,21 @@ On approval:
 
 **No auto-dormant.** Attempt count is tracked but brokers are never moved to Dormant automatically — Brian sets that manually by editing Status in the sheet.
 
+**Pre-market access push.** For Tier-B / new brokers, prioritize a **3-property tour ask per target metro** over generic check-ins — the tour earns pre-market flow. Draft:
+
+```
+[First name], planning a trip to [metro] [month] — could we walk a few of your
+listings? We're 10–30 units, $50–150K/door. Mostly I want to learn your inventory
+and get on your pre-market/pocket-listing list so we can move fast when the right
+one comes up.
+
+-Brian
+```
+Track **"Pre-market list: Y/N"** as a broker field; brokers who share pre-market move to **Tier A**.
+
 ---
 
-### Phase 3: Scan Inbound Deal Emails
+### Phase 4: Scan Inbound Deal Emails
 
 Search Gmail for broker emails that look like deal submissions (last 7 days):
 
@@ -202,11 +252,11 @@ Present:
    → a) Analyze this deal  b) Skip  c) Mark irrelevant
 ```
 
-For each deal Brian says to analyze → proceed to Phase 4.
+For each deal Brian says to analyze → proceed to Phase 5.
 
 ---
 
-### Phase 4: Deal Analysis
+### Phase 5: Deal Analysis
 
 For each deal flagged from Phase 1 or Phase 3:
 
@@ -240,7 +290,7 @@ python3 scripts/deal_analysis.py --analyze \
 
 Wait for the output. Present the full analysis and recommendation to Brian.
 
-On `PURSUE LOI` → move directly to Phase 5.
+On `PURSUE LOI` → move directly to Phase 6.
 On `MORE INFO NEEDED` → show doc-request draft (from deal_analysis output). Brian approves → send via Gmail API.
 On `PASS` → log Stage as "Pass" in Deal Sourcing. Offer brief pass note to broker (optional, show draft).
 
@@ -260,13 +310,18 @@ python3 scripts/deal_inbox.py --doc-request [INDEX] --days 7 --send
 
 ---
 
-### Phase 5: LOI Drafting
+### Phase 6: LOI Drafting
 
 Triggered by:
 - `/deal-analysis` returning `PURSUE LOI`, OR
 - Brian saying "draft LOI for [property name]"
 
 > Defaults + field guide: `references/loi-template.md`. Full legal text for drafting: `templates/loi-template.md`. Read both — references for defaults, templates for the actual document.
+
+**Before finalizing the LOI, prompt Brian to call the broker first:**
+> "Call broker before sending? Confirm: how many offers are in, where is pricing
+> trending, are we in range?" Capture the answer and adjust price/terms before drafting.
+> Submitting blind on price loses winnable deals — a 2-minute call calibrates the offer.
 
 **Gather LOI inputs:**
 
@@ -330,7 +385,7 @@ On approval:
 
 ---
 
-### Phase 6: Session Summary
+### Phase 7: Session Summary
 
 After all phases are complete:
 
@@ -338,6 +393,7 @@ After all phases are complete:
 ✅ Session Complete — [date]
 
 LISTINGS:    [n] new found | [n] in buy box
+NEW BROKERS: [n] added to Brokers List
 FOLLOW-UPS:  [n] drafted | [n] sent
 INBOUND:     [n] reviewed | [n] analyzed | [n] doc requests sent
 ANALYSIS:    [n] PURSUE | [n] MORE INFO | [n] PASS
@@ -347,7 +403,7 @@ LOIs:        [n] drafted | [n] sent
 Outstanding:
 - [Any pending approvals or doc requests not yet actioned]
 
-Next run: Monday [date] — `python3 scripts/broker_search.py --days 7`
+Next run: Monday [date] — `python3 scripts/deal_search.py --days 7` then `python3 scripts/broker_search.py`
 
 Log any decisions from this session? (y/n)
 ```
@@ -358,11 +414,12 @@ Log any decisions from this session? (y/n)
 
 | Phase | Script / Skill |
 |---|---|
-| Phase 1 | `scripts/broker_search.py` |
-| Phase 2 | `scripts/broker_followup.py` |
-| Phase 3 | `scripts/deal_inbox.py` |
-| Phase 4 | `/deal-analysis` → `scripts/deal_analysis.py` |
-| Phase 5 | LOI draft using `references/loi-template.md` |
+| Phase 1 | `/deal-search` → `scripts/deal_search.py` |
+| Phase 2 | `/broker-search` → `scripts/broker_search.py` |
+| Phase 3 | `scripts/broker_followup.py` |
+| Phase 4 | `scripts/deal_inbox.py` |
+| Phase 5 | `/deal-analysis` → `scripts/deal_analysis.py` |
+| Phase 6 | LOI draft using `references/loi-template.md` |
 
 All scripts are built and operational.
 

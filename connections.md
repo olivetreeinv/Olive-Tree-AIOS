@@ -11,7 +11,7 @@ Registry of every system your AIOS can reach. Filled by `/onboard` from Q4-Q7 an
 | 4 | Communication — Email | Gmail (Google Workspace) | gws cli | OAuth — gws auth login | 2026-05-28 |
 | 4 | Communication — DMs | Apple Messages | not yet connected | — | — |
 | 5 | Project / task tracking | Google Calendar | gws cli (see Domain 3) | OAuth — gws auth login | 2026-05-28 |
-| 6 | Meeting intelligence / Notes | Google Drive | gws cli | OAuth — gws auth login | 2026-05-28 |
+| 6 | Meeting intelligence / Notes | Fathom | script | API key — `FATHOM_API_KEY` in `.env`. `scripts/fathom_sync.py` pulls meetings → Meetings Sheet + `wiki/meetings/`. | 2026-06-10 |
 | 7 | Knowledge / files | Google Drive + Sheets | gws cli | OAuth — gws auth login | 2026-05-28 |
 | — | Community / Learning | Multifamily Schooled | not yet connected | — | — |
 | — | Design / Content | Canva | key+ref | OAuth — tokens in `.env`, refresh via `scripts/canva_oauth_setup.py` | 2026-05-27 |
