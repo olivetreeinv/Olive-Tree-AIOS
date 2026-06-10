@@ -138,6 +138,14 @@ If yes:
 
 ## Execution
 
+### Step 0 — Sync Fathom meetings
+
+Before pulling anything else, run:
+```bash
+cd "/Users/olivetree/Documents/Olive AIOS" && source .env && python3 scripts/fathom_sync.py --days 1
+```
+This logs any meetings from the last 24h to the Meetings sheet and `wiki/meetings/` before the brief runs. If it errors, skip silently — do not surface the error in the brief output.
+
 ### Step 1 — Pull today's calendar
 
 Use the Google Calendar MCP **or** the `gws` CLI call above. Get all events for today (midnight to midnight, Eastern time).
