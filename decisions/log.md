@@ -158,3 +158,17 @@ Applied in `scripts/deal_analysis.py` (`THRESHOLDS` dict + score gate) and synce
 **Alternatives considered:** (1) `/loop` — rejected, runs locally so dies when the laptop is off. (2) Gmail/Calendar MCP for the routine — rejected, direct API is cleaner and rule-compliant. (3) Email-to-SMS gateway / Twilio for texting — deferred; email only for now. (4) Single-hour cron + manual DST swap — rejected in favor of the self-correcting two-firing + guard design.
 
 **Owner:** Brian Norton
+
+---
+
+## 2026-06-10 — Two-template Deal Analyzer dispatch + deal folder convention
+
+**Decision:** `--populate-analyzer` in `scripts/deal_analysis.py` auto-selects between two MF Schooled templates by door count: ≤50 units → *Deal Analyzer 0-50 v10* (`1smas_-1rTtqZSIvfqxF_NzRFyMe_ID-M17z1BQ7qQQU`); >50 units → *50+ Unit Proforma* (`1_vfRIk8lcj-bGLxj3pf46p8OYwjeiI3o7g7AgjwHZQk`). Output is a live Google Sheet named `[Property] — [template] — [date]` uploaded as a new file (not in-place edit of the template).
+
+Every deal gets a **property folder** named by full street address inside *Olive Tree Investments - Deals* (Drive folder ID: `1pLWVMaLPy-8Rt1NGQsX2wg2oNDonWC-p`). All deal artifacts file there: OM/T-12/Rent Roll (auto-archived from Gmail), Deal Analyzer, LOI, and Pitch Deck. Folder creation is idempotent — re-runs reuse the existing folder and skip already-uploaded files.
+
+**Why:** The 0–50 and 50+ models have fundamentally different schemas (the 50+ adds RUBS, refi, sensitivities, and a different T-12 income/expense layout) — they can't share a single cell-mapping. Central deal folder eliminates "where is that OM again?" and creates a clean handoff from underwriting → LOI → LP pitch → capital raise, all in one place. Folder name = address so any team member can find it without knowing an internal deal code.
+
+**Alternatives considered:** Single template with hidden rows for the 50+ case — rejected, the models are structurally different enough that a franken-template would be fragile and hard to maintain. Separate scripts per template — rejected, one dispatcher with two dedicated populate functions is cleaner and shares the upload logic.
+
+**Owner:** Brian Norton

@@ -50,7 +50,11 @@ from gws_auth import get_token
 # ─────────────────────────────────────────────
 
 SPREADSHEET_ID   = "1VxOlof56s8GosrWkSctL-FMm7AoJKJ6YtM3GllMKVH4"
-DEAL_ANALYZER_ID = "14bpvhKEuG4UipIDWIZC2Hud9D0JiV2X6"
+
+# Deal Analyzer templates — selected by door count. Both are native Google
+# Sheets (download via Drive export, not alt=media).
+DEAL_ANALYZER_SMALL_ID = "1smas_-1rTtqZSIvfqxF_NzRFyMe_ID-M17z1BQ7qQQU"  # MF Schooled Deal Analyzer 0-50 v10
+DEAL_ANALYZER_LARGE_ID = "1_vfRIk8lcj-bGLxj3pf46p8OYwjeiI3o7g7AgjwHZQk"  # MF Schooled 50+ Unit Proforma
 
 SHEETS_BASE = "https://sheets.googleapis.com/v4/spreadsheets"
 DRIVE_BASE  = "https://www.googleapis.com/drive/v3/files"
@@ -814,6 +818,129 @@ def fetch_doc(token, drive_id, dest_path=None):
     return dest_path
 
 
+def fetch_sheet_as_xlsx(token, file_id, dest_path):
+    """Export a native Google Sheet to xlsx. (alt=media only works for binary files.)"""
+    with requests.get(
+        f"{DRIVE_BASE}/{file_id}/export",
+        headers={"Authorization": f"Bearer {token}"},
+        params={"mimeType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"},
+        stream=True,
+        timeout=120,
+    ) as r:
+        r.raise_for_status()
+        with open(dest_path, "wb") as f:
+            for chunk in r.iter_content(chunk_size=8192):
+                f.write(chunk)
+    return dest_path
+
+
+# ─────────────────────────────────────────────
+# Drive — deal folder
+# Every deal gets a property folder (named by address) inside
+# "Olive Tree Investments - Deals". Received docs (OM/T-12/Rent Roll),
+# the populated Deal Analyzer, LOI, and pitch deck all land there.
+# ─────────────────────────────────────────────
+
+DEALS_PARENT_FOLDER = "Olive Tree Investments - Deals"
+DEALS_PARENT_FOLDER_ID = "1pLWVMaLPy-8Rt1NGQsX2wg2oNDonWC-p"  # verified 2026-06-10
+FOLDER_MIME = "application/vnd.google-apps.folder"
+
+_deal_folder_cache = {}
+
+
+def find_or_create_folder(token, name, parent_id=None):
+    safe = name.replace("'", "\\'")
+    q = f"name = '{safe}' and mimeType = '{FOLDER_MIME}' and trashed = false"
+    if parent_id:
+        q += f" and '{parent_id}' in parents"
+    r = requests.get(
+        DRIVE_BASE,
+        headers={"Authorization": f"Bearer {token}"},
+        params={"q": q, "fields": "files(id)", "pageSize": 5},
+        timeout=30,
+    )
+    r.raise_for_status()
+    files = r.json().get("files", [])
+    if files:
+        return files[0]["id"]
+    r = requests.post(
+        DRIVE_BASE,
+        headers={"Authorization": f"Bearer {token}"},
+        json={"name": name, "mimeType": FOLDER_MIME,
+              **({"parents": [parent_id]} if parent_id else {})},
+        timeout=30,
+    )
+    r.raise_for_status()
+    print(f"📁 Created Drive folder: {name}")
+    return r.json()["id"]
+
+
+def ensure_deal_folder(token, args):
+    """Return the property's deal folder ID, creating it if needed.
+
+    Folder is named by address (fallback: property name). Returns None if
+    neither is available or Drive errors — callers proceed without a folder.
+    """
+    name = (getattr(args, "address", "") or getattr(args, "property", "") or "").strip()
+    if not name:
+        return None
+    if name in _deal_folder_cache:
+        return _deal_folder_cache[name]
+    try:
+        try:
+            folder_id = find_or_create_folder(token, name, DEALS_PARENT_FOLDER_ID)
+        except requests.RequestException:
+            # Known parent ID stale (renamed/moved) — re-resolve by name
+            parent = find_or_create_folder(token, DEALS_PARENT_FOLDER)
+            folder_id = find_or_create_folder(token, name, parent)
+    except requests.RequestException as e:
+        print(f"⚠️  Deal folder unavailable ({e}) — continuing without folder.")
+        return None
+    _deal_folder_cache[name] = folder_id
+    print(f"📁 Deal folder: {name} → https://drive.google.com/drive/folders/{folder_id}")
+    return folder_id
+
+
+def upload_to_deal_folder(token, local_path, args):
+    """Upload a local file into the property's deal folder. Skips if a file
+    with the same name is already there (idempotent re-runs)."""
+    folder_id = ensure_deal_folder(token, args)
+    if not folder_id:
+        return None
+    fname = os.path.basename(local_path)
+    safe = fname.replace("'", "\\'")
+    r = requests.get(
+        DRIVE_BASE,
+        headers={"Authorization": f"Bearer {token}"},
+        params={"q": f"name = '{safe}' and '{folder_id}' in parents and trashed = false",
+                "fields": "files(id)", "pageSize": 1},
+        timeout=30,
+    )
+    if r.ok and r.json().get("files"):
+        print(f"  ↳ Already in deal folder: {fname}")
+        return r.json()["files"][0]["id"]
+
+    with open(local_path, "rb") as f:
+        file_bytes = f.read()
+    metadata = json.dumps({"name": fname, "parents": [folder_id]})
+    boundary = "boundary_olive_tree_dealdoc"
+    body = (
+        f"--{boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n"
+        f"{metadata}\r\n"
+        f"--{boundary}\r\nContent-Type: application/octet-stream\r\n\r\n"
+    ).encode() + file_bytes + f"\r\n--{boundary}--".encode()
+    r = requests.post(
+        f"{UPLOAD_BASE}?uploadType=multipart",
+        headers={"Authorization": f"Bearer {token}",
+                 "Content-Type": f"multipart/related; boundary={boundary}"},
+        data=body,
+        timeout=120,
+    )
+    r.raise_for_status()
+    print(f"  ↳ Uploaded to deal folder: {fname}")
+    return r.json().get("id")
+
+
 # ─────────────────────────────────────────────
 # Gmail — fetch attachments
 # ─────────────────────────────────────────────
@@ -1443,9 +1570,24 @@ def print_om_summary(parsed):
 
 # ─────────────────────────────────────────────
 # Deal Analyzer — populate INPUTS sheet
+# Template by door count: ≤50 units → MF Schooled 0-50 v10, >50 → 50+ Unit Proforma
 # ─────────────────────────────────────────────
 
+def analyzer_sheet_name(args):
+    units = getattr(args, 'units', 0) or 0
+    tag = "50+ Proforma" if units > 50 else "Deal Analyzer 0-50"
+    prop = getattr(args, 'property', '') or getattr(args, 'address', '') or "Deal"
+    return f"{prop} — {tag} — {TODAY_ISO}"
+
+
 def populate_analyzer(token, args, metrics=None):
+    units = getattr(args, 'units', 0) or 0
+    if units > 50:
+        return populate_analyzer_large(token, args, metrics=metrics)
+    return populate_analyzer_small(token, args, metrics=metrics)
+
+
+def populate_analyzer_small(token, args, metrics=None):
     try:
         import openpyxl
     except ImportError:
@@ -1474,9 +1616,9 @@ def populate_analyzer(token, args, metrics=None):
     curr_gpr  = getattr(args, 'current_gpr', None)   # monthly
     mkt_gpr   = getattr(args, 'market_gpr', None)    # monthly
 
-    print(f"Downloading Deal Analyzer template ({DEAL_ANALYZER_ID})...")
+    print(f"Downloading Deal Analyzer 0-50 template ({DEAL_ANALYZER_SMALL_ID})...")
     local_path = "/tmp/deal_analyzer_source.xlsx"
-    fetch_doc(token, DEAL_ANALYZER_ID, local_path)
+    fetch_sheet_as_xlsx(token, DEAL_ANALYZER_SMALL_ID, local_path)
 
     wb = openpyxl.load_workbook(local_path)
     ws = wb["INPUTS"]
@@ -1573,6 +1715,11 @@ def populate_analyzer(token, args, metrics=None):
 
     # ── Unit mix (rows 21-34) ──
     # Col A=count, B=type name, C=current rent/unit, F=proforma rent/unit
+    # Clear template rows first — the master ships with example unit-mix data
+    for rn in range(21, 35):
+        for col in (1, 2, 3, 6):
+            ws.cell(row=rn, column=col, value=None)
+
     mix = None
     if unit_mix:
         try:
@@ -1602,11 +1749,121 @@ def populate_analyzer(token, args, metrics=None):
         if cur_per: ws["C21"] = cur_per
         if mkt_per: ws["F21"] = mkt_per
 
-    # ── Save + upload as native Google Sheet ──
+    return _upload_workbook_as_sheet(token, wb, analyzer_sheet_name(args), args)
+
+
+def populate_analyzer_large(token, args, metrics=None):
+    """Populate the MF Schooled 50+ Unit Proforma (Inputs sheet) for >50-door deals."""
+    try:
+        import openpyxl
+    except ImportError:
+        print("ERROR: openpyxl not installed. Run: pip3 install openpyxl")
+        sys.exit(1)
+
+    prop      = getattr(args, 'property', '') or ''
+    address   = getattr(args, 'address', '') or ''
+    asking    = getattr(args, 'asking', 0) or 0
+    offer     = getattr(args, 'offer', None) or asking
+    repair    = getattr(args, 'repair', 0) or 0
+    ltv       = getattr(args, 'ltv', 0.70)
+    rate      = getattr(args, 'bridge_rate', 0.0675)
+    io_yrs    = getattr(args, 'io_years', 2)
+    amort     = getattr(args, 'amort_years', 25)
+    closing   = getattr(args, 'closing_costs_pct', 0.06)
+    vacancy   = getattr(args, 'vacancy_pct', 0.10)
+    other_inc = getattr(args, 'other_income', 0) or 0
+    hold_yrs  = getattr(args, 'hold_years', 6)
+    exit_cap  = getattr(args, 'exit_cap', None)
+    vintage   = getattr(args, 'vintage', None)
+    unit_mix  = getattr(args, 'unit_mix', None)
+    curr_gpr  = getattr(args, 'current_gpr', None)   # monthly
+
+    print(f"Downloading 50+ Unit Proforma template ({DEAL_ANALYZER_LARGE_ID})...")
+    local_path = "/tmp/deal_analyzer_large_source.xlsx"
+    fetch_sheet_as_xlsx(token, DEAL_ANALYZER_LARGE_ID, local_path)
+
+    wb = openpyxl.load_workbook(local_path)
+    ws = wb["Inputs"]
+
+    # ── Property information ──
+    if prop:    ws["D4"]  = prop
+    ws["D6"] = offer                 # Purchase Price
+    if asking and offer != asking:
+        ws["D7"] = asking            # Pricing Guidance
+    ws["D8"] = vacancy               # Physical Vacancy
+    if vintage: ws["D9"]  = vintage  # Year Built
+    if address: ws["D10"] = address
+
+    # ── Operating income (Trailing 12, annual) ──
+    if curr_gpr:  ws["D15"] = curr_gpr * 12   # Gross Potential Rent
+    if other_inc: ws["D17"] = other_inc        # Other Income
+
+    # ── Unit mix (L5:P20) — L=type, M=count, N=market rent, O=pro forma rent ──
+    # Clear template example rows first (master ships with prior-deal data)
+    for rn in range(5, 21):
+        for col in (12, 13, 14, 15, 16):   # L–P
+            ws.cell(row=rn, column=col, value=None)
+
+    mix = None
+    if unit_mix:
+        try:
+            mix = json.loads(unit_mix) if isinstance(unit_mix, str) else unit_mix
+        except (json.JSONDecodeError, TypeError):
+            pass
+
+    if mix:
+        for i, unit in enumerate(mix[:16]):
+            rn = 5 + i
+            ws.cell(row=rn, column=12, value=unit.get("type", ""))            # L
+            ws.cell(row=rn, column=13, value=unit.get("count", 0) or 0)      # M
+            ws.cell(row=rn, column=14, value=unit.get("current_rent", 0) or 0)  # N (market/street today)
+            ws.cell(row=rn, column=15, value=unit.get("market_rent", 0) or 0)   # O (pro forma)
+            if unit.get("sqft"):
+                ws.cell(row=rn, column=16, value=unit["sqft"])                # P
+
+    # ── Senior debt assumptions (T column) ──
+    ws["T12"] = "No"          # Loan to Cost? — we underwrite to LTV
+    ws["T13"] = ltv
+    ws["T15"] = rate
+    ws["T16"] = amort
+    ws["T17"] = io_yrs
+    ws["T7"]  = closing
+
+    # ── Stabilization / capex ──
+    # Full repair budget goes to Exterior Budget; split interior/exterior manually if known
+    ws["T35"] = 0
+    ws["T37"] = repair
+
+    # ── Exit assumptions ──
+    if exit_cap is not None:
+        ws["T54"] = exit_cap / 100
+    ws["T56"] = hold_yrs
+
+    # ── Cell comments (source attribution) ──
+    try:
+        from openpyxl.comments import Comment as _Comment
+        def _note(cell, text):
+            ws[cell].comment = _Comment(text, "Olive Tree AIOS")
+        _note("D6",  f"Offer price ${offer:,.0f}" + (f" (asking ${asking:,.0f})" if asking else "") + f" | Analyzed {TODAY_ISO}")
+        _note("D8",  f"Physical vacancy {vacancy:.0%} — from rent roll / market assumption.")
+        _note("T13", f"LTV {ltv:.0%} at {rate:.2%}, {io_yrs}-yr I/O, {amort}-yr amortization.")
+        _note("T37", f"Full capex budget ${repair:,.0f} placed in Exterior Budget. Split interior (T35 per-door) vs exterior manually if the scope is known.")
+        if exit_cap is not None:
+            _note("T54", f"Terminal cap {exit_cap:.2f}%. Model conservatively — never underwrite compression.")
+        if metrics:
+            rec = metrics.get("_rec", "")
+            if rec:
+                _note("D4", f"OLIVE TREE AIOS — {rec} ({TODAY_ISO})")
+    except Exception:
+        pass  # comments are non-critical — never block the upload
+
+    return _upload_workbook_as_sheet(token, wb, analyzer_sheet_name(args), args)
+
+
+def _upload_workbook_as_sheet(token, wb, sheet_name, args=None):
     # Uploading with mimeType=spreadsheet converts xlsx → Google Sheet,
     # so all formulas calculate live and the file is directly editable.
-    sheet_name = f"{address or prop} - Deal Analyzer 0-50"
-    out_path   = f"/tmp/{TODAY_ISO}_deal_analyzer_output.xlsx"
+    out_path = f"/tmp/{TODAY_ISO}_deal_analyzer_output.xlsx"
     try:
         wb.save(out_path)
     finally:
@@ -1616,10 +1873,15 @@ def populate_analyzer(token, args, metrics=None):
     with open(out_path, "rb") as f:
         file_bytes = f.read()
 
-    metadata = json.dumps({
+    meta = {
         "name": sheet_name,
         "mimeType": "application/vnd.google-apps.spreadsheet"
-    })
+    }
+    if args is not None:
+        folder_id = ensure_deal_folder(token, args)
+        if folder_id:
+            meta["parents"] = [folder_id]
+    metadata = json.dumps(meta)
     boundary = "boundary_olive_tree_analyzer"
     body = (
         f"--{boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n"
@@ -1836,6 +2098,15 @@ def main():
             print(f"  Other      : {', '.join(docs['other'])}")
         print()
 
+        # Archive received docs to the property's Drive deal folder
+        if not args.dry_run:
+            for path in [docs["t12"], docs["rent-roll"], docs["om"], *docs["other"]]:
+                if path and os.path.exists(path):
+                    try:
+                        upload_to_deal_folder(token, path, args)
+                    except requests.RequestException as e:
+                        print(f"⚠️  Deal-folder upload failed for {os.path.basename(path)}: {e}")
+
         if docs["t12"] and not getattr(args, "parse_excel", None):
             args.parse_excel = docs["t12"]
             args.excel_type  = "auto"
@@ -1942,9 +2213,8 @@ def main():
 
         # Populate Deal Analyzer if --populate-analyzer also set (works with --dry-run too)
         if args.populate_analyzer:
-            sheet_name = f"{address or prop} - Deal Analyzer 0-50"
             if args.dry_run:
-                print(f"[DRY RUN] Would create Google Sheet: '{sheet_name}'")
+                print(f"[DRY RUN] Would create Google Sheet: '{analyzer_sheet_name(args)}'")
             else:
                 metrics["_rec"] = {"PURSUE_LOI": "PURSUE LOI ✅", "MORE_INFO": "MORE INFO NEEDED ⚠️", "PASS": "PASS ❌"}.get(rec, rec)
                 populate_analyzer(token, args, metrics=metrics)
@@ -1959,8 +2229,7 @@ def main():
     # ── --populate-analyzer (standalone, without --analyze) ──
     elif args.populate_analyzer:
         if args.dry_run:
-            sheet_name = f"{getattr(args,'address','') or args.property} - Deal Analyzer 0-50"
-            print(f"[DRY RUN] Would create Google Sheet: '{sheet_name}'")
+            print(f"[DRY RUN] Would create Google Sheet: '{analyzer_sheet_name(args)}'")
             return
         populate_analyzer(token, args)
 

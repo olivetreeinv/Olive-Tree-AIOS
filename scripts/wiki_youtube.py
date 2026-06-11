@@ -25,7 +25,6 @@ import json
 import os
 import re
 import subprocess
-import sys
 import threading
 import time
 from pathlib import Path
@@ -127,17 +126,20 @@ def fetch_transcript(vid: str) -> str | None:
     dest = RAW / f"{vid}.txt"
     if dest.exists() and dest.stat().st_size > 500:
         return dest.read_text()
-    tmp = RAW / f"{vid}.en.vtt"
     subprocess.run(
-        ["yt-dlp", "--skip-download", "--write-auto-sub", "--sub-lang", "en",
+        ["yt-dlp", "--skip-download", "--write-auto-sub", "--sub-lang", "en.*",
          "--sub-format", "vtt", "-o", str(RAW / "%(id)s.%(ext)s"),
          f"https://www.youtube.com/watch?v={vid}"],
         capture_output=True, text=True,
     )
-    if not tmp.exists():
+    # yt-dlp may emit en.vtt, en-US.vtt, en-orig.vtt, etc. — match any.
+    subs = sorted(RAW.glob(f"{vid}*.vtt"))
+    if not subs:
         return None
+    tmp = subs[0]
     txt = clean_vtt(tmp.read_text(encoding="utf-8", errors="ignore"))
-    tmp.unlink(missing_ok=True)
+    for s in subs:
+        s.unlink(missing_ok=True)
     if len(txt.split()) < 200:
         return None
     dest.write_text(txt)
@@ -179,6 +181,7 @@ def map_video(v: dict) -> dict | None:
         return None
 
     prompt = MAP_PROMPT.format(title=title, skills=TARGET_SKILLS, transcript=txt)
+    throttle(len(prompt) // 4 + 400)  # ~4 chars/token; +overhead for schema
     resp = client.messages.create(
         model=MAP_MODEL, max_tokens=2000,
         messages=[{"role": "user", "content": prompt}],
@@ -274,7 +277,7 @@ CANDIDATES:
 {json.dumps(cands, indent=2)}"""
 
     resp = client.messages.create(
-        model=SYNTH_MODEL, max_tokens=8000,
+        model=SYNTH_MODEL, max_tokens=12000,
         thinking={"type": "adaptive"}, output_config={"effort": "high"},
         messages=[{"role": "user", "content": prompt}],
     )
@@ -337,9 +340,11 @@ def main():
 
     rel = sum(1 for r in results if r.get("deal_relevant") in ("yes", "partial"))
     print(f"\n[done] {len(results)} distilled | {rel} deal-relevant | pages in {OUT}")
-    with LOG.open("a") as f:
-        f.write(f"\n- {datetime.date.today()} youtube-ingest: {len(results)} videos, "
-                f"{rel} deal-relevant, channel @JustinBrennan\n")
+    # Log only when the map stage actually ran — avoid dup entries on re-synthesize.
+    if args.stage in ("all", "map"):
+        with LOG.open("a") as f:
+            f.write(f"\n- {datetime.date.today()} youtube-ingest: {len(results)} videos, "
+                    f"{rel} deal-relevant, channel @JustinBrennan\n")
 
 
 def _safe_map(v):

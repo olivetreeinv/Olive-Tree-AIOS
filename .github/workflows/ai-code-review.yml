@@ -1,0 +1,65 @@
+name: AI Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+  statuses: write
+
+jobs:
+  ai-review:
+    name: AI Code Review
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install anthropic PyGithub
+
+      - name: Run AI Code Review
+        id: review
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: python .github/scripts/ai_review.py
+
+      - name: Upload review result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: review-result
+          path: review_result.json
+          if-no-files-found: warn
+
+      # ------------------------------------------------------------------
+      # Canary stub — wire up once govcon (or any service) is deployed
+      # to a cloud environment with staged rollout support.
+      #
+      # - name: Deploy to canary (10% traffic)
+      #   if: steps.review.outcome == 'success'
+      #   run: ./deploy.sh --slot canary --weight 10
+      #
+      # - name: Monitor canary health (5 min window)
+      #   run: python .github/scripts/canary_monitor.py --duration 300 --error-threshold 1.0
+      #
+      # - name: Promote or rollback
+      #   run: ./deploy.sh --promote-or-rollback
+      # ------------------------------------------------------------------

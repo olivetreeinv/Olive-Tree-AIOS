@@ -34,7 +34,7 @@ from pathlib import Path
 
 BASE_URL = "https://api.canva.com/rest/v1"
 ENV_FILE = Path(__file__).parent.parent / ".env"
-TEMPLATE_ID = "DAHHfpHE2Es"  # OLIVE TREE TEMPLATE PITCH DECK
+TEMPLATE_ID = "DAHIppfBwgs"  # 641 Powder Springs St Pitch Deck (completed deal — the model to clone)
 
 
 # ── Auth helpers ───────────────────────────────────────────────────────────────

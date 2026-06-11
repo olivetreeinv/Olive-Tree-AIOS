@@ -1,0 +1,40 @@
+{
+  "deal_relevant": "yes",
+  "topic": "asset-mgmt",
+  "summary": "Justin Brennan conducts an extensive walkthrough and mentorship of an 80-unit value-add multifamily property (NC18) in San Diego that he acquired for $17M with $3M renovation budget. He covers renovation execution, unit finishes, operational management, tenant transition strategies, and capital structure, demonstrating how to achieve nearly 2x rent growth while managing construction, property management, and investor relations.",
+  "takeaways": [
+    "Use LVT (luxury vinyl tile) instead of LVP (luxury vinyl plank) for easier unit-level repairs and lower cost",
+    "Order renovation supplies as 'kits' from suppliers like HD Supply to get 20-25% discounts and improve construction efficiency at 30+ unit scale",
+    "Budget $20-25K per unit for full renovations in California; asbestos abatement alone costs ~$4K per unit",
+    "Charge rent concessions as one-time marketing costs (capitalize them) rather than recurring monthly concessions to preserve NOI and building valuation",
+    "Keep property managers on-site for 80+ unit buildings; off-site managers work for smaller properties but must be within 10-15 minutes",
+    "Close property acquisitions between the 10th-15th of month to collect 90%+ of rents before software/PM transitions",
+    "Implement utility reimbursement programs (RUBS or software like Utility Ranger) to recoup 65-75% of utility costs from tenants",
+    "Maintain 65-70% loan-to-value leverage with fixed-rate debt to survive 20-30% vacancy scenarios; never use centralized chiller systems for HVAC"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Systematically evaluate renovation vs. rent growth potential before acquisition",
+      "evidence": "Justin identified that $900 rents could support $1,700+ post-renovation based on comparable market rents, making the deal obvious even before detailed underwriting; 100% occupied property is a red flag that rents are suppressed"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Apply contingency budgeting discipline and track capex overruns against forecast",
+      "evidence": "Original capex budget was $2.5M, actual ended at $3M; managed through pre-allocated contingency reserves rather than capital calls to investors; quarterly statements track actual vs. underwritten figures"
+    },
+    {
+      "skill": "asset-mgmt",
+      "change": "Shift property management incentives to favor tenant retention over new leases",
+      "evidence": "Justin inverts typical commission structure: 100% of first month rent for lease renewals vs. 50% for new leases, because retention saves $3,500+ minimum per turnover (physical + vacancy + lease-up costs)"
+    },
+    {
+      "skill": "asset-mgmt",
+      "change": "Structure investor communications and distributions with quarterly reporting cadence and video updates",
+      "evidence": "Uses simple Loom/Zoom videos (2-3 min) plus email updates quarterly; tracks investor preferred returns; communicates hold vs. sell strategy; all builds trust for longer hold periods"
+    }
+  ],
+  "id": "y0-uWDfkiGs",
+  "title": "Scale Fast: Buy Multifamily Deals in 90 Days With This Method",
+  "duration": 4768
+}
