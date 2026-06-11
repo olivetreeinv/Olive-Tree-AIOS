@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan teaches Brian Norton's AIOS community the fundamentals of multifamily real estate investing, covering deal sourcing through brokers, financial underwriting metrics (IRR 14-20%, cash-on-cash 6-10%, equity multiple 1.8+), and the general partner structure for value-add apartment acquisitions. The framework applies directly to Brian's stated drag areas of deal sourcing and underwriting.",
+  "takeaways": [
+    "Use broker-led sourcing: call 3 brokers on 3 on-market properties in target market in one day to gain access to 60% off-market pre-market inventory (only 40% of deals trade on public sites like LoopNet)",
+    "Only consider deals meeting ALL THREE metrics simultaneously: IRR 14-20%+, cash-on-cash return 6-10%+, equity multiple 1.8+; if metrics don't align, move to next deal immediately",
+    "10-30 unit deals are optimal entry point\u2014avoid 50+ unit deals on first deals; lenders require resume, higher liquidity; scaling path: 27 units \u2192 31 units \u2192 88 units \u2192 121 units \u2192 200 units",
+    "General partner structure: bring 10% of capital, control 30-40% of profits via acquisition fees (2-3% at close), asset management fees (1% monthly), monthly cash flow, and disposition fees on exit",
+    "Raising capital requires three things: (1) deal meeting financial metrics, (2) professional pitch deck showing investment terms and projected returns, (3) documented legal process; credit score 650+ sufficient if average US credit (650) meets threshold",
+    "Deploy OPM through multiple sources: private lenders, seller financing, friends/family; with $188k capital deployed on $2.15M Kansas City deal, pulled 100% capital back in 24-month refinance, earned $590k net profit (3.1x return)",
+    "Target midwest/sunbelt markets with value-add thesis (renovations increasing NOI); use 70% loan-to-cost financing (easier than residential since lenders underwrite property financials, not personal credit)"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Apply rigorous three-metric gate on every deal opportunity (IRR 14-20%, CoC 6-10%, EM 1.8+) rather than subjective filtering",
+      "evidence": "Justin emphasizes 'all three not two of the three not one of the three all three and if it matches all three you go in further if it doesn't match all three bye-bye it's that simple'; provides worked example showing metric-driven triage eliminates emotional decision-making"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Shift from passive online sourcing to active 1-day broker blitz targeting 3 properties, then leverage on-market access to unlock 60% off-market inventory within 30 days",
+      "evidence": "Justin's Kansas City case study: 'I made three phone calls to three different Brokers on three different properties in Kansas City Missouri and I set up three appointments to tour those three properties I did it all in one day'; explains '40% of the actual sales in Market are on the websites... 60% of the actual Market you never even see it is pre- traded before it ever hits those websites'"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Start with 10-30 unit deals in target markets (GA/TN/AL), not 50+ units; scale through proof of execution before partnering on larger assets",
+      "evidence": "Justin warns: 'anybody who's telling you to go to 50 plus unit deals bigger deals on your first deals... you literally have a better chance of trying to break into the White House tonight than you do of execu on that deal'; demonstrates personal progression: 27 \u2192 31 \u2192 88 \u2192 121 \u2192 200 unit deals showing repeatable leverage model"
+    }
+  ],
+  "id": "SgpOGYGXB84",
+  "title": "The Secret To Wealth: Multifamily Real Estate Investing",
+  "duration": 4037
+}

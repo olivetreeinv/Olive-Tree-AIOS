@@ -42,12 +42,29 @@ If any documents are missing, output a **draft email requesting them** and stop.
 
 ## Execution
 
+### Step 0: Three-Metric Fast Screen (triage before any doc pull)
+
+If even rough numbers exist (price, units, rents), run this 30-second gate first.
+ALL THREE must clear or the deal stops here — these are floors, not 2-of-3:
+
+  • IRR (5-yr)            ≥ 14–20%
+  • Cash-on-Cash (yr 1)  ≥ 6–10%
+  • Equity Multiple       ≥ 1.8x
+
+Output: "Fast-screen: PASS all 3 → proceed to full underwriting" or
+        "Fast-screen: FAILS [metric(s)] at [value] → recommend PASS unless price moves to $X."
+Any miss = move on or re-price. Don't pull docs on a deal that can't clear this.
+
 ### Step 1: Buy Box Check
 
 Before touching any numbers, verify the zip is in the active buy box (`references/buy-box.md`).
 
 - Zip IN buy box → proceed
 - Zip NOT in buy box → output: "⚠️ [zip] is outside the active buy box. Closest match: [nearest market]. Continue anyway? (y/n)"
+
+**Aerial / location knockout check** (do alongside the zip check):
+- Adjacent to freeway/major arterial, rail, or industrial → flag **economic obsolescence** (≈30% buyer-pool / price haircut). Note in Callouts.
+- Distinguish **economic** (immutable — discount) vs **functional** (fixable in reno) obsolescence.
 
 ### Step 2: Market Rent Check (Rentometer)
 
@@ -127,18 +144,15 @@ Parse documents and extract:
 | Building vintage | OM / county records | Estimate from description |
 | Unit mix | Rent roll (1BR/2BR/3BR counts) | OM floor plan section |
 
-**Deal Analyzer mapping** (file ID `14bpvhKEuG4UipIDWIZC2Hud9D0JiV2X6`, INPUTS sheet):
+**Deal Analyzer templates** — selected automatically by door count (`scripts/deal_analysis.py`):
 
-| Row | Field |
-|---|---|
-| Row 4 | Asking Price / Offer Price |
-| Row 6 | Units |
-| Row 8 | Repair Budget |
-| Row 10 | Entry Cap Rate |
-| Row 11 | Exit Cap Rate |
-| Row 12 | Building Vintage / LTV |
-| Rows 20–34 | Unit mix (type, count, current rent, market rent) |
-| Rows 50–54 | Output metrics (Cash/Cash, Avg COC, Equity Multiple, IRR) |
+| Units | Template | Sheet | ID |
+|---|---|---|---|
+| ≤ 50 | MF Schooled Deal Analyzer 0-50 v10 | INPUTS | `1smas_-1rTtqZSIvfqxF_NzRFyMe_ID-M17z1BQ7qQQU` |
+| > 50 | MF Schooled 50+ Unit Proforma | Inputs | `1_vfRIk8lcj-bGLxj3pf46p8OYwjeiI3o7g7AgjwHZQk` |
+
+0-50 INPUTS mapping: Row 4 asking/offer · Row 6 units · Row 8 repair budget · Row 12 vintage · Rows 21–34 unit mix · F14 rate · C39/F39 vacancy · R35–R38 hold/exit.
+50+ Inputs mapping: D4 name · D6 price · D8 vacancy · D9 vintage · D10 address · D15 T-12 GPR · L5:P20 unit mix (type/count/market/proforma/sqft) · T13–T17 debt · T37 capex · T54/T56 exit cap/hold.
 
 ### Step 4: Calculate the numbers
 
@@ -151,15 +165,41 @@ EGI (Effective Gross Income) = GPR × (1 − vacancy%) + ancillary income
 # Expenses
 NOI (Current) = Actual T-12 Revenue − Actual T-12 Expenses
 NOI (Stabilized) = EGI (market rents, 93% occ) − Normalized OpEx
-  - Property management: 4% of gross revenue
+  - Property management: 4% of gross revenue (use 6% for <30-unit deals — 3% stated is unrealistic for small props)
   - Asset management: 1.5% of gross income
   - Total OpEx benchmark: 40–50% of EGI for value-add assets
+
+# Economic-loss & expense floors — OVERRIDE the OM (never accept the broker's loss line)
+Brokers headline 4–5% vacancy; real economic loss runs 12–15%. Underwrite physical
+vacancy to the bank's 5% floor, then LAYER economic losses on top:
+  Physical vacancy   5% (bank floor)
+  Lost-to-lease      1–2%
+  Bad debt           2–3%
+  Concessions        2–3%
+  → Total economic loss 12–15% in non-coastal/secondary markets
+
+Expense reasonableness floors (flag any OM line >15% below these as "aggressive"):
+  Property tax    2–2.5% of likely REASSESSED value (post-sale, NOT seller's basis)
+  Insurance       ~$1,500/unit (TX/Gulf higher) — get a live quote before removing contingencies
+  Repairs/maint   $650–700/unit
+  Management      6% for <30-unit deals
+  Make-ready      if ≥10 vacant units, model ~$2K/unit make-ready credit (and request it in the LOI/PSA)
 
 # Debt (bridge loan, value-add standard)
 Loan Amount = Asking Price × 0.75 (75% LTV)
   or: use 70% for heavy value-add
 Annual Debt Service = Loan × rate (use current bridge rate from references/news-research.md)
 DSCR = NOI ÷ Annual Debt Service
+
+# DSCR gate & max-price solve — output a CEILING, not just a yes/no
+Require DSCR ≥ 1.25x at the lender's quoted rate. Then sweep rates
+(5.0 / 5.75 / 6.0 / 6.5%) and solve the purchase price that holds 1.25x:
+  Rate    Max Price @ 1.25 DSCR
+  5.75%   $[n]
+  6.00%   $[n]
+  6.50%   $[n]   ← if this is the likely rate, this is the ceiling
+Recommendation line: "Max defensible offer = $X at [rate]. Seller ask $Y is $Z above
+the DSCR ceiling." Numbers set the offer, not the seller's anchor.
 
 # Returns
 Equity Invested = Asking Price × 0.25 + Repair Budget + Closing Costs (3.5%)
@@ -168,7 +208,9 @@ Cash-on-Cash (Year 3) = Stabilized NOI estimate − Debt Service) ÷ Equity Inve
 
 # Exit (Year 5)
 Stabilized Value = Stabilized NOI ÷ Exit Cap Rate
-  - Exit cap = Entry cap + 0.25–0.50% (cap rate expansion buffer)
+  - Exit cap ≥ Entry cap + 50–100 bps (conservative expansion buffer)
+  - NEVER underwrite cap compression as the value driver. If the deal only works
+    on a lower exit cap, flag in Callouts as "exit-dependent — high risk."
 Equity at Exit = Stabilized Value − Remaining Loan Balance
 Equity Multiple = (Total Cash Flow + Equity at Exit) ÷ Equity Invested
 IRR ≈ Estimate from equity multiple over 5-year hold:
@@ -241,7 +283,8 @@ IRR ≈ Estimate from equity multiple over 5-year hold:
 | **OVERALL** | — | PURSUE / CONDITIONAL / PASS |
 
 ### Callouts
-- [Auto-flagged: pre-1980 vintage, sub-15 units, DSCR below floor, 75% rule, rent upside, basis above band]
+- [Auto-flagged: pre-1980 vintage, sub-15 units, DSCR below floor, 75% rule, rent upside, basis above band, economic obsolescence, exit-dependent]
+- **Suppressed-rents flag:** if occupancy ≥ 98% AND in-place rents are below the Rentometer median → flag "suppressed rents / value-add upside." Estimate stabilized NOI at median rents and show the value delta (Value = ΔNOI ÷ cap rate).
 
 ### Photos
 📸 Property (Google Maps link) · 🗺️ Area · 🏙️ Community — free Wikipedia images via `scripts/deal_photos.py`
@@ -264,6 +307,15 @@ IRR ≈ Estimate from equity multiple over 5-year hold:
 [PASS]:        "Log as Pass in Deal Sourcing? (y/n) | Want to send a polite pass note? (y/n)"
 ```
 
+> **Collections verification is a DUE-DILIGENCE ask — NOT part of the pre-LOI doc request.**
+> Only request bank statements once the deal is GREEN on Market + OM + T-12 + Rent Roll
+> AND we have an **accepted LOI**. At that point add to the DD request:
+>   • 6+ months of bank deposit statements (tie deposits to rent roll)
+>   • Current delinquency list
+>   • Eviction-filing list
+> Cross-match deposits ↔ rent roll ↔ delinquency to compute **economic** occupancy.
+> Seller refusal to provide bank statements = red flag — note it and reassess.
+
 ### Step 7: Log to Deal Sourcing sheet
 
 Regardless of recommendation, log the deal:
@@ -280,18 +332,17 @@ python3 scripts/deal_analysis.py --log-deal \
 
 ### Step 8: Populate Deal Analyzer (on PURSUE or MORE INFO)
 
-Download the deal analyzer, write inputs to INPUTS sheet, upload as a new versioned copy:
+Download the right template (auto-selected by door count — see the templates table in Step 3), write the inputs, upload as a live Google Sheet:
 
 ```bash
 python3 scripts/deal_analysis.py --populate-analyzer \
-  --property "[name]" \
+  --property "[name]" --address "[addr]" \
   --asking [price] --units [n] --repair [budget] \
   --entry-cap [n] --exit-cap [n] --vintage [year] \
   --unit-mix '[{"type":"1BR","count":10,"current_rent":800,"market_rent":950}, ...]'
 ```
 
-Saves to Drive as: `[Property Name] — Deal Analyzer — [YYYY-MM-DD].xlsx`
-Returns the Drive file ID for Brian to open and review.
+Saves as `[Property] — Deal Analyzer 0-50 — [date]` (or `— 50+ Proforma —`) **inside the property's deal folder**: `Olive Tree Investments - Deals / [address]/`. Always pass `--address` — it names the folder. Received deal docs (OM/T-12/Rent Roll fetched via `--gmail-id`) are archived to the same folder automatically; the LOI and pitch deck land there after a Green GO.
 
 ---
 

@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan teaches a comprehensive 90-day framework for buying multifamily apartments, covering deal finding through brokers, financial analysis using NOI, and capital raising through OPM. He emphasizes that for 15-50 unit properties, the process follows identical patterns regardless of size, and demonstrates a case study where he made $590K on an $18K investment through acquisition fees, cash flow, refinancing, and profit sharing.",
+  "takeaways": [
+    "Find deals via brokers using on-market listings to access off-market deals: 60% of deals are off-market, 40% on-market; on-market deals are overpriced",
+    "NOI is the critical metric: $1,000/month increase in NOI = $220,000 increase in property value",
+    "Use cap rate approach: ask brokers 'What cap rate are properties like this selling for?' to determine if deal makes sense",
+    "Target IRR of 14-20% annually, cash-on-cash return of 6-10% per year, equity multiple of 1.8X minimum",
+    "Acquisition fees: 2-3% of purchase price paid day one at closing, reducing your out-of-pocket capital",
+    "Economic loss typically runs 12-18% of gross income (accounts for vacancy, loss to lease, bad debt, concessions)",
+    "First deals should be 10-30 units to keep capital requirements manageable and work with mom-and-pop brokers/sellers"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Apply NOI formula immediately to any deal: Gross Income - Economic Loss + Other Income - Property Expenses = NOI; then divide NOI by cap rate to get property value",
+      "evidence": "Justin explains exact formula and $1K NOI = $220K value multiplier; emphasizes NOI is 'number one focused number in the entire equation'"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Call on 3-5 on-market deals from Crexi.com in target market, tour them to build broker relationships, then ask 'Do you have pre-market deals coming in the next 1-2 months?' to access off-market pipeline",
+      "evidence": "Justin walks through Kansas City example: 'utilize the on-market to get to the off-market deals' and 'brokers started sending me deals cuz now I was in there'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Use three high-level deal qualification metrics when screening: IRR 14-20%+, cash-on-cash 6-10%, equity multiple 1.8X+; if any misses, move to next deal immediately",
+      "evidence": "Justin states these are 'three metrics' to quickly say 'either it does or it doesn't, go. Next one, next one, next one'"
+    },
+    {
+      "skill": "market-research",
+      "change": "Identify target market first, then contact one known broker or search Crexi/LoopNet, build relationship by showing intent to buy in that specific area/sub-market",
+      "evidence": "Justin: 'first of all, we identified a market that we liked...I knew one broker at that time'"
+    }
+  ],
+  "id": "TUA6SDB5Fvg",
+  "title": "How To Buy Apartments In 90 Days: A Step-By-Step Guide To Multifamily Investing",
+  "duration": 4909
+}

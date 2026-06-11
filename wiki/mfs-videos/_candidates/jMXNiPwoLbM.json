@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan teaches a comprehensive framework for buying 10-50 unit multifamily properties using minimal personal capital ($10-30K) combined with OPM (other people's money). He demonstrates how to source deals via brokers, analyze them using NOI and IRR metrics, structure syndications with investors, and execute using a five-pillar method: sourcing, analyzing, financing, closing, and managing.",
+  "takeaways": [
+    "Use the 'direct + broker' strategy: leverage on-market deals to access 60% pre-market/off-market inventory that brokers hold",
+    "On a $1M deal, 10-unit property: bring 10% equity ($30K), get 70% bank loan ($700K), raise remaining 20% ($270K) from 5 investors via pitch deck",
+    "Every $1,000 monthly NOI increase adds $220,000 in property value (divide by cap rate)",
+    "Target deal metrics: 14-20% IRR, 8% cash-on-cash preferred return, 1.8-2.0x equity multiple minimum to raise capital",
+    "Acquisition fee: 2-3% of purchase price paid at close; asset management fee 1-2% of annual revenue; 30-40% of monthly profits; disposition fee 0.5-2% at exit",
+    "Start with 10-30 unit deals first (not 50+) to break in with mom-and-pop sellers and lenders willing to work with newer investors",
+    "Write a one-page vision letter in three sections (personal, professional, health/spirituality) dated one year forward, read daily\u2014Justin crossed off 90% of his prior year goals"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Implement NOI-based valuation instead of comparables or market feel\u2014use the $220K per $1K monthly NOI rule to quickly screen deals",
+      "evidence": "Justin emphasizes 'net operating income is the most important number' and shows how a $100/month rent increase on 10 units = $1,000 NOI = $220K value add; he criticizes comping deals and stresses 'numbers make sense or they don't'"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Move from cold outreach to on-market deals to unlock 60% pre-market inventory\u2014call brokers on 3 listed properties, schedule tours, build relationship, then ask for pre-market access",
+      "evidence": "Justin's case study: identified Kansas City, found 3 on-market deals, called brokers ('hey John, I'm buying in this market'), toured properties in person, shook hands, then got pocket listings before they hit websites"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Commit $15-30K minimum capital and accept that networking (shaking hands) is non-negotiable\u2014sold $50K from a Trader Joe's checkout conversation",
+      "evidence": "Justin: 'the more hands you shake the more money you make'\u2014stories about networking at checkout lines and random encounters; emphasizes moving from 9-to-5 mindset to entrepreneur who must talk to people even if introverted"
+    },
+    {
+      "skill": "capital-raise",
+      "change": "Don't raise capital until deal makes financial sense (14-20% IRR); then send pitch deck + soft commit via email to 50+ contacts; expect to raise $270K from ~5 investors on a $1M deal with only $30K down",
+      "evidence": "Justin's actual deal: emailed 57 people, 7 invested ($895K raised on first syndication); later raised $581K from 8 investors on 31-unit deal; emphasizes 'if deal doesn't make sense you raise zero; if deal's good money will find you'"
+    }
+  ],
+  "id": "jMXNiPwoLbM",
+  "title": "Achieving Multifamily Real Estate Success: My Proven Strategies For Growth",
+  "duration": 4535
+}

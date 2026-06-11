@@ -1,0 +1,29 @@
+{
+  "deal_relevant": "partial",
+  "topic": "mindset",
+  "summary": "Justin Brennan teaches a foundational 90-day framework for entering multifamily real estate with minimal capital by leveraging syndication, OPM (other people's money), and the five-pillar acquisition method. While the content emphasizes mindset, community, and wealth-building philosophy, it includes deal-specific mechanics relevant to Brian's 15-50 unit target market, though deal analysis and sourcing tactics receive less depth than motivational framing.",
+  "takeaways": [
+    "Multifamily returns come from 5-8 revenue streams: acquisition fees (2-3% of purchase price), asset management fees (1-2% of revenue monthly), construction management fees (2-8% of hard costs), cash flow (30-40% of profits), disposition fees (0.5-2% of sale price), refinance pulls, and tax writeoffs",
+    "Good deals require: IRR 14-20%+, cash-on-cash return 6-10%+, equity multiple 1.8x or higher\u2014all three metrics must be met or the deal is rejected",
+    "Only 40% of multifamily deals appear on public websites (LoopNet, CoStar, CoStarKy.com); 60%+ trade pre-market off-market through broker databases\u2014leverage on-market tours to build broker relationships and access off-market pipeline",
+    "Acquire 10-30 unit deals first as a novice (not 50+) because you'll encounter mom-and-pop sellers and lenders willing to work with new operators; 50+ units require proven track record and sophisticated partners",
+    "Put down 5-10% of total equity requirement ($188k out-of-pocket on a $2.15M deal was typical); acquisition fees offset initial capital (e.g., 30k in, 20k fee out = 10k true cost)",
+    "Case study: 31-unit building purchased for $1.525M, renovated to $3.6M appraised value within 24 months, achieved 100% cash-out refinance, generated $590k profit on $188k out-of-pocket through refinance pull + asset fees + cash flow + disposition",
+    "The game requires partnerships and OPM\u2014'the more hands you shake the more money you make'; solitary operators cannot scale beyond a few properties without learning to raise capital"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "broker-search",
+      "change": "Build broker database in target market by calling 3+ brokers on public deals to establish rapport, then request private email lists for pre-market deal flow",
+      "evidence": "Justin detailed his Kansas City market entry: called brokers on 3 public LoopNet listings, toured properties to build relationships, asked to be added to private pre-market lists; explained 60% of deals never reach public websites and are distributed to broker databases first"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Screen all deals against three mandatory thresholds (IRR 14-20%, cash-on-cash 6-10%, equity multiple 1.8x+) and reject immediately if any metric fails; use provided deal analyzer spreadsheet",
+      "evidence": "Justin repeatedly stated: 'if the deal doesn't meet all three of these metrics you keep going'\u2014demonstrated on $1.525M deal showing how to verify NOI impact (every $1k/month NOI boost = $220k property value increase)"
+    }
+  ],
+  "id": "IoUKKt0_z_4",
+  "title": "How To Start Multifamily Real Estate Investing In 90 Days With No Money",
+  "duration": 4312
+}

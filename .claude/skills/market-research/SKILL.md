@@ -369,8 +369,15 @@ Job CAGR (3yr): [X%]
 Supply pressure: [low / moderate / high]
 Market class: [A/B/C]
 Path of Progress: [named project + timeline, or "none"]
+Prevailing cap rate: [X% for the asset class/vintage — mark "verified [source/date]" or "ESTIMATE — confirm in DD"]
+Property-tax reassessment: [post-sale assessed basis & millage — "verified" or "ESTIMATE"]
+Insurance: [indicative $/unit — "verified" or "ESTIMATE — confirm in DD"]
 Data gaps: [anything that was unavailable — verify before underwriting]
 ```
+
+> The three inputs most likely to break a deal are **cap rate, tax reassessment, and
+> insurance**. Confirm each with a local broker/assessor where possible and stamp it
+> "verified [source/date]"; otherwise flag "ESTIMATE — confirm in DD" so underwriting knows.
 
 ---
 

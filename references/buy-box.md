@@ -1,5 +1,5 @@
 # Olive Tree Investments — Buy Box
-**Last updated:** 2026-05-28
+**Last updated:** 2026-06-10
 **Owner:** Brian Norton, CEO
 
 This is the authoritative source for which markets and deal types Brian is actively pursuing. Reference this before running market research, underwriting a deal, or drafting broker outreach. If a deal doesn't fit a box below, it's a pass — don't spend time on it.
@@ -20,6 +20,9 @@ This is the authoritative source for which markets and deal types Brian is activ
 | 8 | Birmingham Urban | 35205 | AL | Value-add / Transitional | open | Active |
 | 9 | Huntsville Growth Corridor | 35806 | AL | Growth corridor | open | Active |
 | 10 | Lebanon | 37087 | TN | Value-add / Emerging | open | Active |
+| 11 | Knoxville | 37918 | TN | Value-add / Emerging | open | Active |
+| 12 | Maryville | 37804 | TN | Value-add / Emerging | open | Active |
+| 13 | Johnson City | 37615 | TN | Value-add / Emerging | open | Active |
 
 ---
 
@@ -187,6 +190,48 @@ These apply regardless of market. A deal that misses any of these is a pass befo
 
 **Key thesis:** Lebanon is the 12th fastest-growing city in the U.S. — driven by Nashville spillover, 20+ economic development projects since 2020 ($1B+ investment, 6,300 jobs), and TDOT infrastructure commitment. Rents growing 3–4%/yr while Nashville proper softens from oversupply. Buy the overflow market while it's still being overlooked.
 **Red flags:** Fully priced assets at Nashville-area cap rates, supply pipeline acceleration (verify before underwriting), deals above $3M purchase price
+
+---
+
+### 11 — Knoxville, TN (37918)
+**Strategy:** Value-add / Emerging
+**Vintage target:** 1970s–1990s
+**What I'm looking for:**
+- Under-market rents with clear upside through renovations and improved management
+- Workforce housing in Knoxville's north corridor — stable tenant base, steady demand
+- C to C+ or B class with operational inefficiencies
+- On-market and off-market both considered
+
+**Key thesis:** Knoxville is a growing mid-size market anchored by the University of Tennessee and Oak Ridge National Lab. 37918 (North Knoxville) is workforce-dense with below-market rents and value-add inventory still available before institutional buyers arrive.
+**Red flags:** Fully stabilized, retail-priced, no rent upside, D-class blocks
+
+---
+
+### 12 — Maryville, TN (37804)
+**Strategy:** Value-add / Emerging
+**Vintage target:** 1970s–1990s
+**What I'm looking for:**
+- Workforce housing with below-market rents and operational upside
+- Blount County bedroom community — stable employment base (Tennessee Valley Authority, manufacturing)
+- Light renovations + better management as the primary value driver
+- On-market and off-market both considered
+
+**Key thesis:** Maryville is 15 miles south of Knoxville — lower price points, stable workforce demand, and less competition than the core market. Good cash flow play with moderate upside.
+**Red flags:** Fully priced, heavy deferred maintenance with no upside story, high vacancy
+
+---
+
+### 13 — Johnson City, TN (37615)
+**Strategy:** Value-add / Emerging
+**Vintage target:** 1970s–1990s
+**What I'm looking for:**
+- Under-market rents in the Tri-Cities area with value-add potential
+- Workforce + student-adjacent demand (East Tennessee State University)
+- C to C+ or B class with operational inefficiencies
+- On-market and off-market both considered
+
+**Key thesis:** Johnson City anchors the Tri-Cities (Johnson City / Kingsport / Bristol) — a growing healthcare and manufacturing hub with ETSU providing steady demand. Rents are well below Tennessee averages with room to push. Still largely off institutional radar.
+**Red flags:** Fully stabilized, retail cap rates, no value-add story, heavy capex with no rent upside
 
 ---
 
