@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>SPCX IPO Monitor</title>
+<script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
+<style>
+  body{margin:0;font-family:-apple-system,Helvetica,Arial,sans-serif;background:#0d1117;color:#e6edf3}
+  header{display:flex;align-items:center;gap:18px;padding:10px 16px;background:#161b22;flex-wrap:wrap}
+  h1{font-size:18px;margin:0}
+  .badge{padding:2px 10px;border-radius:10px;font-weight:700;font-size:12px}
+  .FULL{background:#1f6f3f}.DEGRADED{background:#9a6700}
+  .px{font-size:22px;font-weight:700}
+  .score{font-size:13px;opacity:.9}
+  button{background:#21262d;color:#e6edf3;border:1px solid #30363d;border-radius:6px;padding:4px 10px;cursor:pointer}
+  #degraded{display:none;background:#9a6700;color:#fff;padding:8px 16px;font-weight:600}
+  #degraded a{color:#fff}
+  #alertbanner{display:none;background:#b62324;color:#fff;padding:10px 16px;font-size:16px;font-weight:700}
+  #chart{height:430px}
+  #alerts{padding:8px 16px;font-size:13px;max-height:200px;overflow-y:auto}
+  #alerts div{padding:3px 0;border-bottom:1px solid #21262d}
+  .milestone{color:#e3b341}.composite{color:#ff7b72}.candle{color:#79c0ff}.book{color:#d2a8ff}
+</style>
+</head>
+<body>
+<header>
+  <h1 id="sym">—</h1>
+  <span id="mode" class="badge">connecting…</span>
+  <span class="px" id="last">—</span>
+  <span class="score" id="pct"></span>
+  <span class="score">candle <b id="s-candle">—</b></span>
+  <span class="score">book <b id="s-book">—</b></span>
+  <span class="score">composite <b id="s-comp">—</b></span>
+  <span class="score" id="nbbo"></span>
+  <button id="ivl">10s</button>
+  <button id="snd">&#128263; sound off</button>
+</header>
+<div id="delayed" style="display:none;background:#b62324;color:#fff;padding:8px 16px;font-weight:700">
+  ⚠ DATA IS 15-MIN DELAYED — Polygon plan lacks real-time. Upgrade at polygon.io → auto-recovers within 5 min.</div>
+<div id="degraded">BOOK BLIND — watch
+  <a href="https://www.nasdaq.com/solutions/data/equities/nasdaq-bookviewer" target="_blank">Nasdaq BookViewer</a>
+  manually <span id="mode-reason" style="font-weight:400;font-size:12px"></span></div>
+<div id="alertbanner"></div>
+<div id="chart"></div>
+<div id="alerts"></div>
+<script>
+const $ = id => document.getElementById(id);
+const chart = LightweightCharts.createChart($('chart'), {
+  autoSize: true,
+  layout: {background: {color: '#0d1117'}, textColor: '#e6edf3'},
+  grid: {vertLines: {color: '#21262d'}, horzLines: {color: '#21262d'}},
+  timeScale: {timeVisible: true, secondsVisible: true},
+});
+const series = chart.addCandlestickSeries();
+const FAST = 10, SLOW = 60;
+let candles = {[FAST]: [], [SLOW]: []};
+let ivl = FAST, sound = false, compThr = 0.75;
+
+const toBar = c => ({time: c.ts, open: c.o, high: c.h, low: c.l, close: c.c});
+const fmt = v => v == null ? '—' : v.toFixed(2);
+function setSeries() { series.setData(candles[ivl].map(toBar)); }
+
+function beep() {
+  if (!sound) return;
+  const ctx = beep.ctx || (beep.ctx = new (window.AudioContext || window.webkitAudioContext)());
+  const o = ctx.createOscillator(), g = ctx.createGain();
+  o.connect(g); g.connect(ctx.destination);
+  o.frequency.value = 880; g.gain.value = 0.25;
+  o.start(); o.stop(ctx.currentTime + 0.5);
+}
+$('snd').onclick = () => {
+  sound = !sound;
+  $('snd').textContent = sound ? '\u{1F50A} sound on' : '\u{1F507} sound off';
+  if (sound) beep();
+};
+$('ivl').onclick = () => {
+  ivl = ivl === FAST ? SLOW : FAST;
+  $('ivl').textContent = ivl === FAST ? '10s' : '1m';
+  setSeries();
+};
+
+let flashT;
+function flash(m) {
+  const b = $('alertbanner');
+  b.textContent = m.message;
+  b.style.background = m.kind === 'milestone' ? '#9e6a03' : '#b62324';
+  b.style.display = 'block';
+  clearTimeout(flashT);
+  flashT = setTimeout(() => b.style.display = 'none', 8000);
+}
+function addAlert(m) {
+  const d = document.createElement('div');
+  d.className = m.kind;
+  d.textContent = new Date(m.ts * 1000).toLocaleTimeString() + '  [' + m.kind + ']  ' + m.message;
+  $('alerts').prepend(d);
+}
+
+function applyState(s) {
+  compThr = (s.thresholds && s.thresholds.composite) || compThr;
+  if (s.symbol) $('sym').textContent = s.symbol;
+  $('mode').textContent = s.mode;
+  $('mode').className = 'badge ' + s.mode;
+  $('degraded').style.display = s.mode === 'DEGRADED' ? 'block' : 'none';
+  $('delayed').style.display = (s.feed && s.feed.delayed) ? 'block' : 'none';
+  if (s.mode_reason) $('mode-reason').textContent = '(' + s.mode_reason + ')';
+  if (s.last != null) {
+    $('last').textContent = '$' + s.last.toFixed(2);
+    const p = (s.last / s.ipo_ref - 1) * 100;
+    $('pct').textContent = (p >= 0 ? '+' : '') + p.toFixed(1) + '% vs $' + s.ipo_ref;
+    $('pct').style.color = p >= 0 ? '#3fb950' : '#f85149';
+  }
+  if (s.nbbo && s.nbbo.bid != null)
+    $('nbbo').textContent = 'NBBO ' + s.nbbo.bid.toFixed(2) + ' x ' + s.nbbo.ask.toFixed(2);
+  $('s-candle').textContent = fmt(s.scores.candle);
+  $('s-book').textContent = fmt(s.scores.book);
+  $('s-comp').textContent = fmt(s.scores.composite);
+  $('s-comp').style.color = s.scores.composite >= compThr ? '#ff7b72' : '';
+  const cur = ivl === FAST ? s.current_candle : s.current_candle_slow;
+  if (cur) series.update(toBar(cur));
+}
+
+function handle(m) {
+  if (m.type === 'hello') {
+    candles[FAST] = m.candles_fast || [];
+    candles[SLOW] = m.candles_slow || [];
+    setSeries();
+    (m.alerts || []).forEach(addAlert);
+    applyState(m.state);
+  } else if (m.type === 'state') {
+    applyState(m);
+  } else if (m.type === 'candle') {
+    candles[m.interval].push(m.candle);
+    if (m.interval === ivl) series.update(toBar(m.candle));
+  } else if (m.type === 'alert') {
+    addAlert(m);
+    flash(m);
+    if (m.sms) beep();
+  }
+}
+
+function connect() {
+  const ws = new WebSocket((location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host + '/ws');
+  ws.onmessage = e => handle(JSON.parse(e.data));
+  ws.onclose = () => { $('mode').textContent = 'reconnecting…'; setTimeout(connect, 2000); };
+}
+connect();
+</script>
+</body>
+</html>

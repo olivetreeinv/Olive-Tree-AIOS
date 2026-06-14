@@ -56,6 +56,27 @@ SPREADSHEET_ID   = "1VxOlof56s8GosrWkSctL-FMm7AoJKJ6YtM3GllMKVH4"
 DEAL_ANALYZER_SMALL_ID = "1smas_-1rTtqZSIvfqxF_NzRFyMe_ID-M17z1BQ7qQQU"  # MF Schooled Deal Analyzer 0-50 v10
 DEAL_ANALYZER_LARGE_ID = "1_vfRIk8lcj-bGLxj3pf46p8OYwjeiI3o7g7AgjwHZQk"  # MF Schooled 50+ Unit Proforma
 
+# Effective property-tax rates by buy-box zip (assessment ratio × total millage).
+# GA = 40% ratio · TN = 40% (apartments are commercial) · AL = 20% (Class II).
+# Millages verified 2026-06-11 from county/city publications — re-verify after
+# each county's budget or reappraisal cycle. Cells carry an ESTIMATE note.
+EFFECTIVE_TAX_RATE = {
+    "30080": 0.0137,  # Smyrna — Cobb ~34.2 mills (county ~6.5 + school 18.7 + city 8.99)
+    "30341": 0.0200,  # Chamblee — DeKalb ~50.2 mills (county 20.81 + school ~23.2 + city 6.25)
+    "30005": 0.0127,  # Alpharetta — Fulton ~31.8 mills (county 8.87 + school ~17.1 + city 5.75)
+    "37207": 0.0130,  # N Nashville — Davidson USD $3.254/100
+    "37115": 0.0117,  # Madison TN — Davidson GSD $2.922/100
+    "37408": 0.0138,  # Chattanooga — Hamilton $1.51 + city $1.93 (2025 certified)
+    "35801": 0.0116,  # Huntsville Core — ~58 mills total in city
+    "35806": 0.0116,  # Huntsville Growth — same city millage
+    "35205": 0.0140,  # Birmingham — Jefferson ~70 mills (ESTIMATE — verify parcel millage)
+    "37087": 0.0063,  # Lebanon — Wilson $1.1631 + city $0.405 (2025 certified, post-reappraisal)
+    "37918": 0.0148,  # Knoxville — Knox $1.554 + city $2.1556
+    "37804": 0.0130,  # Maryville — Blount $1.59 + city (city rate unverified ESTIMATE)
+    "37615": 0.0110,  # Johnson City — Washington $1.4071 + city $1.35
+}
+DEFAULT_TAX_RATE = 0.0124   # fallback for zips outside the buy box
+
 SHEETS_BASE = "https://sheets.googleapis.com/v4/spreadsheets"
 DRIVE_BASE  = "https://www.googleapis.com/drive/v3/files"
 UPLOAD_BASE = "https://www.googleapis.com/upload/drive/v3/files"
@@ -1656,6 +1677,17 @@ def populate_analyzer_small(token, args, metrics=None):
         ws["R37"] = exit_cap / 100   # store as decimal (e.g. 6.0 → 0.06)
     ws["R38"] = 0.05                 # selling costs % (5% default)
 
+    # Expenses (APOD, J=current / L=proforma) — the template ships with a prior
+    # deal's taxes and insurance; replace with deal-derived values. Remaining
+    # lines stay as template per-unit defaults for manual review.
+    zip_s = str(getattr(args, 'zip', '') or '')
+    tax_rate = EFFECTIVE_TAX_RATE.get(zip_s, DEFAULT_TAX_RATE)
+    ws["L21"] = f"=$D$4*{tax_rate}"  # proforma taxes reassessed at offer (per-zip effective rate)
+    ws["J21"] = f"=$B$4*{tax_rate}" if asking else f"=$D$4*{tax_rate}"  # current taxes proxy until OM actual entered
+    if units:
+        ws["J22"] = 1500 * units     # insurance — $1,500/unit KB floor
+        ws["L22"] = 1500 * units
+
     # ── SENIOR LOAN sheet — amortization ──
     ws_loan = wb["SENIOR LOAN"]
     ws_loan["C9"] = amort
@@ -1683,6 +1715,11 @@ def populate_analyzer_small(token, args, metrics=None):
         if exit_cap is not None:
             _note("R37", f"Exit cap {exit_cap:.2f}% from OM pro-forma. May expand if market softens — model conservatively.")
         _note("R38", "Selling costs 5% (broker + closing costs at exit).")
+        _note("J21", f"Current taxes ESTIMATE ({tax_rate:.2%} of ask) — replace with the OM/T-12 actual.")
+        _note("L21", f"Proforma taxes reassessed at offer (=D4 x {tax_rate:.2%}, zip {zip_s or 'default'} effective rate). ESTIMATE — confirm county millage in DD.")
+        if units:
+            _note("J22", f"Insurance ${1500*units:,.0f} = $1,500/unit KB floor. Replace with live quote.")
+            _note("L22", "Insurance KB floor — replace with live quote in DD.")
 
         # Unit mix comments
         if curr_gpr and units:

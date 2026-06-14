@@ -20,7 +20,10 @@ from datetime import date, datetime, timedelta
 
 import requests
 from bs4 import BeautifulSoup
+from dotenv import load_dotenv
 from gws_auth import get_token
+
+load_dotenv()
 
 # ─────────────────────────────────────────────
 # Config
@@ -31,8 +34,9 @@ SHEETS_BASE    = "https://sheets.googleapis.com/v4/spreadsheets"
 GMAIL_BASE     = "https://gmail.googleapis.com/gmail/v1/users/me"
 TODAY          = date.today().strftime("%m/%d/%Y")
 
-FMLS_API_BASE = os.getenv("FMLS_API_BASE", "https://api.fmls.com/v1")
-FMLS_API_KEY  = os.getenv("FMLS_API_KEY", "")
+FMLS_API_TOKEN  = os.getenv("FMLS_API_TOKEN", "")
+FMLS_DATASET_ID = os.getenv("FMLS_DATASET_ID", "fmls")
+FMLS_API_BASE   = f"https://api.bridgedataoutput.com/api/v2/OData/{FMLS_DATASET_ID}"
 
 BUY_BOX = {
     "30341": "Chamblee, GA",
@@ -325,46 +329,45 @@ def parse_email_listings(text, source):
 # ─────────────────────────────────────────────
 
 def fetch_fmls_listings():
-    if not FMLS_API_KEY:
-        print("FMLS: FMLS_API_KEY not set — skipping. Add to .env to enable.")
+    if not FMLS_API_TOKEN:
+        print("FMLS: FMLS_API_TOKEN not set — skipping. Add to .env to enable.")
         return []
 
-    headers = {"Authorization": f"Bearer {FMLS_API_KEY}", "Accept": "application/json"}
-    listings = []
-
-    for zip_code in sorted(GA_ZIPS):
-        params = {
-            "PropertyType":    "MultiFamily",
-            "StandardStatus":  "Active",
-            "PostalCode":      zip_code,
-            "$top":            100,
-            "$select":         ",".join([
-                "ListingId", "UnparsedAddress", "PostalCode", "ListPrice",
-                "NumberOfUnitsTotal", "ListAgentFullName", "ListAgentEmail",
-                "ListAgentDirectPhone", "ListOfficeName", "VirtualTourURLUnbranded",
-            ]),
-        }
-        try:
-            r = requests.get(
-                f"{FMLS_API_BASE}/Property",
-                headers=headers,
-                params=params,
-                timeout=30,
-            )
-            if r.status_code == 401:
-                print("FMLS: Unauthorized — check FMLS_API_KEY in .env")
-                return listings
-            r.raise_for_status()
-            page_data = r.json().get("value", [])
-            for prop in page_data:
-                listing = _fmls_to_listing(prop)
-                if listing:
-                    listings.append(listing)
-            print(f"  FMLS {zip_code}: {len(page_data)} listing(s)")
-        except requests.exceptions.RequestException as e:
-            print(f"  FMLS {zip_code}: error — {e}")
-
-    return listings
+    headers = {"Authorization": f"Bearer {FMLS_API_TOKEN}"}
+    zip_list = ",".join(f"'{z}'" for z in sorted(GA_ZIPS))
+    params = {
+        "$filter": (
+            f"PropertyType eq 'Residential Income'"
+            f" and StandardStatus eq 'Active'"
+            f" and PostalCode in ({zip_list})"
+        ),
+        "$select": ",".join([
+            "ListingKey", "UnparsedAddress", "PostalCode", "ListPrice",
+            "NumberOfUnitsTotal", "YearBuilt", "ListAgentFullName", "ListAgentEmail",
+            "ListAgentDirectPhone", "ListOfficeName", "VirtualTourURLUnbranded",
+            "MajorChangeTimestamp",
+        ]),
+        "$orderby": "MajorChangeTimestamp desc",
+        "$top": 200,
+    }
+    try:
+        r = requests.get(
+            f"{FMLS_API_BASE}/Property",
+            headers=headers,
+            params=params,
+            timeout=30,
+        )
+        if r.status_code == 401:
+            print("FMLS: Unauthorized — check FMLS_API_TOKEN in .env")
+            return []
+        r.raise_for_status()
+        props = r.json().get("value", [])
+        listings = [l for p in props if (l := _fmls_to_listing(p))]
+        print(f"  FMLS: {len(props)} active listing(s) in GA buy-box zips, {len(listings)} in unit range")
+        return listings
+    except requests.exceptions.RequestException as e:
+        print(f"  FMLS: error — {e}")
+        return []
 
 
 def _fmls_to_listing(prop):

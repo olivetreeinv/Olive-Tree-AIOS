@@ -302,7 +302,19 @@ IRR ≈ Estimate from equity multiple over 5-year hold:
 ## Recommendation: [PURSUE LOI / MORE INFO NEEDED / PASS]
 **Rationale:** [2–3 sentences — the key reason for the recommendation]
 
-[PURSUE LOI]:  "Draft LOI ready to build. Reply 'draft LOI' or continue in /lets-get-to-work."
+[PURSUE LOI]:
+Output the verdict, then immediately show this Green GO block:
+
+---
+## Green GO — Ready to Offer
+**Max defensible offer:** $[DSCR ceiling at likely rate] | **$[PPU]/unit** | **Broker:** [name, firm]
+**IRR:** [n]% · **DSCR:** [n]x · **EM:** [n]x
+
+Reply **`/loi`** to draft the Letter of Intent now — terms pre-loaded from this analysis.
+---
+
+Do not wait for Brian to ask. Surface the block immediately after every PURSUE LOI verdict.
+
 [MORE INFO]:   "Draft email requesting [specific docs] is below — approve to send."
 [PASS]:        "Log as Pass in Deal Sourcing? (y/n) | Want to send a polite pass note? (y/n)"
 ```
