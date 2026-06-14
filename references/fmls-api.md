@@ -3,7 +3,7 @@
 Researched 2026-06-08. Source: FMLS Marketplace docs, Bridge Interactive developer portal, RESO Web API standard.
 Re-use this file instead of re-researching. Update "Last verified" when credentials are obtained.
 
-**Last verified:** 2026-06-08 (pre-auth research only — credentials not yet obtained)
+**Last verified:** 2026-06-11 (credentials active — FMLS_API_TOKEN + FMLS_DATASET_ID in .env)
 
 ---
 
@@ -35,13 +35,14 @@ https://api.bridgedataoutput.com/api/v2/OData/{dataset_id}/Property
 
 ## Authentication
 
-Bearer token issued through Bridge Interactive dashboard after access is approved.
+Bearer token from Bridge Interactive dashboard. Use the **Server Token** directly — no OAuth exchange needed.
 
 ```bash
-Authorization: Bearer YOUR_ACCESS_TOKEN
+Authorization: Bearer YOUR_SERVER_TOKEN
 ```
 
-Store token in `.env` as `FMLS_API_TOKEN`. Dataset ID as `FMLS_DATASET_ID`.
+Stored in `.env` as `FMLS_API_TOKEN`. Dataset ID (`fmls`) as `FMLS_DATASET_ID`.
+Client ID stored as `FMLS-CLIENT_ID` (not needed for API calls — kept for reference).
 
 ---
 
@@ -51,7 +52,7 @@ Store token in `.env` as `FMLS_API_TOKEN`. Dataset ID as `FMLS_DATASET_ID`.
 ```
 GET https://api.bridgedataoutput.com/api/v2/OData/{dataset_id}/Property
   ?access_token={token}
-  &$filter=PropertyType eq 'ResidentialIncome' and StandardStatus eq 'Active'
+  &$filter=PropertyType eq 'Residential Income' and StandardStatus eq 'Active'
   &$select=ListingKey,ListPrice,UnparsedAddress,PostalCode,BedroomsTotal,UnitCount,ListAgentEmail,ListAgentFullName,ListOfficeName,ListingUrl
   &$top=200
 ```
@@ -62,14 +63,14 @@ GET https://api.bridgedataoutput.com/api/v2/OData/{dataset_id}/Property
 
 ### Filter by buy-box zip codes
 ```
-$filter=PropertyType eq 'ResidentialIncome'
+$filter=PropertyType eq 'Residential Income'
   and StandardStatus eq 'Active'
   and PostalCode in ('30341','30080','30005','37207','37115','37408','37087','35801','35205','35806')
 ```
 
 ### Filter by unit count (15–50 units)
 ```
-$filter=PropertyType eq 'ResidentialIncome'
+$filter=PropertyType eq 'Residential Income'
   and StandardStatus eq 'Active'
   and UnitCount ge 15
   and UnitCount le 50
@@ -79,7 +80,7 @@ $filter=PropertyType eq 'ResidentialIncome'
 ```
 GET https://api.bridgedataoutput.com/api/v2/OData/{dataset_id}/Property
   ?access_token={token}
-  &$filter=PropertyType eq 'ResidentialIncome'
+  &$filter=PropertyType eq 'Residential Income'
     and StandardStatus eq 'Active'
     and PostalCode in ('30341','30080','30005','37207','37115','37408','37087','35801','35205','35806')
     and UnitCount ge 15
@@ -125,7 +126,7 @@ GET https://api.bridgedataoutput.com/api/v2/OData/{dataset_id}/Property('{Listin
 
 ```
 $filter=ModificationTimestamp gt {ISO_DATETIME}
-  and PropertyType eq 'ResidentialIncome'
+  and PropertyType eq 'Residential Income'
   and StandardStatus eq 'Active'
 ```
 

@@ -84,7 +84,7 @@ For each doc provided:
 
 Extract per the input-source table in deal-analysis Step 3 (asking, units, rents, occupancy, OpEx, capex, vintage, unit mix). Build a **doc inventory** line: `Docs: OM ✅ | T-12 ✅ | Rent Roll ❌` — missing docs lower confidence but don't stop the session; note what each gap costs.
 
-**Received docs are archived automatically:** the Gmail fetch path (`--gmail-id`) uploads every OM/T-12/Rent Roll into the property's deal folder (`Olive Tree Investments - Deals / [address]/`). For docs that arrived another way (local file, inline), upload them with `upload_to_deal_folder` so the folder is the complete deal record.
+**Received docs are archived automatically:** the Gmail fetch path (`--gmail-id`) uploads every OM/T-12/Rent Roll into the property's deal folder (`Olive Tree Investments - Deals / [address]/`). For docs that arrived another way (local file, inline, **or attached directly in chat**), get them into the folder too: chat-attached docs usually already exist on Drive — search by filename and copy them in (`files.copy` with the deal folder as parent); otherwise upload with `upload_to_deal_folder`. Before Phase 9, verify the folder holds every doc received — it must end the session as the complete deal record.
 
 ### Round 2 — The underwriter's questions
 
@@ -162,6 +162,8 @@ python3 scripts/deal_analysis.py --populate-analyzer \
   --unit-mix '[{"type":"1BR","count":10,"current_rent":800,"market_rent":950,"sqft":650}, ...]'
 ```
 
+**One analyzer per deal.** If the verdict lands at a different price than the ask (re-trade, max defensible offer), don't create a second sheet — update the existing analyzer's `INPUTS!D4` (Offer Price) via the Sheets API, leaving `B4` (Asking Price) as listed. Never overwrite `D6` (Number Of Units) or `D7` (Price Per Unit formula `=D4/D6`). Don't trust cell comments in the script for this — verify against the sheet's row labels before writing.
+
 The script picks the template by door count — **≤50 units → Deal Analyzer 0-50**, **>50 units → 50+ Unit Proforma** (different model: T-12 income/expense lines, RUBS, refi, sensitivities) — and uploads it as a live Google Sheet named `[Property] — [template] — [date]` **inside the property's deal folder**. Always pass `--address` so the folder gets created/found. Give Brian both links (sheet + folder). **The Deal Analyzer is authoritative** — the script math is for speed; Brian's final call runs through the model.
 
 ### Phase 8 — The verdict
@@ -221,7 +223,18 @@ python3 scripts/deal_analysis.py --log-deal \
 
 Then create/update the wiki deal page at `wiki/deals/[slug].md` per `wiki/SCHEMA.md` (frontmatter + Quick Verdict + Key Numbers + Assumptions + Risks; link `[[markets/...]]` and `[[brokers/...]]`).
 
-On PURSUE LOI (Green GO), offer the next steps: "Run `/loi` to draft the offer, and `/pitch-deck` for the LP deck — both save into the deal folder."
+Finally, save the wiki page into the deal folder as an **Analysis Summary Google Doc**: strip the YAML frontmatter, prepend an `# Analysis Summary — [address]` title, and upload the markdown with `mimeType: application/vnd.google-apps.document` (Drive converts markdown → Doc). Name it `[Property] — Analysis Summary`. Add its link to the wiki page's Artifacts section.
+
+On PURSUE LOI (Green GO), immediately show this block after the memo — do not wait for Brian to ask:
+
+---
+## Green GO — Ready to Offer
+**Max defensible offer:** $[DSCR ceiling at likely rate] | **$[PPU]/unit** | **Broker:** [name, firm]
+**IRR:** [n]% · **DSCR:** [n]x · **EM:** [n]x
+
+Reply **`/loi`** to draft the Letter of Intent now — terms pre-loaded from this analysis.
+Reply **`/pitch-deck`** after the LOI is submitted to build the LP deck.
+---
 
 ---
 
