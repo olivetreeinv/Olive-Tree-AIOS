@@ -14,3 +14,9 @@ wiki/.obsidian/
 
 # Raw source docs processed into the wiki (kept local)
 wiki/raw/
+
+# Local database (rebuildable from Sheets + markdown; not committed)
+data/*.db
+
+# MCP server config — contains API secrets/tokens, stays local
+.mcp.json
