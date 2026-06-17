@@ -16,8 +16,8 @@ Usage:
 Optional env vars (add to .env for direct platform queries):
   CREXI_API_KEY    — Crexi partner API key
   LOOPNET_API_KEY  — LoopNet/CoStar API key (enterprise)
-  FMLS_API_KEY     — FMLS member API key
-  FMLS_API_BASE    — FMLS API base URL (default: https://api.fmls.com/v1)
+  FMLS_API_TOKEN   — FMLS (Bridge Data Output) server token
+  FMLS_DATASET_ID  — Bridge dataset id (default: fmls)
 """
 
 import argparse
@@ -29,7 +29,10 @@ from datetime import date, datetime, timedelta
 
 import requests
 from bs4 import BeautifulSoup
+from dotenv import load_dotenv
 from gws_auth import get_token
+
+load_dotenv()
 
 # ─────────────────────────────────────────────
 # Config
@@ -46,11 +49,19 @@ CREXI_API_KEY    = os.getenv("CREXI_API_KEY", "")
 LOOPNET_API_BASE = "https://api.loopnet.com/api/2"
 LOOPNET_API_KEY  = os.getenv("LOOPNET_API_KEY", "")
 
-FMLS_API_BASE = os.getenv("FMLS_API_BASE", "https://api.fmls.com/v1")
-FMLS_API_KEY  = os.getenv("FMLS_API_KEY", "")
+FMLS_DATASET_ID = os.getenv("FMLS_DATASET_ID", "fmls")
+FMLS_API_BASE   = os.getenv(
+    "FMLS_API_BASE",
+    f"https://api.bridgedataoutput.com/api/v2/OData/{FMLS_DATASET_ID}",
+)
+FMLS_API_TOKEN  = os.getenv("FMLS_API_TOKEN", "")
 
 MIN_BROKER_LISTINGS = 2
 PAGE_SIZE           = 100
+# FMLS "Residential Income" includes 2–4 unit duplex/triplex listings handled by
+# retail residential agents. Only count listings at/above the deal-analysis floor
+# so the qualifying set reflects true multifamily brokers, not SFR/duplex agents.
+MIN_MF_UNITS        = 5
 
 EMAIL_QUERIES = {
     "crexi":   'from:crexi.com subject:(listing OR alert OR "new properties" OR "saved search")',
@@ -381,37 +392,49 @@ def fetch_loopnet_brokers(broker_store, token=None, days=7):
 # ─────────────────────────────────────────────
 
 def fetch_fmls_brokers(broker_store):
-    if not FMLS_API_KEY:
-        print("FMLS: FMLS_API_KEY not set — skipping.")
-        print("      Apply for FMLS Data API access at fmls.com (requires GA member account).")
+    if not FMLS_API_TOKEN:
+        print("FMLS: FMLS_API_TOKEN not set — skipping.")
+        print("      Add FMLS_API_TOKEN (Bridge Data Output) to .env to enable.")
         return
 
-    headers = {"Authorization": f"Bearer {FMLS_API_KEY}", "Accept": "application/json"}
-    skip, total = 0, 0
+    headers = {"Authorization": f"Bearer {FMLS_API_TOKEN}"}
+    params = {
+        "$filter": (
+            "PropertyType eq 'Residential Income'"
+            " and StandardStatus eq 'Active'"
+        ),
+        "$select": ",".join([
+            "ListingKey", "PostalCode", "NumberOfUnitsTotal",
+            "ListAgentFullName", "ListAgentEmail", "ListAgentDirectPhone", "ListOfficeName",
+        ]),
+        "$top": 200,
+    }
+    url, total, pages = f"{FMLS_API_BASE}/Property", 0, 0
+    MAX_PAGES = 50  # safety cap: 50 × 200 = 10k listings
 
-    print("FMLS: querying active MF listings in Georgia...")
-    while True:
-        params = {
-            "PropertyType": "MultiFamily", "StandardStatus": "Active",
-            "$top": PAGE_SIZE, "$skip": skip,
-            "$select": ",".join([
-                "ListingId", "PostalCode", "NumberOfUnitsTotal",
-                "ListAgentFullName", "ListAgentEmail", "ListAgentDirectPhone", "ListOfficeName",
-            ]),
-        }
+    print("FMLS: querying active income properties...")
+    while url and pages < MAX_PAGES:
+        pages += 1
         try:
-            r = requests.get(f"{FMLS_API_BASE}/Property", headers=headers,
-                             params=params, timeout=30)
+            r = requests.get(url, headers=headers, params=params, timeout=30)
             if r.status_code == 401:
-                print("  FMLS: 401 Unauthorized — check FMLS_API_KEY.")
+                print("  FMLS: 401 Unauthorized — check FMLS_API_TOKEN.")
                 return
             r.raise_for_status()
         except requests.exceptions.RequestException as e:
             print(f"  FMLS: error — {e}")
             return
 
-        props = r.json().get("value", [])
+        data  = r.json()
+        props = data.get("value", [])
         for prop in props:
+            units = prop.get("NumberOfUnitsTotal") or 0
+            try:
+                units = int(units)
+            except (TypeError, ValueError):
+                units = 0
+            if units < MIN_MF_UNITS:
+                continue  # skip SFR/duplex/triplex "income" listings
             name      = prop.get("ListAgentFullName", "")
             email     = prop.get("ListAgentEmail", "")
             phone     = prop.get("ListAgentDirectPhone", "")
@@ -423,9 +446,8 @@ def fetch_fmls_brokers(broker_store):
 
         total += len(props)
         print(f"  FMLS: {total} listing(s) scanned")
-        if len(props) < PAGE_SIZE:
-            break
-        skip += PAGE_SIZE
+        # Bridge OData paginates via @odata.nextLink (already carries params).
+        url, params = data.get("@odata.nextLink"), None
 
     print(f"  FMLS: done — {total} listing(s) scanned\n")
 

@@ -1,0 +1,212 @@
+#!/usr/bin/env python3
+"""
+Olive Tree — Land Mail (/land-mail engine)
+
+Reads the Land Sellers tab and generates one direct-mail offer letter per
+parcel, merged from templates/land-mail-offer.md. Output is per-parcel .txt
+files + a single merged printable in output/land-mail/<date>-<zip>/.
+
+Nothing is sent automatically. Brian prints, stuffs, and mails.
+
+Usage:
+  # Generate all new mail-channel sellers for Cartersville
+  python3 scripts/land_mail.py --zip 30120
+
+  # Preview the first 3 letters without writing files
+  python3 scripts/land_mail.py --zip 30120 --dry-run --limit 3
+
+  # Include already-generated rows (re-mail or reprint)
+  python3 scripts/land_mail.py --zip 30120 --status all
+"""
+
+import argparse
+import os
+import re
+import sys
+from datetime import date
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from dotenv import load_dotenv
+
+from land_sheets import get_token, read_rows  # noqa: E402
+
+load_dotenv()
+
+TEMPLATE_PATH = Path(__file__).parent.parent / "templates" / "land-mail-offer.md"
+OUTPUT_DIR    = Path(__file__).parent.parent / "output" / "land-mail"
+
+# Land Sellers column indices (land_setup.TABS["Land Sellers"])
+C_PARCEL  =  0   # Parcel ID
+C_SITUS   =  1   # Situs Address
+C_ZIP     =  2   # Situs Zip (site, used for county lookup)
+C_ACRES   =  4   # Acres
+C_OWNER   =  5   # Owner Name
+C_ADDR    =  6   # Owner Mailing Address
+C_CITY    =  7   # Owner City
+C_STATE   =  8   # Owner State
+C_OFFER   = 11   # Offer Price
+C_CHANNEL = 14   # Channel (mail / call)
+C_STATUS  = 15   # Call Status
+C_OZIP    = 20   # Owner Zip (appended this session)
+
+# Zip → human county name for the letter body
+ZIP_COUNTY = {
+    "30120": "Bartow County, GA",
+    "30121": "Bartow County, GA",
+    "30040": "Forsyth County, GA",
+    "30041": "Forsyth County, GA",
+}
+
+BRIAN_PHONE = os.getenv("BRIAN_PHONE", "[PHONE]")
+BRIAN_EMAIL = os.getenv("BRIAN_EMAIL", "brian@olivetreeinv.io")
+
+_BOLD = re.compile(r"\*\*(.+?)\*\*")     # strip markdown bold from plain-text output
+
+
+def _col(row, idx, default=""):
+    return (row[idx].strip() if len(row) > idx and row[idx] else default)
+
+
+def _load_template():
+    raw = TEMPLATE_PATH.read_text()
+    # Everything after the first horizontal rule is the letter body.
+    if "\n---\n" in raw:
+        body = raw.split("\n---\n", 1)[1].lstrip("\n")
+    else:
+        body = raw
+    return body
+
+
+def merge(template, row):
+    today = date.today().strftime("%B %d, %Y")
+    situs_zip = _col(row, C_ZIP)
+    county = ZIP_COUNTY.get(situs_zip, "the county")
+
+    offer_raw = _col(row, C_OFFER)
+    try:
+        offer_fmt = f"${float(offer_raw):,.0f}"
+    except (ValueError, TypeError):
+        offer_fmt = offer_raw or "[OFFER]"
+
+    mapping = {
+        "{{DATE}}":                  today,
+        "{{OWNER_NAME}}":            _col(row, C_OWNER) or "[OWNER NAME]",
+        "{{OWNER_MAILING_ADDRESS}}": _col(row, C_ADDR)  or "[ADDRESS]",
+        "{{OWNER_CITY}}":            _col(row, C_CITY)  or "[CITY]",
+        "{{OWNER_STATE}}":           _col(row, C_STATE) or "[STATE]",
+        "{{OWNER_ZIP}}":             _col(row, C_OZIP),
+        "{{SITUS_ADDRESS}}":         _col(row, C_SITUS) or situs_zip,
+        "{{COUNTY}}":                county,
+        "{{ACRES}}":                 _col(row, C_ACRES) or "[ACRES]",
+        "{{PARCEL_ID}}":             _col(row, C_PARCEL) or "[PARCEL]",
+        "{{OFFER}}":                 offer_fmt,
+        "[PHONE]":                   BRIAN_PHONE,
+        "[EMAIL]":                   BRIAN_EMAIL,
+    }
+    result = template
+    for k, v in mapping.items():
+        result = result.replace(k, str(v))
+    # Strip markdown bold markers so printed letters look clean.
+    result = _BOLD.sub(r"\1", result)
+    return result
+
+
+def main():
+    ap = argparse.ArgumentParser(description="Generate land offer letters from Land Sellers tab.")
+    ap.add_argument("--zip", dest="zip_code", required=True,
+                    help="Situs zip to pull sellers for (e.g. 30120)")
+    ap.add_argument("--status", default="new",
+                    help="call_status filter: 'new', 'mail', or 'all' (default: new)")
+    ap.add_argument("--dry-run", action="store_true",
+                    help="Preview up to 3 letters; don't write files")
+    ap.add_argument("--limit", type=int,
+                    help="Cap the number of letters generated")
+    args = ap.parse_args()
+
+    if not TEMPLATE_PATH.exists():
+        sys.exit(f"Template not found: {TEMPLATE_PATH}")
+
+    template = _load_template()
+    token    = get_token()
+    rows     = read_rows(token, "Land Sellers")
+
+    if len(rows) <= 1:
+        sys.exit("Land Sellers tab is empty — run /land-sellers first.")
+
+    data = rows[1:]
+
+    # Filter: zip + channel=mail + status
+    filtered = []
+    skipped_no_addr = 0
+    for r in data:
+        if _col(r, C_ZIP) != args.zip_code:
+            continue
+        if _col(r, C_CHANNEL) != "mail":
+            continue
+        if args.status != "all" and _col(r, C_STATUS) not in ("new", args.status):
+            continue
+        if not _col(r, C_ADDR):
+            skipped_no_addr += 1
+            continue
+        filtered.append(r)
+
+    if args.limit:
+        filtered = filtered[:args.limit]
+
+    print(f"\n  Land Mail — zip {args.zip_code}")
+    print(f"  {len(filtered)} letters to generate "
+          f"(channel=mail, status={args.status})"
+          + (f" — {skipped_no_addr} skipped (no mailing address)" if skipped_no_addr else ""))
+
+    if not filtered:
+        print("\n  Nothing to merge.")
+        print("  If /land-sellers ran successfully, check that rows have channel='mail'.")
+        return
+
+    letters = [(r, merge(template, r)) for r in filtered]
+
+    if args.dry_run:
+        preview = letters[:3]
+        for i, (r, letter) in enumerate(preview, 1):
+            sep = "=" * 62
+            print(f"\n{sep}\nLETTER {i}: {_col(r, C_OWNER)} — {_col(r, C_SITUS)}\n{sep}")
+            # Print just the first ~700 chars to keep terminal readable
+            print(letter[:700])
+            if len(letter) > 700:
+                print("  … (letter continues)")
+        if len(letters) > 3:
+            print(f"\n  … and {len(letters) - 3} more. Use --limit to see fewer.")
+        print(f"\n  (dry-run — no files written)")
+        return
+
+    # Write output
+    stamp   = date.today().isoformat()
+    out_dir = OUTPUT_DIR / f"{stamp}-{args.zip_code}"
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    page_break = "\n" + ("=" * 62) + "\n\n"
+    all_pages  = []
+
+    for i, (r, letter) in enumerate(letters, 1):
+        parcel_safe = re.sub(r"[^A-Za-z0-9_-]", "-", _col(r, C_PARCEL))
+        fname = out_dir / f"{i:03d}-{parcel_safe}.txt"
+        fname.write_text(letter, encoding="utf-8")
+        all_pages.append(letter)
+        print(f"  [{i:3d}] {_col(r, C_OWNER):32} ${_col(r, C_OFFER):>8} → {parcel_safe}")
+
+    merged_path = out_dir / "_all_letters.txt"
+    merged_path.write_text(page_break.join(all_pages), encoding="utf-8")
+
+    print(f"\n  {len(letters)} letter(s) written to:")
+    print(f"  {out_dir}/")
+    print(f"\n  Print _all_letters.txt for the full batch (use Page Breaks between letters).")
+    print(f"  Track responses: update Outcome column in Land Sellers tab after calls come in.")
+    if skipped_no_addr:
+        print(f"\n  Note: {skipped_no_addr} row(s) skipped — no mailing address. "
+              f"Verify parcel data or skip-trace for those owners.")
+
+
+if __name__ == "__main__":
+    main()

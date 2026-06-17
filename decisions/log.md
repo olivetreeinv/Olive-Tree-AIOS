@@ -172,3 +172,77 @@ Every deal gets a **property folder** named by full street address inside *Olive
 **Alternatives considered:** Single template with hidden rows for the 50+ case — rejected, the models are structurally different enough that a franken-template would be fragile and hard to maintain. Separate scripts per template — rejected, one dispatcher with two dedicated populate functions is cleaner and shares the upload logic.
 
 **Owner:** Brian Norton
+
+---
+
+## 2026-06-14 — `/lets-get-to-work` run: Hawthorne pass-as-relationship, broker_search FMLS fix + unit-filter, 7 new MF brokers
+
+**Decision:** During the Saturday pipeline run, made four linked calls:
+
+1. **4030 Hawthorne Circle SE (Smyrna, 30080) — PASS as a deal, pursued as a broker-relationship opener.** A 4-unit 1981 quadplex at $900K ($225K/unit) — below the 15-unit fund floor and well above Smyrna's $110–160K/door band. Did not chase the asset; instead used it to open the listing agent **Jingru Sui (Keller Williams Realty Atlanta Partners)**, who covers Smyrna (core buy-box) and was not in the Brokers List. Added her as Tier B; staged a buy-box intro draft.
+
+2. **Skipped Justin Landis Group and Elena Gist despite high listing volume.** The broker scan's "6 listings" volume signal was a mirage — their FMLS "Residential Income" listings are 0–1 unit single-family/condo, not multifamily. Adding them would pollute the MF broker list.
+
+3. **Fixed `scripts/broker_search.py` FMLS path + added a unit filter.** Two real bugs: (a) the script never called `load_dotenv()`, so *every* API key read empty and all platforms silently fell back to email — fixed by adding dotenv; (b) the FMLS block pointed at a dead endpoint (`api.fmls.com/v1`, `FMLS_API_KEY`) instead of the working Bridge Data Output OData API (`FMLS_API_TOKEN` + `FMLS_DATASET_ID`) that `deal_search.py` uses — ported it over with `@odata.nextLink` pagination and a 50-page safety cap. Then added `MIN_MF_UNITS = 5`: only listings ≥5 units count toward a broker's qualifying total, so retail SFR/duplex agents stop showing up. Result: FMLS broker discovery went 0 → 352 listings scanned, and the qualifying set tightened from 48 noise brokers to **6 genuine MF brokers**. `/code-review`: APPROVED, no criticals.
+
+4. **Added 6 FMLS-sourced MF brokers to the Brokers List (Tier B)** with intro drafts staged for Monday, each including the broker's actual listings + review links: Anthony Lacy (16u + 6u — 16u is in-product), Jeil Howell (10u + 8u), Syed Firoz (10u + 10u), Jessica Stoddard (10u + 8u), Tim Cowan (8u + 5u), Danielle McCurdy (6u + 6u). None sit in the 3 GA buy-box zips — added for network width, on broker_search's "cast wide" mandate.
+
+**Also this run:** Sent Karen Stephens (GA) a buy-box intro; held Nick Fluellen (TX, outside buy box — keep/cut still pending); surfaced one live in-box deal — Chris Hanné's 20-unit Smyrna (30080), nudge drafted for Monday to pull OM/T-12/rent roll.
+
+**Why:** A no-fit listing is still worth a broker relationship when the agent works a core market — sourcing is the Q3 bottleneck, and broker width is the cheapest lever. The broker_search fixes turn a tool that had never actually queried FMLS into a working MF-broker discovery engine, and the unit filter is what separates real multifamily brokers from duplex agents.
+
+**FMLS data note:** OData `eq` on `ListAgentFullName` is case-sensitive and FMLS stores some agents upper-case, some mixed — match the stored casing exactly or the query returns 0.
+
+**Alternatives considered:** Add all 48 qualifying brokers (rejected — mostly residential agents); add Landis/Elena on volume alone (rejected once unit data showed 0–1 unit listings); leave broker_search on email-only fallback (rejected — the FMLS feed is the highest-signal source and was simply misconfigured).
+
+**Owner:** Brian Norton
+
+---
+
+## 2026-06-14 — Killed "CRE underwriting tool as a product"; trialing Cash Flow Portal instead
+
+**Decision:** Do not build the AI underwriting/OM-extraction tool as a sellable product. Keep it as an internal AIOS tool. Separately, evaluate **Cash Flow Portal's $1,199/mo AI Underwriting** for one month head-to-head against our own `scripts/deal_analysis.py` before deciding whether to buy, build further, or keep our stack as-is.
+
+**Why:** Competitive scan (Perplexity, 2026-06-14) found the exact wedge we were targeting — "ugly OM PDF → auto-filled underwriting in 60 sec" — is already a shipped, productized feature at Cash Flow Portal, priced at $1,199/mo and aimed at our exact buyer (15–50 door syndicators raising from individual LPs). They claim >95% PDF / 99.9% Excel parse on rent rolls/T-12s and parse the OM for property/photos/demographics into a cloud underwriting model with waterfalls. A.CRE has no native ingestion (education + custom-GPTs only); Archer is institutional and "doc-analysis first, underwriting second." Building to sell would mean fighting a better-capitalized incumbent on the exact axis (deal-sourcing speed) that is Brian's Q3 edge — and handing that edge to competitors. The only defensible openings left (parse into the operator's *own* Excel; a sub-$100 screen-only tier) are narrow and not worth a side-quest against the Q3 goals.
+
+**What would change this:** If a one-month trial shows Cash Flow Portal's parse is mediocre on real scanned OMs (the >95% is a marketing number), the "parse into your own model" gap may be real enough to reconsider — but as a tool we use, not necessarily a product we sell.
+
+**Alternatives considered:** (1) Build the ingestion layer and sell it — rejected, feature already taken by an incumbent owning the full workflow. (2) Reverse-engineer A.CRE/Blank Excel templates and sell an ingestion add-on — parked; defensible but a distraction from Q3. (3) Ignore Cash Flow Portal and keep building ours blind — rejected; cheaper to trial theirs and learn than to guess.
+
+**Owner:** Brian Norton
+
+---
+
+## 2026-06-14 — SQLite database backend for the AIOS (three-tier storage)
+
+**Decision:** Stand up a local SQLite database (`data/olive.db`) as the queryable data layer for the AIOS. Three tiers: structured rows (deals, brokers, markets, investors, meetings, decisions) → SQLite via SQLAlchemy ORM; long-form documents (wiki, transcripts, skill docs) → stay Markdown, indexed by path+frontmatter in a `documents` table; binary files (OMs, decks) → filesystem/Drive, pointer stored in DB. DB mirrors Google Sheets (Brian still edits in Sheets; `scripts/db_sync.py` upserts nightly). When the Mac mini arrives, swap `DATABASE_URL` in `.env` to `postgresql://...` — SQLAlchemy handles the dialect, no queries change.
+
+**Why:** No single source of truth today — deals and brokers are duplicated across Google Sheets and the wiki markdown and drift apart. Can't join across tables ("all Tier-A TN brokers with a deal in 90 days") without hand-coding loops. SQLite was already proven in this repo (govcon `cache.db`, `sam_data.db`). JSON files (the alternative considered) are a great field format but a poor database — they require hand-writing the filter, join, and dedup logic that SQL gives for free.
+
+**Alternatives considered:** (1) Loose JSON files — rejected: no queries, no joins, no dedup enforcement. (2) PostgreSQL from day one — rejected: needs a running server process, overkill for a single-user laptop; lift to Postgres is a one-line `.env` change when the Mac mini arrives. (3) DB-as-master (replace Sheets) — deferred: Brian edits in Sheets today; switching the source of truth requires a new edit UI. DB-as-master is the right long-term move; DB-mirrors-Sheets reduces the transition risk.
+
+**Owner:** Brian Norton
+
+---
+
+## 2026-06-14 — Launched CRE Services freelance line (`cre-services/`)
+
+**Decision:** Stand up a productized service line selling Brian's underwriting, BPO, and market-analysis skills as fixed-price deliverables. First channel: Upwork. Project lives in top-level `cre-services/` (mirrors `olive-tree-govcon/`, `spcx-monitor/`).
+
+**Why:** The AIOS already produces ~80% of each deliverable (`/market-research`, `/underwriting`, `/deal-analysis`), so marginal cost is near-zero and turnaround is fast. A $150 market analysis bills ~$300/hr of Brian's actual time while still underpricing the market. Generates side income and sharpens the same skills used on Olive Tree's own deals. Launch low to bank reviews (Upwork algorithm punishes zero-review sellers), then climb to established pricing.
+
+**Alternatives considered:** Hourly-only listing (rejected — fixed-price productized gigs convert better on Upwork). Platform-specific naming (rejected — kept `cre-services` platform-agnostic to allow direct/referral expansion).
+
+**Owner:** Brian Norton
+
+---
+
+## 2026-06-17 — Launched land-wholesaling vertical (Bartow GA, builder-first, free-first)
+
+**Decision:** Stand up a land-wholesaling business line inside the AIOS as a distinct vertical (own skills/scripts/references + a dedicated Google Sheet `LAND_SHEET_ID`, GovCon-style), separate from the multifamily pipeline. Model is builder-first (per Carson & Jackson): lock out-of-state owners' vacant lots under assignable contracts ~10–20% below a builder/developer's price, then assign for the spread. Free-first MVP — county tax-assessor parcel data (ArcGIS Online) for scouting + seller lists, AI-generated contracts, Brian dials first. Launch market: **Cartersville (Bartow County), zips 30120/30121.**
+
+**Why:** The doc's data sources (Zillow, True People Search) block automation here, but the authoritative source — county parcel layers on ArcGIS Online — is free and JSON-queryable, and it directly yields owner mailing addresses + out-of-state flags + acreage + land value. Live screening proved the market choice matters more than gut and rewards accurate tooling: Forsyth/30040 has a real absentee pool (~367 vacant out-of-state lots) but **uniformity 0.0 (non-cookie-cutter) and a high ~$256K avg land basis** → poor wholesale economics in a built-out, expensive metro. Bartow/Cartersville (30120/30121) has ~400 vacant out-of-state lots at a cheap basis (~$29K–$139K) with better uniformity (0.38) and package-deal owners → viable. So Forsyth is kept only as a GIS test county; Bartow is the launch market. (Note: an early "Forsyth has ~1 absentee lot" reading was a record-truncation artifact, corrected once `/land-scout` used exact server-side counts.) Mailing addresses are free but phones aren't → direct mail is the free auto-scale channel, cold calls need a skip-trace step.
+
+**Alternatives considered:** (1) Zillow/portal scraping per the doc — rejected, blocked + ToS-hostile + wrong source. (2) Forsyth as launch market (Brian's first pick by familiarity) — rejected on the data (no absentee seller pool). (3) Out-of-state honey-hole (Lehigh Acres FL) — deferred; Bartow keeps it in-state and the model works there. (4) Paid stack (PropStream/Buyer Bridge/bulk SMS) from day one — deferred until deals validate the model.
+
+**Owner:** Brian Norton
