@@ -125,6 +125,10 @@ Rules: state the buy box (units, price, vintage) every call; always ask for
 (a) pre-market flow and (b) lender/PM/insurance referrals; the tour is for the
 **relationship**, not the listed deal (most are overpriced).
 
+**Link formatting rule:** When referencing a property listing URL in any email draft, never include a bare URL. Always format as a markdown hyperlink using the property address as the label:
+`[123 Main St, Smyrna GA](https://www.crexi.com/properties/...)`
+This renders as a clean clickable link in the chat preview and converts to an `<a>` tag in the sent HTML email.
+
 ---
 
 ## Suggested cadence
