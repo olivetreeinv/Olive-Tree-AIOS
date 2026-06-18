@@ -297,10 +297,7 @@ def fetch_bucket(token, query, limit=10):
 # ─── Monday Pipeline ─────────────────────────────────────────────────────────
 
 def fetch_monday_pipeline():
-    """Run pipeline_cloud.py fetch as subprocess. Only meaningful on Mondays."""
-    now = _now_eastern()
-    if now.weekday() != 0:  # 0 = Monday
-        return None
+    """Run pipeline_cloud.py fetch as subprocess."""
     try:
         here = os.path.dirname(os.path.abspath(__file__))
         result = subprocess.run(
