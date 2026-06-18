@@ -16,12 +16,24 @@ import base64
 import hashlib
 import secrets
 import time
+import json
+import ssl
 import urllib.parse
+import urllib.request
+import urllib.error
 import webbrowser
 import http.server
 import threading
-import requests
 from pathlib import Path
+
+# python.org macOS Python doesn't trust system certs — load certifi so the
+# token exchange / verify HTTPS calls don't fail CERTIFICATE_VERIFY_FAILED.
+_SSL_CTX = ssl.create_default_context()
+try:
+    import certifi
+    _SSL_CTX.load_verify_locations(cafile=certifi.where())
+except Exception:
+    pass
 
 # ── Config ────────────────────────────────────────────────────────────────────
 REDIRECT_PORT = 8765
@@ -77,25 +89,28 @@ class CallbackHandler(http.server.BaseHTTPRequestHandler):
 # ── Token exchange ─────────────────────────────────────────────────────────────
 def exchange_code(client_id, client_secret, code, verifier):
     creds = base64.b64encode(f"{client_id}:{client_secret}".encode()).decode()
-    r = requests.post(
+    data = urllib.parse.urlencode({
+        "grant_type": "authorization_code",
+        "code": code,
+        "redirect_uri": REDIRECT_URI,
+        "code_verifier": verifier,
+        "client_id": client_id,
+    }).encode()
+    req = urllib.request.Request(
         TOKEN_URL,
+        data=data,
         headers={
             "Authorization": f"Basic {creds}",
             "Content-Type": "application/x-www-form-urlencoded",
         },
-        data={
-            "grant_type": "authorization_code",
-            "code": code,
-            "redirect_uri": REDIRECT_URI,
-            "code_verifier": verifier,
-            "client_id": client_id,
-        },
-        timeout=30,
+        method="POST",
     )
-    if r.status_code != 200:
-        print(f"\n✗ Token exchange failed: {r.status_code} {r.text}")
+    try:
+        with urllib.request.urlopen(req, timeout=30, context=_SSL_CTX) as resp:
+            return json.loads(resp.read().decode())
+    except urllib.error.HTTPError as e:
+        print(f"\n✗ Token exchange failed: {e.code} {e.read().decode(errors='replace')}")
         sys.exit(1)
-    return r.json()
 
 # ── Write tokens to .env ───────────────────────────────────────────────────────
 def update_env(access_token, refresh_token):
@@ -124,17 +139,33 @@ def update_env(access_token, refresh_token):
             value = access_token if key == "CANVA_ACCESS_TOKEN" else refresh_token
             new_lines.append(f"{key}={value}")
 
-    ENV_FILE.write_text("\n".join(new_lines) + "\n")
+    # Atomic write — .env holds every secret; never risk a half-written file.
+    tmp = ENV_FILE.with_suffix(".tmp")
+    tmp.write_text("\n".join(new_lines) + "\n")
+    os.replace(tmp, ENV_FILE)
     print(f"✓ Tokens saved to .env")
 
 # ── Main ───────────────────────────────────────────────────────────────────────
+def _load_dotenv():
+    """Load .env directly (no shell `source` — .env has keys with hyphens
+    like FMLS-CLIENT_ID that break shell sourcing)."""
+    if not ENV_FILE.exists():
+        return
+    for line in ENV_FILE.read_text().splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, val = line.partition("=")
+        os.environ.setdefault(key.strip(), val.strip().strip('"').strip("'"))
+
+
 def main():
+    _load_dotenv()
     client_id = os.getenv("CANVA_CLIENT_ID")
     client_secret = os.getenv("CANVA_CLIENT_SECRET")
 
     if not client_id or not client_secret:
         print("✗ CANVA_CLIENT_ID and CANVA_CLIENT_SECRET must be in .env")
-        print("  Run: source .env  before running this script")
         sys.exit(1)
 
     verifier, challenge = generate_pkce()
@@ -151,8 +182,21 @@ def main():
     }
     auth_url = f"{AUTHORIZE_URL}?{urllib.parse.urlencode(auth_params)}"
 
-    # Start local callback server — always cleaned up in the finally block
-    server = http.server.HTTPServer(("127.0.0.1", REDIRECT_PORT), CallbackHandler)
+    # Start local callback server — always cleaned up in the finally block.
+    # allow_reuse_address avoids stale-socket (TIME_WAIT) failures on re-run.
+    class _Server(http.server.HTTPServer):
+        allow_reuse_address = True
+
+    try:
+        server = _Server(("127.0.0.1", REDIRECT_PORT), CallbackHandler)
+    except OSError as e:
+        if e.errno == 48:  # EADDRINUSE
+            print(f"\n✗ Port {REDIRECT_PORT} is already in use by another process.")
+            print(f"  Find it:  lsof -nP -iTCP:{REDIRECT_PORT} -sTCP:LISTEN")
+            print("  Free it, then re-run this script. (The spcx IPO-monitor "
+                  f"used to squat {REDIRECT_PORT} — it's now manual-start only.)")
+            sys.exit(1)
+        raise
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
 
@@ -193,18 +237,19 @@ def main():
 
         # Verify connection
         print("\nVerifying connection...")
-        r = requests.get(
+        vreq = urllib.request.Request(
             "https://api.canva.com/rest/v1/users/me",
             headers={"Authorization": f"Bearer {access_token}"},
-            timeout=30,
+            method="GET",
         )
-        if r.status_code == 200:
-            user = r.json().get("user", {})
+        try:
+            with urllib.request.urlopen(vreq, timeout=30, context=_SSL_CTX) as vresp:
+                user = json.loads(vresp.read().decode()).get("user", {})
             print(f"✓ Connected as: {user.get('display_name', 'unknown')} ({user.get('email', '')})")
             print("\n── Setup complete! ───────────────────────────────────────────")
-            print("Canva is ready. Run 'source .env' to load the new tokens.\n")
-        else:
-            print(f"⚠ Token saved but verification returned {r.status_code} — check scopes")
+            print("Canva is ready — tokens saved to .env.\n")
+        except urllib.error.HTTPError as e:
+            print(f"⚠ Token saved but verification returned {e.code} — check scopes")
     finally:
         server.shutdown()
         server.server_close()

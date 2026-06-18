@@ -11,23 +11,31 @@ SPCX IPO (2026-06-12).
 
 ## Architecture (two independent layers)
 
-1. **The app** — launchd service `com.olivetree.spcx-monitor`, survives crashes and
-   reboots. Records every tick to SQLite, computes exhaustion signals, auto-texts
-   threshold + milestone alerts via iMessage. Works with zero Claude involvement.
+1. **The app** — the spcx-monitor server. Records every tick to SQLite, computes
+   exhaustion signals, auto-texts threshold + milestone alerts via iMessage.
    Dashboard: http://127.0.0.1:8765 (status JSON at `/status`).
+   **Manual-start only** — the always-on launchd service was retired on 2026-06-18
+   (it squatted port 8765 24/7 and collided with the Canva OAuth callback). The
+   plist is parked at `spcx-monitor/com.olivetree.spcx-monitor.plist.disabled`.
+   It no longer auto-starts at login; you launch it when you want a watch (below).
 2. **The judgment loop** — Claude reads the tape every ~5 min via `/loop` (dynamic),
    judges if the top is in, texts plain-English verdicts. Requires laptop on +
    session open. The app's auto-alerts are the safety net when the loop is paused.
 
 ## Start a watch (any ticker)
 
-1. Edit `~/Library/LaunchAgents/com.olivetree.spcx-monitor.plist` env vars:
-   `SPCX_SYMBOL`, `IPO_REF_PRICE`, and a fresh `SPCX_DB` (`data/<ticker>_<date>.db`).
-2. `launchctl unload <plist> && launchctl load <plist>`; confirm
+1. **Launch the app for your ticker** (manual run, port 8765):
+   `cd spcx-monitor && SPCX_SYMBOL=<TICKER> IPO_REF_PRICE=<ref> SPCX_DB=data/<ticker>_<date>.db python3 -m uvicorn spcx.server:app --port 8765`
+   (run it in the background or its own terminal). Confirm
    `curl -s http://127.0.0.1:8765/status` shows `"feed": "real-time trades"`.
-3. Arm the first-trade tripwire (background Bash):
+   *Crash-surviving full-day option:* re-enable the launchd service instead — edit
+   the env vars in the parked plist, copy it back to `~/Library/LaunchAgents/`, then
+   `launchctl load` it. After the close, stop it (`launchctl bootout
+   gui/$(id -u)/com.olivetree.spcx-monitor`) and move the plist back out so it
+   doesn't squat 8765 again.
+2. Arm the first-trade tripwire (background Bash):
    `until [ "$(sqlite3 data/<db> 'SELECT COUNT(*) FROM trades' 2>/dev/null || echo 0)" -gt 0 ]; do sleep 5; done; echo FIRST TRADES`
-4. Start the dynamic loop (no interval — self-paced): pre-open sleep long, then
+3. Start the dynamic loop (no interval — self-paced): pre-open sleep long, then
    5-min reads (270s, keeps prompt cache warm) for the first 2 hours of trading,
    then 15-min until 16:00 ET.
 

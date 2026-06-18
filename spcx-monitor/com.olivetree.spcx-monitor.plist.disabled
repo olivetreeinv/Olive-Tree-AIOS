@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.olivetree.spcx-monitor</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Library/Frameworks/Python.framework/Versions/3.14/bin/python3</string>
+        <string>-m</string>
+        <string>spcx.server</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/olivetree/Documents/Olive AIOS/spcx-monitor</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PYTHONUNBUFFERED</key>
+        <string>1</string>
+        <key>NOTIFY_IMESSAGE_TO</key>
+        <string></string>
+        <key>SPCX_SYMBOL</key>
+        <string>SPCX</string>
+        <key>IPO_REF_PRICE</key>
+        <string>135</string>
+        <key>SPCX_DB</key>
+        <string>data/spcx_ipoday_20260612.db</string>
+    </dict>
+
+    <key>StandardOutPath</key>
+    <string>/Users/olivetree/Documents/Olive AIOS/spcx-monitor/data/server.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/olivetree/Documents/Olive AIOS/spcx-monitor/data/server.log</string>
+
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+
+    <key>ThrottleInterval</key>
+    <integer>10</integer>
+</dict>
+</plist>
