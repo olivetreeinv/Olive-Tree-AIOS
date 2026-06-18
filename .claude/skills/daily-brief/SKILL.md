@@ -292,13 +292,11 @@ Deal under contract    ● {status}
 LP commitments ($400K) ● {status}
 Broker pipeline (3+)   ● {status}
 
-{MONDAY ONLY ─────────────────────────}
-## Pipeline — Week of {date}
+## Pipeline
 New listings:    {n} in buy box | {list top 3}
 Overdue brokers: {n} — {names}
 Inbound deals:   {n} — {subjects}
 Run /lets-get-to-work to action this.
-{──────────────────────────────────────}
 
 ## #1 Action Today
 {one sentence}
