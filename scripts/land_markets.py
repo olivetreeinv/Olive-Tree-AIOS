@@ -22,9 +22,52 @@ Usage:
 
 import argparse
 import json
+import os
+import statistics
 from datetime import date
+from pathlib import Path
+
+import requests
+from dotenv import load_dotenv
 
 import land_parcels as lp
+
+load_dotenv(Path(__file__).parent.parent / ".env")
+
+def fmls_median_ppa(zip_code):
+    """Return FMLS median active $/acre for a zip, or None if unavailable."""
+    token = os.getenv("FMLS_API_TOKEN", "")
+    dataset = os.getenv("FMLS_DATASET_ID", "fmls")
+    if not token:
+        return None
+    base = f"https://api.bridgedataoutput.com/api/v2/OData/{dataset}"
+    params = {
+        "$filter": (
+            f"PropertyType eq 'Land' and StandardStatus eq 'Active'"
+            f" and PostalCode eq '{zip_code}'"
+        ),
+        "$select": "ListPrice,LotSizeAcres",
+        "$top": 200,
+    }
+    url, ppa_vals = f"{base}/Property", []
+    pages = 0
+    while url and pages < 10:
+        try:
+            r = requests.get(url, headers={"Authorization": f"Bearer {token}"},
+                             params=params, timeout=20)
+            r.raise_for_status()
+        except Exception:
+            break
+        data = r.json()
+        for prop in data.get("value", []):
+            p = prop.get("ListPrice") or 0
+            a = prop.get("LotSizeAcres") or 0
+            if p > 0 and a > 0:
+                ppa_vals.append(p / a)
+        url, params = data.get("@odata.nextLink"), None
+        pages += 1
+    return round(statistics.median(ppa_vals)) if len(ppa_vals) >= 3 else None
+
 
 # Verdict thresholds on the vacant + out-of-state seller pool (per zip).
 GO_MIN = 50      # >= this many absentee vacant lots -> GO
@@ -59,6 +102,8 @@ def screen_zip(county, zip_code, band=None, sample_cap=3000):
     # Score 0–100: absentee pool (capped at 100) is the spine; uniformity nudges.
     score = round(min(n, 100) * 0.8 + (stats.get("uniformity") or 0) * 20, 1)
 
+    ppa = fmls_median_ppa(zip_code)
+
     return {
         "county": county,
         "zip": zip_code,
@@ -67,12 +112,13 @@ def screen_zip(county, zip_code, band=None, sample_cap=3000):
         "vacant_lots": vacant,
         "vacant_oos": n,
         "band": f"{lo}-{hi} ac",
-        "band_lots": len(band_lots),       # within the sample
+        "band_lots": len(band_lots),
         "uniformity": stats.get("uniformity"),
         "median_acres": stats.get("median"),
         "avg_land_value": avg_val,
         "go_nogo": verdict,
         "score": score,
+        "fmls_median_ppa": ppa,
     }
 
 
@@ -83,6 +129,7 @@ def _row(m, city=""):
         m["vacant_lots"], m["vacant_oos"], m["uniformity"], m["median_acres"],
         m["avg_land_value"], "(call builders)", m["go_nogo"], m["score"],
         f"seller band {m['band']}: {m['band_lots']} lots", date.today().isoformat(),
+        m.get("fmls_median_ppa") or "",
     ]
 
 
@@ -116,6 +163,8 @@ def main():
         print(f"  Median acres         {str(m['median_acres']):>8}")
         av = f"${m['avg_land_value']:,}" if m['avg_land_value'] else "—"
         print(f"  Avg land value       {av:>8}")
+        ppa = f"${m['fmls_median_ppa']:,}/ac" if m.get("fmls_median_ppa") else "—"
+        print(f"  FMLS median $/acre   {ppa:>8}   ← MLS active listings")
         print(f"  {'─'*46}")
         print(f"  VERDICT: {m['go_nogo']}   (score {m['score']}/100)")
         print(f"  Next: call builders in {m['zip']} for a buy box, then /land-sellers\n")

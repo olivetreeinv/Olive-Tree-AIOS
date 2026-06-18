@@ -690,7 +690,7 @@ def extract_and_add_brokers(token, results, dry_run, min_contacts=1):
 def main():
     parser = argparse.ArgumentParser(description="Olive Tree — Deal Inbox Scanner")
     parser.add_argument("--days",             type=int, default=7,   help="Days to scan back (default: 7)")
-    parser.add_argument("--dry-run",          action="store_true",   help="Don't read/write Brokers List — just scan Gmail")
+    parser.add_argument("--dry-run",          action="store_true",   help="Sandbox mode: scan Gmail but don't send emails or write to sheet")
     parser.add_argument("--doc-request",      type=int, metavar="INDEX", help="Draft a doc-request email for result INDEX (1-based)")
     parser.add_argument("--send",             action="store_true",   help="Send the doc-request draft immediately (use with --doc-request)")
     parser.add_argument("--extract-brokers",  action="store_true",   help="Promote new inbound contacts to the Brokers List")
@@ -720,7 +720,10 @@ def main():
         print(f"  ---")
         print(f"  {draft['body'].replace(chr(10), chr(10) + '  ')}")
         print()
-        if args.send:
+        if args.dry_run:
+            print(f"  🧪 DRY RUN — would send to {draft['to_email']} (not sent)")
+            print(f"  To send for real: python3 scripts/deal_inbox.py --doc-request {args.doc_request} --send")
+        elif args.send:
             send_doc_request(token, draft)
             print(f"✅ Sent to {draft['to_email']}")
         else:

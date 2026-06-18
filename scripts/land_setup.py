@@ -34,6 +34,7 @@ TABS = {
         "County", "Zip", "City", "State", "Total Parcels", "Vacant Lots",
         "Vacant Out-of-State", "Cookie-Cutter Uniformity", "Median Acres",
         "Avg Land Value", "Builders Active", "Go/No-Go", "Score", "Notes", "Date",
+        "FMLS Median $/Acre",
     ],
     "Land Builders": [
         "Name", "Company", "Phone", "Email", "Markets/Zips", "Lot Size Min",
@@ -46,6 +47,7 @@ TABS = {
         "Out-of-State", "Est Land Value", "Offer Price", "Owner Phone",
         "Builder Target", "Channel", "Call Status", "Last Call",
         "Callback Date", "Outcome", "Notes", "Owner Zip",
+        "Mkt Avg List Pr", "Buy Pr Est", "Buy Box",
     ],
     "Land Deals": [
         "Parcel ID", "Situs Address", "Seller", "Builder", "Contract Price",

@@ -7,10 +7,12 @@ identifies brokers with overdue follow-ups (Next Follow-Up ≤ today,
 Status ≠ Dormant), and drafts follow-up emails.
 
 Usage:
-  python3 scripts/broker_followup.py --check         # List overdue brokers
-  python3 scripts/broker_followup.py --draft         # Generate email drafts
-  python3 scripts/broker_followup.py --send [index]  # Send a specific draft (after Brian approves)
-  python3 scripts/broker_followup.py --mark-sent [row]  # Update sheet after sending
+  python3 scripts/broker_followup.py --check                        # List overdue brokers
+  python3 scripts/broker_followup.py --draft                        # Show email drafts (no send)
+  python3 scripts/broker_followup.py --send-all --dry-run           # Sandbox: simulate full send
+  python3 scripts/broker_followup.py --send-all                     # Production: send all overdue
+  python3 scripts/broker_followup.py --send-all --exclude 16,23     # Skip specific sheet rows
+  python3 scripts/broker_followup.py --mark-sent [row]              # Mark one row sent manually
 """
 
 import argparse
@@ -349,6 +351,8 @@ def main():
     parser.add_argument("--draft",      action="store_true", help="Generate email drafts for overdue brokers")
     parser.add_argument("--send",       type=int, metavar="INDEX", help="Send draft at given index (0-based)")
     parser.add_argument("--send-all",   action="store_true", help="Send all overdue brokers with valid emails")
+    parser.add_argument("--dry-run",    action="store_true", help="Sandbox: show what would be sent without sending or updating sheet")
+    parser.add_argument("--exclude",    type=str, metavar="ROWS", help="Comma-separated sheet row numbers to skip (e.g. 16,23)")
     parser.add_argument("--mark-sent",  type=int, metavar="ROW",   help="Mark sheet row as sent (sheet row number)")
     args = parser.parse_args()
 
@@ -422,10 +426,27 @@ def main():
             return
 
         if args.send_all:
-            # Build the work list, skipping brokers with no email
+            dry_run = args.dry_run
+            exclude_rows = set()
+            if args.exclude:
+                for r in args.exclude.split(","):
+                    try:
+                        exclude_rows.add(int(r.strip()))
+                    except ValueError:
+                        pass
+
+            if dry_run:
+                print(f"\n🧪 DRY RUN — no emails will be sent, sheet will not be updated\n")
+
+            # Build the work list upfront from the already-fetched overdue list (stable, no re-fetch)
             jobs = []
             skipped = 0
             for d, b in zip(drafts, overdue):
+                row = b["row"]
+                if row in exclude_rows:
+                    print(f"⏭️  Excluded (row {row}): {d['to_name']}")
+                    skipped += 1
+                    continue
                 if not d["to_email"]:
                     print(f"⚠️  Skipped {d['to_name'] or 'unknown'} — no email address on file.")
                     skipped += 1
@@ -435,9 +456,22 @@ def main():
                     b_sent_int = int(b_sent_val) if b_sent_val else 0
                 except (ValueError, TypeError):
                     b_sent_int = 0
-                jobs.append((d, b["row"], b_sent_int))
+                jobs.append((d, row, b_sent_int))
 
-            # Send emails in parallel; collect successes for one batched sheet update
+            if dry_run:
+                print(f"📬 Would send to {len(jobs)} broker(s):\n")
+                for d, row, _ in jobs:
+                    print(f"  ✉️  Row {row}: {d['to_name']} <{d['to_email']}>")
+                    print(f"      Subject: {d['subject']}")
+                    print(f"      ---")
+                    print(f"      {d['body'].replace(chr(10), chr(10) + '      ')}")
+                    print()
+                print(f"✅ Dry run complete — {len(jobs)} would send, {skipped} would skip.")
+                print(f"\nTo send for real: python3 scripts/broker_followup.py --send-all" +
+                      (f" --exclude {args.exclude}" if args.exclude else ""))
+                return
+
+            # Production send — emails in parallel; collect successes for one batched sheet update
             def _send(job):
                 d, row, sent_int = job
                 try:
