@@ -333,12 +333,23 @@ def draft_doc_request(result):
     }
 
 
+def _to_html(text):
+    """Convert plain text + markdown links to HTML for Gmail rendering."""
+    import html
+    import re
+    body = html.escape(text)
+    body = re.sub(r'\[([^\]]+)\]\((https?://[^\)]+)\)',
+                  r'<a href="\2">\1</a>', body)
+    body = body.replace("\n", "<br>\n")
+    return f"<html><body style='font-family:sans-serif;font-size:14px'>{body}</body></html>"
+
+
 def send_doc_request(token, draft):
     import base64
     from email.header import Header
     from email.mime.text import MIMEText
 
-    msg = MIMEText(draft["body"], "plain", "utf-8")
+    msg = MIMEText(_to_html(draft["body"]), "html", "utf-8")
     msg["to"]      = draft["to_email"]
     msg["from"]    = "brian@olivetreeinv.io"
     msg["subject"] = str(Header(draft["subject"], "utf-8"))

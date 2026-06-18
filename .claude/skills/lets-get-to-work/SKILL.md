@@ -96,13 +96,26 @@ Proceed to selected phases only.
 
 ---
 
+### Parallel Data Gather (Phases 1, 2, 4)
+
+After Brian selects a scope that includes any of Phases 1, 2, or 4, launch them as concurrent sub-agents before presenting any results. Do not run them sequentially.
+
+**Spawn simultaneously:**
+- **Agent A** — `python3 scripts/deal_search.py --days 7` (Phase 1: new listings)
+- **Agent B** — `python3 scripts/broker_search.py` (Phase 2: broker discovery)
+- **Agent C** — `python3 scripts/deal_inbox.py --days 7` (Phase 4: inbound deal emails)
+
+Wait for all three to complete. Then run Phase 3 (broker follow-ups) using Agent B's new-broker output.
+
+Merge all results and present in the Phase 1 → 2 → 3 → 4 order below. Brian sees one unified view, not three separate outputs.
+
+If Brian's scope excludes a phase (e.g., "inbound emails only"), skip that agent — don't spawn what won't be used.
+
+---
+
 ### Phase 1: Scan for New Listings
 
-Run the deal-search script to pull new listings from Crexi API, LoopNet email alerts, and FMLS API:
-
-```bash
-python3 scripts/deal_search.py --days 7
-```
+*(Results from Agent A — already run in parallel above)*
 
 After the scan, present a summary:
 
@@ -129,15 +142,11 @@ If none → continue to Phase 2.
 
 ### Phase 2: Discover New Brokers
 
-Scan Crexi, LoopNet, and FMLS for brokers with 2+ active multifamily listings who are not yet in the Brokers List:
-
-```bash
-python3 scripts/broker_search.py
-```
+*(Results from Agent B — already run in parallel above)*
 
 No buy-box filter — any broker with 2+ MF listings on any platform qualifies. The goal is network width, not deal fit.
 
-After the scan, present a summary:
+Present a summary:
 
 ```
 🔍 New Brokers — [date]
@@ -222,17 +231,7 @@ Track **"Pre-market list: Y/N"** as a broker field; brokers who share pre-market
 
 ### Phase 4: Scan Inbound Deal Emails
 
-Search Gmail for broker emails that look like deal submissions (last 7 days):
-
-```bash
-python3 scripts/deal_inbox.py --days 7
-```
-
-Search uses these Gmail queries (run in sequence, deduplicate):
-```
-newer_than:7d (subject:"offering memorandum" OR subject:"OM" OR subject:"multifamily" OR subject:"for sale" OR subject:"apartment") -from:me
-newer_than:7d ("rent roll" OR "T-12" OR "T12" OR "asking price" OR "cap rate") -from:me
-```
+*(Results from Agent C — already run in parallel above)*
 
 Cross-reference sender email against Brokers List. Flag:
 - Known broker → show broker name + tier
@@ -429,6 +428,7 @@ All scripts are built and operational.
 
 - **Draft only.** Every email shown to Brian before sending. No exceptions.
 - **Buy box first.** Check zip against `references/buy-box.md` before spending time on any deal.
+- **Link formatting.** Never include bare URLs in email drafts. Always use markdown hyperlinks with the property address as the label: `[123 Main St, Smyrna GA](url)`. This renders cleanly in chat and converts to an HTML anchor in the sent email.
 - **Availability check.** Before presenting any listing from a broker email, verify it's still active by fetching the listing URL or searching the broker's platform (marcusmillichap.com, crexi.com, loopnet.com). Flag as "availability unverified" only if site is inaccessible.
 - **No auto-dormant.** Track attempts but never move a broker to Dormant automatically — Brian sets that manually.
 - **Log everything.** Every deal touched gets logged in Deal Sourcing. Every LOI goes in `decisions/log.md`.
