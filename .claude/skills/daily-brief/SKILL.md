@@ -5,29 +5,36 @@ description: Morning context pull for Brian Norton. Reads Gmail, Google Calendar
 
 ## What this skill does
 
-Runs a morning intelligence pull from Brian's connected systems. Surfaces the day's schedule, deal and investor emails from the last 24 hours, Q3 priority pulse, and one #1 action — then drafts the artifact that executes that action (email, follow-up, etc.) ready to review and send.
+Runs a morning intelligence pull from Brian's connected systems. Surfaces the day's schedule, week ahead, tasks, important dates, deal and investor emails, Q3 pulse, and one #1 action — then drafts the artifact that executes that action. On Mondays, includes the full deal pipeline digest (new listings, overdue brokers, inbound deals).
 
 **One run = one clear morning + one ready-to-send draft.**
 
+**Delivered at 5am ET every day as a cloud email. Also runnable on-demand in chat.**
+
 ## When to run
 
-- **Every weekday morning** — ideally before the first task.
+- **Every morning at 5am** — cloud routine delivers to inbox before Brian is at his desk.
 - **Trigger phrases:** "daily brief", "morning brief", "what's on my plate", "what do I have today", "brief me", "run my brief".
-- **Ideal timing:** Between 7–9 AM. Before outreach, calls, or underwriting work.
-- **Integrated mode:** Also runs as optional Phase 0 of `/lets-get-to-work`. When called from there, skip the standalone header and flow directly into the pipeline session after the brief.
+- **Integrated mode:** Also runs as optional Phase 0 of `/lets-get-to-work`.
 
-## Inputs
+## Inputs (cloud routine — via `scripts/daily_brief_cloud.py fetch`)
 
-| Source | What it reads | Mechanism |
-|---|---|---|
-| Google Calendar | Today's events (full day) | Google Calendar MCP |
-| Gmail | Unread + starred threads from last 24h | Gmail MCP |
-| `context/priorities.md` | Q3 goals | Read |
-| `context/about-me.md` | Role, top pain | Read |
-| `connections.md` | Which tools are live vs. pending | Read |
-| `decisions/log.md` | Recent decisions (last 3 entries) | Read (if exists) |
-| `references/voice.md` | Brian's voice for draft output | Read |
-| `logs/auto-commit.log` | Last night's AIOS auto-commit status | Read (last line) |
+The cloud fetch script returns a JSON object with all of the following. Read it, then format per the Output section below.
+
+| Key | What it contains |
+|---|---|
+| `date` | Today's date string |
+| `is_monday` | Boolean — include Pipeline section if true |
+| `calendar.today` | Events from both calendars for today |
+| `calendar.week` | 7-day array of `{date, events[]}` |
+| `special_dates` | Birthdays/anniversaries in the next 7 days |
+| `tasks` | `{available, items[]}` — Google Tasks due this week |
+| `deals` | Unread Gmail deal signals (last 24h) |
+| `investors` | Unread Gmail investor signals (last 24h) |
+| `starred` | Starred Gmail threads (last 24h) |
+| `pipeline` | Monday only — listings, overdue brokers, inbound deals |
+
+**Calendars pulled:** `brian@olivetreeinv.io` + `briannorton79@gmail.com` (merged, deduplicated).
 
 **GoHighLevel (CRM):** Not yet scripted. When `scripts/ghl_pipeline.py` exists and returns data, insert an LP Pipeline section automatically. Until then, skip silently — do not mention the gap in the brief output.
 
@@ -253,34 +260,45 @@ After the draft, add one line: *"Review and adjust before sending. Brackets = fi
 
 ## Output format
 
-Print directly in chat. No preamble. Start with the date header.
+Start with the date header. Tight and scannable — whole brief fits one screen.
 
 ```
-# Daily Brief — {Day, Month DD}
+# Morning Brief — {Day, Month DD}
 
 ## Today
-{calendar items, one per line, ● or 📍 prefix}
+{events from calendar.today — time + name + location/link. Flag deal events 📍. If empty: "No events today."}
+
+## This Week
+{3–4 notable blocks from calendar.week — skip empty days. Mon–Sun.}
+
+## Upcoming Dates
+{special_dates — "🎂 Jun 25 — Karalyn's Birthday (in 7 days)". Omit if empty.}
+
+## Tasks
+{tasks.items due today or this week — "☐ [title] — due [date]". If tasks.available=false: "⚠️ Tasks unavailable — re-auth needed.". If no tasks: omit section.}
 
 ## Inbox Pulse
 **Deals**
-{list or "Clear"}
+{deals bucket — sender + subject + one-line summary. Or "Clear."}
 
 **Investors / LPs**
-{list or "Clear"}
+{investors bucket. Or "Clear."}
 
 **Other**
-{list or omit if empty}
+{starred not in above buckets. Omit if empty.}
 
 ## Q3 Pulse
 Deal under contract    ● {status}
 LP commitments ($400K) ● {status}
 Broker pipeline (3+)   ● {status}
 
-## AIOS Sync
-{last line from logs/auto-commit.log — e.g. "[2026-05-29 21:00] Committed: 3 files changed" or "No changes — skipped." If file missing: omit section.}
-
-## Standing Reminder
-● Look into mobile capability / control for AIOS
+{MONDAY ONLY ─────────────────────────}
+## Pipeline — Week of {date}
+New listings:    {n} in buy box | {list top 3}
+Overdue brokers: {n} — {names}
+Inbound deals:   {n} — {subjects}
+Run /lets-get-to-work to action this.
+{──────────────────────────────────────}
 
 ## #1 Action Today
 {one sentence}
@@ -289,9 +307,11 @@ Broker pipeline (3+)   ● {status}
 {Draft block}
 ---
 *Review and adjust before sending. Brackets = fill in.*
+
+-Olive
 ```
 
-**Keep the whole brief under one screen.** If inbox has 10 emails, summarize — don't list all 10. Signal over noise.
+**Keep it tight.** Summarize — don't list everything. Signal over noise.
 
 ## Output contract
 
