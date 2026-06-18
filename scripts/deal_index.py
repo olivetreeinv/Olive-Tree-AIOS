@@ -34,7 +34,9 @@ from pathlib import Path
 import loom_sync as G
 from loom_sync import _http, _auth, _load_dotenv, get_token
 
-DEALS_FOLDER_ID = "1pLWVMaLPy-8Rt1NGQsX2wg2oNDonWC-p"
+DEALS_FOLDER_ID    = "1pLWVMaLPy-8Rt1NGQsX2wg2oNDonWC-p"
+PITCHDECK_FOLDER_ID = os.environ.get(
+    "PITCHDECK_DRIVE_FOLDER_ID", "1adQqTkqe-DR69_NedjX5McapBHBS-zEI").strip()
 
 SHEET_TAB = os.environ.get("DEAL_INDEX_SHEET_TAB", "Deal Index")
 SHEET_ID  = os.environ.get("DEAL_INDEX_SHEET_ID",
@@ -66,6 +68,36 @@ SKIP_NAMES = {"TEST", "Land Wholesale", "Olive Tree Investments - LOI",
 # ─────────────────────────────────────────────
 # Drive helpers
 # ─────────────────────────────────────────────
+
+def load_pitch_deck_pdfs(token):
+    """Return list of {name, webViewLink} for PDF files in the Pitch Decks folder."""
+    q = (f"'{PITCHDECK_FOLDER_ID}' in parents "
+         "and mimeType='application/pdf' and trashed=false")
+    params = urllib.parse.urlencode({
+        "q": q, "fields": "files(id,name,webViewLink)", "pageSize": "200",
+    })
+    try:
+        data = _http("GET", f"{G.DRIVE_BASE}/files?{params}",
+                     headers=_auth(token), timeout=30)
+        return data.get("files", [])
+    except RuntimeError as e:
+        print(f"  WARN: could not load pitch deck PDFs: {e}")
+        return []
+
+
+def match_pitch_deck(pdfs, deal_name):
+    """Return webViewLink for a pitch deck PDF matching this deal, or ''."""
+    # Extract the street number (first whitespace-delimited token).
+    # "641 Powder Springs Street SE, Smyrna..." → "641"
+    # PDF name "641-powder-springs-st-pitch-deck.pdf" starts with "641-".
+    first_token = deal_name.split()[0].lower() if deal_name else ""
+    if not first_token:
+        return ""
+    for pdf in pdfs:
+        if pdf["name"].lower().startswith(first_token):
+            return pdf.get("webViewLink", "")
+    return ""
+
 
 def list_subfolders(token, parent_id):
     """Return list of (id, name, webViewLink) for direct child folders."""
@@ -164,6 +196,10 @@ def main():
 
     token = get_token()
 
+    print("Loading pitch deck PDFs...")
+    pitch_decks = load_pitch_deck_pdfs(token)
+    print(f"  Found {len(pitch_decks)} pitch deck PDF(s)")
+
     print("Listing deal folders...")
     folders = list_subfolders(token, DEALS_FOLDER_ID)
     # Skip infra folders and TEST folders
@@ -182,6 +218,13 @@ def main():
         print(f"  • {name}")
 
         classified = classify_folder(token, folder)
+        # Pitch deck PDFs live in the Marketing folder, not the deal folder —
+        # match by street number against the archived canva_sync PDFs.
+        if "Pitch Deck" not in classified:
+            pitch_link = match_pitch_deck(pitch_decks, name)
+            if pitch_link:
+                classified["Pitch Deck"] = pitch_link
+
         if args.dry_run:
             for col, link in classified.items():
                 print(f"      {col}: {link[:60] if link else '—'}")
