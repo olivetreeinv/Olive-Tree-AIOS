@@ -208,10 +208,11 @@ Approve all / review one-by-one / skip?
 (type 'all' / '1' / '2' / 'skip')
 ```
 
-On approval:
-1. Run `python3 scripts/broker_followup.py --send-all` to send all overdue brokers with valid emails in one pass.
-2. Script updates Brokers List automatically: `Last Contact` → today, `Next Follow-Up` → +7 days, `# Deals Sent` += 1.
-3. Brokers with no email address are skipped automatically with a warning.
+On approval — always sandbox first, then production:
+1. **Dry run:** `python3 scripts/broker_followup.py --send-all --dry-run [--exclude ROWS]` — shows every draft, no emails sent, no sheet updates. Present output to Brian.
+2. **Production:** `python3 scripts/broker_followup.py --send-all [--exclude ROWS]` — only after Brian confirms dry run looks clean.
+3. Script updates Brokers List automatically: `Last Contact` → today, `Next Follow-Up` → +7 days, `# Deals Sent` += 1.
+4. Brokers with no email address are skipped automatically with a warning.
 
 **No auto-dormant.** Attempt count is tracked but brokers are never moved to Dormant automatically — Brian sets that manually by editing Status in the sheet.
 

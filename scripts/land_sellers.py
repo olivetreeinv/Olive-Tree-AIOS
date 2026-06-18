@@ -26,10 +26,14 @@ Usage:
 """
 
 import argparse
+import os
 import re
+import statistics
 import sys
-from datetime import date
 from pathlib import Path
+
+import requests
+from dotenv import load_dotenv
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
@@ -37,8 +41,61 @@ import land_parcels as lp  # noqa: E402
 from land_markets import DEFAULT_BAND  # noqa: E402
 from land_sheets import append_rows, get_token, read_rows  # noqa: E402
 
+load_dotenv(Path(__file__).parent.parent / ".env")
+
 TAB = "Land Sellers"
 DEFAULT_SPREAD = 0.15
+
+# ── FMLS market data ──────────────────────────────────────────────────────────
+
+def fmls_median_ppa_by_zip(zips):
+    """
+    Query FMLS for active Land listings in the given zips and return a dict of
+    {zip: median_$/acre}. Falls back to county-wide median if a zip has <3 data
+    points, and to None if the token is missing or the call fails.
+    """
+    token = os.getenv("FMLS_API_TOKEN", "")
+    dataset = os.getenv("FMLS_DATASET_ID", "fmls")
+    if not token:
+        return {}
+    base = f"https://api.bridgedataoutput.com/api/v2/OData/{dataset}"
+    headers = {"Authorization": f"Bearer {token}"}
+    zip_filter = " or ".join(f"PostalCode eq '{z}'" for z in zips)
+    params = {
+        "$filter": f"PropertyType eq 'Land' and StandardStatus eq 'Active' and ({zip_filter})",
+        "$select": "PostalCode,ListPrice,LotSizeAcres",
+        "$top": 200,
+    }
+    url, by_zip = f"{base}/Property", {}
+    pages = 0
+    while url and pages < 10:
+        try:
+            r = requests.get(url, headers=headers, params=params, timeout=20)
+            r.raise_for_status()
+        except Exception:
+            break
+        data = r.json()
+        for prop in data.get("value", []):
+            p = prop.get("ListPrice") or 0
+            a = prop.get("LotSizeAcres") or 0
+            z = (prop.get("PostalCode") or "").strip()
+            if p > 0 and a > 0 and z:
+                by_zip.setdefault(z, []).append(p / a)
+        url, params = data.get("@odata.nextLink"), None
+        pages += 1
+
+    # County-wide fallback median (from all collected points)
+    all_ppa = [v for vals in by_zip.values() for v in vals]
+    county_median = statistics.median(all_ppa) if all_ppa else None
+
+    result = {}
+    for z in zips:
+        vals = by_zip.get(z, [])
+        if len(vals) >= 3:
+            result[z] = statistics.median(vals)
+        elif county_median:
+            result[z] = county_median
+    return result
 # Owners that aren't real sellers (common areas, lender/REO, government).
 EXCLUDE_OWNER = re.compile(
     r"\b(ASSOC|HOA|HOMEOWNERS|OWNERS ASSN|BANK|COUNTY|CITY OF|STATE OF|"
@@ -101,14 +158,24 @@ def build_list(county, zip_code, band, price_per_acre, spread, cap=4000):
         owner_counts[r.get("owner_name")] = owner_counts.get(r.get("owner_name"), 0) + 1
         sellers.append(r)
 
+    # Pull FMLS median $/acre for all zips in this batch (one API call).
+    zips_in_batch = {r.get("site_zip") or zip_code for r in sellers}
+    mls_ppa = fmls_median_ppa_by_zip(zips_in_batch) if zips_in_batch else {}
+    if mls_ppa:
+        print(f"  FMLS median $/ac: { {z: f'${v:,.0f}' for z, v in mls_ppa.items()} }")
+
     out = []
     for r in sellers:
         owner = r.get("owner_name")
+        z     = r.get("site_zip") or zip_code
         offer = compute_offer(r["acres"], price_per_acre, spread)
+        ppa   = mls_ppa.get(z)
+        mkt   = round(ppa * r["acres"] / 100) * 100 if (ppa and r["acres"]) else None
+        buy   = round(mkt * (1 - spread) / 100) * 100 if mkt else None
         out.append({
             "parcel_id": r.get("parcel_id"),
             "situs": (r.get("site_address") or "").strip(),
-            "zip": r.get("site_zip") or zip_code,
+            "zip": z,
             "subdivision": r.get("subdivision") or "",
             "acres": r["acres"],
             "owner": owner,
@@ -118,6 +185,8 @@ def build_list(county, zip_code, band, price_per_acre, spread, cap=4000):
             "owner_zip": r.get("owner_zip") or "",
             "land_value": r.get("land_value"),
             "offer": offer,
+            "mkt_avg_list_pr": mkt,
+            "buy_pr_est": buy,
             "package": owner_counts.get(owner, 1) > 1,
             "entity": is_entity(owner),
         })
@@ -137,6 +206,7 @@ def _row(s):
         s["owner"], s["owner_addr"], s["owner_city"], s["owner_state"], "Y",
         s["land_value"] or "", s["offer"] or "", "",  # owner_phone blank
         "", "mail", "new", "", "", "", notes, s.get("owner_zip") or "",
+        s.get("mkt_avg_list_pr") or "", s.get("buy_pr_est") or "", "",  # Buy Box = formula
     ]
 
 
