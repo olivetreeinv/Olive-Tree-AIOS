@@ -20,3 +20,6 @@ data/*.db
 
 # MCP server config — contains API secrets/tokens, stays local
 .mcp.json
+
+# Generated artifacts (LOI/land-mail/capital-raise outputs; may contain PII)
+output/

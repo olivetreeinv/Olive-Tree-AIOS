@@ -25,8 +25,8 @@ New listings → Broker follow-ups → Inbound deal emails → Document requests
 | `references/knowledge-base-process.md` | 10-stage pipeline (on-demand for stage-specific work) |
 | `references/voice.md` | Brian's tone — all drafted emails must match this |
 | `references/google-workspace-api.md` | Gmail + Sheets API |
-| `references/loi-template.md` | LOI defaults + field guide (quick reference) |
-| `templates/loi-template.md` | Full LOI legal text — read this when drafting |
+| `templates/loi-fields.json` | LOI fields, defaults, formulas, Doc token map (source of truth) |
+| `templates/loi-template.md` | LOI in-chat preview body |
 
 ---
 
@@ -316,7 +316,7 @@ Triggered by:
 - `/deal-analysis` returning `PURSUE LOI`, OR
 - Brian saying "draft LOI for [property name]"
 
-> Defaults + field guide: `references/loi-template.md`. Full legal text for drafting: `templates/loi-template.md`. Read both — references for defaults, templates for the actual document.
+> Fields, defaults, and formulas: `templates/loi-fields.json`. Preview body: `templates/loi-template.md`. Generation: `python3 scripts/loi.py`.
 
 **Before finalizing the LOI, prompt Brian to call the broker first:**
 > "Call broker before sending? Confirm: how many offers are in, where is pricing
@@ -419,7 +419,7 @@ Log any decisions from this session? (y/n)
 | Phase 3 | `scripts/broker_followup.py` |
 | Phase 4 | `scripts/deal_inbox.py` |
 | Phase 5 | `/deal-analysis` → `scripts/deal_analysis.py` |
-| Phase 6 | LOI draft using `references/loi-template.md` |
+| Phase 6 | LOI draft using `/loi` → `scripts/loi.py` |
 
 All scripts are built and operational.
 

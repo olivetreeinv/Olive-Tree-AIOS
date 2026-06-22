@@ -102,8 +102,8 @@ def merge(template, row):
         "{{ACRES}}":                 _col(row, C_ACRES) or "[ACRES]",
         "{{PARCEL_ID}}":             _col(row, C_PARCEL) or "[PARCEL]",
         "{{OFFER}}":                 offer_fmt,
-        "[PHONE]":                   BRIAN_PHONE,
-        "[EMAIL]":                   BRIAN_EMAIL,
+        "{{PHONE}}":                 BRIAN_PHONE,
+        "{{EMAIL}}":                 BRIAN_EMAIL,
     }
     result = template
     for k, v in mapping.items():

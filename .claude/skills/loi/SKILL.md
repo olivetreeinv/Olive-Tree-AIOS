@@ -1,110 +1,149 @@
 ---
 name: loi
-description: Draft a Letter of Intent for a deal that underwriting returned PURSUE LOI (Green GO). Gathers terms, prompts the broker price-check call, drafts from the Olive Tree LOI template, saves the LOI as a Google Doc in the property's deal folder, and preps the broker email. Nothing sends without Brian's approval. Trigger on "/loi", "draft LOI", "draft an LOI for", "send an offer on", "let's make an offer".
+description: Draft a Letter of Intent for a deal. Works two ways: (1) after /deal-analysis or /underwriting returns a GO — auto-populates from that session's data; (2) manually triggered — runs an intake interview to collect everything needed. Saves the LOI as a Google Doc + PDF in the deal folder and stages the broker email. Nothing sends without Brian's approval. Trigger on "/loi", "draft LOI", "draft an LOI for", "send an offer on", "let's make an offer".
 ---
 
 # LOI Skill — Olive Tree Investments
 
 ## What this skill does
 
-Turns a Green GO into a submitted offer. Runs after `/underwriting` or `/deal-analysis` returns **PURSUE LOI** — drafts the Letter of Intent from the Olive Tree template, saves it to the property's deal folder in Drive, and stages the broker email for Brian's approval.
+Turns a GO verdict into a submitted offer. Drafts the Letter of Intent using `templates/loi-template.md`, saves it as a **Google Doc + PDF** in the property's deal folder, and stages the broker email for Brian's approval.
 
-**Position in the pipeline:** Underwriting (Green GO) → **LOI** → Pitch Deck (`/pitch-deck`) → PSA / DD. The LOI and pitch deck both live in the deal folder: `Olive Tree Investments - Deals / [property address] /`.
+**Position in the pipeline:** Underwriting (GO) → **LOI** → Pitch Deck (`/pitch-deck`) → PSA / DD.
 
 ---
 
-## References (read before drafting)
+## Two entry modes
 
-| File | Why |
-|---|---|
-| `references/loi-template.md` | Defaults + field guide (earnest money, DD period, closing) |
-| `templates/loi-template.md` | Full LOI legal text — the actual document to draft from |
-| `references/knowledge-base-process.md` | Stage 7 (Offers & Negotiation) checklist |
-| Deal analysis output / Deal Sourcing sheet | Offer price, units, broker contact |
+### Mode A — Post-deal-analysis (auto-populated)
+Triggered right after `/deal-analysis` or `/underwriting` returns a **GO**. Most data is already in session. Skip to Step 3 — only confirm price and any overrides.
+
+### Mode B — Manual trigger (intake interview)
+Triggered standalone with no deal context. Run the intake interview in Step 1 before drafting anything.
 
 ---
 
 ## Execution
 
-### Step 1 — Confirm the Green GO
+### Step 1 — Intake interview (Mode B only)
 
-Pull the deal's analysis (this session, Deal Sourcing sheet, or `wiki/deals/`). If the latest verdict isn't PURSUE LOI, say so and ask Brian to confirm he wants to offer anyway. Pull the **max defensible offer** (DSCR rate-sweep ceiling) — that number anchors the offer, not the seller's ask.
+Ask all of the following in **one message** — don't fire questions one at a time:
 
-### Step 2 — The broker call (don't skip)
+> **Company info — confirm before I proceed:**
+> I'm pulling these from your AIOS context. Correct anything that's wrong:
+> - Company: [state what you found in context/CLAUDE.md — e.g., "Olive Tree Investments LLC"]
+> - Owner: [state what you found — e.g., "Brian Norton"]
+> - City: [state what you found — e.g., "Atlanta"]
+> - Contact footer: [email | phone | website from context]
+> If any of these are wrong, say so. Otherwise just say "confirmed" and I'll move on.
+>
+> **Deal info — fill in what's missing:**
+>
+> 1. **Company logo** — optional. The Olive Tree logo hosted on olivetreeinv.io is inserted automatically (1-inch height). To override, paste a **direct public image URL** (ends in `.png`/`.jpg`, shows only the image in a browser). Drive links don't work — Google serves an HTML page, not the image bytes.
+> 2. **Property address** (full street, city, state, zip)?
+> 3. **Broker name + brokerage**?
+> 4. **Offer price** ($)?
+> 5. **Number of units**?
+> 6. **Financing** — default is 70% LTC Bridge, No Financing Contingency. Changing it?
+> 7. **Due diligence period** — default 28 days. Changing it?
+> 8. **Closing timeline** — default 60 days. Changing it?
+> 9. **Special conditions** — default N/A. Anything to add (make-ready credit, rent roll warranty, etc.)?
+> 10. **Date** — default today. Changing it?
 
-> "Call the broker before we finalize: how many offers are in, where is pricing
-> trending, are we in range? 2 minutes on the phone calibrates the price."
+**How to auto-fill company info:** Check `context/` files and `CLAUDE.md` for company name, owner name, city, email, phone, and website. State what you found explicitly so Brian can confirm or correct. If nothing is found in context, ask for it directly.
 
-Capture the answer and adjust price/terms. Submitting blind on price loses winnable deals.
+Don't hand-calculate deposits or per-unit — `scripts/loi.py` derives them from the formulas in `templates/loi-fields.json` (the single source of truth for fields, defaults, formulas, and Google-Doc tokens). You only collect the inputs; the script applies defaults and computes the rest.
 
-### Step 3 — Gather terms
+---
 
-| Input | Source | Default |
-|---|---|---|
-| Property name + address | Deal Sourcing log | — |
-| Offer price | Underwriting output + broker call | ≤ max defensible offer |
-| Earnest money | Brian confirms | 1–2% of offer |
-| DD period | Brian confirms | 30–45 days |
-| Closing timeline | Brian confirms | 45–60 days from execution |
-| Financing | Value-add standard | Bridge, non-recourse, I/O |
-| Special terms | Brian confirms | Make-ready credit if ≥10 vacant units |
+### Step 2 — Confirm go / no-go (Mode A only)
 
-Ask for anything missing in one batch — then draft.
+Pull the deal's latest verdict from this session, the Deal Sourcing sheet, or `wiki/deals/`.
 
-### Step 4 — Draft the LOI
+- **GO** → proceed. Anchor price to the **DSCR max defensible offer ceiling**.
+- **NO-GO** → flag it. Ask Brian to confirm he wants to proceed anyway before drafting.
 
-Use the full legal text in `templates/loi-template.md`, filled with the terms above. Show Brian the complete draft in-chat for review. Iterate until approved.
+If Brian overrides a NO-GO, log it in `decisions/log.md` before continuing.
 
-### Step 5 — Save to the deal folder
+---
 
-On approval, upload the LOI as a Google Doc into the property's deal folder:
+### Step 3 — Draft the LOI
+
+Load `templates/loi-template.md`. Fill every placeholder with the collected terms. Auto-calculate all deposit fields. Show the complete draft in-chat for review.
+
+Fields, defaults, and formulas all come from `templates/loi-fields.json` (single source of truth). Don’t recompute deposits here. If Brian did not provide a logo, leave LOGO blank — the script removes the token.
+
+Render the `{{KEY}}` preview from `templates/loi-template.md` and show it to Brian. Iterate until approved.
+
+---
+
+### Step 4 — Generate the Google Doc + PDF
+
+On approval, write the collected terms to `/tmp/loi_values.json` (flat `{KEY: value}` using keys from `loi-fields.json` — only include what Brian provided/changed; defaults and formulas are applied by the script) and run:
 
 ```bash
-python3 - <<'EOF'
-import json, sys, requests
-sys.path.insert(0, "scripts")
-from types import SimpleNamespace
-from gws_auth import get_token
-from deal_analysis import ensure_deal_folder, UPLOAD_BASE
-
-token  = get_token()
-folder = ensure_deal_folder(token, SimpleNamespace(address="[ADDRESS]", property="[PROPERTY]"))
-
-html = open("/tmp/loi.html").read().encode()   # write the approved LOI as HTML first
-meta = {"name": "[PROPERTY] — LOI — [YYYY-MM-DD]",
-        "mimeType": "application/vnd.google-apps.document"}
-if folder: meta["parents"] = [folder]
-
-boundary = "loi_upload"
-body = (f"--{boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n"
-        f"{json.dumps(meta)}\r\n--{boundary}\r\nContent-Type: text/html\r\n\r\n"
-        ).encode() + html + f"\r\n--{boundary}--".encode()
-r = requests.post(f"{UPLOAD_BASE}?uploadType=multipart",
-    headers={"Authorization": f"Bearer {token}",
-             "Content-Type": f"multipart/related; boundary={boundary}"},
-    data=body, timeout=120)
-r.raise_for_status()
-print("LOI saved:", f"https://docs.google.com/document/d/{r.json()['id']}/edit")
-EOF
+python3 scripts/loi.py --values /tmp/loi_values.json --dry-run   # confirm resolved numbers
+python3 scripts/loi.py --values /tmp/loi_values.json              # generate Doc + PDF
+# add --folder-id <id> to target a specific deal folder; omit to auto-resolve by property name
 ```
 
-### Step 6 — Stage the broker email
+The script copies the template Doc into the deal folder, replaces all `<...>` tokens (longest-first; both apostrophe variants for DATE), exports the PDF, and uploads it. It prints JSON — relay the links to Brian:
 
-Draft the cover email (Brian's voice — short, direct, numbers up front, signs **-Brian**) with the LOI attached/linked. Show it. **Never send without explicit approval.**
+```
+doc_url  → Google Doc (edit link)
+pdf_link → PDF in Drive
+```
 
-### Step 7 — Log it
+---
+
+### Step 5 — Stage the broker email
+
+Draft the cover email. Brian's voice — short, direct, numbers up front, signs **-Brian**. Include the PDF Drive link as the attachment reference.
+
+```
+Subject: LOI — [Property Address]
+
+[BROKER_NAME],
+
+Attached is our LOI for [PROPERTY_ADDRESS] at $[OFFER_PRICE] ($[PRICE_PER_UNIT]/unit).
+
+[One sentence on thesis — e.g., "Strong value-add play — we like the upside on rents."]
+
+Let me know if you have questions.
+
+-Brian
+```
+
+**Never send without explicit approval from Brian.**
+
+---
+
+### Step 6 — Log it
 
 On send approval:
 - Deal Sourcing sheet: Stage → "LOI Submitted", Last Updated → today
 - `decisions/log.md`: deal name, offer price, rationale, date
 - `wiki/deals/[slug].md`: status → `loi-sent`
-- Set a follow-up: per the KB, follow up with the broker within 24 hours of sending
 
 ---
 
-## Notes
+## Rules
 
-- **The ceiling is law.** Never draft above the DSCR max defensible offer without Brian explicitly overriding — and log the override in `decisions/log.md`.
-- **Non-binding, always.** The LOI must state it's non-binding and subject to PSA.
-- **Collections verification is a DD ask** — bank statements come after an accepted LOI, never in the LOI itself.
-- **Losing LOIs still build brokers.** If the offer loses, draft a gracious note that keeps the relationship warm.
+- **The ceiling is law.** Never draft above the DSCR max defensible offer without Brian's explicit override — log any override in `decisions/log.md`.
+- **Non-binding, always.** LOI must state it's non-binding and subject to PSA.
+- **Logo = optional.** If no logo provided, omit the logo line. Don't leave a broken placeholder.
+- **Collections verification is a DD ask.** Bank statements come after LOI acceptance — never in the LOI.
+- **If the LOI loses** — draft a gracious broker note before closing the session.
+- **One question batch.** Ask for everything in Step 1 at once. Don't drip questions one at a time.
+
+---
+
+## References
+
+| File | Why |
+|---|---|
+| `templates/loi-fields.json` | **Single source of truth** — fields, defaults, formulas, Google-Doc token map |
+| `templates/loi-template.md` | In-chat preview body (`{{KEY}}` tokens) |
+| `scripts/loi.py` | Generates the Google Doc + PDF from the values file |
+| `references/knowledge-base-process.md` | Stage 7 (Offers & Negotiation) full checklist |
+| Deal analysis output / wiki | Offer price, units, broker contact |

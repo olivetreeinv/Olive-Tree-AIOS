@@ -1,0 +1,31 @@
+{
+  "_comment": "Single source of truth for the LOI skill. Each field: doc_token = the literal placeholder in the Google Doc template (omit if the field only feeds the md preview / broker email); default = applied when no value provided (null = required); formula = auto-calc expression over other field keys; round = round result to nearest N; type = formatting rule (money_plain | date_mmddyy). Consumed by scripts/loi.py and mirrored in templates/loi-template.md.",
+  "template_doc_id": "10sTiQIbkC0lqoK_L4voLyST-iqOCGmzbY8xGaYjHxZw",
+  "deals_root_folder_id": "1pLWVMaLPy-8Rt1NGQsX2wg2oNDonWC-p",
+  "logo_height_in": 0.75,
+  "logo_max_height_in": 1.0,
+  "fields": {
+    "OFFER_PRICE":       { "doc_token": "<Purchase Price>",            "default": null, "type": "money_plain" },
+    "UNITS":             { "default": null },
+    "PRICE_PER_UNIT":    { "doc_token": "<Price Per Unit>",           "formula": "OFFER_PRICE/UNITS",    "type": "money_plain" },
+    "TOTAL_DEPOSIT":     { "doc_token": "<Purchase Price * .01>",     "formula": "OFFER_PRICE*0.01",   "round": 500, "type": "money_plain" },
+    "HARD_DEPOSIT":      { "doc_token": "<Purchase Price * .005>",    "formula": "OFFER_PRICE*0.005",  "round": 250, "type": "money_plain" },
+    "EXTENSION_DEPOSIT": { "doc_token": "<Purchase Price * .0015>",   "formula": "OFFER_PRICE*0.0015", "round": 100, "type": "money_plain" },
+    "COMPANY_NAME":      { "doc_token": "<Company Name>",   "default": "Olive Tree Investments LLC" },
+    "OWNER_NAME":        { "doc_token": "<Owner Name>",     "default": "Brian Norton" },
+    "COMPANY_CITY":      { "doc_token": "<Company City>",   "default": "Atlanta" },
+    "OWNER_EMAIL":       { "doc_token": "<owner email>",    "default": "brian@olivetreeinv.io" },
+    "OWNER_PHONE":       { "doc_token": "<owner phone number>", "default": "404-643-2356" },
+    "COMPANY_WEBSITE":   { "doc_token": "<company website>", "default": "www.olivetreeinv.io" },
+    "BROKER_NAME":       { "doc_token": "<Listing Broker>",    "default": null },
+    "BROKERAGE":         { "doc_token": "<Listing Brokerage>", "default": null },
+    "PROPERTY_ADDRESS":  { "doc_token": "<Property Address>",  "default": null },
+    "FINANCING_TYPE":    { "default": "70% LTC Bridge Financing. No Financing Contingency" },
+    "DOWNPAYMENT":       { "default": "30% Down Payment Equity (Equity sourced from our funds & our partner Diversyfund)" },
+    "DD_DAYS":           { "default": 28 },
+    "CLOSING_DAYS":      { "default": 60 },
+    "SPECIAL_CONDITIONS": { "default": "N/A" },
+    "DATE":              { "doc_token": "<Today's Date>", "default": "today", "type": "date_mmddyy" },
+    "LOGO":              { "doc_token": "<Company Logo - Height should be no more than 1 inch>", "default": "https://assets.cdn.filesafe.space/SLq7B2pldVzfQLKjGpvw/media/67f6e55aa393240bd6da0995.png", "type": "logo_image" }
+  }
+}
