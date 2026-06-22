@@ -303,10 +303,10 @@ IRR ≈ Estimate from equity multiple over 5-year hold:
 **Rationale:** [2–3 sentences — the key reason for the recommendation]
 
 [PURSUE LOI]:
-Output the verdict, then immediately show this Green GO block:
+Output the verdict, then immediately show this go block:
 
 ---
-## Green GO — Ready to Offer
+## GO — Ready to Offer
 **Max defensible offer:** $[DSCR ceiling at likely rate] | **$[PPU]/unit** | **Broker:** [name, firm]
 **IRR:** [n]% · **DSCR:** [n]x · **EM:** [n]x
 
@@ -316,7 +316,16 @@ Reply **`/loi`** to draft the Letter of Intent now — terms pre-loaded from thi
 Do not wait for Brian to ask. Surface the block immediately after every PURSUE LOI verdict.
 
 [MORE INFO]:   "Draft email requesting [specific docs] is below — approve to send."
-[PASS]:        "Log as Pass in Deal Sourcing? (y/n) | Want to send a polite pass note? (y/n)"
+[PASS]:
+- Show the GO price block (see below) — do NOT wait to be asked
+- Then: "Draft pass note to broker below — approve to send."
+
+---
+## PASS — GO Price
+**Binding constraint:** [metric] | **GO price:** $[n] (~$[n]/unit)
+**At that price — DSCR:** [n]x · **CoC Yr3:** [n]% · **EM:** [n]x · **75% Rule:** [n]%
+Monitor: re-run if ask drops below $[n+10%buffer].
+---
 ```
 
 > **Collections verification is a DUE-DILIGENCE ask — NOT part of the pre-LOI doc request.**
@@ -328,7 +337,84 @@ Do not wait for Brian to ask. Surface the block immediately after every PURSUE L
 > Cross-match deposits ↔ rent roll ↔ delinquency to compute **economic** occupancy.
 > Seller refusal to provide bank statements = red flag — note it and reassess.
 
-### Step 7: Log to Deal Sourcing sheet
+### Step 7: Create Deal Folder + Upload All Docs
+
+**One folder. Everything in it. Always — GO or PASS.**
+
+`--populate-analyzer` (Step 9) creates the deal folder automatically and returns its Drive folder ID. Upload OM, T-12, and Rent Roll into that same folder via Drive API immediately after.
+
+**Do NOT call `deal_archive.py`** — it creates a separate dated subfolder, which splits the deal docs across two locations.
+
+```python
+# Upload each received doc to the deal folder
+import json, requests, sys
+sys.path.insert(0, "scripts")
+from gws_auth import get_token
+
+token = get_token()
+for path, name in [(om_path, "Offering Memorandum — [property].pdf"), ...]:
+    with open(path, "rb") as f:
+        content = f.read()
+    r = requests.post(
+        "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
+        headers={"Authorization": f"Bearer {token}"},
+        files={
+            "metadata": (None, json.dumps({"name": name, "parents": [folder_id]}), "application/json"),
+            "file": (name, content, "application/pdf"),
+        },
+        timeout=60,
+    )
+    r.raise_for_status()
+```
+
+Then write and upload Market Analysis Summary + (on PASS) Deal Summary — see Steps 7b and 7c.
+
+### Step 7b: Market Analysis Summary
+
+Write a structured doc covering:
+- Buy box fit (strategy match, price/unit vs. band, unit count)
+- Demographics (population, MHI, age, employment rate — from OM or KB)
+- Location strengths (employment centers, transit, retail, schools)
+- Market rent trend (in-place vs. recent leases vs. OM claim; Rentometer if available)
+- Supply/demand (new construction risk, segment competition)
+- Deal-specific conclusions (what the market supports, what it doesn't at ask price)
+- GO price summary if PASS
+
+Upload to the deal folder (same folder_id from Step 9) as a Google Doc via Drive API:
+```python
+# Use gws_auth.get_token() — no argument — to get bearer token
+# POST to https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart
+# mimeType: application/vnd.google-apps.document  (converts .md → Google Doc)
+# parents: [deal_folder_id]  (folder created by deal_archive.py or --populate-analyzer)
+```
+
+### Step 7c: Deal Summary (PASS only)
+
+On a PASS verdict, write a short Google Doc — "Deal Summary — [property]" — and upload to the deal folder. Contents:
+
+```
+# Deal Summary — [Property]
+Date: [date] | Verdict: PASS | Analyst: Olive Tree Investments
+
+## Why We Passed
+[2–3 sentence rationale — which thresholds failed and why]
+
+## Key Metrics vs. Thresholds
+| Metric | Result | Threshold | Status |
+...
+
+## GO Price
+Binding constraint: [metric]
+Purchase price needed to clear all thresholds: $[n] (~$[n]/unit)
+Re-run if ask drops below $[n].
+
+## Broker
+[Name, firm, email, phone]
+```
+
+This is NOT a full analysis recap — just the decision rationale and GO price, in one place, for future reference.
+
+### Step 8: Log to Deal Sourcing sheet
 
 Regardless of recommendation, log the deal:
 
@@ -342,19 +428,23 @@ python3 scripts/deal_analysis.py --log-deal \
   --notes "[recommendation + key number]"
 ```
 
-### Step 8: Populate Deal Analyzer (on PURSUE or MORE INFO)
+### Step 9: Populate Deal Analyzer (ALL verdicts)
 
 Download the right template (auto-selected by door count — see the templates table in Step 3), write the inputs, upload as a live Google Sheet:
 
 ```bash
 python3 scripts/deal_analysis.py --populate-analyzer \
   --property "[name]" --address "[addr]" \
-  --asking [price] --units [n] --repair [budget] \
+  --asking [price] --offer [go_price] --units [n] --repair [budget] \
   --entry-cap [n] --exit-cap [n] --vintage [year] \
   --unit-mix '[{"type":"1BR","count":10,"current_rent":800,"market_rent":950}, ...]'
 ```
 
-Saves as `[Property] — Deal Analyzer 0-50 — [date]` (or `— 50+ Proforma —`) **inside the property's deal folder**: `Olive Tree Investments - Deals / [address]/`. Always pass `--address` — it names the folder. Received deal docs (OM/T-12/Rent Roll fetched via `--gmail-id`) are archived to the same folder automatically; the LOI and pitch deck land there after a Green GO.
+**PASS deals:** set `--offer` to the GO price calculated in Step 6, NOT the asking price. The analyzer shows Brian what the deal looks like at the number that actually works.
+
+**GO/MORE INFO deals:** set `--offer` to the DSCR max-defensible price.
+
+Saves as `[Property] — Deal Analyzer 0-50 — [date]` (or `— 50+ Proforma —`) **inside the property's deal folder**: `Olive Tree Investments - Deals / [address]/`. Always pass `--address` — it names the folder.
 
 ---
 
