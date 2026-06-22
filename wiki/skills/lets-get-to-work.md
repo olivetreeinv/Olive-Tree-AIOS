@@ -34,8 +34,8 @@ Orchestrates Brian's full multifamily acquisition pipeline in one guided session
 | `references/knowledge-base-process.md` | 10-stage pipeline |
 | `references/voice.md` | All drafted emails must match Brian's tone |
 | `references/google-workspace-api.md` | Gmail + Sheets API |
-| `references/loi-template.md` | LOI defaults + field guide |
-| `templates/loi-template.md` | Full LOI legal text |
+| `templates/loi-fields.json` | LOI fields, defaults, formulas, Doc token map |
+| `templates/loi-template.md` | LOI in-chat preview body |
 
 ## Output
 - New listings filtered to buy box

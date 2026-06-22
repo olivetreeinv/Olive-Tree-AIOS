@@ -110,7 +110,7 @@
 - [ ] Run sensitivity analysis (DSCR, cash flow, exit cap)
 
 ### LOI submission checklist:
-- [ ] Create personal LOI template (see `references/loi-template.md`)
+- [ ] Create personal LOI template (see `templates/loi-fields.json` + `templates/loi-template.md`)
 - [ ] Submit 1–3 LOIs/week
 - [ ] Confirm LOI terms match market norms (DD period, earnest money, closing time)
 - [ ] Ask broker about seller motivation and competitive offers

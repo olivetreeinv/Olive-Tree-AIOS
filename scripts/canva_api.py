@@ -8,12 +8,14 @@ Usage:
     python3 scripts/canva_api.py <command> [args]
 
 Commands:
-    verify                    — confirm token works, print user info
-    refresh                   — refresh access token + save to .env
-    copy <design_id> <title>  — duplicate a design and rename it
-    info <design_id>          — get design title, edit URL, view URL
-    export <design_id>        — export design as PDF, print download URL
-    list [--limit N]          — list recent designs (default 20)
+    verify                              — confirm token works, print user info
+    refresh                             — refresh access token + save to .env
+    copy <design_id> <title>            — duplicate a design and rename it
+    info <design_id>                    — get design title, edit URL, view URL
+    export <design_id>                  — export design as PDF, print download URL
+    list [--limit N]                    — list recent designs (default 20)
+    archive <design_id> --address ADDR  — export PDF + upload to deal folder in Drive
+                        [--dry-run]       (--dry-run prints plan, no API calls)
 
 Requires in .env:
     CANVA_CLIENT_ID
@@ -29,12 +31,21 @@ import base64
 import json
 import re
 import argparse
+import tempfile
+import uuid
 import requests
 from pathlib import Path
 
-BASE_URL = "https://api.canva.com/rest/v1"
-ENV_FILE = Path(__file__).parent.parent / ".env"
-TEMPLATE_ID = "DAHIppfBwgs"  # 641 Powder Springs St Pitch Deck (completed deal — the model to clone)
+BASE_URL    = "https://api.canva.com/rest/v1"
+ENV_FILE    = Path(__file__).parent.parent / ".env"
+FIELDS_FILE = Path(__file__).parent.parent / "templates" / "pitch-deck-fields.json"
+
+# Master design ID also lives in pitch-deck-fields.json — kept here for CLI default only.
+TEMPLATE_ID = "DAHIppfBwgs"
+
+DRIVE_UPLOAD = "https://www.googleapis.com/upload/drive/v3/files"
+DRIVE_BASE   = "https://www.googleapis.com/drive/v3/files"
+DEALS_ROOT   = "1pLWVMaLPy-8Rt1NGQsX2wg2oNDonWC-p"
 
 
 # ── Auth helpers ───────────────────────────────────────────────────────────────
@@ -209,6 +220,135 @@ def export_design_pdf(design_id: str) -> str:
     sys.exit(1)
 
 
+def _google_token():
+    """Get a Google access token — env vars first, then gws auth export."""
+    import urllib.request, urllib.parse
+    cid     = os.environ.get("GOOGLE_CLIENT_ID")
+    secret  = os.environ.get("GOOGLE_CLIENT_SECRET")
+    refresh = os.environ.get("GOOGLE_REFRESH_TOKEN")
+    if not (cid and secret and refresh):
+        import subprocess
+        out = subprocess.run(
+            ["gws", "auth", "export", "--unmasked"],
+            capture_output=True, text=True, check=True, timeout=30,
+        ).stdout
+        creds = json.loads(out)
+        cid, secret, refresh = creds["client_id"], creds["client_secret"], creds["refresh_token"]
+    payload = urllib.parse.urlencode({
+        "client_id": cid, "client_secret": secret,
+        "refresh_token": refresh, "grant_type": "refresh_token",
+    }).encode()
+    req = urllib.request.Request(
+        "https://oauth2.googleapis.com/token",
+        data=payload,
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
+        method="POST",
+    )
+    import ssl
+    ctx = ssl.create_default_context()
+    with urllib.request.urlopen(req, timeout=30, context=ctx) as resp:
+        return json.loads(resp.read())["access_token"]
+
+
+def _drive_find_or_create_folder(gtoken, name, parent_id):
+    """Find or create a Drive folder by name under parent_id."""
+    import urllib.request, urllib.parse, ssl
+    ctx = ssl.create_default_context()
+    q = (f"name='{name}' and mimeType='application/vnd.google-apps.folder' "
+         f"and trashed=false and '{parent_id}' in parents")
+    params = urllib.parse.urlencode({"q": q, "fields": "files(id,name)"})
+    req = urllib.request.Request(
+        f"{DRIVE_BASE}?{params}",
+        headers={"Authorization": f"Bearer {gtoken}"},
+    )
+    with urllib.request.urlopen(req, timeout=30, context=ctx) as resp:
+        files = json.loads(resp.read()).get("files", [])
+    if files:
+        return files[0]["id"]
+    meta = json.dumps({
+        "name": name,
+        "mimeType": "application/vnd.google-apps.folder",
+        "parents": [parent_id],
+    }).encode()
+    req = urllib.request.Request(
+        f"{DRIVE_BASE}?fields=id",
+        data=meta,
+        headers={"Authorization": f"Bearer {gtoken}", "Content-Type": "application/json"},
+        method="POST",
+    )
+    with urllib.request.urlopen(req, timeout=30, context=ctx) as resp:
+        return json.loads(resp.read())["id"]
+
+
+def _drive_upload_pdf(gtoken, folder_id, filename, pdf_bytes):
+    """Multipart upload of PDF bytes to Drive. Returns webViewLink."""
+    import urllib.request, ssl
+    ctx = ssl.create_default_context()
+    boundary = uuid.uuid4().hex
+    meta = {"name": filename, "parents": [folder_id]}
+    body = b"".join([
+        f"--{boundary}\r\n".encode(),
+        b"Content-Type: application/json; charset=UTF-8\r\n\r\n",
+        json.dumps(meta).encode(), b"\r\n",
+        f"--{boundary}\r\n".encode(),
+        b"Content-Type: application/pdf\r\n\r\n",
+        pdf_bytes, b"\r\n",
+        f"--{boundary}--\r\n".encode(),
+    ])
+    req = urllib.request.Request(
+        f"{DRIVE_UPLOAD}?uploadType=multipart&fields=id,webViewLink",
+        data=body,
+        headers={
+            "Authorization": f"Bearer {gtoken}",
+            "Content-Type": f"multipart/related; boundary={boundary}",
+        },
+        method="POST",
+    )
+    with urllib.request.urlopen(req, timeout=300, context=ctx) as resp:
+        result = json.loads(resp.read())
+    return result.get("webViewLink", f"https://drive.google.com/file/d/{result['id']}/view")
+
+
+def archive_to_deal_folder(design_id: str, address: str, dry_run: bool = False):
+    """Export a Canva design as PDF and upload it to the property's deal folder in Drive.
+
+    Folder resolved/created as: Deals root / <address short name>.
+    Prints JSON with pdf_link and folder_id on success.
+    """
+    from datetime import datetime
+
+    prop_short = address.split(",")[0].strip()
+    date_label = datetime.now().strftime("%Y-%m-%d")
+    filename   = f"{prop_short} — Pitch Deck — {date_label}.pdf"
+
+    if dry_run:
+        print("DRY RUN — no API calls made.")
+        print(f"  Design ID   : {design_id}")
+        print(f"  PDF filename: {filename}")
+        print(f"  Deal folder : Deals root / {prop_short!r} (resolved at runtime)")
+        return
+
+    print(f"Exporting design {design_id}...")
+    download_url = export_design_pdf(design_id)
+
+    print("Downloading PDF...")
+    r = requests.get(download_url, timeout=120)
+    r.raise_for_status()
+    pdf_bytes = r.content
+    print(f"  {len(pdf_bytes) // 1024} KB downloaded.")
+
+    print("Uploading to Drive deal folder...")
+    gtoken    = _google_token()
+    folder_id = _drive_find_or_create_folder(gtoken, prop_short, DEALS_ROOT)
+    pdf_link  = _drive_upload_pdf(gtoken, folder_id, filename, pdf_bytes)
+
+    print(json.dumps({
+        "pdf_link":  pdf_link,
+        "folder_id": folder_id,
+        "filename":  filename,
+    }, indent=2))
+
+
 def list_designs(limit: int = 20):
     """List recent designs."""
     r = _get("/designs", params={"limit": limit})
@@ -252,6 +392,13 @@ def main():
     p_list = sub.add_parser("list", help="List recent designs")
     p_list.add_argument("--limit", type=int, default=20)
 
+    p_arch = sub.add_parser("archive", help="Export PDF + upload to deal folder in Drive")
+    p_arch.add_argument("design_id")
+    p_arch.add_argument("--address", required=True,
+                        help="Property address (used to name the deal folder)")
+    p_arch.add_argument("--dry-run", action="store_true",
+                        help="Print plan, no API calls")
+
     args = parser.parse_args()
 
     if not args.cmd:
@@ -277,6 +424,8 @@ def main():
         export_design_pdf(args.design_id)
     elif args.cmd == "list":
         list_designs(args.limit)
+    elif args.cmd == "archive":
+        archive_to_deal_folder(args.design_id, args.address, dry_run=args.dry_run)
 
 
 if __name__ == "__main__":

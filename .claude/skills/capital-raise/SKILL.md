@@ -1,9 +1,9 @@
 # Capital Raise Skill — Olive Tree Investments
 **Trigger:** `/capital-raise`, "raise capital", "investor outreach", "soft commitments", "who do I call for this deal"
 
-> **STATUS: DRAFT / SCOPED 2026-06-09.** Scaffolded from Justin Brennan mentorship mining
-> (videos: u_tBhtH5JhM, Qr3f3NDdPF4, YlPdtLkshAg, GC31FAVq0R4, Fb4en-eg04w). Needs Brian's
-> review + scripts before it's a live skill. Nothing here sends without approval.
+> **STATUS: LIVE (2026-06-19).** Scaffolded from Justin Brennan mentorship mining.
+> `scripts/capital_raise.py` is built and verified. First raise: 641 Powder Springs (Smyrna).
+> Nothing sends without Brian's approval (`--send` flag required).
 
 ---
 
@@ -30,37 +30,58 @@ commitments**.
 - Targets: **18.21% annual ROI, 2.09x equity multiple, 4–6 yr hold**
 - Investor types: Individuals, HNW, Family Offices, Institutions (pref equity)
 
-## Execution (proposed)
+## How to run a raise (641 Powder Springs playbook)
 
-### Step 1: Set the raise target
-From the deal's equity requirement (deal-analysis output) → total LP equity needed,
-min check size, # of investors to fill it. Output the gap vs. current soft commitments.
+### Step 1 — Size the audience
+```bash
+python3 scripts/capital_raise.py audience
+```
+Pages all GHL contacts, buckets by tag, prints reachable counts, writes
+`output/capital-raise/641-powder-springs-audience-<date>.csv`.
+**Result (2026-06-19):** 633 tagged contacts · 320 email · 557 phone · 0 enrolled.
 
-### Step 2: Pull the investor pipeline
-Source of truth = **GoHighLevel CRM** (not yet connected — see connections.md). Until
-connected, maintain a soft-commit list. Segment by: committed / verbal / warm / cold,
-and by check-size band.
+### Step 2 — Verify copy + self-test
+Check `output/capital-raise/641-first-touch.md` against the drip's first email/SMS in GHL.
+Then enroll yourself to confirm the drip fires correctly:
+```bash
+python3 scripts/capital_raise.py enroll --send --contact-id <your-contact-id>
+```
+Confirm you receive the email + text and the landing page/Loom render at
+`https://olivetreeinv.io/641_powder`.
 
-### Step 3: Draft deal-first outreach (never auto-sends)
-Per investor segment, draft in Brian's voice: 1-line hook + the 3 headline numbers
-(pref, target IRR, equity multiple) + the ask (soft commit + amount). Attach the deal
-pitch deck (`/pitch-deck`).
+### Step 3 — Dry-run then send
+```bash
+python3 scripts/capital_raise.py enroll              # dry-run — prints who would enroll
+python3 scripts/capital_raise.py enroll --send       # live — enrolls all 633, idempotent
+```
+Each enrolled contact gets the tag `raise-641-enrolled` so re-runs skip them.
+GHL's "Deal Funnel Pitch Deck" workflow handles the email, SMS, Loom, and follow-up drip.
 
-### Step 4: Track commitments to target
-Log each response as soft-commit $ amount. Show running total vs. raise target and vs.
-the Q3 $400K goal. Flag when the deal is oversubscribed or short.
+### Step 4 — Track soft commits
+As prospects respond and you add them to the Investors pipeline in GHL:
+```bash
+python3 scripts/capital_raise.py track
+```
+Shows running total vs. $400K Q3 target. Log each commitment in the "Soft commitment"
+stage with `monetaryValue` set to the dollar amount.
 
-### Step 5: Tax/returns hook (optional, for the right investor)
-Cost-seg + bonus depreciation as the close: a Year-1 paper loss of ~$0.95–$1.20 per $1
-invested. Order the cost-seg study in the first 30 days post-close (3rd-party, after reno
-on value-add for a bigger basis); hold 5 years to minimize recapture.
+### Step 5 — Tax/returns hook (optional, for the right investor)
+Cost-seg + bonus depreciation: Year-1 paper loss of ~$0.95–$1.20 per $1 invested.
+Order the cost-seg study in the first 30 days post-close (3rd-party, post-reno for
+bigger basis); hold 5 years to minimize recapture.
 
-## Connections needed
-- **GoHighLevel** (CRM / investor pipeline) — not yet connected
-- `/pitch-deck` (Canva) — connected
-- Email (drafts only, Brian approves) — connected
+## GHL asset IDs (641 Powder Springs)
+- **Funnel:** `O2Op6S7p7DbBEgkEuZLd` — `https://olivetreeinv.io/641_powder`
+- **Drip workflow:** `0f93b671-d649-4836-9cd4-39ce0985c4c1` — "Deal Funnel Pitch Deck"
+- **Investors pipeline:** `TUzH2bLOw4Iw06LUB625`
+- **Soft commitment stage:** `aae3cd8d-aaca-48a6-8638-f19950794d37`
+- **Enrolled tag:** `raise-641-enrolled`
 
-## To build before this goes live
-- [ ] `scripts/capital_pipeline.py` — read/segment investor CRM, track soft commits vs target
-- [ ] Soft-commit tracking sheet or GHL pipeline fields
-- [ ] Confirm fund terms + 506(b) compliance language with Brian
+## 506(b) compliance checkpoints
+- Outreach only to tagged contacts (pre-existing relationships). Never the untagged 270.
+- SMS copy carries "Reply STOP" — verify GHL opt-out is enabled on the workflow.
+- Never blast the full 915-contact list.
+
+## Script: `scripts/capital_raise.py`
+Built 2026-06-19. Uses `subprocess.run(['curl',...])` for GHL calls (Python 3.14 SSL).
+All writes are idempotent. `--send` flag required for any live action.

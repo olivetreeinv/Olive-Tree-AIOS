@@ -41,7 +41,7 @@ Warm regards,
 
 Brian Norton
 Olive Tree Investments
-[PHONE] · [EMAIL]
+{{PHONE}} · {{EMAIL}}
 
 *P.S. If you own other vacant parcels — here or elsewhere — I'll make offers on
 those too. And if you refer a friend or family member whose land I end up buying,
