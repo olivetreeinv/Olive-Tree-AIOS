@@ -1677,16 +1677,65 @@ def populate_analyzer_small(token, args, metrics=None):
         ws["R37"] = exit_cap / 100   # store as decimal (e.g. 6.0 → 0.06)
     ws["R38"] = 0.05                 # selling costs % (5% default)
 
-    # Expenses (APOD, J=current / L=proforma) — the template ships with a prior
-    # deal's taxes and insurance; replace with deal-derived values. Remaining
-    # lines stay as template per-unit defaults for manual review.
+    # Expenses (APOD, J=current / L=proforma) — use OM actuals where passed via
+    # --taxes/--insurance/--utilities/--contracts/--repairs/--turnover; fall back
+    # to template defaults only when no OM actual is available.
     zip_s = str(getattr(args, 'zip', '') or '')
     tax_rate = EFFECTIVE_TAX_RATE.get(zip_s, DEFAULT_TAX_RATE)
-    ws["L21"] = f"=$D$4*{tax_rate}"  # proforma taxes reassessed at offer (per-zip effective rate)
-    ws["J21"] = f"=$B$4*{tax_rate}" if asking else f"=$D$4*{tax_rate}"  # current taxes proxy until OM actual entered
-    if units:
-        ws["J22"] = 1500 * units     # insurance — $1,500/unit KB floor
+
+    om_taxes    = getattr(args, 'taxes', None)
+    om_ins      = getattr(args, 'insurance', None)
+    om_utils    = getattr(args, 'utilities', None)
+    om_contracts= getattr(args, 'contracts', None)
+    om_repairs  = getattr(args, 'repairs', None)
+    om_turnover = getattr(args, 'turnover', None)
+    pf_taxes    = getattr(args, 'taxes_proforma', None)
+
+    # Taxes — write annual dollar totals only (J=current, L=proforma).
+    # I21/K21 are template-managed percentage columns — never write to them.
+    if om_taxes is not None:
+        ws["J21"] = om_taxes
+    else:
+        ws["J21"] = f"=$B$4*{tax_rate}" if asking else f"=$D$4*{tax_rate}"
+    if pf_taxes is not None:
+        ws["L21"] = pf_taxes
+    else:
+        ws["L21"] = f"=$D$4*{tax_rate}"
+
+    def _per_unit(total, u):
+        """Return per-unit value only when units is known and positive; skip cell write otherwise."""
+        return round(total / u, 0) if u and u > 0 else None
+
+    def _write_expense(cur_total_cell, cur_unit_cell, pf_total_cell, pf_unit_cell, total, u):
+        ws[cur_total_cell] = total
+        ws[pf_total_cell] = total
+        pu = _per_unit(total, u)
+        if pu is not None:
+            ws[cur_unit_cell] = pu
+            ws[pf_unit_cell] = pu
+
+    # Insurance — current: OM actual or $1,500/unit KB floor; proforma: hold OM actual
+    if om_ins is not None:
+        _write_expense("J22", "I22", "L22", "K22", om_ins, units)
+    elif units:
+        ws["J22"] = 1500 * units
         ws["L22"] = 1500 * units
+
+    # Utilities
+    if om_utils is not None:
+        _write_expense("J25", "I25", "L25", "K25", om_utils, units)
+
+    # Contract services
+    if om_contracts is not None:
+        _write_expense("J27", "I27", "L27", "K27", om_contracts, units)
+
+    # Repairs & maintenance
+    if om_repairs is not None:
+        _write_expense("J23", "I23", "L23", "K23", om_repairs, units)
+
+    # Turnover
+    if om_turnover is not None:
+        _write_expense("J24", "I24", "L24", "K24", om_turnover, units)
 
     # ── SENIOR LOAN sheet — amortization ──
     ws_loan = wb["SENIOR LOAN"]
@@ -1715,10 +1764,19 @@ def populate_analyzer_small(token, args, metrics=None):
         if exit_cap is not None:
             _note("R37", f"Exit cap {exit_cap:.2f}% from OM pro-forma. May expand if market softens — model conservatively.")
         _note("R38", "Selling costs 5% (broker + closing costs at exit).")
-        _note("J21", f"Current taxes ESTIMATE ({tax_rate:.2%} of ask) — replace with the OM/T-12 actual.")
-        _note("L21", f"Proforma taxes reassessed at offer (=D4 x {tax_rate:.2%}, zip {zip_s or 'default'} effective rate). ESTIMATE — confirm county millage in DD.")
-        if units:
-            _note("J22", f"Insurance ${1500*units:,.0f} = $1,500/unit KB floor. Replace with live quote.")
+        if om_taxes is not None:
+            _note("J21", f"Taxes ${om_taxes:,.0f} — OM 2025 actual.")
+        else:
+            _note("J21", f"Taxes ESTIMATE ({tax_rate:.2%} of ask) — replace with OM/T-12 actual.")
+        if pf_taxes is not None:
+            _note("L21", f"Taxes ${pf_taxes:,.0f} — post-sale reassessment estimate. Confirm county millage in DD.")
+        else:
+            _note("L21", f"Proforma taxes reassessed at offer (=D4 x {tax_rate:.2%}, zip {zip_s or 'default'}). ESTIMATE — confirm in DD.")
+        if om_ins is not None:
+            _note("J22", f"Insurance ${om_ins:,.0f} — OM 2025 actual. Get fresh quote before removing contingencies.")
+            _note("L22", f"Insurance ${om_ins:,.0f} — held at OM actual. Replace with live quote in DD.")
+        elif units:
+            _note("J22", f"Insurance ${1500*units:,.0f} = $1,500/unit KB floor. Replace with OM actual / live quote.")
             _note("L22", "Insurance KB floor — replace with live quote in DD.")
 
         # Unit mix comments
@@ -1994,6 +2052,14 @@ def build_parser():
     p.add_argument("--entry-cap",     type=float, help="Entry cap rate (as number, e.g. 5.5 = 5.5%%)")
     p.add_argument("--exit-cap",      type=float, help="Exit cap rate (as number, e.g. 6.0 = 6.0%%)")
     p.add_argument("--vintage",       type=int,   help="Building vintage year")
+    # OM actual expenses — current column; proforma derived from these + KB adjustments
+    p.add_argument("--taxes",         type=float, help="Property taxes annual (OM actual)")
+    p.add_argument("--insurance",     type=float, help="Insurance annual (OM actual)")
+    p.add_argument("--utilities",     type=float, help="Utilities annual (OM actual)")
+    p.add_argument("--contracts",     type=float, help="3rd party contract services annual (OM actual)")
+    p.add_argument("--repairs",       type=float, help="Repairs & maintenance annual (OM actual or estimate)")
+    p.add_argument("--turnover",      type=float, help="Turnover expense annual (OM actual or estimate)")
+    p.add_argument("--taxes-proforma",type=float, help="Proforma taxes annual (post-reassessment estimate); falls back to zip-rate formula if not set")
 
     # Sheet logging
     p.add_argument("--stage",         type=str, default="New",  help="Deal stage for sheet")
