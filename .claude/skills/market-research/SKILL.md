@@ -43,6 +43,8 @@ Run this before opening the OM or touching any deal financials. A bad market kil
 | Web search | Primary: Census ACS/PEP, BLS CES/LAUS, BEA, City General Plans, MPO plans |
 | Web search | Secondary: CBRE/JLL/Cushman market reports, CoStar or Yardi Matrix public briefs |
 | Web search | Path of Progress: DOT, transit agencies, economic development orgs, bond measures |
+| Web search | Capital concentration: Marcus & Millichap / CBRE top-MSA annual reports |
+| `scripts/rentometer.py` | Live current rent comps — web-login scrape (deal-triggered runs, no API key needed) |
 | `context/priorities.md` | Brian's Q3 goals |
 
 **Citation rule:** Every metric must cite source + data year inline (e.g., "ACS 1-yr 2023," "BLS CES metro 2022–2024"). If data is unavailable from primary sources, label as "estimated" and show method. Never fabricate a number.
@@ -130,6 +132,16 @@ Score each: 🟢 Green (go) / 🟡 Yellow (investigate) / 🔴 Red (pass)
 
 **Primary sources:** Zillow Observed Rent Index (ZORI); Apartments.com Rent Trends; Yardi Matrix blog. Search: `[city] average rent growth 2025`, `[MSA] multifamily rent trends 2024 2025`.
 
+**Live rent comps (deal-triggered runs):** Pull current asking-rent comps from Rentometer using Brian's web account — no API key needed:
+
+```bash
+python3 scripts/rentometer.py \
+  --address "<representative submarket address with zip>" \
+  --beds <dominant unit type: 1/2/3>
+```
+
+Use the **median** as the market rent anchor. Report the 25th/75th percentile spread. Rentometer reflects actual listings; Zillow/Yardi may lag 6+ months. If the property address is known, use it directly for the tightest geo match.
+
 ---
 
 ### 5. Median Household Income (current + trend)
@@ -182,6 +194,8 @@ Score each: 🟢 Green (go) / 🟡 Yellow (investigate) / 🔴 Red (pass)
 
 **Sources:** City/County General Plans; MPO long-range plans; DOT project lists; local economic development org; local business journal.
 
+**Follow-the-money signal:** Check Marcus & Millichap, CBRE, and JLL annual top-45–100 MSA reports to confirm institutional capital is flowing into the market. When major lenders and institutional buyers are concentrating capital here, it validates the PoP thesis. Search: `[MSA] multifamily investment outlook Marcus Millichap 2025`, `CBRE top markets 2025 [MSA]`. A market appearing on these lists upgrades a Yellow PoP to Green and adds credibility with LP investors. (Source: Brennan MFS Module 1A, Lesson 1)
+
 ---
 
 ## Composite Score
@@ -207,6 +221,8 @@ Include composite score in the scorecard. Context:
 
 **PURSUE** — 5–7 Green, 0–1 Yellow, 0 Red, composite ≥ 50
 Pull the OM. Move to underwriting.
+
+> **New market note:** If this is a market where Brian does not yet have a property manager, contractors, and broker relationships in place, note: *"Budget 6–8 months to stand up PM / construction / legal / broker network before active deal-hunting here."* For buy-box markets already in rotation this is N/A. (Source: Brennan MFS Module 1A, Lesson 1 + Lesson 3)
 
 **INVESTIGATE** — 3–4 Green, 2–3 Yellow, 0–1 Red (Red must not be on criteria 1, 2, or 3)
 Market has merit but specific risks to verify. Note exactly which criteria need more digging before committing to underwriting. Name the 1–2 things that would move it to PURSUE.
@@ -238,6 +254,9 @@ If from a deal alert (broker email, Crexi listing), also capture:
 - Property name, unit count, listed price (if known)
 - Cross-check unit count against buy box (15–50 units universal filter) — flag if outside range
 
+**Landlord-friendly state gate:**
+Brian's buy box (GA, TN, AL) passes. If researching a market outside the buy box, check the state's landlord-tenant law posture: *"invest in purple or red states only."* Blue/tenant-favorable states (CA, NY, OR, WA, IL, MN, NJ, CT) — flag explicitly before proceeding. This applies to any out-of-buy-box research request. (Source: Brennan MFS Module 1A, Lesson 3)
+
 ### Step 2 — Run targeted web searches
 
 Run 6–8 searches. Use primary sources first. Prioritize 2024–2025 data.
@@ -268,6 +287,24 @@ If a metric is unavailable from any source: assign 🟡 Yellow, note "data unava
 ### Step 4 — Calculate composite score and verdict
 
 Apply formula. Assign bonus (0–5) for Path of Progress with explicit justification. Apply verdict logic.
+
+### Step 4b — Boots-on-ground comp check (deal-triggered runs only)
+
+When running market research for a specific deal (not a proactive scan), add this before finalizing rent assumptions for the underwriting handoff:
+
+**Desk-side:** Run Rentometer (see Criterion 4 above) for an immediate comp anchor before driving. This gives you a number to verify or challenge in person.
+
+**In-person recon protocol (Brennan MFS Module 1A Lessons 2–3 + Module 4 Lesson 3):**
+- Drive 2–3 competing apartment complexes. Walk in, ask about availability and pricing.
+- Log actual asking rents and current concessions vs. OM claims — **broker OMs can be 3+ months stale.**
+- Visit at multiple times: AM / midday / evening **and** weekday / weekend. Neighborhood dynamics at 10pm Friday differ from 10am Tuesday.
+- **Crime indicators:** count bars on windows during the drive. Note graffiti, broken fixtures, and tenant interactions.
+- **Neighborhood adjacency:** does the property abut single-family homes (value signal) or commercial/industrial (risk signal)? Location cannot be changed.
+- **Staff responsiveness:** how quickly are you greeted? How well do they know availability and pricing? Poor ops = management upside opportunity; chaos = red flag.
+
+**Why this beats online data:** Zillow / Apartments.com can lag 6+ months. In-person checks routinely surface $100–200/unit gaps that materially change stabilized NOI. Your on-the-ground comp data is insider information you can use to defend rent projections against lender and LP pushback.
+
+Log actual comps in the Underwriting Handoff block under "Market rent trend." Build this per-market over time — each visit calibrates future underwriting.
 
 ### Step 5 — Output scorecard
 
@@ -410,6 +447,8 @@ Every run produces:
 
 | Connection | Enhancement |
 |---|---|
+| Rentometer (web login) | **LIVE** — current asking-rent comps via `scripts/rentometer.py`; web-session auth using `.env` credentials |
+| Rentometer API key | Upgrade path — set `RENTOMETER_API_KEY` in `.env` to switch from web scrape to REST API (200 credits/mo free on Pro Standard) |
 | CoStar API (if added) | Pull live vacancy, rent, and supply data — replaces web search for criteria 3, 4, 6 |
 | Yardi Matrix API | Same — institutional-grade comps |
 | Google Sheets LP Tracker | Auto-log PURSUE verdicts to a market watchlist tab |
