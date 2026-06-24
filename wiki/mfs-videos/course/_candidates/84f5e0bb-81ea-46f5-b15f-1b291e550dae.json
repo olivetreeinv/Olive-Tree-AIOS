@@ -1,0 +1,22 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan walks through the operational process for submitting deals for underwriting review through the AIOS portal. He specifies the four required documents (OM, rent roll, T12 P&L, and completed deal analyzer) and the submission email address to facilitate quick feedback on deal analysis.",
+  "takeaways": [
+    "Submit four pieces: OM (property marketing flyer), rent roll, T12 (12-month P&L statement), and completed underwriting in deal analyzer",
+    "Email deals to support@multifamilyschool.com with property address and 'deal for review' in subject line",
+    "Submit underwriting in Excel format, ideally all documents via email",
+    "Same submission process applies to LOI (letter of intent) offers on properties",
+    "Use the portal's deal analyzer or your own preferred underwriting tool, submit in Excel"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Establish a standardized four-document submission checklist for every deal review request",
+      "evidence": "Justin specifies exact documents required (OM, rent roll, T12, underwriting) and email address (support@multifamilyschool.com) to streamline the review process and get 'pretty quick' feedback"
+    }
+  ],
+  "id": "84f5e0bb-81ea-46f5-b15f-1b291e550dae",
+  "title": "SUBMIT DEAL FOR REVIEW",
+  "module": "PROGRAM RESOURCES"
+}

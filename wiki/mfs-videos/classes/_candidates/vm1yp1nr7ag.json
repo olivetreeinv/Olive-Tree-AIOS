@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "yes",
+  "topic": "capital-raise",
+  "summary": "Justin Brennan mentors multifamily investors on capital raising strategy, emphasizing pitch deck creation as the foundation for investor outreach. Luis presents his 12-unit San Antonio deal (under contract at $954K, 20% IRR) and learns critical steps: building a pitch deck with 17-20% IRR targets, compiling a 25-30 person investor list, creating a simple company website, and recording a walkthrough video to answer 95% of investor questions before direct conversation.",
+  "takeaways": [
+    "Target 17-20% IRR minimum to justify pulling capital from liquid assets like 401Ks and stocks",
+    "Build pitch deck with executive summary, capitalization stack, projected returns per investment amount ($25K-$100K increments), unit mix, property location, market metrics, and financial projections",
+    "Create simple company website (template-based, one home page + about section minimum) listing company name, address, partnership faces",
+    "Compile list of 25-30 potential investors including friends, family, and high-net-worth individuals; 'don't worry if they don't have money, people know people'",
+    "Record 30-minute Loom video walking through pitch deck on landing page to answer: Where does money go? What are returns? When do I get paid back? What safety measures protect the asset?",
+    "Use Canva template for pitch decks (more efficient than PowerPoint) and eventually delegate to VA at $3.99/hour after first 1-2 decks built personally",
+    "Send seller questionnaire and representations/warranties addendum to contract 7-10 days before execution\u2014brokers will pressure to sign immediately, resist this timeline"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "capital-raise",
+      "change": "Create formal pitch deck (not just LOI) before reaching out to capital sources",
+      "evidence": "Luis was prepping capital strategy organically; Justin redirected him to build pitch deck first, present it next week, then begin 25-person outreach. 'Now the pitch deck's done...what's going to happen is that list of 25 people...' and 'this is how you begin to raise money'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Add seller representations and warranties addendum to state commercial contracts before signing",
+      "evidence": "Justin teaches Louise to copy representations/warranties section from portal template and attach as addendum to protect buyer since commercial contracts are 'buyer beware' without consumer protections like residential. Critical to 'hold their ass to the line' on disclosures."
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Send acquisition questions to seller 7-10 days before contract execution, not after going under contract",
+      "evidence": "Louise assumed questions went out after contract; Justin corrected: 'You want to send those out now because you have a window of time. It's going to take you seven to 10 days before that contract is executed.' Gives time to review before signing."
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Conduct 3-7 day in-person market reconnaissance trip before underwriting out-of-state deals",
+      "evidence": "Gideon's 7-day OKC road trip (meeting brokers, touring 6-7 properties, driving neighborhoods) made him comfortable underwriting remotely. Justin reinforced: 'That all happens in that little 3-day reconnaissance on any market...taking those couple days to do that for yourself is really, really, really important if it's an out of state market.'"
+    }
+  ],
+  "id": "vm1yp1nr7ag",
+  "title": "Tuesday Mentorship Q&A - How To Raise Capital_09-23-25 | Justin Brennan",
+  "duration": 2751
+}

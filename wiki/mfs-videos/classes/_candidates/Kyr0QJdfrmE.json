@@ -1,0 +1,40 @@
+{
+  "deal_relevant": "partial",
+  "topic": "capital-raise",
+  "summary": "Justin Brennan coaches Brian Norton's AIOS mentees on setting up administrative/business infrastructure (LLC, website, CRM, logo) as a prerequisite for attracting lenders, brokers, and capital partners. He emphasizes syndication structures where new investors bring 10% equity and raise 90%, using sweat equity (deal-finding, underwriting, management) to offset lack of capital. He also discusses networking, fundraising psychology, and positioning multifamily investing as solving major wealth-building problems for investors.",
+  "takeaways": [
+    "Set up LLC, website, CRM with ~25 names, and logo within first 3 weeks to look professional to lenders/brokers/investors",
+    "New deal sponsors bring 10% down payment capital and syndicate remaining 90% from limited partners",
+    "Average first-deal investor size should be $25k-$50k; Justin's first deal raised $800k from ~7 investors across $25k-$175k checks",
+    "First deal target returns: 14-20% IRR to investors; 2-3x equity multiple; ~7% cash-on-cash return minimum",
+    "Use indirect social media posting for 506(b) offerings (stories, feeds) without pitching terms; reserve paid ads/webinars for 506(c)",
+    "60-day standard closing timeline (with 30-day extension option in LOI) allows time for due diligence, inspections, lending, and capital raising",
+    "Pitch deals to database by sending pitch deck, then follow up in few days asking 'Who do you know?' instead of directly selling",
+    "Use capital accounts tracking spreadsheet (template) to manage and track investor contributions quarter-by-quarter; email statements to investors each quarter"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "capital-raise",
+      "change": "Establish professional business infrastructure (LLC, website, CRM, logo) before pursuing deals to signal legitimacy to capital sources",
+      "evidence": "Justin states 50/50 of outreach lenders report applicants either 'ready to go' with infrastructure or lacking it; lenders explicitly told him lack of professional setup makes it 'really hard' for them to get comfortable. He emphasizes this must happen 'concurrently' within first 3 weeks of entering community."
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Target investor returns of 14-20% IRR and 2-3x equity multiples minimum; structure syndication with 10% sponsor equity and 90% raised capital",
+      "evidence": "Justin states 'this had to meet the metrics that we teach. Otherwise, you're not raising any money from anyone, let alone a lender.' He uses his first deal example: 17% annual return, 1.7x equity multiple, 7% cash-on-cash attracted 7 investors from 11 initial pitches."
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Apply '20 seconds of courage' rule repeatedly to overcome hesitation on prospecting calls, emails, and networking conversations",
+      "evidence": "Justin repeatedly emphasizes: 'Have 20 seconds of courage to do it, to start it, to get it moving...anytime you're holding yourself back...say you know what, stop, Justin. Grab your you know what, let's go. 20 seconds of courage.' He models this as overcoming hesitation to initiate conversations with high-value contacts."
+    },
+    {
+      "skill": "broker-search",
+      "change": "Build CRM database of 25-50 initial contacts before deal sourcing to enable rapid capital distribution via pitch deck; follow up within few days asking 'Who do you know?' not pitching directly",
+      "evidence": "Justin's first deal: sent pitch deck to <30 people, 11 responded, 7 eventually invested $800k total. He emphasizes 'I sent them over the pitch deck. They reviewed it. I followed up...I didn't sell them. I asked for other people.' This expanded investor pool through network effect."
+    }
+  ],
+  "id": "Kyr0QJdfrmE",
+  "title": "Weekly Coaching_10-16-15 | Justin Brennan",
+  "duration": 3725
+}

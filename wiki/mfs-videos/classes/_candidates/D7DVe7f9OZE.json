@@ -1,0 +1,35 @@
+{
+  "deal_relevant": "partial",
+  "topic": "capital-raise",
+  "summary": "Justin Brennan mentors multifamily investors on raising capital efficiently by building infrastructure before securing deals. He emphasizes creating mock pitch decks, landing pages, and warming up capital sources through a structured process\u2014including lender soft quotes and investor conversations\u2014so that when a deal closes, financing is already partially committed rather than chased reactively.",
+  "takeaways": [
+    "Create pitch decks and landing pages during mock deal phase to signal professionalism and warm investor database before actual deals",
+    "Set up 3 bank accounts for LLC: operating (day-to-day), entity (investor money), and capex (renovations) to track expenses cleanly",
+    "Execute pitch deck, landing page, and summary video within 3-4 days of signed LOI, before formal contract, to begin capital raising immediately",
+    "Investors primarily care about 3 things: How much money needed, what returns (equity multiple, preferred return, cash-on-cash), when do they get money back",
+    "For capital raisers without GP status in regulated deals, allocate percentage of GP based on capital raised target (e.g., raise 30% of total = 30% of GP pool)",
+    "Use Real AI (realai.com) connected to real-time data sources for market analysis, rent comps, and business plan generation",
+    "Submit PPM legal documents in advance (~$13K upfront) so closing is faster; deals reimburse closing costs including legal prep",
+    "Red coloring on pitch deck slides psychologically signals negativity\u2014use green or black instead"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "capital-raise",
+      "change": "Establish warm capital before deal closure through mock pitch decks and investor conversations",
+      "evidence": "Justin states 'mock deal process...warming up your audience...so when actual deal comes along it's not shock and awe and you're not chasing capital to close. You have some already warmed up.'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Organize three separate bank accounts by purpose to eliminate accounting confusion and track expense categorization",
+      "evidence": "Justin explains: 'Operating account for day-to-day, entity account for investor money, capex account for renovations...makes your life 10x easier...don't have to ask 400 questions where did this dollar go'"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Complete pitch deck, landing page, and video within 3-4 days of LOI signature to accelerate capital deployment timing",
+      "evidence": "Justin: 'When I have LOI signed, within 3-4 days after signing that, before I'm even under contract, my pitch deck is done, my landing page is done, my summary video is done, locked and loaded'"
+    }
+  ],
+  "id": "D7DVe7f9OZE",
+  "title": "Tuesday Mentorship Q&A - How to Raise Capital Fast_03-10-26 | Justin Brennan",
+  "duration": 3608
+}

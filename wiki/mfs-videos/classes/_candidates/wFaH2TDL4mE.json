@@ -1,0 +1,40 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan conducts a detailed walkthrough of underwriting an 18-unit North Carolina value-add deal using the AIOS deal analyzer, covering rent roll analysis, expense verification, financing assumptions, and economic loss calculations. He also extensively educates the group on bonus depreciation and cost segregation as investor tax benefits, and discusses deal timeline management including LOI execution through capital raise sequencing.",
+  "takeaways": [
+    "Use rent roll data to verify occupancy claims\u2014request tenant tickler/move-in-move-out reports for last 24 months to validate stated vacancy rates",
+    "Underwrite to 10% gross economic loss minimum (vacancy + lost lease + bad debt + concessions combined) for mid-1970s properties; brokers often hide behind artificial 5% figures",
+    "Always request delinquency and bad debt reports; if seller won't provide, ask for bank statements of single-property entity to forensically audit income/expenses",
+    "For 18-unit deals, expect local commercial bank financing (6+ years in sixes range), not agency debt; agency financing requires $1M+ loan amount minimum",
+    "When rent-bumping assumptions exist, implement utility reimburseable (RUBS) programs at $30-40/unit/month tiered by bedroom\u2014example: $30 for 1BR, $40 for 2BR",
+    "Verify insurance and tax assumptions with seller; request proof rather than accepting stated figures, especially for acquired properties where tax basis changes",
+    "Structure LOI offer at $950-975K for this deal type, not at asking price; brokers expect negotiation but respect data-driven counteroffers showing true underwriting",
+    "Bonus depreciation provides roughly 1:1 year-one write-off ratio on investment; for $50K invested, expect ~$40-50K negative K1 statement to offset investor W2/1099 income"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Systematically verify rent roll and expense claims using specific report requests (tenant ticklers, delinquency reports, bank statements) rather than accepting broker P&L at face value",
+      "evidence": "Justin repeatedly instructs Allan to request move-in/move-out reports, delinquency data, and bank statements, explaining: 'Show me your turnover report... And then I also want to see your delinquency report, bad debt, and eviction report' and emphasizing forensic auditing of bank accounts to validate actual cash flow"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Apply 10% minimum economic loss assumption (vacancy + lost lease + bad debt + concessions) to any deal rather than broker-provided 5-8% figures",
+      "evidence": "Justin states: 'I'd be willing to bet you they're every bit of 10%' and explains brokers use artificial 5% knowing true combined losses reach '8 to 10 and in some markets upwards of 15%' for mid-1970s properties"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Price deals based on local bank financing terms (low-to-mid 6% rates, 30% down, $682K minimum loan thresholds) rather than assuming agency/Fannie Mae access",
+      "evidence": "When Allan asks about agency debt, Justin clarifies: 'you need a million dollar loan amount or more. To get Fanny May or Freddy Mack... you're going to be a local commercial bank... low to mid sixes on your rate'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Implement RUBS (utility reimburseable) income at $30-40/unit/month tiered by unit size to increase effective gross income without new capex spend",
+      "evidence": "Justin calculates: '$35 a unit times the 18 units and that's per month, that's actually $7,500' and notes tiering as 'one bedrooms maybe $30 and two bedrooms $40'"
+    }
+  ],
+  "id": "wFaH2TDL4mE",
+  "title": "Tuesday Mentorship Q&A - How To Read Rent Rolls_10-14-25  | Justin Brennan",
+  "duration": 3432
+}

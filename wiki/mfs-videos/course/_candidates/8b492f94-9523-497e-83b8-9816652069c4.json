@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan walks through underwriting a 7-unit turnkey property in Phoenix, demonstrating how to plug actual financials into a pro forma template to identify deal breakeven pricing. He shows that the asking price of $1.825M doesn't work financially, identifies the property would need to trade around $1.6M depending on interest rates, and emphasizes using on-market deal analysis to build broker relationships that lead to off-market opportunities.",
+  "takeaways": [
+    "Smaller multifamily (7-20 units) typically prices at $260k/door in Phoenix vs. $225k/door for larger 25-40 unit deals in the same market",
+    "Always add reserves at 5% of expenses and turnover costs (~$1k per unit turn) even if seller doesn't include them",
+    "Target minimum 1.25x debt service coverage ratio; loans under $1M get worse rates/terms than Freddie/Fannie loans above $1M",
+    "Location analysis: multifamily surrounded by single-family homes or residential zones is ideal; avoid junkyards, industrial, gas stations, and commercial mixed-use",
+    "Use realistic interest rate assumptions (6% vs. optimistic 3-4%); a 3% rate change makes massive DCR/return differences on small deals",
+    "Target 4-8% cash-on-cash returns and 12-15% IRR on pro forma metrics to have a viable deal",
+    "'On to off' strategy: leverage on-market deal analysis and offers to build broker relationships that unlock off-market deals before they hit public listing sites"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Learn to construct detailed pro forma with all expense line items (maintenance, turnover, management fee, reserves)",
+      "evidence": "Justin shows plugging in missing line items like turnover costs ($1k/turn) and 5% reserves that seller omitted; demonstrates how this changes total expenses from $24k to $27k"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Develop ability to back into offer price from target returns rather than accepting seller's list price",
+      "evidence": "Justin shows working backward from 4-8% cash-on-cash and 12-15% IRR targets to identify $1.6M is true value despite $1.825M ask, teaching students 'where you need to buy it at'"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Use preliminary LOI on inflated-ask deals to initiate broker conversation and credibility-building, not just to negotiate price",
+      "evidence": "Student sent LOI at $1.6M on $1.825M ask; broker was shocked but it 'teed up the conversation' and led to broker viewing student as serious/knowledgeable, creating foundation for future off-market deal flow"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Apply geographic and market-rate comparables to identify per-unit pricing anomalies ($260k/door vs. $225k/door for larger buildings)",
+      "evidence": "Justin explicitly teaches 'when you get comfortable with markets, you start to notice these things' and shows 7-unit deals pricing higher per unit than 25-40 unit comps in same Phoenix market"
+    }
+  ],
+  "id": "8b492f94-9523-497e-83b8-9816652069c4",
+  "title": "Case Study 1 - Underwriting a 8-20 unit deal",
+  "module": "Module 2: How To Analyze Deals"
+}

@@ -55,6 +55,13 @@ Output: "Fast-screen: PASS all 3 → proceed to full underwriting" or
         "Fast-screen: FAILS [metric(s)] at [value] → recommend PASS unless price moves to $X."
 Any miss = move on or re-price. Don't pull docs on a deal that can't clear this.
 
+**Step 0 add-ons — run alongside the three metrics:**
+- **Return on Cost ≥ 18%** — leading indicator; if it clears, IRR/CoC/EM usually follow.
+  `Return on Cost = Stabilized NOI ÷ (Purchase Price + Renovation Capex)`
+- **Price ≤ replacement cost** — knockout if above. Paying more than it costs to build new kills the value-add thesis.
+- **Cap-rate sanity check** — `market cap rate × asking price → implied NOI`. If implied NOI << claimed NOI, seller is overpriced → re-price or PASS.
+- **Value-add spread rule** — forced cap should beat exit cap by ≥ 2 pts (e.g., buy at 5 cap → force to 7 cap → exit at 5 cap). If the spread isn't there, the plan won't hit return targets.
+
 ### Step 1: Buy Box Check
 
 Before touching any numbers, verify the zip is in the active buy box (`references/buy-box.md`).
@@ -65,6 +72,7 @@ Before touching any numbers, verify the zip is in the active buy box (`reference
 **Aerial / location knockout check** (do alongside the zip check):
 - Adjacent to freeway/major arterial, rail, or industrial → flag **economic obsolescence** (≈30% buyer-pool / price haircut). Note in Callouts.
 - Distinguish **economic** (immutable — discount) vs **functional** (fixable in reno) obsolescence.
+- **Drive-time knockout:** >30–40 min from the primary metro/job center → flag recession risk in Callouts. >40 min = knockout unless the thesis explicitly justifies it (e.g., established suburban submarket with independent demand).
 
 ### Step 2: Market Rent Check (Rentometer)
 
@@ -161,6 +169,10 @@ Parse documents and extract:
 GPR (Gross Potential Rent) = sum of all units × market rent/unit
 EGI (Effective Gross Income) = GPR × (1 − vacancy%) + ancillary income
   - Use actual vacancy from rent roll; default to 7% if unknown
+  - Other income — don't miss it (frequently omitted → understated NOI):
+    RUBS (standard at 50+ units), pet rent, admin/app fees, late fees,
+    parking, tech package, valet trash. Add each line present in T-12 or OM;
+    model conservatively if not yet implemented.
 
 # Expenses
 NOI (Current) = Actual T-12 Revenue − Actual T-12 Expenses
@@ -184,6 +196,18 @@ Expense reasonableness floors (flag any OM line >15% below these as "aggressive"
   Repairs/maint   $650–700/unit
   Management      6% for <30-unit deals
   Make-ready      if ≥10 vacant units, model ~$2K/unit make-ready credit (and request it in the LOI/PSA)
+  Turnover        ~$1,000/turn (cleaning, paint, minor repairs between tenants) — sellers routinely omit
+  Replacement reserves  ~$250–500/unit/yr OR 5% of EGI — use whichever is higher
+Plug all lines in. If OM total expenses look 20%+ below these floors, flag the gap explicitly.
+
+OpEx ratio benchmark: stabilized older assets run upper-30s to low-40s% of EGI. Running
+higher = either operational upside (collections gap, rent below market) or a red flag. State
+which in Callouts.
+
+Back into the offer price: don't anchor to the seller's ask. Solve the purchase price from
+target returns (CoC + IRR floors). Output "Pencils at $X vs. $Y ask — here's where you need
+to buy it." Use the solved price as the LOI basis even when far below ask — it opens the broker
+conversation and builds credibility.
 
 # Debt (bridge loan, value-add standard)
 Loan Amount = Asking Price × 0.75 (75% LTV)
@@ -239,10 +263,26 @@ IRR ≈ Estimate from equity multiple over 5-year hold:
 
 *Floors are the auto-reject line, not the goal — targets stay higher (18.21% ROI, 2.09x EM). LP IRR ≥14% is a tracked target, not yet computed (needs the LP waterfall).*
 
+**Unit-mix screen:** Target ≥ 55% two-bedrooms — the value-add rent delta is larger on 2BRs than 1BRs. Note actual mix in Callouts.
+
+**Sensitivity rule:** For deals ≥ 20 units, run a stress case alongside base: rent −5%, vacancy +3%, exit cap +50 bps. Don't present a single-scenario model as the conclusion.
+
 **Recommendation logic:**
 - All thresholds pass → **PURSUE LOI**
 - 1–2 misses within 10% of threshold with a clear upside story → **MORE INFO NEEDED** + specific questions
 - Multiple hard misses or no value-add story → **PASS**
+
+### Step 5b: Trust-but-verify reconciliation (run before finalizing price)
+
+Never underwrite seller numbers at face value. Before the offer price is set:
+
+- **Rent Roll → actual leases:** Verify collected rents vs. OM market rents. A gap of $9K/mo or more on a single deal is not unusual — every uncollected dollar is real NOI.
+- **T-12 expenses → receipts/invoices:** OM says $25K maintenance? Ask for invoices. $60K is not uncommon.
+- **Occupancy → estoppels:** Signed estoppels confirm occupancy and lease terms before LOI.
+
+Flag every discrepancy in the Callouts section. Post-close it's buyer-beware.
+
+> *Bank statements, delinquency list, and eviction filings are DD-phase requests — only after an accepted LOI. See the collections verification note in Step 3.*
 
 ### Step 6: Output the analysis
 
@@ -491,3 +531,5 @@ This skill returns:
 - **Deal Analyzer is authoritative.** Once docs are available, populate the Excel model. The manual calculations in Step 4 are for speed — Brian uses the full model for final decisions.
 - **Photos auto-resolve.** `deal_analysis.py` calls `scripts/deal_photos.py` for the 3-photo block (area + community = free Wikipedia images, property = Google Maps link). No API key. Listing portals (apartments.com/Crexi) 403 our sandbox, so we don't scrape them.
 - **Floors vs. grades.** Pass/fail thresholds are KB-sourced; the Scorecard's A–F grade *scales* are code defaults, not yet KB-grounded (tracked follow-up).
+- **Physical DD standard:** Walk every unit (HappyCo + photo/checklist) — no sampling. Segregate deferred maintenance (roof, HVAC, plumbing, foundation — no rent upside; capitalize or seek seller credit) from value-add capex. Check water systems per building: shutoffs, angle stops, piping type (copper vs. galvanized). Water is the top catastrophic-loss risk.
+- **GP economics on syndicated deals:** Model net, not gross. Acquisition fee ~2%, disposition ~1%, asset management ~2%, LP preferred return first, then GP promote ~25% over pref. Note GP true capital at risk after acquisition fee offset. Always show LP IRR separately from property IRR.

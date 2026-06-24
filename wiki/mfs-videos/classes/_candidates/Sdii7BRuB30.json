@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan mentors Brian Norton's multifamily team on deal sourcing and underwriting tactics. Key discussions include LOI submission strategy, proof of funds requirements, lease audit procedures, seller representations and warranties protection, and identifying red flags like sudden lease spikes and occupancy vs. delinquency mismatches. The session emphasizes brokers' due diligence on buyers and the importance of professional presentation through websites and buyer questionnaires.",
+  "takeaways": [
+    "Submit LOI with financing structure: 30% down payment from equity partners, your 10% of that amount, soft quote from lender for 70% loan, syndicated equity to fill remaining gap",
+    "Provide proof of funds as 10% of down payment (e.g., $50K on $500K down payment) separately via email with soft lender quote when brokers request it",
+    "Flag new lease volume: if 90+ days shows excessive new leases on small properties, request tenant applications and screening details\u2014red flag indicates fake occupancy without paying tenants",
+    "Analyze delinquency reports against occupancy claims\u2014property at 96% occupancy with 15% delinquency means economically vacant, not paying rent",
+    "Include representations and warranties section in purchase agreement to protect against fraudulent seller disclosures and require seller backup documentation",
+    "Never submit offers on auction deals for first investment\u2014requires all-cash, non-contingent offer, and $25K+ refundable registration deposit",
+    "Build professional business presence before first deal: website, company logo, bio/headshot, capital partner structure publicly visible so brokers verify legitimacy during 11th-hour buyer questionnaire stage"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "systematically request and audit delinquency reports, bad debt reports, lease agreements, invoices, and tenant screening data before LOI submission",
+      "evidence": "Justin teaches: 'If they send you the delinquency report and the bad debt report and they're not showing a lot on there yet the income collections aren't great...something's up because they can't send you that report and have it look good and then not have you see it doesn't line up'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "identify occupancy manipulation by tracking new lease volume in past 90 days and requesting tenant screening files to verify credit/eviction history",
+      "evidence": "Justin states: 'If you see that they've done an enormous amount of new leases in the last 90 days on a small property, I would start asking questions...if I find out that they have $450 credit and three evictions...we're going to have a little problem'"
+    },
+    {
+      "skill": "broker-search",
+      "change": "prioritize face-to-face broker meetings during market trips even if initial visit doesn't align with broker availability\u2014offer coffee shop meetups or office drop-bys to build human connection",
+      "evidence": "Justin advises: 'I'll meet them at a coffee shop for five minutes, buy you a coffee, and shake your hand...it goes a long way so that way when you go home and you start texting again...now there's a human connection'"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "build professional company infrastructure (website, logo, bio, lender soft quotes, proof of funds documentation) before submitting first LOI so brokers' 11th-hour due diligence validates legitimacy",
+      "evidence": "Justin emphasizes: 'You have to syndicate your deals...that's why we're setting everything up the way we're setting it up...you're running an official capital company...so you can raise the money'"
+    }
+  ],
+  "id": "Sdii7BRuB30",
+  "title": "Tuesday Mentorship Q&A - How to Win Real Estate Deals_04/28/26 | Justin Brennan",
+  "duration": 3174
+}

@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "yes",
+  "topic": "broker-search",
+  "summary": "Justin Brennan teaches preliminary questions to ask brokers and during property tours to evaluate markets and deals. The focus is on understanding market fundamentals (employers, jobs, cap rates, price per unit) and deal-specific terms (whisper price, deposit amounts, closing timeline) to properly underwrite value-add multifamily deals and build broker relationships.",
+  "takeaways": [
+    "Ask about main employers and job diversity\u2014'jobs, jobs, jobs' drive population and tenant base",
+    "Understand going-in cap rates (current acquisition pricing) vs. terminal/exit cap rates (post-renovation valuation)",
+    "Get price per door metrics: unrenovated as-is price, and renovated price per door for comparable class properties (A/B/C)",
+    "Request whisper price from broker\u2014what the seller is hoping to get, typically trending over whisper price 9 times out of 10 in recent markets",
+    "Ask about specific terms: deposit amount, hard money amount required day one, closing period, due diligence period",
+    "Identify development paths and city planning to understand where redevelopment is happening and employers will follow",
+    "Build relationships with brokers to get market intel on competitive offer trends, deposit amounts, and hard money ranges"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "broker-search",
+      "change": "Develop systematic question framework when contacting brokers",
+      "evidence": "Justin provides specific preliminary questions to ask brokers: employers, cap rates, price per unit, development paths, whisper price, and terms\u2014teaching Brian to qualify brokers and markets efficiently"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Learn to extract and use comparable pricing from brokers for underwriting",
+      "evidence": "Justin teaches asking for price per door metrics (as-is and renovated) and cap rate trends by property class to establish 'terminal cap rate' for valuation\u2014enabling Brian to underwrite pre-tour by requesting whisper price upfront"
+    },
+    {
+      "skill": "market-research",
+      "change": "Identify key economic drivers and development trends before investing in new market",
+      "evidence": "Justin emphasizes asking about main employers, job diversity, median household income, and city planning/path of progress\u2014foundational reconnaissance to 'make sure that it's a market' before underwriting deals"
+    }
+  ],
+  "id": "1b668a67-84c9-45d3-ae1d-42d4dee41a31",
+  "title": "Lesson 3: Questions To Ask",
+  "module": "Module 1: How To Find Deals"
+}

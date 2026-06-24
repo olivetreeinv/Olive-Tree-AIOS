@@ -1,0 +1,40 @@
+{
+  "deal_relevant": "partial",
+  "topic": "capital-raise",
+  "summary": "Justin Brennan mentors Brian Norton's AIOS cohort on capital foundation and deal sourcing. Core teaching: execute a mock deal (pitch deck, landing page, summary video) to warm investor database before securing real deals, using a professional presentation to establish credibility and generate soft commitments. Also covers deal underwriting mechanics including expense normalization, broker relationship-building, and avoiding fractured condo deals without HOA control.",
+  "takeaways": [
+    "Create mock deal with pitch deck + landing page + 15-min summary video, send to 30-person database even without real deal to warm capital",
+    "Send email asking 'Who do you know that may have interest?' rather than asking contacts directly for money\u2014expect 11 of 30 to respond, 7 to ask why you didn't ask them, 5 to schedule calls",
+    "Set up 3 checking accounts at same bank for operating, capex, and entity accounts to prevent expense commingling and cleaner financials",
+    "Normalize property expenses using industry benchmarks (e.g., 1996 building in fair condition = 35-45% expense ratio, 1975 Midwest = 48-50%) when brokers bundle capex into R&M",
+    "Use cap rate minimum of 0.5 points above interest rate (e.g., if 6.5% rate, buy at 6%+ cap minimum) to avoid negative leverage",
+    "Current commercial loan rates: $2M+ gets high-5s (5.8-5.9%), agency debt $1.5M+ gets mid-5s, local banks $1M-$2M gets 6.25-6.9%",
+    "Only consider fractured condo deals if you control majority HOA seats; without control you're vulnerable to assessment hikes that ruin economics",
+    "Keep deal landing page link in phone notes for text sharing at networking events\u2014signals professionalism without asking for money directly"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Normalize distorted expense ratios using market benchmarks instead of accepting broker-provided financials",
+      "evidence": "Christian's deal looked good until actual costs were input, showing negative COC/IRR; Justin teaches to use standard ranges ($600-800/unit R&M, 48-50% for 1975 Midwest buildings) and back into price rather than accept commingled expense statements"
+    },
+    {
+      "skill": "capital-raise",
+      "change": "Build investor database warmth pre-deal through mock deal exercise (pitch deck + landing page + video) sent to 30 contacts",
+      "evidence": "Justin guarantees 11 of 30 respond, 7 ask why excluded, 5 schedule calls; Allan executed this and secured soft commitments before writing real offers; transforms investor perception from their day-job identity to real estate investor identity"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Reframe dead-deal broker outreach by pivoting to 'what else do you have coming?' rather than following up on rejected offer",
+      "evidence": "John had 22-unit South Dakota deal ghosted for 2.5 weeks; Justin advises asking broker about new pipeline instead of pressing old offer, creating permission to ask what happened behind scenes without appearing desperate"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Execute mock deal workflow (find deal on market, analyze, build pitch deck, create landing page, record summary video, draft email, send to 30) to build operational confidence before real capital raise",
+      "evidence": "Justin emphasizes 'going through the exercise' even without real deal pending; mock-deal landing pages template pre-built in CRM backend; Allan tested this and now has soft commitments ready for real deal submission"
+    }
+  ],
+  "id": "hNdLAc-iKQI",
+  "title": "Tuesday Mentorship Q&A - Why Every New Investor Should Create a Mock Deal - 02/24/26",
+  "duration": 3661
+}

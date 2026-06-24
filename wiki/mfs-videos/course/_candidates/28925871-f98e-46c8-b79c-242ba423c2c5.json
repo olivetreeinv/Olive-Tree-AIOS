@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "yes",
+  "topic": "market-research",
+  "summary": "Justin Brennan teaches how to select multifamily markets for out-of-state investing, emphasizing the importance of following lender capital flows and using key metrics like population and job growth to identify high-opportunity MSAs. For investors scaling beyond expensive coastal markets, this lesson provides a framework for identifying target markets before property-level analysis.",
+  "takeaways": [
+    "Follow the money\u2014identify markets where main lenders are concentrating capital and data research",
+    "Target markets with north of 1% annual population growth and north of 2% annual job growth",
+    "Use Marcus & Millichap, CBRE, and Burcadia annual reports to identify top 45-100 MSAs where institutional capital flows",
+    "Enter new markets 6-8 months in advance before deal hunting to set up team, logistics, operations, and relationships",
+    "Consider geographic logistics: central time zone markets like Kansas City offer 2.5 hour flights and easier operations than coasts",
+    "Start with data research on demographics websites, then move to 'boots on the ground' in suburbs and specific cities",
+    "Avoid high-priced coastal markets like California ($400-600K per door) for scaling\u2014they're wealth preservation, not growth strategy"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "market-research",
+      "change": "Use lender capital concentration + population/job growth thresholds (>1% pop, >2% jobs) to systematically identify target MSAs instead of ad-hoc selection",
+      "evidence": "Justin explicitly states 'Follow the money' and that lenders use 'gobs of money in data analysis' to locate top MSAs; he provides specific growth rate thresholds and references Marcus & Millichap reports showing 45 main markets"
+    },
+    {
+      "skill": "market-research",
+      "change": "Establish 6-8 month pre-deal lead time for market entry to build team, logistics, operations infrastructure before analyzing properties",
+      "evidence": "Justin states: 'we go into markets six to eight months in advance, start doing our groundwork and our details, our research, logistics, operations, setting up all the team, everything you've got to do in that market, to then be able to strike'"
+    },
+    {
+      "skill": "market-research",
+      "change": "Screen markets by geographic/logistical feasibility (flight time, time zones) to reduce operational friction on out-of-state acquisitions",
+      "evidence": "Justin chose Kansas City partly for 'Direct flights...Pretty quick two and a half hour flight' and avoiding 'East Coast time zone' complications, showing logistics as a market-selection filter"
+    }
+  ],
+  "id": "28925871-f98e-46c8-b79c-242ba423c2c5",
+  "title": "Lesson 1: How To Select Markets",
+  "module": "Module 1A: Selecting Markets & Properties"
+}

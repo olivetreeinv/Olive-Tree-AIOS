@@ -162,3 +162,9 @@ Append-only. Managed by `scripts/wiki_ingest.py` and `scripts/wiki_govcon_sync.p
 - 2026-06-09 youtube-ingest: 60 videos, 40 deal-relevant, channel @JustinBrennan
 
 - 2026-06-09 youtube-ingest: 60 videos, 40 deal-relevant, channel @JustinBrennan
+
+- 2026-06-23 youtube-ingest: 2 videos, 2 deal-relevant, classes/classes
+
+- 2026-06-23 clientclub-ingest: 46 course videos, 45 deal-relevant, product 41f274ef…
+
+- 2026-06-23 youtube-ingest: 92 videos, 92 deal-relevant, classes/classes

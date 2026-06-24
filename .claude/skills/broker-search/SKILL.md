@@ -125,9 +125,41 @@ Rules: state the buy box (units, price, vintage) every call; always ask for
 (a) pre-market flow and (b) lender/PM/insurance referrals; the tour is for the
 **relationship**, not the listed deal (most are overpriced).
 
+**Qualifying scripts — be ready to answer fast:**
+- Property type: value-add multifamily, 15–50 units
+- Markets: [current active buy box markets from references/buy-box.md]
+- Price range: up to ~$150K/door depending on market; deal-by-deal
+- Equity readiness: "We can move 24–48h after receiving the full package"
+
+**Questions to ask the broker:**
+- Who are the main employers in the area?
+- What's the market cap rate for this asset class and vintage?
+- What's the as-is and post-reno price/door?
+- Any path-of-progress infrastructure nearby?
+- What's the whisper price — seller's real number?
+- What terms matter most to the seller (price, close speed, lease-back)?
+
+**Resume rule:** Always attach Brian's resume on 20+ unit approaches. Brokers vet buyers hard above 20 units — a resume signals credibility before a single number is shared.
+
 **Link formatting rule:** When referencing a property listing URL in any email draft, never include a bare URL. Always format as a markdown hyperlink using the property address as the label:
 `[123 Main St, Smyrna GA](https://www.crexi.com/properties/...)`
 This renders as a clean clickable link in the chat preview and converts to an `<a>` tag in the sent HTML email.
+
+---
+
+## On-to-Off outreach playbook
+
+~60–80% of MF trades never hit a portal. The on-market listing is bait to reach the broker who controls the pocket. Run this after each scan for qualifying new brokers — all outreach is **draft only; Brian approves before anything sends**:
+
+1. Pick 2–3 of the broker's active listings in or near the buy box — even overpriced ones. The deal isn't the point; the broker is.
+2. Outreach: ask escrow/offer status, then book an in-person tour. State the buy box (units, price/door, markets) clearly.
+3. Tour belly-to-belly. Hand a business card, look and act the part. Log contact in the Brokers List; bump Tier if the broker has real deal flow.
+4. Follow-up: "Totally understand the gap on price — we're active buyers in this market. Any deals on or off market coming up that fit [buy box]?" → ask directly for the pre-market list.
+5. Set **Pre-market list = "Requested"** in the Brokers List + 2-week ping cadence in notes.
+
+Favor mom-and-pop brokers on sub-20-unit assets — you reach the decision-maker directly.
+
+**Also:** Subscribe directly to local and regional brokerage marketing email lists and websites. Their deal blasts reveal on- and off-market inventory before or without portal posting.
 
 ---
 

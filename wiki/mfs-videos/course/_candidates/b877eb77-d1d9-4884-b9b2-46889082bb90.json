@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "yes",
+  "topic": "asset-mgmt",
+  "summary": "Justin Brennan provides a live walkthrough of a 121-unit multifamily property in Texas, demonstrating operational best practices for larger complexes including on-site management/maintenance structure, unit renovation processes (~$9,000 per unit), and critical water damage prevention protocols during due diligence and cold weather operations.",
+  "takeaways": [
+    "Inspect every building for water shutoffs and angle stops (under sinks) during due diligence tours",
+    "Prefer copper pressure lines over galvanized piping to reduce water damage risk; PEX acceptable for new construction",
+    "Position water shutoffs as close to individual units/buildings as possible to enable quick emergency response without disrupting multiple tenants",
+    "Allocate approximately $14,000 per unit for major renovations to move Class C assets toward B-minus quality",
+    "In cold climates during freeze risk, issue tenant notices to drip kitchen sink lines to prevent pipe freezing and explosions",
+    "Standard renovation process includes paint, flooring (90% new carpet), countertops, cabinets, appliances, fixtures, and new LVT or similar flooring materials",
+    "Model units should be staged like a house flip to showcase potential to prospects; use trifold brochures with floor plans, features, benefits, and pricing as takeaway marketing materials"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Add water infrastructure inspection checklist (shutoffs, angle stops, piping type) to property due diligence process",
+      "evidence": "Justin emphasizes inspecting every building's water shutoff, angle stops, and piping material (copper vs. galvanized) as critical to avoiding costly water damage; specific instruction to check these during tours and due diligence inspections"
+    },
+    {
+      "skill": "asset-mgmt",
+      "change": "Implement cold-weather tenant communication protocol for freeze risk mitigation",
+      "evidence": "Justin instructs to 'send out notices to all your tenants to drip the sink lines...to keep the water flowing in the pipes so it never freezes' during freezing temperature periods in cold climates"
+    },
+    {
+      "skill": "asset-mgmt",
+      "change": "Establish on-site renovation crew workflow with supply chain management and kits",
+      "evidence": "Justin describes two on-site renovation crews, supply room, maintenance room, and process of pre-kitting supplies in units to streamline $9,000 per-unit renovations across 120+ unit properties"
+    }
+  ],
+  "id": "b877eb77-d1d9-4884-b9b2-46889082bb90",
+  "title": "OAKS APARTMENTS 121 UNITS",
+  "module": "Module 10: LIVE PROPERTY WALKS"
+}

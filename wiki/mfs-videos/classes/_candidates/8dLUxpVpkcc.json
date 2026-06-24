@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "yes",
+  "topic": "broker-search",
+  "summary": "Justin Brennan conducts live broker calls with a multifamily agent (Len Johnson) in Huntsville, Alabama to demonstrate deal sourcing and broker relationship-building. He emphasizes identifying market-maker brokers, asking strategic questions about property renovations and rent bumps, and building relationships before entering contract.",
+  "takeaways": [
+    "Identify market makers by looking for broker logos appearing repeatedly across 10-30 unit deals in target markets\u2014these brokers are doing volume and can provide pre-market deal flow",
+    "Ask brokers specific questions about renovation costs, rent bumps (e.g., 'What kind of bumps are you getting from classic to renovated units?'), and remaining value-add upside",
+    "Request soft quotes from lenders early by saying 'based on X information, what loan could you offer with these contingencies'\u2014lenders rarely refuse soft quotes",
+    "Build broker relationships by edifying them, letting them speak, and stating your buybox clearly: '10-30 unit, 50K-150K per door, sunbelt/midwest, decent cap rate that meshes with current rates'",
+    "Set up your market team (brokers, property managers, lenders, contractors) before writing offers so due diligence and closing run smoothly",
+    "Tour properties only after serious buyer earnest money is deposited to avoid wasting broker time on tire-kickers",
+    "Ask brokers about off-market deals coming 1-2 weeks before they list on CoStar or public sites by building relationship first"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "broker-search",
+      "change": "Systematize broker identification by scanning listings for repeated logos rather than randomly calling",
+      "evidence": "Justin shows scanning Alabama CoStar listings, identifying Marcus & Millichap and KW appearing multiple times, then prioritizing calls to those market makers. He states 'you're starting to see consistency, right? Those guys are the market makers. They're doing some deals.'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Ask brokers for specific rent-bump data to quantify value-add potential before underwriting",
+      "evidence": "Justin asks Len: 'Do you know what kind of bumps and rents they're getting from the call it the classic unit to the renovated unit?' Len responds with specific numbers: $845 to $945 for 2-bedrooms, a $200+ bump. Justin uses this to assess deal upside."
+    },
+    {
+      "skill": "broker-search",
+      "change": "Request soft lender quotes early in broker calls by framing as non-binding information gathering",
+      "evidence": "Justin explains: 'They're not committing to anything. They're simply saying based upon the information that I have we could give a loan on X with these contingencies.' He notes 'I've never had a problem with a lender giving me a soft quote on a deal.'"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Establish market team (4 people: brokers, property manager, lender, contractor) before entering contract, not after",
+      "evidence": "Justin shows slide stating these four people must be 'set up, locked, and loaded within the market' and explains: 'That team's got to be set up because it's going to make your due diligence process, the closing, and the management nice and streamlined...you don't go in and then you're like who's your property manager, I don't know.'"
+    }
+  ],
+  "id": "8dLUxpVpkcc",
+  "title": "Weekly Coaching - 02/05/26 | Justin Brennan",
+  "duration": 3701
+}

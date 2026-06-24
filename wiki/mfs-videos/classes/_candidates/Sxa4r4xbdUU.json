@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "partial",
+  "topic": "capital-raise",
+  "summary": "Justin Brennan coaches mentees on setting up professional infrastructure (website, CRM, LLC, pitch deck, landing pages) to attract capital before securing deals. He demonstrates how establishing credibility through online presence and team positioning enables easier fundraising when deals arrive, using his 27-unit deal ($900K raised) as proof of concept.",
+  "takeaways": [
+    "Set up LLC, website, landing page, and pitch deck 1-3 months BEFORE getting a deal\u2014look the part before you have the part",
+    "Trust is the foundation: investors ask 'Do I trust you'll return my $25K, $50K?' before evaluating the deal itself",
+    "Build a CRM database of 25+ soft-committed contacts; from 25 contacts, expect ~11 responses and ~7 actual investors (27-unit deal: 7 of 11 invested ~$400K total)",
+    "Minimum investor commitment threshold: ~$25K per investor; position returns at 15-20% annually to attract capital",
+    "Use Loom (free screen-recording tool) to create summary videos by walking through pitch deck\u2014share via email, text, YouTube without mass marketing compliance issues",
+    "Website should include: About Us with your photo, Investment Strategy, Opportunities pages, Contact form linking to Calendly, downloadable pitch deck behind form submission",
+    "Connect all tools pre-deal: website \u2192 CRM contacts \u2192 pitch deck \u2192 summary video \u2192 Calendly scheduling = seamless investor flow when deal launches"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "capital-raise",
+      "change": "Build pre-deal infrastructure (website, CRM, LLC, pitch deck, landing pages) 1-3 months before sourcing to enable faster capital attraction",
+      "evidence": "Justin's 27-unit deal ($900K raised, zero prior multifamily track record) closed because he had professional online presence, LLC, pitch deck, and landing page pre-positioned before broker/lender engagement; mentees like Michael and Gideon shown live examples of deal landing pages funneling investors through contact forms to Calendly scheduling"
+    },
+    {
+      "skill": "capital-raise",
+      "change": "Create soft-commit contact database of 25+ before deal closes; expect 44% response rate (11 of 25) and 64% conversion of responders (7 of 11) to actual investors",
+      "evidence": "Justin's 27-unit deal sourced 7 investors from initial 25-person outreach; framework: send pitch deck + summary video to CRM list \u2192 capture investor info \u2192 legal structure (LLC for small deals, PPM for syndication) to close capital"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Systematize investor pipeline: use free tools (Loom video, Calendly, Go High Level CRM) instead of ad-hoc outreach to scale deal marketing phase",
+      "evidence": "Justin demonstrated landing page workflow: investor clicks \u2192 fills contact form \u2192 downloads pitch deck \u2192 books call on Calendly \u2192 auto-added to CRM; eliminates manual follow-up chaos during deal closing"
+    }
+  ],
+  "id": "Sxa4r4xbdUU",
+  "title": "Weekly Coaching_10-23-25 | Justin Brennan",
+  "duration": 3927
+}

@@ -39,8 +39,8 @@ Read `references/3ms-framework.md` once. It's how Brian thinks about AI work. Mi
 - `/deal-analysis` — Underwrite a deal. Reads OM/T-12/Rent Roll, calculates metrics, compares against hard thresholds, outputs PURSUE LOI / MORE INFO NEEDED / PASS in an agent-style format (Quick Verdict → financials → letter-grade Scorecard → Callouts → Photos). Received docs archive to the property's deal folder (`Olive Tree Investments - Deals / [address]/`); the Deal Analyzer template is auto-selected by door count (≤50 → 0-50 v10, >50 → 50+ Proforma) and saves there too. Can be run standalone or called by `/lets-get-to-work`. Uses `scripts/deal_analysis.py` + `scripts/deal_photos.py` (free Wikipedia photos, no API key).
 - `/underwriting` — Full interactive underwriting session. Acts as a Senior Multifamily Underwriter: interviews Brian in structured question rounds, runs `/market-research` if needed, extracts OM/T-12/Rent Roll (any subset), populates a property-named Deal Analyzer spreadsheet on Drive, and outputs an underwriting memo with a PURSUE LOI / MORE INFO NEEDED / PASS verdict grounded in the knowledge base + wiki. Deeper than `/deal-analysis` (the fast screen) — run it when a deal survives the screen.
 - `/lets-get-to-work` — Full weekly deal pipeline in one session. Scans listings, discovers new brokers, checks follow-ups, reviews inbound emails, runs deal analysis, and drafts LOIs. Nothing sends without Brian's approval. Run every Monday. Uses `scripts/deal_search.py`, `broker_search.py`, `broker_followup.py`, `deal_inbox.py`, `deal_analysis.py`.
-- `/loi` — Draft a Letter of Intent after a Green GO (PURSUE LOI). Prompts the broker price-check call, anchors to the DSCR max-defensible-offer ceiling, drafts from `templates/loi-template.md`, saves the LOI as a Google Doc in the property's deal folder, and stages the broker email. Nothing sends without approval.
-- `/pitch-deck [deal name]` — Build a deal-specific LP pitch deck in Canva after a Green GO. Clones the 641 Powder Springs deck (`DAHIppfBwgs`), writes the deal's content into the slides via the Canva editing API, exports PDF to the property's deal folder. Uses `scripts/canva_api.py` + Canva MCP.
+- `/loi` — Draft a Letter of Intent after a go (PURSUE LOI). Prompts the broker price-check call, anchors to the DSCR max-defensible-offer ceiling, drafts from `templates/loi-template.md`, saves the LOI as a Google Doc in the property's deal folder, and stages the broker email. Nothing sends without approval.
+- `/pitch-deck [deal name]` — Build a deal-specific LP pitch deck in Canva after a go. Clones the 641 Powder Springs deck (`DAHIppfBwgs`), writes the deal's content into the slides via the Canva editing API, exports PDF to the property's deal folder. Uses `scripts/canva_api.py` + Canva MCP.
 - `/capital-raise` — *(DRAFT)* LP capital raise for a specific deal: soft-commit pipeline, deal-first investor outreach drafts, track commitments vs. the $400K Q3 target. Scoped from Justin Brennan mentorship mining; needs GoHighLevel + scripts before going live.
 - `/asset-mgmt` — *(DRAFT)* Post-close asset management: the 4 weekly ops reports, PM accountability ("manage the manager"), renewal watch, quarterly investor updates. Activates once a deal closes.
 - `/govcon` — Government contracting pipeline coach. Checks the live bid pipeline at localhost:8000, surfaces next actions per bid, drafts subcontractor outreach scripts and emails, and updates bid status. Run any time you want to know what to do next on a bid. App must be running first.
@@ -98,6 +98,28 @@ Run `/audit` to see full coverage gaps.
 ## GWS Quick Reference
 
 Auth pattern and common API calls → `references/google-workspace-api.md`.
+
+## Unified knowledge recall (aios_recall)
+
+Before reading wiki files by hardcoded path, use the hybrid recall layer to pull the most relevant chunks from all three knowledge corpuses (wiki, references/context/decisions, memory) in one call:
+
+```bash
+python3 scripts/aios_recall.py "your question" [--layer wiki|reference|memory] [--cat deals|markets|brokers|...] [--k 8] [--json]
+```
+
+Or in Python within a skill:
+```python
+import sys; sys.path.insert(0, str(Path(__file__).parent.parent))
+from scripts.aios_recall import recall
+hits = recall("Huntsville rent upside", k=8)
+context = "\n\n".join(f"### {h.citation}\n{h.snippet}" for h in hits)
+```
+
+- **Always prefer this over loading whole files** — returns RRF-ranked chunks (keyword BM25 + semantic vector), not word-overlap, catches synonyms.
+- **Cross-layer by default** — one query reaches wiki notes, reference docs, and memory at once. Use `--layer` to narrow.
+- **Pure retrieval, no LLM call** — fast and $0/query. Callers synthesize.
+- Keep the index fresh: run `python3 scripts/aios_index.py` after adding content (incremental; re-embeds only changed files).
+- Full rebuild: `python3 scripts/aios_index.py --rebuild` (one-time ~50–100MB model download on first run; free/local after that).
 
 ## Second-opinion research (Perplexity)
 

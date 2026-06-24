@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "partial",
+  "topic": "asset-mgmt",
+  "summary": "Justin addresses a passive investor transition strategy where a 70-year-old property owner with 16 buildings/200 units wants to exit day-to-day operations. The mentorship discusses seller financing and equity partnership structures as alternatives to outright sale, emphasizing tax avoidance and passive income generation while maintaining control. Additional discussion covers market analysis tools, deal underwriting challenges, and financing strategies for value-add multifamily acquisitions.",
+  "takeaways": [
+    "Seller financing structure: 5-year term with 30-year amortized payments, leverage up to 80% LTV, target 6-6.5% interest rate in current market",
+    "Tax strategy: Seller financing keeps proceeds non-taxable vs. outright sale which triggers full capital gains tax (potentially $300k+ on $1M property)",
+    "Market screening metrics: Population growth 1%+ YoY, job growth 1-2% YoY, median household income $65k+, search within 25 miles of target MSA",
+    "First deal renovation approach: Medium to light renovation (50% property condition), 2 units/month on 27-unit example took 18 months, cap rate improved from 5% to 7-8%",
+    "Purchase cap rate threshold: Buy at 6-7% cap rate minimum to match current interest rates, exception for tight markets like Miami/San Diego where you accept lower cap with higher down payment",
+    "Bridge debt alternative: 9-12% interest rate, 18-24 month term, $150k interest reserve typical, used when property doesn't qualify for traditional financing",
+    "Assumable loan consideration: 3% rate assumable through October next year is valuable even short-term; rates expected to stabilize/improve by 2025 with new Fed chair; banks unlikely to call performing loans out of term"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Use AI tools (ChatGPT paid version) to rapidly screen markets and underwrite deals rather than manual website research",
+      "evidence": "Justin demonstrates asking AI for population/job/income trending data for Atlanta MSA within 25 miles, then asks if it's a good investment area\u2014AI returns full proforma analysis in minutes vs. hours of manual research"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Establish minimum IRR threshold (14%+) as deal acceptance criterion when negotiating seller expectations",
+      "evidence": "Justin tells participants to tell brokers: 'My investors and I require 14% returns minimum. Show me where my numbers are wrong' rather than accepting seller's asking price without financial justification"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Use listing sites (Crexy, Loopnet, CoStar) as broker identification tools, not deal sources\u2014focus on who is listing to find market makers",
+      "evidence": "Justin explicitly states: 'I don't look at those websites for how do I find deals. I look at them for how do I find the brokers because they're my loop in'"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Schedule property tours 45-60 minutes each with 10-minute drive buffers between properties in same area to maintain quality assessment time",
+      "evidence": "Michael asks about tour spacing; Justin confirms 45 min-1 hour per tour plus drive time prevents rushed assessments and broker relationship damage"
+    }
+  ],
+  "id": "m36ZXTGDjyQ",
+  "title": "Tuesday Mentorship Q&A - Passive Transition Strategy_07-22-25 | Justin Brennan",
+  "duration": 3578
+}

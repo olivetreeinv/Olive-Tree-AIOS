@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan mentors Bruce through a complex seller-financed 12-unit deal structure, demonstrating how to use preferred equity, capital stacking, and creative financing to make an underperforming property work. The discussion covers deal underwriting, refinance strategy, and investor return calculations for a small multifamily property requiring significant rent increases through renovations.",
+  "takeaways": [
+    "Use 35-40% down payment on value-add deals to achieve minimum 1.25 debt coverage ratio and ensure bankability for future refinance",
+    "Banks will only underwrite to current rents unless you prove rent increase through lease renewal alone (no renovations); renovation deals get underwritten on today's financials",
+    "Structure seller financing as 'preferred equity' at 7% simple interest (accruing, not paid monthly) to reduce investor capital requirements while keeping seller in deal",
+    "Create three separate checking accounts under one bank account: operations, renovation/capex, and entity distributions to avoid co-mingling funds and track cash flow",
+    "Projected investor returns should target: 13-18% annual returns, 1.9-2.0x equity multiple, 8-9% average cash-on-cash return, 3-5 year hold timeline",
+    "Never speculate or force deals; prioritize 'safety first' by de-leveraging with higher down payments so you can hold property through market downturns without forced sale",
+    "In 24-month cash-out refi: if you increase NOI from $56k to $90k and refinance at 70% LTV on $1.5M value, you can return investor capital while keeping property and future cash flow"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Verify deals meet minimum 1.25 DCR before structuring financing, reject deals requiring excessive speculation on rent growth",
+      "evidence": "Justin repeatedly emphasizes: 'The only way you lose in real estate is if you're forced to sell when you don't want to' and warns against 'tweaking numbers to pigeon hole a deal into a round hole'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Use seller financing as primary deal-save mechanism on 12-50 unit value-add when bank financing fails on current financials",
+      "evidence": "Bruce's 12-unit deal couldn't get traditional financing at current $787 rents, but restructuring with $362k seller preferred equity at 7% made deal work with 1.44 DCR"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Calculate exact capital stack components (senior loan, preferred equity, common equity) and accrued interest payoff on 24-month refinance before underwriting",
+      "evidence": "Detailed walkthrough showing: $960 purchase + $150 reno + $6 closing = $1.116M cost; $444 loan + $362 preferred equity + $310 common equity = full stack; 24-month refi pays off seller $412k (principal + 7% simple interest accrual)"
+    }
+  ],
+  "id": "Mcmy_ZTrsls",
+  "title": "Tuesday Mentorship Q&A - Multifamily Investing Q&A | Justin Brennan",
+  "duration": 3298
+}

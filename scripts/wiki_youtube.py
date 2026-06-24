@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 """
-wiki_youtube.py — Ingest a YouTube channel's long-form classes into the Olive Tree wiki.
+wiki_youtube.py — Ingest a YouTube channel or playlist into the Olive Tree wiki.
 
 Pipeline:
-  1. enumerate  — list channel videos, keep long-form (>= MIN_SECONDS)
+  1. enumerate  — list videos, keep long-form (>= min_minutes)
   2. fetch      — download + clean auto-captions (free, no API key)
   3. map        — Haiku distills each transcript into an mfs-video wiki page
                   and emits skill-improvement candidates (JSON sidecar)
-  4. synthesize — Opus ranks all candidates into wiki/mfs-videos/_skill-upgrades.md
+  4. synthesize — Opus ranks all candidates into _skill-upgrades.md
 
 Usage:
     python scripts/wiki_youtube.py --channel "https://www.youtube.com/@JustinBrennan/videos"
+    python scripts/wiki_youtube.py --channel "<playlist_url>" --min-minutes 30 --out-subdir classes
     python scripts/wiki_youtube.py --stage map        # re-run just one stage
     python scripts/wiki_youtube.py --limit 5           # cap videos (testing)
 
@@ -31,12 +32,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).parent.parent
 WIKI = ROOT / "wiki"
-OUT = WIKI / "mfs-videos"
-RAW = OUT / "_transcripts"          # cleaned plain-text transcripts
-CAND = OUT / "_candidates"          # per-video skill-improvement JSON
+_MFS = WIKI / "mfs-videos"          # root; subdir set at runtime by --out-subdir
 LOG = WIKI / "_log.md"
 
-MIN_SECONDS = 3600                   # long-form classes only (>= 60 min)
+MIN_SECONDS = 3600                   # long-form classes only (>= 60 min); overridden by --min-minutes
 MAP_MODEL = "claude-haiku-4-5"       # cheap per-video distill
 SYNTH_MODEL = "claude-opus-4-8"      # judgment pass over all candidates
 CHANNEL = "https://www.youtube.com/@JustinBrennan/videos"
@@ -84,7 +83,7 @@ def slugify(s: str) -> str:
 
 
 # ---- stage 1: enumerate -----------------------------------------------------
-def enumerate_channel(channel: str) -> list[dict]:
+def enumerate_channel(channel: str, min_seconds: int = MIN_SECONDS) -> list[dict]:
     print(f"[enumerate] {channel}")
     r = subprocess.run(
         ["yt-dlp", "--flat-playlist", "--print", "%(duration)s\t%(title)s\t%(id)s", channel],
@@ -100,9 +99,9 @@ def enumerate_channel(channel: str) -> list[dict]:
             dur = float(dur)
         except ValueError:
             continue
-        if dur >= MIN_SECONDS:
+        if dur >= min_seconds:
             vids.append({"id": vid, "title": title, "duration": int(dur)})
-    print(f"[enumerate] {len(vids)} long-form videos (>= {MIN_SECONDS//60} min)")
+    print(f"[enumerate] {len(vids)} videos (>= {min_seconds//60} min)")
     return vids
 
 
@@ -122,18 +121,18 @@ def clean_vtt(text: str) -> str:
     return " ".join(out)
 
 
-def fetch_transcript(vid: str) -> str | None:
-    dest = RAW / f"{vid}.txt"
+def fetch_transcript(vid: str, raw: Path) -> str | None:
+    dest = raw / f"{vid}.txt"
     if dest.exists() and dest.stat().st_size > 500:
         return dest.read_text()
     subprocess.run(
         ["yt-dlp", "--skip-download", "--write-auto-sub", "--sub-lang", "en.*",
-         "--sub-format", "vtt", "-o", str(RAW / "%(id)s.%(ext)s"),
+         "--sub-format", "vtt", "-o", str(raw / "%(id)s.%(ext)s"),
          f"https://www.youtube.com/watch?v={vid}"],
         capture_output=True, text=True,
     )
     # yt-dlp may emit en.vtt, en-US.vtt, en-orig.vtt, etc. — match any.
-    subs = sorted(RAW.glob(f"{vid}*.vtt"))
+    subs = sorted(raw.glob(f"{vid}*.vtt"))
     if not subs:
         return None
     tmp = subs[0]
@@ -168,14 +167,15 @@ TRANSCRIPT:
 {transcript}"""
 
 
-def map_video(v: dict) -> dict | None:
+def map_video(v: dict, out: Path, cand: Path, collection: str = "") -> dict | None:
     vid, title = v["id"], v["title"]
-    page = OUT / f"{slugify(title)}-{vid}.md"
-    cand_f = CAND / f"{vid}.json"
+    page = out / f"{slugify(title)}-{vid}.md"
+    cand_f = cand / f"{vid}.json"
     if page.exists() and cand_f.exists():
         return json.loads(cand_f.read_text())
 
-    txt = fetch_transcript(vid)
+    raw = out / "_transcripts"
+    txt = fetch_transcript(vid, raw)
     if not txt:
         print(f"[map] NO TRANSCRIPT {vid} {title[:40]}")
         return None
@@ -201,15 +201,20 @@ def map_video(v: dict) -> dict | None:
             "additionalProperties": False,
         }}},
     )
-    data = json.loads(next(b.text for b in resp.content if b.type == "text"))
+    data = json.loads(next((b.text for b in resp.content if b.type == "text"), "{}"))
     data["id"], data["title"], data["duration"] = vid, title, v["duration"]
+
+    # build frontmatter extras for non-root collections
+    extra_fm = ""
+    if collection:
+        extra_fm = f"collection: {collection}\ncontent_type: recorded-class\n"
 
     # write the wiki page
     tk = "\n".join(f"{i+1}. {t}" for i, t in enumerate(data["takeaways"])) or "—"
     page.write_text(
         f"""---
 type: mfs-video
-title: {title.replace('"', "'")}
+{extra_fm}title: {title.replace('"', "'")}
 topic: {data['topic']}
 instructor: Justin Brennan
 deal_relevant: {data['deal_relevant']}
@@ -239,7 +244,7 @@ date_added: {datetime.date.today()}
 
 
 # ---- stage 4: synthesize (Opus) --------------------------------------------
-def synthesize(all_data: list[dict]) -> None:
+def synthesize(all_data: list[dict], out_dir: Path) -> None:
     cands = []
     for d in all_data:
         for c in d.get("skill_candidates", []):
@@ -282,8 +287,8 @@ CANDIDATES:
         messages=[{"role": "user", "content": prompt}],
     )
     body = "".join(b.text for b in resp.content if b.type == "text")
-    out = OUT / "_skill-upgrades.md"
-    out.write_text(
+    upgrades_file = out_dir / "_skill-upgrades.md"
+    upgrades_file.write_text(
         f"""---
 type: mfs-video-synthesis
 title: Skill Upgrade Proposals from Justin Brennan Mentorship Videos
@@ -297,8 +302,8 @@ status: AWAITING BRIAN'S APPROVAL — no skills modified
 """
     )
     u = resp.usage
-    print(f"[synth] -> {out}  (in={u.input_tokens} out={u.output_tokens} "
-          f"~${u.input_tokens*5/1e6 + u.output_tokens*25/1e6:.2f})")
+    print(f"[synth] -> {upgrades_file}  (in={u.input_tokens} out={u.output_tokens} "
+          f"~${u.input_tokens*15/1e6 + u.output_tokens*75/1e6:.2f})")
 
 
 # ---- driver -----------------------------------------------------------------
@@ -308,14 +313,45 @@ def main():
     ap.add_argument("--stage", choices=["all", "enumerate", "map", "synthesize"], default="all")
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--workers", type=int, default=6)
+    ap.add_argument("--min-minutes", type=int, default=60,
+                    help="Minimum video duration in minutes (default 60)")
+    ap.add_argument("--out-subdir", default="",
+                    help="Write pages under wiki/mfs-videos/<subdir>/ instead of the root. "
+                         "Example: --out-subdir classes")
     args = ap.parse_args()
 
-    for d in (OUT, RAW, CAND):
+    min_seconds = args.min_minutes * 60
+
+    # Runtime paths — subdir lets playlist runs land under classes/ etc.
+    out = _MFS / args.out_subdir if args.out_subdir else _MFS
+    raw = out / "_transcripts"
+    cand = out / "_candidates"
+    collection = args.out_subdir  # used as frontmatter collection: value
+
+    # IDs already in the root mfs-videos dir — skip them in subdir runs
+    root_ids: set[str] = set()
+    if args.out_subdir:
+        for page in _MFS.glob("*.md"):
+            if page.name.startswith("_"):
+                continue
+            # extract video_id from frontmatter
+            for line in page.read_text().splitlines():
+                m = re.match(r"^\s*video_id:\s*(\S+)", line)
+                if m:
+                    root_ids.add(m.group(1))
+                    break
+
+    for d in (out, raw, cand):
         d.mkdir(parents=True, exist_ok=True)
 
-    idx = OUT / "_index.json"
+    idx = out / "_index.json"
     if args.stage in ("all", "enumerate") or not idx.exists():
-        vids = enumerate_channel(args.channel)
+        vids = enumerate_channel(args.channel, min_seconds=min_seconds)
+        # Dedup against root if running in a subdir
+        if root_ids:
+            before = len(vids)
+            vids = [v for v in vids if v["id"] not in root_ids]
+            print(f"[enumerate] Skipped {before - len(vids)} already in root mfs-videos")
         idx.write_text(json.dumps(vids, indent=2))
     else:
         vids = json.loads(idx.read_text())
@@ -328,28 +364,29 @@ def main():
     if args.stage in ("all", "map"):
         print(f"[map] {len(vids)} videos on {args.workers} workers")
         with cf.ThreadPoolExecutor(max_workers=args.workers) as ex:
-            for r in ex.map(lambda v: _safe_map(v), vids):
+            for r in ex.map(lambda v: _safe_map(v, out, cand, collection), vids):
                 if r:
                     results.append(r)
     else:
-        for f in CAND.glob("*.json"):
+        for f in cand.glob("*.json"):
             results.append(json.loads(f.read_text()))
 
     if args.stage in ("all", "synthesize"):
-        synthesize(results)
+        synthesize(results, out)
 
     rel = sum(1 for r in results if r.get("deal_relevant") in ("yes", "partial"))
-    print(f"\n[done] {len(results)} distilled | {rel} deal-relevant | pages in {OUT}")
+    print(f"\n[done] {len(results)} distilled | {rel} deal-relevant | pages in {out}")
     # Log only when the map stage actually ran — avoid dup entries on re-synthesize.
     if args.stage in ("all", "map"):
+        label = f"classes/{args.out_subdir}" if args.out_subdir else "@JustinBrennan"
         with LOG.open("a") as f:
             f.write(f"\n- {datetime.date.today()} youtube-ingest: {len(results)} videos, "
-                    f"{rel} deal-relevant, channel @JustinBrennan\n")
+                    f"{rel} deal-relevant, {label}\n")
 
 
-def _safe_map(v):
+def _safe_map(v, out, cand, collection):
     try:
-        return map_video(v)
+        return map_video(v, out, cand, collection)
     except Exception as e:  # one bad video shouldn't kill the batch
         print(f"[map] ERROR {v['id']}: {e}")
         return None
