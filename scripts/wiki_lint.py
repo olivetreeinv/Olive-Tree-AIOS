@@ -27,7 +27,7 @@ REQUIRED = {
     "markets":         ["type", "name", "zip", "in_buy_box"],
     "brokers":         ["type", "name", "email"],
     "mfs-docs":        ["type", "title", "topic", "source_file", "date_added"],
-    "mfs-videos":      ["type", "title", "topic", "youtube_url", "date_watched"],
+    "mfs-videos":      ["type", "title", "topic", "url", "date_added"],
     "govcon-bids":     ["type", "title", "notice_id", "agency", "naics_code", "state", "deadline", "status"],
     "govcon-subs":     ["type", "name", "contact", "naics_codes", "states"],
     "govcon-agencies": ["type", "name", "abbreviation"],
@@ -45,9 +45,10 @@ ISSUE_ICONS = {
 
 def load_pages() -> dict[str, str]:
     return {
-        f"{d.name}/{f.stem}": f.read_text()
+        f"{d.name}/{f.relative_to(d).with_suffix('')}": f.read_text()
         for d in (WIKI_ROOT / c for c in CATEGORIES) if d.exists()
-        for f in sorted(d.glob("*.md"))
+        for f in sorted(d.rglob("*.md"))
+        if not f.name.startswith("_")
     }
 
 

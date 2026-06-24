@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "partial",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan conducts a mentorship Q&A covering deal sourcing challenges, underwriting techniques, and capital raising strategies. Key discussions include analyzing off-market deals, negotiating broker fees, understanding competitor capital structures, and setting realistic price-per-unit targets for first-time operators. A live example features a 33-unit Missouri deal needing $80-100K in final capital to close.",
+  "takeaways": [
+    "Submit 15-20 LOIs before expecting one to land; don't get attached to any single deal",
+    "Earnest money should be 1-2% due within 72 hours of executed contract, not 5% over 20 days",
+    "Expense ratios: 1970-1990s properties target 40-50%, post-1990 can achieve 30s; verify brokers aren't hiding expenses in capex",
+    "Interest rate should not exceed current cap rate; for example, 6.5% cap rate cannot support 7.35% debt without significant down payment",
+    "Price-per-unit sweet spot is $50,000-$150,000 to keep capital raises bitesizable ($300K-$700K range)",
+    "Call brokers on lost deals asking: 'What's their capital structure, down payment %, debt rate, and terms?' to understand competitive positioning",
+    "For co-GP partnerships, allocate percentages by responsibility: deal finder 10%, due diligence 10%, boots-on-ground 10%, asset manager 15%, loan signer 20%, earnest money/risk capital 10%, capital raiser 30%"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Verify property tax and insurance numbers match regional benchmarks before accepting broker financials",
+      "evidence": "Justin catches Leonardo's low expense ratio, recommends checking these 'big four' components (taxes, insurance, maintenance, repairs) and verifying capex done to HVAC/electrical/plumbing on older properties"
+    },
+    {
+      "skill": "broker-search",
+      "change": "After losing a deal, call broker to understand winner's capital terms rather than accept silence",
+      "evidence": "Justin coaches Tony and Ryan to ask Jason: 'What % down and what debt rate did they get?' This reveals competitive advantage and builds rapport for future deals"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Submit low offers immediately as 'exercise' to meet brokers, even if not ready to close until September",
+      "evidence": "Justin tells Cristiano: 'Throw offers out there. I don't care if they're low offers... it's to go through that initial process... to actually meet brokers and talk to brokers'"
+    }
+  ],
+  "id": "1CZLAbGLcUI",
+  "title": "Tuesday Mentorship Q&A - Deal Momentum_06-10-25",
+  "duration": 3160
+}

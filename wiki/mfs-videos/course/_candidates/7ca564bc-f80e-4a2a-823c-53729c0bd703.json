@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "yes",
+  "topic": "broker-search",
+  "summary": "Justin Brennan teaches how to build trust and relationships with commercial real estate brokers to access deal flow in the 15-50 unit multifamily space. The key is demonstrating you can close deals through resume credibility, learning terminology, touring properties strategically, and networking at conferences\u2014all foundational activities before brokers will seriously consider you for off-market opportunities.",
+  "takeaways": [
+    "Resume is non-negotiable for 20+ unit deals; if you don't have one, partner with someone who does",
+    "You must prove to brokers you can 'raise the equity, pull down the debt, close the escrow'",
+    "Tour deals for 5-6 months in advance even with 'no intent' to execute, just to build relationships",
+    "Learn commercial terminology so brokers know 'you understand how the game's played'",
+    "Submit letters of intent on deals you don't plan to close to 'show your movement in the marketplace'",
+    "Attend multifamily conferences across different regions to network and get broker referrals (e.g., 'I know John in San Antonio, I'll connect you')",
+    "Brokers ultimately want three things: proof you can close, that you won't embarrass them, and to know who you are"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "broker-search",
+      "change": "Build systematic pre-deal sourcing relationships by touring properties and attending conferences 5-6 months before targeting a new market",
+      "evidence": "'Flying out there...doing six to eight months in advance reconnaissance on the ground...tour the deals even though you have no plans to write on them...toured the deals...for like five or six deals with all the different types of brokers'"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Always cite your resume or partner's resume when approaching brokers, especially for deals above 20 units",
+      "evidence": "'Unless you're partnered with somebody that trusts you and they have the resume...somebody's got to have the resume...Once you start getting above that into the 20, 30, 50 plus unit space...they're going to dive into the weeds on you'"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Develop foundational commercial terminology before first broker conversations to signal competency",
+      "evidence": "'Terminology. You have to learn the terminology...They just want to understand that you understand how the game's played...So understanding that in your conversations with them is the terminology'"
+    }
+  ],
+  "id": "7ca564bc-f80e-4a2a-823c-53729c0bd703",
+  "title": "Lesson 2: Working With Brokers",
+  "module": "Module 1: How To Find Deals"
+}

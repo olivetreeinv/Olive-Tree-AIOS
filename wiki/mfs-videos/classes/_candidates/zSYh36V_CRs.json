@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "partial",
+  "topic": "capital-raise",
+  "summary": "Justin Brennan leads a mentorship session on setting up professional deal landing pages and pitch decks to attract investors. He demonstrates the technical backend of creating customized single-property landing pages within the CRM system, including embedding pitch decks and summary videos. The discussion covers capital raising strategy through investor relationship building rather than direct solicitation.",
+  "takeaways": [
+    "Create a mock deal with landing page, pitch deck, and 5-10 minute summary video using Loom before pursuing real deals to practice the process",
+    "Use a single landing page (not full website) specific to each deal with unique URL saved on phone for quick sharing at networking events",
+    "Include embedded pitch deck, summary video, and property details on landing page so investors can self-educate before initial conversation",
+    "Never ask investors for money directly; instead invite them to opportunities and ask if they know anyone interested to shift psychology from sales to invitation",
+    "Send deal link immediately when interest is expressed ('money loves speed') rather than waiting until tomorrow",
+    "Use seller financing creatively (20% down, interest-only for 5 years at 5.5% fixed) as alternative to bank loans to improve deal economics",
+    "Keep renovation budget separate from loan financing when under $400k; only finance reno through debt when deal exceeds $400k threshold"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "capital-raise",
+      "change": "Implement landing page + pitch deck + video combo as standard capital raise tool before each deal",
+      "evidence": "Justin emphasizes this builds trust and professional credibility: 'only 2 out of 20 small GPs do this...sets you above the rest' and 'breeds confidence that you understand how to take property through this process'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "When broker numbers don't pencil with financing included, use deal analyzer conversation tool with broker rather than abandoning deal",
+      "evidence": "Johan's South Florida deals didn't work; Justin advises: 'Put in broker numbers working backwards to return\u2014if not penciling, conversation is with broker. Say Yo Greg, I put in your numbers, am I missing something?'"
+    },
+    {
+      "skill": "market-research",
+      "change": "Expand geographic search beyond high-price markets like South Florida; pursue financed deals in Southeast markets where conventional financing works",
+      "evidence": "Justin tells Johan: 'South Florida market super tight...people buying appreciation. When growing wealth, can't be in wealth preservation mode. Open it up to Southeast where normal financing happening'"
+    }
+  ],
+  "id": "zSYh36V_CRs",
+  "title": "Tuesday Mentorship Q&A - How to Attract Investors Online_03-17-26 | Justin Brennan",
+  "duration": 3723
+}

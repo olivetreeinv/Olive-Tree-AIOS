@@ -1,0 +1,40 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan mentors Tony and Ryan through underwriting challenges on a 12-unit Kansas City deal in escrow. Key issues: RUBs (reimbursable utilities) were embedded in the rent roll causing double-counting, inflating NOI; lender requirements (1.27 DCR, 16%+ IRR for investors) forced a price renegotiation from $1.215M to $1.05M-$1.15M; property management fee assumptions and parking deficiencies reduced returns.",
+  "takeaways": [
+    "RUBs must be separated from rent in underwriting\u2014ask brokers explicitly: 'Are RUBs included in this rent roll?'",
+    "Underwrite to third-party PM fees of 7-8% blended (including leasing costs), not owner-quoted discounts like 5%",
+    "Lender DCR minimums are typically 1.27; secure 6.25-6.75% rates; non-recourse loans are standard but negotiate partial recourse caps (e.g., recourse only up to $300K of $680K loan)",
+    "Back into purchase price using investor return targets: need north of 16% IRR for limited partners; 14-15% IRR minimum is insufficient to attract capital",
+    "Detach emotionally from deal; use broker's own numbers in analysis so seller can't blame underwriting; if numbers don't work, renegotiate or walk",
+    "Visit out-of-market properties in advance of offers to validate rents, parking, neighborhood quality, and comps with local brokers and PM companies",
+    "Year 1 cash-on-cash can be tight (5-6%) if rent growth is projected year 2\u2014verify improvement trajectory and operator's execution ability",
+    "Knock on resident doors to validate pain points (e.g., lack of off-street parking) rather than relying on seller-aligned property managers"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Verify rent roll components explicitly during underwriting\u2014confirm whether utilities/RUBs are bundled into tenant rent or itemized separately",
+      "evidence": "Tony and Ryan discovered RUBs were embedded in rent figures, forcing them to remove $125-200/unit/month in false income; Justin emphasized asking brokers upfront: 'Are RUBs included in this rent roll?'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Back into acceptable purchase price by setting investor return hurdles first (16%+ IRR target), then solving for price rather than forcing pro-forma rent/expense assumptions",
+      "evidence": "Justin walked Tony/Ryan from $1.215M asking price down to $1.05M-$1.15M range by locking in 1.27 DCR requirement, 6.25-6.75% rates, and 7-8% PM fees, then reverse-engineering the purchase price that achieves 16%+ IRR"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Validate rent/market assumptions by talking directly to competing PM companies and property owners in the market, not relying solely on selling broker comps",
+      "evidence": "Brokers pushed $1,075/unit rents; Justin advised Tony/Ryan: 'We have friends that own complexes right around here...we're talking to all the PM companies...we know exactly what they're getting.' They ultimately underwr to $1,000/unit based on local intel."
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Underwrite to realistic blended PM fees (7-8% including leasing/commissions) rather than owner-discounted rates that may indicate poor management quality",
+      "evidence": "Owner offered 5% PM fee; Justin stated: 'You can't underwrite to that...you're stuck...Hiring good people is hard...it's worth paying a little bit more to ensure that thing is truly being handled'"
+    }
+  ],
+  "id": "rRrXNXPONMk",
+  "title": "Tuesday Mentorship Q&A_04-22-25 | Justin Brennan",
+  "duration": 3419
+}

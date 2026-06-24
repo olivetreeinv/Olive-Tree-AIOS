@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan mentors multifamily investors through detailed analysis of three deals: a 10-unit Vegas apartment requiring higher down payment to improve DSCR, a 20-unit Dallas property with high expense ratios that can be repositioned through operational fixes, and discussion of a Georgia off-market bank deal. The session emphasizes underwriting discipline, proper capital structure, and presenting credible buyer profiles to brokers.",
+  "takeaways": [
+    "DSCR issues on stabilized deals require 40-45% down payment instead of 30% to achieve 1.2x minimum threshold",
+    "Raise rents conservatively: Vegas 1BR from $1,200 to $1,300, 2BR to $1,500 based on comparable market data, not speculation",
+    "Management fees should be 8% of gross rents, general admin ~$12,000/year, not the 15-20% operators often budget",
+    "Bridge debt strategy only makes sense if property generates significant value-add; interest-only at higher rates requires substantial rent/operational improvement to justify",
+    "For stabilized deals, underwrite at 6-6.5% fixed-rate interest; don't accept variable-rate loans on stable cash-flowing assets with recourse provisions",
+    "Preferred return of 6% with 85/15 GP/LP split works better than 8% preferred when cash-on-cash returns are compressed by higher rates",
+    "Earnest money/escrow deposits: hold firm at 25% rather than accepting broker requests to increase to 50% unless deal fundamentals warrant it"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Apply expense ratio benchmarks systematically: mgmt 8%, GA $12k/year, insurance ~$25k, utilities/unit inspection required before accepting seller's numbers",
+      "evidence": "Justin corrected Samir's 20-unit Dallas deal by identifying utilities and insurance as outliers, reducing expense ratio from 65% to 51% and improving DSCR from 1.08 to viable range"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Underwrite to correct purchase price using conservative rent projections and fixed 6-6.5% interest rates, then solve backwards for maximum offer price rather than accepting seller's ask",
+      "evidence": "Vegas 10-unit was offered at $1.85M; Justin showed that even with rent increases and 45% down, deal only works at $1.4-1.45M purchase price with proper returns; Dallas 20-unit was $2.5M ask, works at $2.2M max after expense corrections"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Validate rent assumptions with third-party recent comps or personal conversion data before locking proforma; don't use speculative Section 8 rents",
+      "evidence": "Samir cited Section 8 at $1,700 but Justin pushed back; Samir committed to using actual data from his own fourplex renovation completing next month rather than estimates"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Prepare and present buyer questionnaire materials proactively before LOI stage; include company website, recent transaction examples (leverage partnerships if own track record thin), proof of funds or soft lender commitment, and due diligence process framework",
+      "evidence": "Doug shared that broker selected them over competing offers after reviewing buyer questionnaire, website, and deal materials; Justin emphasized 80% of mom-and-pop operators lack this documentation, giving prepared investors competitive advantage"
+    }
+  ],
+  "id": "2ZMeBFAiaD4",
+  "title": "Tuesday Mentorship Q&A - Analyzing Real Estate Deals_05/06/26 | Justin Brennan",
+  "duration": 3769
+}

@@ -11,7 +11,7 @@ The deep-dive evaluation of a single property, run as a conversation with a **Se
 
 1. **A populated Deal Analyzer spreadsheet** on Drive — template auto-selected by door count (≤50 units → *MF Schooled Deal Analyzer 0-50 v10*; >50 → *MF Schooled 50+ Unit Proforma*), named `[Property Name] — [template] — [YYYY-MM-DD]`
 2. **An investment verdict** — PURSUE LOI / MORE INFO NEEDED / PASS — backed by everything in the knowledge base and wiki
-3. **A property deal folder** in Drive (`Olive Tree Investments - Deals / [address]/`) holding the received docs and the analyzer — the LOI (`/loi`) and pitch deck (`/pitch-deck`) land there too after a Green GO
+3. **A property deal folder** in Drive (`Olive Tree Investments - Deals / [address]/`) holding the received docs and the analyzer — the LOI (`/loi`) and pitch deck (`/pitch-deck`) land there too after a go
 
 **How it differs from `/deal-analysis`:** deal-analysis is the fast screen — mostly automated, minimal questions, built for pipeline volume. This skill is the full committee-grade workup: interactive, assumption-by-assumption, ends with a populated model. Run deal-analysis on inbound flow; run this when a deal survives the screen or Brian says "let's really dig in."
 
@@ -225,10 +225,10 @@ Then create/update the wiki deal page at `wiki/deals/[slug].md` per `wiki/SCHEMA
 
 Finally, save the wiki page into the deal folder as an **Analysis Summary Google Doc**: strip the YAML frontmatter, prepend an `# Analysis Summary — [address]` title, and upload the markdown with `mimeType: application/vnd.google-apps.document` (Drive converts markdown → Doc). Name it `[Property] — Analysis Summary`. Add its link to the wiki page's Artifacts section.
 
-On PURSUE LOI (Green GO), immediately show this block after the memo — do not wait for Brian to ask:
+On PURSUE LOI (a go), immediately show this block after the memo — do not wait for Brian to ask:
 
 ---
-## Green GO — Ready to Offer
+## GO — Ready to Offer
 **Max defensible offer:** $[DSCR ceiling at likely rate] | **$[PPU]/unit** | **Broker:** [name, firm]
 **IRR:** [n]% · **DSCR:** [n]x · **EM:** [n]x
 

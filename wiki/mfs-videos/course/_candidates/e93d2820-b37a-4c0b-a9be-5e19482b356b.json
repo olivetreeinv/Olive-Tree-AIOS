@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan demonstrates how to underwrite an 8-unit multifamily deal in San Antonio, Texas, showing how to extract data from offering memorandum (OM), input financials into a pro forma analyzer, and determine true property value. He illustrates that the asking price of $995,000 doesn't work financially, but reducing the price to $700,000 improves metrics, and explains how to use on-market deals to build broker relationships and access off-market opportunities.",
+  "takeaways": [
+    "Use Crexie.com to identify on-market brokers, then leverage those brokers to access off-market deals before they hit the market",
+    "Download the offering memorandum (OM) from listing sites to extract rent roll, unit mix, square footage, and current financials",
+    "Input data into Excel pro forma analyzer: purchase price, down payment (35%), repair budget, closing costs (5%), interest rates (7%), unit count, rents (current and future), and all expenses",
+    "Calculate property taxes using county-specific formulas (Justin example: San Antonio formula results in approximately 2% of property value)",
+    "Set expense ratio target near 50% and debt service coverage ratio (DSCR) minimum at 1.2 or greater for lender approval",
+    "Build market infrastructure during 2-3 day market visit: meet 3-4 brokers, connect with property management companies, identify construction crews, learn good/bad neighborhoods, and development trends",
+    "When analyzing an 8-unit deal, assume $750-$1,200 per unit annually for maintenance/repair, $80/month per unit for utilities, 8% management fee, and $2,000 annual reserves for unexpected CapEx"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Develop systematic underwriting process using pro forma analyzer with specific expense assumptions and DSCR thresholds",
+      "evidence": "Justin walks through exact Excel inputs: 35% down payment, 7% interest rates, expense line items (750/unit maintenance, 80/month utilities, 8% mgmt fee, 2000 CapEx reserves), and demonstrates that DSCR must be 1.2+ minimum for lender approval. Shows how adjusting purchase price from 995k to 700k moves deal metrics into acceptable range."
+    },
+    {
+      "skill": "broker-search",
+      "change": "Use on-market listing analysis as primary tactic to identify and contact brokers, positioning yourself as a buyer for future off-market deals",
+      "evidence": "Justin emphasizes calling brokers on on-market deals you won't make offers on, scheduling tours with 3-4 different brokers over 2-3 days in target market, then following up: 'hey Priscilla, we can only pay 700k...if you have other deals coming to market before they hit, here's what we're looking to buy.' This positions you on their off-market deal list."
+    },
+    {
+      "skill": "market-research",
+      "change": "Focus market selection on top 75 MSAs with population growth of 1%+ and job growth of 2%+ annually before detailed analysis",
+      "evidence": "Justin instructs to research 'top 75 MSAs for apartment investing' on Google, explaining lenders concentrate capital there because of population and jobs growth metrics. Recommends multifamilyeye.com for free national broker reports on these MSAs. Warns against analyzing 50 different markets; instead narrow focus to one market and spend 2-3 days there meeting brokers, PMs, construction crews."
+    }
+  ],
+  "id": "e93d2820-b37a-4c0b-a9be-5e19482b356b",
+  "title": "8 UNIT DEAL UNDERWRITING",
+  "module": "CASE STUDIES"
+}

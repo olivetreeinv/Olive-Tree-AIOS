@@ -1,0 +1,40 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan coaches John through underwriting a 16-unit multifamily property in South Dakota using the deal analyzer, demonstrating how to verify broker assumptions, back into realistic numbers that meet investor return metrics (15% IRR, 1.8x equity multiple, 6-10% cash-on-cash), and negotiate with brokers. He also reviews Michael's pitch deck for a 30-unit Louisville deal to show the capital-raise phase workflow.",
+  "takeaways": [
+    "Use the income approach formula (NOI \u00f7 cap rate = value) to verify asking prices; don't trust broker offering memorandums",
+    "Back into purchase price from required metrics: 15% IRR minimum, 1.8x+ equity multiple, 6-10% cash-on-cash return, 1.25+ debt service coverage ratio",
+    "Set maintenance/repairs reserves at $300/unit/month (~$4,800/year for 16-unit) to avoid under-capitalization and future capital calls to investors",
+    "For value-add renovations, require $200-$300/month rent bump per unit to justify $5,000-$10,000/unit capex spend (return on cost analysis)",
+    "Use 8-10% vacancy & credit loss assumption (not broker's 5%) plus realistic operating expense ratio of 48-50% for conservative underwriting",
+    "Verify broker NOI against actual 2-year bank statements and P&L, not potential income; request proof of collected revenue",
+    "Use fully amortized debt service (not interest-only) for bank underwriting, even if seller offers IO terms initially",
+    "Pitch deck must answer 90% of investor questions: for $25K/$50K/$100K investment, what returns and timeline; include market comparables, team, cash flow projections, preferred return structure"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Apply income approach formula rigorously instead of relying on broker cap rates; verify all three variables (value, NOI, cap rate) using basic algebra",
+      "evidence": "Justin caught broker math error ($84,153 NOI \u00f7 6.32% cap \u2260 $1.45M value) and showed correct calculation yields $1.33M; emphasized 'trusting and verifying' broker OMs because they fluff numbers"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Build conservative expense models using actual operating history, not broker projections; default to 8-10% vacancy and $300/unit/month reserves",
+      "evidence": "Justin showed how 5% vacancy assumption and low maintenance estimates ($9.5K) were unrealistic; bumped maintenance to $12K and vacancy to 8% to reflect actual market conditions"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Back all deals into three minimum metrics before pursuing: 15% IRR, 1.8x equity multiple, 1.25+ DCR; reject deals that miss these thresholds",
+      "evidence": "John's South Dakota deal showed 13% IRR and failed DCR at $1.25M ask; Justin walked him through reducing offer to $1M to hit required metrics, demonstrating deal fails if numbers don't align"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Create pitch deck as lead-generation tool attached to landing page CRM workflow; enables sending link to prospects and capturing contact info automatically",
+      "evidence": "Michael's 30-unit pitch deck reviewed end-to-end; Justin showed how landing page + PDF download creates leads in CRM without manual data entry, allowing follow-up at restaurants/banks"
+    }
+  ],
+  "id": "map0jz8Z0cU",
+  "title": "Weekly Coaching_10-09-25 | Justin Brennan",
+  "duration": 4211
+}

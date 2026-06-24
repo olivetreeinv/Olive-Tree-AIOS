@@ -276,3 +276,23 @@ class Document(Base):
     deal   = relationship("Deal")
     broker = relationship("Broker")
     market = relationship("Market")
+
+
+class Chunk(Base):
+    """Heading-scoped text chunks for hybrid FTS5 + vector retrieval.
+
+    FTS5 virtual table (chunks_fts) and vec0 virtual table (chunk_vec) are
+    created separately via raw SQL in scripts/aios_index.py — SQLAlchemy ORM
+    does not model virtual tables.
+    """
+    __tablename__ = "chunks"
+
+    id           = Column(Integer, primary_key=True, autoincrement=True)
+    path         = Column(String(1000), nullable=False, index=True)
+    layer        = Column(String(20), nullable=False)   # wiki | reference | memory
+    category     = Column(String(50))                   # deals / markets / brokers / etc. (wiki) or None
+    heading      = Column(String(500))                  # ## / ### heading text; None = file-level chunk
+    frontmatter  = Column(Text)                         # JSON: parsed YAML frontmatter (when present)
+    content      = Column(Text, nullable=False)
+    content_hash = Column(String(64), nullable=False)   # SHA-256 of content for incremental re-index
+    last_indexed = Column(String(30), nullable=False)

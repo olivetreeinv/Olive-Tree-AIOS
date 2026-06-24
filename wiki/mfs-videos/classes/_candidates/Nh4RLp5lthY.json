@@ -1,0 +1,44 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan reviews a 23-unit value-add deal in Lancing, Michigan under contract at ~$1.2M, discussing underwriting fundamentals, cap rate compression, forced appreciation through rent increases, roof condition negotiations, and the refinance strategy to return investor capital within 5 years. He also addresses underwriting adjustments between capex and deferred maintenance, uses Real Estate Radar for off-market deal sourcing, and explains how execution creates deal flow through direct-to-owner outreach.",
+  "takeaways": [
+    "Cap rate compression math: $100/month rent increase on 12-unit = $233k value add at same cap rate",
+    "Refinance strategy: Year 5 refi at 70% LTV of compressed-cap-rate value can return all investor capital while owner retains 100% equity",
+    "Roof inspection critical: $100k potential cost\u2014negotiate shared responsibility by showing inspection report; you'll pay it now or higher when selling in 5 years",
+    "Keep $50-150k per unit price range for bite-sized loan amounts (<$1M) and capital raises (<$1M) on first/second deals",
+    "Deferred maintenance vs capex: Ask 'did it increase rent?' If no (roof, sewer, appliances, flooring turnover), it's deferred maintenance operational expense, not capex",
+    "Real Estate Radar filters: Loan maturity dates narrowed to current year = 1,300 Ohio sub-50-unit properties; owners must refinance or sell\u2014skip value estimates, focus on skip-tracing direct-to-owner outreach to avoid brokers",
+    "Section 8 properties require market-specific cap rate reality: Akron, OH at 21 cap rate realistic; no natural appreciation in upper Midwest\u2014only forced value-add via operations/renovations"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Establish loan maturity date as primary filtering criterion for property sourcing to identify distressed refinancing situations",
+      "evidence": "Justin demonstrates Real Estate Radar filter showing loan maturity by calendar year, reducing Ohio prospects from 770k to 1,300 properties; states 'They have two options on planet Earth. Refinance or sell the property.'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Distinguish capex from deferred maintenance by applying '50/50 split' rule when sellers improperly classify maintenance as improvements",
+      "evidence": "Justin advises Craig: 'I would take 50% of it and stick it below the line of the net operating income line and keep 50% in [expenses]' and explains 'Did it increase rent? If it increased rent, it's a capex. If it didn't increase rent, probably not a capex.'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Model year 3-5 refinance payoff scenarios at 70% LTV to quantify investor capital return timelines",
+      "evidence": "Justin calculates: $1.67M value in year 5 at 8% cap rate \u00d7 70% = $1.169M new loan; minus $875k payoff = $294k net cash, reducing investor basis from $423k toward full payoff if cap rates compress to 7%"
+    },
+    {
+      "skill": "market-research",
+      "change": "Validate market-specific cap rate ranges (7-8% Michigan, 21% Akron) before underwriting to avoid overvaluing properties in low-appreciation regions",
+      "evidence": "Justin states: 'you want the cap rates if you're a seller to be low...you'd like the cap rate to be higher and then have the ability to sell lower later' and corrects Akron deal: 'probably does need to be written down closer to a 21 number...you're just not going to get the ramp in rents and appreciation in Akron, Ohio'"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Use Real Estate Radar direct-to-owner skip-tracing to bypass broker commissions and access off-market deals before public listing",
+      "evidence": "Justin explains: 'There's a decent chunk of deals that go off market. Like, don't even touch the brokers...you can skip trace all these things' and 'you can start a direct mail campaign' avoiding 'commissions and broker fees'"
+    }
+  ],
+  "id": "Nh4RLp5lthY",
+  "title": "Tuesday Mentorship Q&A -Execution Creates Deal Flow - 01/20/26 | Justin Brennan",
+  "duration": 3124
+}

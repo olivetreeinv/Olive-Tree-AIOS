@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan conducts a detailed coaching session analyzing Rory's 12-unit multifamily deal in Missouri listed at $635,000. The session covers deal sourcing through broker relationships, underwriting mechanics using the deal analyzer tool, syndication structuring with preferred returns and equity splits, and advanced tax strategies including bonus depreciation, cost segregation studies, and capital gains management through strategic quarterly exits.",
+  "takeaways": [
+    "Use broker relationship building and off-market deal sourcing via websites (LoopNet, CoStar) to identify brokers, not just properties, and nurture relationships through personal touches like gifts",
+    "Structure syndications with 6% preferred return to investors until 100% return of capital, then 70/30 split (70% to LPs, 30% to GP/operator)",
+    "Run 20% down payment with 80% investor capital on smaller deals to control deal while only deploying $60K-$80K out of pocket after acquisition fees (typically 3%)",
+    "Project 8% economic loss factor on 12-unit complexes due to natural vacancy rates of 4-5% in workforce housing areas near schools",
+    "Bonus depreciate approximately 67% of purchase price (e.g., $400K on $600K property) with majority coming year one, generating dollar-for-dollar tax write-offs against taxable income",
+    "Achieve 25-28% annualized returns on operator capital when combining preferred return allocation (6%), equity split (30%), asset management fees (1% of revenue), and construction management fees (8% of capex)",
+    "Execute strategic property sales in Q1 to capture 9-month runway for reinvestment of capital gains into new deals, effectively creating a backdoor 1031 exchange to defer recapture taxes"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Properly structure deal analyzer with correct equity calculations and debt-to-equity ratios",
+      "evidence": "Justin identified calculation errors in Rory's spreadsheet (equity showed $394K but should be $232K), demonstrating the importance of double-checking formulas and ensuring loan amount plus equity equals total capital requirements"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Use cost segregation studies to accurately project bonus depreciation timing and amounts",
+      "evidence": "Justin explained that on a $600K property, expect approximately $400K in depreciable basis, with 350K coming year one and remaining 50K spread over years 2-5, enabling near dollar-for-dollar tax write-off in year one"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Leverage multiple sourcing channels simultaneously: websites for broker identification, Facebook investment groups for relationship building, and direct outreach with relationship-building gestures",
+      "evidence": "Rory found deal through broker discovered via LoopNet, deepened relationship through Facebook investment groups, and solidified connection by sending gift box of Hawaiian macadamia nuts before deal came to market"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Move quickly on off-market deals with defined timeline: respond within 24 hours of broker email, underwrite immediately, and submit offers before public listing deadline",
+      "evidence": "Justin emphasized that hedge fund owner was releasing to off-market list first, going to market that weekend with offers due Wednesday, requiring rapid underwriting turnaround to compete"
+    }
+  ],
+  "id": "vzXVJbCZDT4",
+  "title": "Weekly Coaching_07-17-25 | Justin Brennan",
+  "duration": 5129
+}

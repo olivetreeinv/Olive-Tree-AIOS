@@ -1,0 +1,29 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan walks through the financial due diligence process for multifamily acquisitions in escrow, covering the critical documents and reports needed to validate property economics during the 20-30 day due diligence window. He emphasizes matching rent rolls to actual leases, analyzing T12 profit & loss statements, and segregating deferred maintenance from value-add improvements to avoid overpaying for a property.",
+  "takeaways": [
+    "Conduct financial, physical, and market due diligence within a 20-30 day escrow window before closing",
+    "Request rent roll (tenant list, unit types, square footage, market rents, current rents, vacancies) and audit every single lease to verify occupancy matches",
+    "Obtain T12 (12-month P&L broken down monthly) showing gross rents, concessions, loss to lease, vacancies, and all operating expenses; verify against bank statements and tax returns",
+    "Request 12 months of utility bills, all vendor/service contracts (landscaping, pest control, trash, pool maintenance), and aged receivables report to identify delinquent tenants",
+    "Get unit availability report showing current vacancies and lease move-out notices for next couple months",
+    "Separate and quantify deferred maintenance (HVAC, roof, windows, drainage, plumbing, electrical that don't add rent value) from improvement capex\u2014very important for capitalizing costs",
+    "Request capex/repair expense verification from property management and verify RUBs (utility reimbursements) match other income; request 24 months of work orders showing repair history and response time"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Create a systematic verification process matching rent rolls to leases and T12 statements to bank statements/tax returns before closing",
+      "evidence": "Justin emphasizes 'match that up to the actual leases,' 'do what's called a lease audit,' and 'getting that backed up through bank statements through tax returns'\u2014this prevents discovering tenant/occupancy problems post-close when 'buyer beware' applies"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Quantify and segregate deferred maintenance costs from value-add capex in underwriting models",
+      "evidence": "Justin states 'Very, very, very important' twice about distinguishing deferred maintenance (required repairs with no rent upside like HVAC/roof/electrical) from improvements, emphasizing 'you have to capitalize that up front' and potentially negotiate seller credit"
+    }
+  ],
+  "id": "49ed82eb-3cf7-486d-ae19-15b3f27fbc77",
+  "title": "Lesson 1: Financial Due Diligence",
+  "module": "Module 4: Due Diligence & Closing Deals"
+}

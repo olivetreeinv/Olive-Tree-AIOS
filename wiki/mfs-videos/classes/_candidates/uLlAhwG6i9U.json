@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "partial",
+  "topic": "deal-analysis",
+  "summary": "Justin analyzes a 32-unit Cincinnati value-add deal for Chetna, demonstrating how to underwrite multifamily properties by identifying key expense levers and challenging broker assumptions. He also covers property manager evaluation criteria for Brian's 39-unit Memphis bank-owned deal, and discusses tax strategies like entity structuring to avoid reassessments in Ohio.",
+  "takeaways": [
+    "Pull four critical levers on any property: leasing/leads, work order handling (quick turnarounds for tenant satisfaction), rent collections, and lease renewals 90 days before expiration\u2014not 60 days",
+    "Property manager hiring guide should focus on: marketing processes, software used, unit showing processes, handling leasing inquiries, turnovers, and renewals",
+    "Expense ratio targets: 40-50% for properties 1980 and older; expect brokers to squeeze these low\u2014fine-tune to realistic 45-49% range",
+    "Expense and tax numbers are the primary levers to pull on a proforma when revenue (rents) and financing are fixed",
+    "Request all major financial documents and surveys as 'Exhibit B' in contracts\u2014frame as wish list and let seller say no rather than assuming unavailability",
+    "Never start tenant renewals only 60 days before lease expiration; they're already looking\u2014initiate outreach 90 days prior",
+    "Entity transfer strategy: if sellers move property into new LLC with 12-24 month maturity before sale, reduces red flags from school districts and tax assessors challenging reassessment"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Systematically challenge and adjust broker underwriting assumptions on expenses and taxes using guided ranges and AI tools rather than accepting pro forma numbers",
+      "evidence": "Justin shows Cincinnati deal expenses at 40% (too low), recommends 45-49% range, and advises Chetna to use ChatGPT and tax guidance to verify property taxes; demonstrates proforma recalculation when inputs change"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Identify specific expense line items to negotiate and verify (insurance quotes, tax calculations, capex forecasts) before committing to deal fundamentals",
+      "evidence": "Justin instructs: 'Get a quote for insurance. Get a quote for lending. Sit there with the broker and say this is where the market's going to come in at.' Shows proof of quotes gives credibility to push back on seller pricing."
+    },
+    {
+      "skill": "broker-search",
+      "change": "Develop property manager evaluation criteria focused on operational metrics (leasing process, lead generation, turnaround speed, renewal timing) rather than qualitative impressions",
+      "evidence": "Justin provides Property Manager Hiring Guide checklist emphasizing four strings: leasing/leads, work orders, collections, renewals\u2014advises Brian to test PM's ability to bump occupancy from mid-80s to 90s as proof of competence"
+    },
+    {
+      "skill": "market-research",
+      "change": "Cross-reference county-specific property tax calculation methods (mill rate, assessed value formulas) via AI or local expert consultation before underwriting final numbers",
+      "evidence": "Justin notes Texas uses 85-90% of sale price as assessed value at 2-2.5% rate, while Ohio uses different mill rate formula; recommends entering property address into 'mentor AI' to get county-specific tax treatment, since Chetna's 2026 reassessment could significantly change deal math"
+    }
+  ],
+  "id": "uLlAhwG6i9U",
+  "title": "Tuesday Mentorship Q&A - Avoid Costly Real Estate Mistakes_06/02/26 | Justin Brennan",
+  "duration": 4138
+}

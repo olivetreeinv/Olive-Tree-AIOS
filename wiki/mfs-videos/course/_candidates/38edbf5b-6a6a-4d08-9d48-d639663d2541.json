@@ -1,0 +1,24 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan explains the four quadrants of multifamily real estate (price, equity, NOI, and cash-on-cash return) and how they interdependently move together. He demonstrates through concrete examples how changes in one metric cascade through the others, providing a framework for evaluating deal quality and understanding the relationships between purchase price, down payment requirements, operating income, and cash returns.",
+  "takeaways": [
+    "The four quadrants are: price, equity (down payment), NOI, and cash-on-cash (COC)",
+    "One quadrant can't move without affecting the others\u2014they are interdependent",
+    "If price rises from $1M to $1.2M, equity requirement rises from $300K to $380K (hypothetically), reducing COC from 7% to 6%",
+    "NOI = gross revenues less vacancies less expenses; it changes only when revenues or expenses change",
+    "Price is calculated by dividing NOI by the market cap rate (e.g., $200K NOI \u00f7 5% cap rate = $4M valuation)",
+    "When NOI drops from $200K to $150K at a 5% cap rate, property value drops from $4M to $3M",
+    "As price declines, equity requirement typically declines, which typically increases cash-on-cash return"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Quickly evaluate deal quality by mapping how changes in one quadrant affect all others",
+      "evidence": "Justin demonstrates the mathematical relationships with specific examples: price change from $1M to $1.2M showing equity increase and COC decrease; NOI change from $200K to $150K showing price decrease from $4M to $3M using market cap rate formula"
+    }
+  ],
+  "id": "38edbf5b-6a6a-4d08-9d48-d639663d2541",
+  "title": "Lesson 1: The Four Quadrants Explained",
+  "module": "Module 8: The Four Quadrants Of Multifamily"
+}

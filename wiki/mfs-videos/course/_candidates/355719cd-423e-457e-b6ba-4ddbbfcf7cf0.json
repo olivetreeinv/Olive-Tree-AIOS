@@ -1,0 +1,24 @@
+{
+  "deal_relevant": "partial",
+  "topic": "other",
+  "summary": "Justin Brennan teaches a framework for allocating general partnership percentages among multiple partners in multifamily deals, covering responsibility splits across deal sourcing, capital raising, asset management, loan guarantees, project management, and due diligence. This is structural partnership management rather than deal sourcing or underwriting, Brian's stated pain points.",
+  "takeaways": [
+    "Allocate 5% of GP for finding/sourcing the deal and transactional management",
+    "Allocate 30% of GP for capital raising, split proportionally by amount raised (e.g., $750k of $1.5M = 15%)",
+    "Allocate 10% for asset management responsibilities",
+    "Allocate up to 20% for loan guarantees (can split 10/10 between two partners)",
+    "Allocate 10% for boots-on-ground project management",
+    "Allocate 10% for due diligence (financial and physical)",
+    "Allocate remaining percentage to risk capital; ensure all percentages sum to exactly 100% of GP split"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "lets-get-to-work",
+      "change": "Implement written GP responsibility allocation spreadsheet before closing to prevent partner disputes",
+      "evidence": "Justin emphasizes 'this is how you avoid infighting within your partnership' and 'this is how people hate each other at the end of the deal' \u2014 the spreadsheet systematically prevents ambiguity about 'what they're doing and what they're getting'"
+    }
+  ],
+  "id": "355719cd-423e-457e-b6ba-4ddbbfcf7cf0",
+  "title": "How To Deal With Multiple Partners",
+  "module": "Closing Deals Downloads"
+}

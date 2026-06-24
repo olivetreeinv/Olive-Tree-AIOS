@@ -1,0 +1,40 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan conducts a live mentorship session analyzing two multifamily deals: a 9-unit property in North Carolina that needs price reduction to pencil (backing in from $1.7M to ~$1.35-1.4M), and a distressed 50-unit in Huntsville, Texas at 52% occupancy requiring bridge financing strategy. The session covers underwriting mechanics, valuation backing-in, and stressed asset acquisition approaches using bridge debt with interest reserves.",
+  "takeaways": [
+    "Back into deals when metrics don't work: if asking $1.7M but deal only supports $1.35-1.4M, make aggressive LOI with follow-up phone call to broker saying 'I want to talk about the numbers' rather than radio silence",
+    "Target 15%+ IRR on value-add deals; in North Carolina 9-unit example, IRR was too rough and deal needed $300K-350K price reduction to work",
+    "For 2002-built property, use 30-40% expense ratio guidance; newer properties should be 30-35%, older properties closer to 40%",
+    "On distressed properties (50%+ vacancy), use bridge debt at ~9% interest rate for 2-3 years with interest reserve built into loan to carry until stabilization, then refinance",
+    "Maintain 2% gap between cap rate you build property to and market cap rate at exit (e.g., build to 8-9% cap, sell at 7% market cap)",
+    "Closing costs on smaller deals (9-30 units) should be 6%; drops to 4% on 80+ unit properties",
+    "Don't put money hard on deposits in current market (post-2022); keep all deposit money refundable through due diligence period",
+    "If missing expense data from wholesaler, use property age to estimate expense ratio range, then make aggressive offer and tell broker 'I need actual data to increase offer'"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Implement price-backing-in formula when IRR and cash-on-cash don't meet 15% IRR threshold",
+      "evidence": "Paula's 9-unit: offered $1.7M with 4.4% cash-on-cash and rough IRR; Justin backed into $1.35-1.4M to hit acceptable returns. Rule: 'if the numbers aren't there, you got to back in with price'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Use expense ratio guidance by property age (30-40% range for 2002+ properties) to validate underwriting rather than building bottom-up",
+      "evidence": "9-unit showed 36% expense ratio; Justin confirmed 'if you hover over this cell, it tells you 2010 property or newer should range between 30 to 40%' - gives rapid validation checkpoint"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Send aggressive LOI immediately followed by text/call to broker explaining position and requesting data conversation",
+      "evidence": "'Even if it's a low offer, text them immediately after and say Hey just sent LOI it's pretty aggressive but I want to talk about numbers. That opens conversation versus if you just send low LOI you get middle finger'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "On distressed assets, calculate required cap rate gap (2%) between build-to cap and exit cap rather than targeting single cap rate",
+      "evidence": "Huntsville 50-unit: 'build it to 8-9 cap, then sell at market 7 cap and make money from 1-2% spread' - prevents overpaying by anchoring to market exit rate"
+    }
+  ],
+  "id": "1IODz9ejL_k",
+  "title": "Tuesday Mentorship Q&A - Build Deal Flow Systems -  01-27-26 | Justin Brennan",
+  "duration": 3103
+}

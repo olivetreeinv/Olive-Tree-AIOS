@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "partial",
+  "topic": "deal-analysis",
+  "summary": "Justin reviews Mike's 28-unit multifamily deal in North Charleston, SC priced at $4.2M ($150K/unit). The deal analysis focuses on underwriting accuracy, expense ratios, financing strategy, and investor pitch mechanics rather than Brian's specific GA/TN/AL sourcing and underwriting challenges.",
+  "takeaways": [
+    "Use ChatGPT to calculate property taxes in 45 seconds vs. 45 minutes (ask county name, property type, address, assessment ratio, mill rate)",
+    "Run vacancy/economic loss at minimum 10% on proforma, not broker's inflated 5-8% numbers",
+    "Keep expense ratios realistic at 46-47% for 1970s vintage properties, not brokers' optimistic 41-42%",
+    "Negotiate interest rate down to 6% or better with lenders\u2014this moves the deal price more than tweaking occupancy",
+    "Target 15% annual investor return + 7%+ cash-on-cash preferred return + $1 tax write-off per $1 invested to attract capital",
+    "Deal portals (funnel pages) showcase property with pitch deck, summary video, property highlights, and investor contact form",
+    "For capital raise: create pitch deck, host webinar Q&A (records to 20-min summary video), email both to prospect list with landing page link"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Validate expense and revenue assumptions against market benchmarks instead of trusting broker OM numbers",
+      "evidence": "Justin showed Mike his 41-42% expense ratio was optimistic vs. realistic 46-47%; identified vacancy delta (5% broker vs. 10-15% realistic); emphasized broker numbers are 'fluff' in flat markets, requiring independent verification"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Use ChatGPT for rapid property tax and county assessment research to speed underwriting 60x",
+      "evidence": "Demonstrated calculating Charleston County property taxes in 45 seconds via ChatGPT vs. traditional 45-minute manual county website lookup; moved from $63K estimate to $55K verified in real-time"
+    },
+    {
+      "skill": "capital-raise",
+      "change": "Bundle pitch deck + webinar summary video + landing page to distribute to investor prospects simultaneously",
+      "evidence": "Shared Brian Tran's strategy: host 1 webinar Q&A (even 1 attendee counts), record 20-min summary, post to deal portal landing page, email combo to network with $25K minimum ask"
+    }
+  ],
+  "id": "esatLnDQWR4",
+  "title": "Weekly Coaching_05-29-25 | Justin Brennan",
+  "duration": 4247
+}

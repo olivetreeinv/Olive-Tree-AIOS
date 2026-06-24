@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan walks through updates to the Simple Deal Analyzer tool used for 0-50 unit multifamily deals, focusing on how to calculate and present investor returns in pitch decks. He explains waterfall calculations, cash-out refinance scenarios, the tax benefits of leverage, and how to provide two standardized investment examples ($25K and $100K) to potential capital partners.",
+  "takeaways": [
+    "Provide only two investor examples on pitch decks: one at the minimum investment ($25,000) and one at six figures ($100,000), as statistically a ~$600K raise will have 4-5 investors at $25-50K and 2-3 at six figures",
+    "Keep hurdle one and two identical with 0% GP return and 100% LP return to avoid formula errors that incorrectly show equity paydowns",
+    "When doing a cash-out refi, each investor receives their pro-rata share based on their capital contribution percentage (e.g., if they invested $25K of $513K total, they get 5% of any refinance proceeds)",
+    "Operate 60-unit multifamily buildings off-site with a good PM within 10 miles; budget 6% management fee but model conservatively at 8% in analyzers to account for leasing commissions",
+    "Target a 30-40% return of capital within 36 months from refinance events as a realistic expectation; only attempt full payoff if market conditions align favorably",
+    "Use ChatGPT with specific prompts to compare markets: request population growth, job growth, and median household income for major cities over three years past and projected three years forward in a ranked table",
+    "Build broker relationships by consistent follow-up (couple touches per week) to access pre-market deals not listed online; fly in-person to meet brokers, local lenders, and property managers rather than relying solely on digital communication"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Learn to calculate investor return scenarios in the deal analyzer to accurately populate pitch deck examples",
+      "evidence": "Justin demonstrates how to input specific investment amounts ($25K, $100K) and use formulas to auto-calculate their equity multiplier, IRR, cash-on-cash return, and refinance proceeds; he emphasizes the waterfall tab shows how to pull exact numbers for pitch decks"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Understand cash-out refinance mechanics to model capital events and investor payback scenarios",
+      "evidence": "Justin walks through a real 31-unit example where they bought for $1.525M, valued it at $3.6M in 36 months, refinanced into $2.1M loan, paid back all investors, and kept $355K-$370K tax-free; he shows how to calculate pro-rata equity percentages for payback"
+    },
+    {
+      "skill": "market-research",
+      "change": "Use AI-driven market filtering to narrow geographic focus from states to specific high-growth cities before broker outreach",
+      "evidence": "When Shahan asks how to choose between North Carolina and Ohio, Justin directs him to ChatGPT with a specific prompt for population growth, job growth, median household income ranked over 6 years (3 back, 3 forward); he cites Columbus OH at 2-3% growth as an example signal"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Establish consistent broker follow-up cadence and in-person meetings to gain access to pre-market deal flow",
+      "evidence": "Justin emphasizes 'close mouths do not get fed' and recommends touching base with brokers a couple times per week with simple reachouts to signal you're a serious buyer; he stresses belly-to-belly meetings matter in commercial real estate because brokers control pre-market access that isn't online"
+    }
+  ],
+  "id": "TgcLOsxIGAA",
+  "title": "Tuesday Mentorship Q&A - Mastering Real Estate Due Diligence_11-04-25 | Justin Brennan",
+  "duration": 3144
+}

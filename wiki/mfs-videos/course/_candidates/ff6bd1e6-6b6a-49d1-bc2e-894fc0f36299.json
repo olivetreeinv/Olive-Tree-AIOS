@@ -1,0 +1,24 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin teaches the fundamental formulas for calculating Net Operating Income (NOI) and using the cap rate formula as a quick analysis tool. He demonstrates how knowing two of three variables (NOI, cap rate, price) allows investors to reverse-engineer deal feasibility and validate whether a seller's asking price is justified by market conditions.",
+  "takeaways": [
+    "NOI = Gross Income + Other Income - Operating Expenses (fundamental formula)",
+    "Cap Rate = NOI \u00f7 Price (the three-piece puzzle formula)",
+    "If price is $30M and market cap rate is 4%, expect NOI around $1.2M ($30M \u00d7 0.04)",
+    "Use market cap rates from brokers as benchmarks to validate deals quickly",
+    "If calculated NOI doesn't match expected NOI based on price and cap rate, seller is asking too much",
+    "Example: $1.3M NOI \u00f7 $1.3M = 4.3% cap rate on $30M purchase",
+    "Reverse formula: Price = NOI \u00f7 Cap Rate (e.g., $1.3M \u00f7 0.04 = $32.5M max price)"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Apply two-of-three cap rate puzzle to quickly validate asking prices against market conditions",
+      "evidence": "Justin demonstrates using known market cap rates (4%) and asking price ($30M) to back into expected NOI ($1.2M), then comparing to actual financials to assess if seller is overpriced\u2014a time-efficient underwriting screening tool for deal sourcing workflow"
+    }
+  ],
+  "id": "ff6bd1e6-6b6a-49d1-bc2e-894fc0f36299",
+  "title": "Lesson4: Calculating NOI",
+  "module": "Module 2: How To Analyze Deals"
+}

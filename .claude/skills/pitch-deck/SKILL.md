@@ -1,6 +1,6 @@
 ---
 name: pitch-deck
-description: Build a deal-specific LP pitch deck in Canva from the deal's underwriting data and OM. Copies the Olive Tree master template, writes the deal's content into the slides via the Canva editing API (no manual paste-in), exports PDF, and saves it to the property's deal folder in Drive. Runs after a deal is a Green GO (PURSUE LOI).
+description: Build a deal-specific LP pitch deck in Canva from the deal's underwriting data and OM. Copies the Olive Tree master template, writes the deal's content into the slides via the Canva editing API (no manual paste-in), exports PDF, and saves it to the property's deal folder in Drive. Runs after a deal is a go (PURSUE LOI).
 triggers:
   - /pitch-deck
   - pitch deck
@@ -25,7 +25,7 @@ dependencies:
 
 Builds a deal-specific LP pitch deck in Canva — **content written into the slides by the AIOS**, not pasted by Brian. Pulls deal data from the underwriting output and OM, copies the master template, rewrites every populated slide for the new deal via the Canva editing API, exports a PDF, and files it in the property's deal folder.
 
-**When to run:** After the deal is a **Green GO** — `/underwriting` or `/deal-analysis` returned PURSUE LOI. Pipeline: Green GO → `/loi` → `/pitch-deck` → LP outreach (`/capital-raise`).
+**When to run:** After the deal is a **go** — `/underwriting` or `/deal-analysis` returned PURSUE LOI. Pipeline: go → `/loi` → `/pitch-deck` → LP outreach (`/capital-raise`).
 
 ---
 
