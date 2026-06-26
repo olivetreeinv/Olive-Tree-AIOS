@@ -76,6 +76,10 @@ EFFECTIVE_TAX_RATE = {
     "37615": 0.0110,  # Johnson City — Washington $1.4071 + city $1.35
 }
 DEFAULT_TAX_RATE = 0.0124   # fallback for zips outside the buy box
+# TN/GA/AL (all our buy-box states) reassess county-wide on a periodic cycle, NOT on
+# sale — property tax follows the county's APPRAISED value, never the purchase price.
+# So proforma taxes are the current actual drifted for cycle inflation, NOT price-scaled.
+TAX_INFLATION = 1.03
 
 SHEETS_BASE = "https://sheets.googleapis.com/v4/spreadsheets"
 DRIVE_BASE  = "https://www.googleapis.com/drive/v3/files"
@@ -1697,14 +1701,20 @@ def populate_analyzer_small(token, args, metrics=None):
 
     # Taxes — write annual dollar totals only (J=current, L=proforma).
     # I21/K21 are template-managed percentage columns — never write to them.
+    # TN/GA/AL tax the county APPRAISED value, NOT the sale price — there is no
+    # sale-triggered reassessment. Prefer the OM/T-12 actual (which may already
+    # reflect a recent county reappraisal); proforma = current × cycle drift, never
+    # scaled to the offer price.
     if om_taxes is not None:
         ws["J21"] = om_taxes
     else:
         ws["J21"] = f"=$B$4*{tax_rate}" if asking else f"=$D$4*{tax_rate}"
     if pf_taxes is not None:
         ws["L21"] = pf_taxes
+    elif om_taxes is not None:
+        ws["L21"] = round(om_taxes * TAX_INFLATION, 0)   # drift only — no sale reassessment
     else:
-        ws["L21"] = f"=$D$4*{tax_rate}"
+        ws["L21"] = f"=J21*{TAX_INFLATION}"              # mirror current; never =$D$4*rate
 
     def _per_unit(total, u):
         """Return per-unit value only when units is known and positive; skip cell write otherwise."""
@@ -1769,13 +1779,15 @@ def populate_analyzer_small(token, args, metrics=None):
             _note("R37", f"Exit cap {exit_cap:.2f}% from OM pro-forma. May expand if market softens — model conservatively.")
         _note("R38", "Selling costs 5% (broker + closing costs at exit).")
         if om_taxes is not None:
-            _note("J21", f"Taxes ${om_taxes:,.0f} — OM 2025 actual.")
+            _note("J21", f"Taxes ${om_taxes:,.0f} — OM/T-12 actual (reflects any recent county reappraisal).")
         else:
-            _note("J21", f"Taxes ESTIMATE ({tax_rate:.2%} of ask) — replace with OM/T-12 actual.")
+            _note("J21", f"Taxes ESTIMATE ({tax_rate:.2%} x ask, zip {zip_s or 'default'}). TN/GA/AL tax the county APPRAISED value, not your price — replace with OM/T-12 actual.")
         if pf_taxes is not None:
-            _note("L21", f"Taxes ${pf_taxes:,.0f} — post-sale reassessment estimate. Confirm county millage in DD.")
+            _note("L21", f"Taxes ${pf_taxes:,.0f} — proforma. Confirm county appraised value + millage in DD.")
+        elif om_taxes is not None:
+            _note("L21", f"Taxes ${om_taxes*TAX_INFLATION:,.0f} = current x {TAX_INFLATION:.2f} cycle drift. TN/GA/AL do NOT reassess on sale — taxes are NOT scaled to the purchase price.")
         else:
-            _note("L21", f"Proforma taxes reassessed at offer (=D4 x {tax_rate:.2%}, zip {zip_s or 'default'}). ESTIMATE — confirm in DD.")
+            _note("L21", f"Proforma taxes = current x {TAX_INFLATION:.2f} (no sale reassessment in TN/GA/AL). ESTIMATE — confirm in DD.")
         if om_ins is not None:
             _note("J22", f"Insurance ${om_ins:,.0f} — OM 2025 actual. Get fresh quote before removing contingencies.")
             _note("L22", f"Insurance ${om_ins:,.0f} — held at OM actual. Replace with live quote in DD.")
