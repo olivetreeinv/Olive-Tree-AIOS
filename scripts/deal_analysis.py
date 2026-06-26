@@ -94,6 +94,10 @@ BUY_BOX = {
     "35801": {"market": "Huntsville Core, AL",    "ppu_min": 0,      "ppu_max": 999999},
     "35205": {"market": "Birmingham Urban, AL",   "ppu_min": 0,      "ppu_max": 999999},
     "35806": {"market": "Huntsville Growth, AL",  "ppu_min": 0,      "ppu_max": 999999},
+    "37087": {"market": "Lebanon, TN",            "ppu_min": 0,      "ppu_max": 999999},
+    "37918": {"market": "Knoxville, TN",          "ppu_min": 0,      "ppu_max": 999999},
+    "37804": {"market": "Maryville, TN",          "ppu_min": 0,      "ppu_max": 999999},
+    "37615": {"market": "Johnson City, TN",       "ppu_min": 0,      "ppu_max": 999999},
 }
 
 # Hard thresholds — acquisition screening floors (Multifamily Mentor criteria).
