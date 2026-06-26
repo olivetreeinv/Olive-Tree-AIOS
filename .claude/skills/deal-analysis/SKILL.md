@@ -191,7 +191,15 @@ vacancy to the bank's 5% floor, then LAYER economic losses on top:
   → Total economic loss 12–15% in non-coastal/secondary markets
 
 Expense reasonableness floors (flag any OM line >15% below these as "aggressive"):
-  Property tax    2–2.5% of likely REASSESSED value (post-sale, NOT seller's basis)
+  Property tax    TN/GA/AL (all our buy-box states) reassess county-wide on a CYCLE, NOT on sale —
+                  tax follows the county's APPRAISED value, never your purchase price. Do NOT scale
+                  taxes to the offer. Pull the OM's reassessment data (county appraised value, mill
+                  rates, current + proforma tax) and use the T-12 actual — but verify it against the
+                  OM, since the T-12 line can predate a recent reappraisal (Lebanon: T-12 showed
+                  $32,699 on the old roll; real 2026 tax was $40,436 post-reassessment). Proforma =
+                  current actual × ~3% cycle drift. Effective rates ~0.7–1.3% of appraised value
+                  (TN ~0.7–1.0%, GA ~1.0–1.4%, AL ~0.4–0.7%). Only the rare acquisition-value state
+                  (e.g. CA/FL nuance) scales tax to the purchase price.
   Insurance       ~$1,500/unit (TX/Gulf higher) — get a live quote before removing contingencies
   Repairs/maint   $650–700/unit
   Management      6% for <30-unit deals
@@ -420,13 +428,23 @@ Write a structured doc covering:
 - Deal-specific conclusions (what the market supports, what it doesn't at ask price)
 - GO price summary if PASS
 
-Upload to the deal folder (same folder_id from Step 9) as a Google Doc via Drive API:
+Upload to the deal folder as a Google Doc via Drive API multipart upload. **Use HTML as the source format** — it preserves Arial font, bold headings, and borderless tables after conversion. Do NOT upload plain text or markdown (flattens all structure).
+
 ```python
 # Use gws_auth.get_token() — no argument — to get bearer token
-# POST to https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart
-# mimeType: application/vnd.google-apps.document  (converts .md → Google Doc)
-# parents: [deal_folder_id]  (folder created by deal_archive.py or --populate-analyzer)
+# POST https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart
+# Part 1 — metadata JSON: {"name": "...", "mimeType": "application/vnd.google-apps.document", "parents": [folder_id]}
+# Part 2 — file body: Content-Type: text/html; charset=UTF-8
+#
+# HTML structure to use:
+#   <body style="font-family: Arial, sans-serif; font-size: 11pt;">
+#   <h1 style="font-family: Arial; font-weight: bold; border-bottom: 1pt solid #ccc;">Section Heading</h1>
+#   <table style="border-collapse: collapse; width: 100%;">
+#     <tr><td style="border: none; font-weight: bold;">Label</td><td style="border: none;">Value</td></tr>
+#   </table>
 ```
+
+Reference the 641 Powder Springs Market Analysis doc (`1ipaHSvUKzkDK3xVOTJlqtXez9sCrG-jGGTx-36pC75Q`) as the gold-standard template for structure and formatting.
 
 ### Step 7c: Deal Summary (PASS only)
 
