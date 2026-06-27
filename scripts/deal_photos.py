@@ -38,6 +38,9 @@ MARKET_PHOTOS = {
     "35205": {"area": "Birmingham, Alabama",    "community": "Five Points South"},
     "35806": {"area": "Huntsville, Alabama",    "community": "Cummings Research Park"},
     "37087": {"area": "Lebanon, Tennessee",     "community": None},
+    "37918": {"area": "Knoxville, Tennessee",   "community": None},
+    "37804": {"area": "Maryville, Tennessee",   "community": None},
+    "37615": {"area": "Johnson City, Tennessee", "community": None},
 }
 
 _STATE_NAMES = {"GA": "Georgia", "TN": "Tennessee", "AL": "Alabama",
@@ -129,10 +132,25 @@ def render_markdown(photos):
 
 
 if __name__ == "__main__":
+    import argparse
     import json
-    import sys
-    addr = sys.argv[1] if len(sys.argv) > 1 else "641 Powder Springs St SE, Smyrna, GA 30080"
-    zc = sys.argv[2] if len(sys.argv) > 2 else "30080"
+    import re
+
+    p = argparse.ArgumentParser(description="Resolve the 3-photo block for a deal.")
+    p.add_argument("--address", help="Full property address (include zip)")
+    p.add_argument("--zip", dest="zip_code", help="5-digit zip; auto-extracted from --address if omitted")
+    p.add_argument("--market", help="Market name (accepted for compatibility; resolution keys off zip)")
+    # Positional fallback: address [zip] — keeps older callers working.
+    p.add_argument("pos", nargs="*", help=argparse.SUPPRESS)
+    args = p.parse_args()
+
+    addr = args.address or (args.pos[0] if len(args.pos) > 0 else
+                            "641 Powder Springs St SE, Smyrna, GA 30080")
+    zc = args.zip_code or (args.pos[1] if len(args.pos) > 1 else None)
+    if not zc:
+        m = re.search(r"\b(\d{5})\b", addr)
+        zc = m.group(1) if m else "30080"
+
     result = resolve_photos(addr, zc)
     print(json.dumps(result, indent=2))
     print("\n" + "=" * 50)
