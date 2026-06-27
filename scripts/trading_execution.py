@@ -97,13 +97,13 @@ def submit_order(decision: RiskDecision, signal_id: int | None = None) -> dict:
 
     s = Session()
     try:
-        # Record position
+        # stop_price deferred — will be set from actual fill price in sync_fills()
         pos = TradingPosition(
             symbol=decision.symbol,
             side=decision.side,
             qty=decision.qty,
-            entry_price=decision.entry_price,
-            stop_price=decision.stop_price,
+            entry_price=decision.entry_price,  # pre-order quote; updated by sync_fills()
+            stop_price=None,
             entry_time=now,
             status="open",
             signal_id=signal_id,
@@ -111,7 +111,6 @@ def submit_order(decision: RiskDecision, signal_id: int | None = None) -> dict:
         s.add(pos)
         s.flush()
 
-        # Record order
         ord_row = TradingOrder(
             alpaca_id=str(order.id),
             symbol=decision.symbol,
@@ -126,6 +125,9 @@ def submit_order(decision: RiskDecision, signal_id: int | None = None) -> dict:
         s.commit()
         pos_id = pos.id
         ord_id = ord_row.id
+    except Exception:
+        s.rollback()
+        raise
     finally:
         s.close()
 
@@ -191,11 +193,15 @@ def sync_fills() -> list[dict]:
                 row.filled_qty  = float(o.filled_qty or 0)
                 row.filled_price = float(o.filled_avg_price or 0)
                 row.filled_at   = o.filled_at.isoformat() if o.filled_at else None
-                # Update linked position entry price from actual fill
+                # Update position entry + stop from actual fill price
                 if o.filled_avg_price and row.position_id:
                     pos = s.query(TradingPosition).filter_by(id=row.position_id).first()
                     if pos:
-                        pos.entry_price = float(o.filled_avg_price)
+                        fill = float(o.filled_avg_price)
+                        pos.entry_price = fill
+                        # Compute stop from real fill, not pre-order quote
+                        from scripts.trading_risk import stop_price as _stop
+                        pos.stop_price = round(_stop(fill, pos.side), 4)
                 s.commit()
                 updates.append({"alpaca_id": str(o.id), "status": row.status})
     finally:
