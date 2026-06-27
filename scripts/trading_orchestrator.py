@@ -79,10 +79,14 @@ def run_cycle(dry_run: bool = False, market_session: str = "equities"):
     print(f"  Trading Desk Cycle — {now}  [{market_session}]")
     print(f"{'='*60}")
 
-    # ── Account check ──────────────────────────────────────────────
+    # ── Account check + day-open snapshot ─────────────────────────
     acct = get_account()
     equity = acct["equity"]
     print(f"\n  💰 Equity: ${equity:,.2f}   Cash: ${acct['cash']:,.2f}")
+
+    # Write snapshot now so is_daily_halted() has a day-open baseline
+    if not dry_run:
+        snapshot_equity()
 
     if is_daily_halted(equity):
         msg = f"Daily halt active — portfolio down ≥2% today. No new trades."
@@ -186,10 +190,10 @@ def run_cycle(dry_run: bool = False, market_session: str = "equities"):
     if not dry_run:
         sync_fills()
 
-    # ── Equity snapshot ────────────────────────────────────────────
+    # ── Equity snapshot (end-of-cycle update) ─────────────────────
     print(f"\n  [5/5] Equity snapshot...")
     if not dry_run:
-        snapshot_equity()
+        snapshot_equity()  # overwrites the start-of-cycle row with final equity
     else:
         print(f"        [DRY RUN] Skipped snapshot.")
 

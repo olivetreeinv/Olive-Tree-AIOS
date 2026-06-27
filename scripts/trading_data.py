@@ -135,15 +135,9 @@ def get_bars(symbol: str, days: int = 60, timeframe: str = "1Day") -> list[dict]
         raw = data.get("bars", {}).get(symbol, [])
         return [{"t": b["t"], "o": b["o"], "h": b["h"], "l": b["l"], "c": b["c"], "v": b["v"]} for b in raw]
     else:
-        # Equities via Polygon
-        poly_key = os.getenv("POLYGON_API_KEY", "")
-        if not poly_key:
-            raise EnvironmentError("POLYGON_API_KEY not set in .env")
-        url = (
-            f"{_POLY_BASE}/v2/aggs/ticker/{symbol}/range/1/day/{start}/{end}"
-            f"?adjusted=true&sort=asc&limit=500&apiKey={poly_key}"
-        )
-        data = _get(url, {})
+        # Equities via Polygon — key passed via params dict, never embedded in URL
+        data = _poly(f"/v2/aggs/ticker/{symbol}/range/1/day/{start}/{end}",
+                     {"adjusted": "true", "sort": "asc", "limit": 500})
         raw = data.get("results", [])
         return [{"t": r["t"], "o": r["o"], "h": r["h"], "l": r["l"], "c": r["c"], "v": r["v"]} for r in raw]
 

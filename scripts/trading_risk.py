@@ -50,15 +50,8 @@ class RiskDecision:
 
 
 def _open_position_count() -> int:
-    # ponytail: Alpaca is source of truth — works in cloud where local DB is empty
-    count = _alpaca_position_count()
-    if count > 0:
-        return count
-    s = Session()
-    try:
-        return s.query(TradingPosition).filter_by(status="open").count()
-    finally:
-        s.close()
+    # Alpaca is authoritative — if it says 0, that's 0. No SQLite fallback.
+    return _alpaca_position_count()
 
 
 def _day_open_equity() -> float | None:
