@@ -40,6 +40,7 @@ Notes:
 
 import argparse
 import json
+import os
 import statistics
 import sys
 import time
@@ -113,6 +114,38 @@ ZIP_BBOX = {
 }
 
 ARCGIS_PAGE = 1000  # max records per ArcGIS query page
+
+
+# ─────────────────────────────────────────────
+# ReportAllUSA parcel API — multi-state source (6-state Southeast expansion)
+# ─────────────────────────────────────────────
+# STUB, inert until REPORTALL_API_KEY is set (trial keys pending — see decisions/log
+# 2026-06-29). One nationwide API replaces per-county ArcGIS scrapers for GA/AL/NC/SC/
+# TN/KY, where most counties run qPublic/Schneider (unreachable) or geometry-only AGO
+# layers. Output is the SAME canonical record as query_parcels(), so the whole downstream
+# pipeline (apply_filters / acre_stats / is_vacant / is_out_of_state) works unchanged.
+#
+# Field names below are ReportAll v9. CONFIRM each against the first live trial response
+# and fix any that differ before trusting results — especially owner_state, which the
+# absentee filter keys on. Docs: https://reportallusa.com/products/api
+REPORTALL_API = "https://reportallusa.com/api/parcels"
+REPORTALL_VERSION = 9
+REPORTALL_RPP = 1000  # rows per page (API max)
+
+REPORTALL_FIELD_MAP = {
+    "parcel_id":    "parcel_id",
+    "site_address": ["addr_number", "addr_street_name", "addr_street_suffix"],
+    "site_zip":     "physzip",
+    "acres":        "acreage_calc",   # GIS-calc acres; deeded fallback in fetch
+    "land_use":     "land_use_code",
+    "bldg_area":    "mkt_val_bldg",   # improvement value; 0/blank => vacant land
+    "owner_name":   "owner",
+    "owner_addr":   "mail_address1",
+    "owner_city":   "mail_city",      # ponytail: confirm field name on trial
+    "owner_state":  "mail_state",     # ponytail: CRITICAL — confirm; absentee filter keys on this
+    "owner_zip":    "mail_zip",
+    "land_value":   "mkt_val_land",   # offer anchor
+}
 
 
 # ─────────────────────────────────────────────
@@ -233,6 +266,51 @@ def query_parcels(county, where="1=1", bbox=None, zip_code=None,
         if not data.get("exceededTransferLimit"):
             break
         offset += len(feats)
+    return records
+
+
+def query_parcels_reportall(region, zip_code=None, max_records=None,
+                            api_key=None, timeout=30):
+    """
+    Query ReportAllUSA for a region -> canonical records (same shape as query_parcels).
+
+    region:   county selector — FIPS county id or "County, ST" (e.g. "Bullitt, KY").
+    zip_code: optional situs-zip narrow.
+    Filtering (vacant / out-of-state / acreage band) is done Python-side via
+    apply_filters() — same path the bbox-only ArcGIS counties already use.
+
+    STUB: raises until REPORTALL_API_KEY is set and the v9 field names in
+    REPORTALL_FIELD_MAP are confirmed against a live response.
+    """
+    api_key = api_key or os.environ.get("REPORTALL_API_KEY")
+    if not api_key:
+        raise RuntimeError(
+            "REPORTALL_API_KEY not set. Add it to .env once trial keys arrive, then "
+            "confirm REPORTALL_FIELD_MAP against the first live response (esp. "
+            "owner_state) before trusting the absentee filter.")
+
+    records, page = [], 1
+    while True:
+        params = {"client": api_key, "v": REPORTALL_VERSION,
+                  "region": region, "rpp": REPORTALL_RPP, "page": page}
+        if zip_code:
+            params["physzip"] = zip_code   # ponytail: confirm zip query param on trial
+        data = _get_json(REPORTALL_API, params, timeout=timeout)
+        if data.get("status") not in (None, "OK"):
+            raise RuntimeError(f"ReportAll error: {data.get('message', data)}")
+        rows = data.get("results", [])
+        if not rows:
+            break
+        for attrs in rows:
+            rec = _normalize(attrs, REPORTALL_FIELD_MAP)
+            if rec["acres"] is None:                       # acreage_calc blank
+                rec["acres"] = _to_float(attrs.get("acreage_deeded"))
+            records.append(rec)
+            if max_records and len(records) >= max_records:
+                return records
+        if len(rows) < REPORTALL_RPP:                      # last page
+            break
+        page += 1
     return records
 
 
