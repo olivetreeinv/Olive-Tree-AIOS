@@ -32,6 +32,18 @@ from scripts.trading_data import get_bars, EQUITY_UNIVERSE, CRYPTO_UNIVERSE
 MIN_OOS_SHARPE   = 0.5   # OOS Sharpe must exceed this
 MAX_OOS_DRAWDOWN = 0.15  # OOS max drawdown must be below this (15%)
 MIN_WIN_RATE     = 0.45  # at least 45% of trades profitable
+MIN_OOS_TRADES   = 5     # need a real sample — 1-2 trades that rode a trend prove nothing
+                         # (a 100% win rate on 1 trade is luck, not a strategy)
+
+
+def passes_gate(m: dict) -> bool:
+    """Pure gate decision over an out-of-sample metrics dict. Testable in isolation."""
+    return (
+        m.get("n_trades", 0)     >= MIN_OOS_TRADES
+        and m.get("sharpe", 0)       >= MIN_OOS_SHARPE
+        and m.get("max_drawdown", 1) <= MAX_OOS_DRAWDOWN
+        and m.get("win_rate", 0)     >= MIN_WIN_RATE
+    )
 
 # ── Strategy parameters ───────────────────────────────────────────────────────
 DEFAULT_PARAMS = {
@@ -183,11 +195,7 @@ def run_walk_forward(symbol: str, days: int = 365, params: dict | None = None, d
     is_metrics  = _backtest_fold(is_close,  params, direction)
     oos_metrics = _backtest_fold(oos_close, params, direction)
 
-    passed = (
-        oos_metrics["sharpe"]       >= MIN_OOS_SHARPE
-        and oos_metrics["max_drawdown"] <= MAX_OOS_DRAWDOWN
-        and oos_metrics["win_rate"]     >= MIN_WIN_RATE
-    )
+    passed = passes_gate(oos_metrics)
 
     return {
         "symbol":      symbol,
@@ -223,12 +231,23 @@ def main():
     ap.add_argument("--days",  type=int, default=365)
     ap.add_argument("--backtest-all", action="store_true", help="Run full universe")
     ap.add_argument("--json",         action="store_true", help="Output JSON")
+    ap.add_argument("--test",         action="store_true", help="Self-check the gate logic")
     args = ap.parse_args()
+
+    if args.test:
+        # A single lucky trade must NOT pass; a real sample with good stats must.
+        fluke = {"n_trades": 1, "sharpe": 6.0, "max_drawdown": 0.08, "win_rate": 1.0}
+        real  = {"n_trades": 8, "sharpe": 1.2, "max_drawdown": 0.10, "win_rate": 0.6}
+        assert not passes_gate(fluke), "1-trade fluke should be rejected"
+        assert passes_gate(real), "valid multi-trade result should pass"
+        assert not passes_gate({**real, "n_trades": 4}), "below trade floor should fail"
+        print("  ✅ Gate self-check passed (trade floor blocks flukes).")
+        return
 
     if args.backtest_all:
         universe = EQUITY_UNIVERSE + CRYPTO_UNIVERSE
         print(f"Walk-forward backtest — {len(universe)} symbols — {args.days}d history")
-        print(f"Gate: OOS Sharpe≥{MIN_OOS_SHARPE}  DD≤{MAX_OOS_DRAWDOWN:.0%}  WinRate≥{MIN_WIN_RATE:.0%}\n")
+        print(f"Gate: Trades≥{MIN_OOS_TRADES}  OOS Sharpe≥{MIN_OOS_SHARPE}  DD≤{MAX_OOS_DRAWDOWN:.0%}  WinRate≥{MIN_WIN_RATE:.0%}\n")
         results = []
         for sym in universe:
             try:
