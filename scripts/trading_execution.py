@@ -22,8 +22,8 @@ from dotenv import load_dotenv
 load_dotenv(Path(__file__).parent.parent / ".env")
 
 from alpaca.trading.client import TradingClient
-from alpaca.trading.requests import MarketOrderRequest, LimitOrderRequest
-from alpaca.trading.enums import OrderSide, TimeInForce, OrderStatus
+from alpaca.trading.requests import MarketOrderRequest, LimitOrderRequest, GetOrdersRequest
+from alpaca.trading.enums import OrderSide, TimeInForce, OrderStatus, QueryOrderStatus
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from db.connection import Session
@@ -182,28 +182,33 @@ def sync_fills() -> list[dict]:
     Call once per cycle to reconcile.
     """
     client = _client()
-    orders = client.get_orders()
+    # status=ALL so fully-filled (now-closed) market orders are still returned —
+    # the default open-only list drops them before we ever see the fill price.
+    orders = client.get_orders(filter=GetOrdersRequest(status=QueryOrderStatus.ALL, limit=200))
+    from scripts.trading_risk import stop_price as _stop
     updates = []
     s = Session()
     try:
         for o in orders:
             row = s.query(TradingOrder).filter_by(alpaca_id=str(o.id)).first()
-            if row and str(o.status) != row.status:
-                row.status      = str(o.status)
-                row.filled_qty  = float(o.filled_qty or 0)
-                row.filled_price = float(o.filled_avg_price or 0)
-                row.filled_at   = o.filled_at.isoformat() if o.filled_at else None
-                # Update position entry + stop from actual fill price
-                if o.filled_avg_price and row.position_id:
-                    pos = s.query(TradingPosition).filter_by(id=row.position_id).first()
-                    if pos:
-                        fill = float(o.filled_avg_price)
-                        pos.entry_price = fill
-                        # Compute stop from real fill, not pre-order quote
-                        from scripts.trading_risk import stop_price as _stop
-                        pos.stop_price = round(_stop(fill, pos.side), 4)
-                s.commit()
-                updates.append({"alpaca_id": str(o.id), "status": row.status})
+            if not row:
+                continue
+            row.status      = str(o.status)
+            row.filled_qty  = float(o.filled_qty or 0)
+            row.filled_price = float(o.filled_avg_price or 0)
+            row.filled_at   = o.filled_at.isoformat() if o.filled_at else None
+            # Always re-derive entry + stop from the actual fill, every sync —
+            # not just on the first status change. A partial fill's avg price
+            # keeps moving across cycles; the stop must track it or it goes stale
+            # (and on a down-move ends up above entry, an inverted stop).
+            if o.filled_avg_price and row.position_id:
+                pos = s.query(TradingPosition).filter_by(id=row.position_id).first()
+                if pos:
+                    fill = float(o.filled_avg_price)
+                    pos.entry_price = fill
+                    pos.stop_price = round(_stop(fill, pos.side), 4)
+            s.commit()
+            updates.append({"alpaca_id": str(o.id), "status": row.status})
     finally:
         s.close()
     return updates
