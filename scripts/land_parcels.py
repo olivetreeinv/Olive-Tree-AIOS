@@ -125,25 +125,26 @@ ARCGIS_PAGE = 1000  # max records per ArcGIS query page
 # layers. Output is the SAME canonical record as query_parcels(), so the whole downstream
 # pipeline (apply_filters / acre_stats / is_vacant / is_out_of_state) works unchanged.
 #
-# Field names below are ReportAll v9. CONFIRM each against the first live trial response
-# and fix any that differ before trusting results — especially owner_state, which the
-# absentee filter keys on. Docs: https://reportallusa.com/products/api
+# Field names verified against ReportAll's standard API data dictionary (2026-06-30):
+# https://reportallusa.com/product-docs/api/api-standard-data-dictionary
+# Standard schema includes owner mailing (incl. state) — no premium tier. The only
+# trial-time confirm left is the query-param syntax for server-side filtering (below).
 REPORTALL_API = "https://reportallusa.com/api/parcels"
 REPORTALL_VERSION = 9
 REPORTALL_RPP = 1000  # rows per page (API max)
 
 REPORTALL_FIELD_MAP = {
     "parcel_id":    "parcel_id",
-    "site_address": ["addr_number", "addr_street_name", "addr_street_suffix"],
-    "site_zip":     "physzip",
-    "acres":        "acreage_calc",   # GIS-calc acres; deeded fallback in fetch
+    "site_address": "address",        # assembled situs address
+    "site_zip":     "addr_zip",
+    "acres":        "acreage_calc",   # GIS-calc acres; deeded ("acreage") fallback in fetch
     "land_use":     "land_use_code",
     "bldg_area":    "mkt_val_bldg",   # improvement value; 0/blank => vacant land
     "owner_name":   "owner",
     "owner_addr":   "mail_address1",
-    "owner_city":   "mail_city",      # ponytail: confirm field name on trial
-    "owner_state":  "mail_state",     # ponytail: CRITICAL — confirm; absentee filter keys on this
-    "owner_zip":    "mail_zip",
+    "owner_city":   "mail_placename",
+    "owner_state":  "mail_statename", # absentee filter keys on this — verified
+    "owner_zip":    "mail_zipcode",
     "land_value":   "mkt_val_land",   # offer anchor
 }
 
@@ -304,7 +305,7 @@ def query_parcels_reportall(region, zip_code=None, max_records=None,
         for attrs in rows:
             rec = _normalize(attrs, REPORTALL_FIELD_MAP)
             if rec["acres"] is None:                       # acreage_calc blank
-                rec["acres"] = _to_float(attrs.get("acreage_deeded"))
+                rec["acres"] = _to_float(attrs.get("acreage"))  # deeded fallback
             records.append(rec)
             if max_records and len(records) >= max_records:
                 return records
