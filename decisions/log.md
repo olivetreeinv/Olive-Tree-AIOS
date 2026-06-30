@@ -344,3 +344,42 @@ Every deal gets a **property folder** named by full street address inside *Olive
 - Factored pass logic into `passes_gate()` + added `--test` self-check (fluke rejected, valid sample passes).
 - Cleared phantom 1-share SPY DB row (#1, never in Alpaca).
 - Watchlist re-test: SOXL (3x, 28% DD) and DTCR now correctly fail. Survivors: AMAT, LRCX, MRVL, MU, UFO.
+
+## 2026-06-29 — Trading desk: stops were never sent to Alpaca + win-rate visibility
+- **Trigger:** Added backtest-vs-realized win-rate reporting (`trading_report.py --win-rates`, also in `--print`) with plain-English metric definitions. It immediately exposed a 70% backtest win rate vs 20% realized, profit factor 0.06.
+- **Diagnosis:** The 5 "losses" were not a strategy failure — they were ONE over-concentration in Visa (5 long V entries, one per hourly cycle on 6/29), all dumped at once by a manual trim at 20:45 (price 342.0). Win-rate table was an artifact of that single bad decision split across 5 rows.
+- **Bug A (concentration):** Already fixed — `held_symbols` guard at `trading_orchestrator.py:117` skips any symbol already held. The 5 V trades predate it.
+- **Bug B (stop never enforced) — THE REAL FIX:** `submit_order` only sent a market entry; the −1% stop was computed, stored in the DB, and printed, but **no stop order was ever submitted to Alpaca.** That's why V rode 350→342 (−2.29%) past a 346.5 "stop." Fix: `sync_fills()` now places a working GTC stop order on Alpaca once the real fill price is known (`_ensure_stop_order`, idempotent, equities only). Losses are now capped at −1% server-side instead of running unbounded.
+- **Key reframe:** the strategy edge was never disproven — the execution/risk layer was leaking. Surfacing win rates before adding any new strategy (chose this over Fibonacci/more indicators) is what found it.
+- **Open follow-ups:** (1) crypto stops — Alpaca rejects stop orders for crypto; those need monitor-based exits. (2) Reconcile stop fills → auto-mark position closed + compute P&L (currently relies on manual trim). (3) Re-judge realized win rate after a real sample of stop-protected trades accumulates.
+- **Owner:** Brian Norton
+
+## 2026-06-29 — Trading desk: stop-fill reconciliation + crypto stops shipped
+Closed the three follow-ups from the stop-loss fix:
+- **(2) Stop-fill reconciliation:** `sync_fills()` now closes a position when its stop order fills — `_close_position()` records exit price, time, and realized P&L via the pure, tested `_compute_pnl()` (`--check-pnl` self-check). Also fixed a latent bug: the entry-reconcile block ran for *every* filled order, so a stop fill would have overwritten `entry_price`; it's now gated to `order_type="market"`.
+- **(1) Crypto stops:** Alpaca rejects resting stop orders for crypto, so `check_crypto_stops()` checks live price vs the stored stop each cycle and fires a market exit if breached (tagged `order_type="stop"`, idempotent). Wired into `run_cycle()` before `sync_fills()`, so both equity resting-stop hits and crypto synthetic exits close through the same reconcile path.
+- **(3) Re-judge win rate:** no code — run `trading_report.py --win-rates` once stop-protected trades accumulate a real sample.
+- Verified: imports clean, both self-checks pass, crypto monitor runs clean against live DB (0 open positions).
+- **Owner:** Brian Norton
+
+## 2026-06-29 — Trading desk was live but running 2-day-old broken code
+- **Runtime:** launchd `com.olivetree.trading-desk` (KeepAlive + RunAtLoad + caffeinate -i) runs the orchestrator loop continuously — but only while this Mac is on/awake. Cloud blocks market-data APIs, so it can't move off this machine.
+- **Found:** the live process (PID 99110) started Jun 27 and was running stale code — none of the 6/29 stop/reconcile fixes were loaded — and erroring every crypto cycle with `invalid crypto time_in_force`. Root cause: entry order hardcoded `TimeInForce.DAY`; Alpaca requires GTC for crypto. Fixed `submit_order` to use GTC for `/`-symbols (`trading_execution.py`). Verified directly: DAY rejected, GTC accepted.
+- Reloaded the launchd job → fresh process (PID 37777) now runs today's code at the plist's intended 300s interval (was stale at 3600s).
+- **Owner:** Brian Norton
+
+## 2026-06-29 — Trading desk: holiday-aware sessions, live logging, unified stops
+- **Holiday-aware market hours:** `is_market_open()` now reads Alpaca's `/v2/clock` (knows holidays + half-days) with the old weekday-window kept as a network-failure fallback (`trading_data.py`). Fixes the latent bug where Fri Jul 3 2026 (NYSE closed for Jul 4) would have switched to equities and rejected every order all day. Verified: clock returns is_open=False overnight, next_open next weekday 09:30 ET.
+- **Live log visibility:** added `PYTHONUNBUFFERED=1` to the plist so cycles stream to the log instead of block-buffering (looked empty between cycles before).
+- **Stops reworked — resting stops don't work for this book.** Watching a live cycle caught `fractional orders must be DAY orders`: Alpaca won't hold resting stop orders for crypto OR fractional-share equities, and the risk sizer produces fractional qty. Replaced the resting-stop path (`_ensure_stop_order`, deleted) with one unified `check_stops()` — monitor-based for ALL positions: compare live price to stored stop each cycle, fire a market exit on breach (DAY for equities, GTC for crypto). Called each cycle before `sync_fills()`.
+- **Known ceiling (documented in code):** monitor stops protect per-cycle (~5 min) and only while the desk runs; a between-cycle gap or a sleeping Mac leaves positions unguarded until the next check. Equity exits fill only in market hours; after-hours breaches retry until open.
+- Session-switch confirmed: `--market-session auto` re-evaluates every cycle, so it flips equities↔crypto automatically at 09:30/16:00 ET.
+- Verified: imports clean, `--check-pnl` passes, live cycle runs clean (no fractional-stop error), open V/SPY stops monitored without firing.
+- **Owner:** Brian Norton
+
+## 2026-06-29 — Trading desk: 60s stops (cost-decoupled) + session-close reports
+- **60s stops without 5× cost:** each cycle calls Claude Haiku (research) + Polygon data, so running the whole loop at 60s would 5× LLM/data spend (~$19→~$95/mo on Haiku) and risk Polygon rate limits. Instead split the loop: research/quant stays at `--interval 300`, stops enforced every `--stop-interval 60` in between (just one quote per open position, ~free). `sync_fills()` only runs when a stop actually fires. One process, no new files, no DB concurrency. Net: 5-min → 60-sec stop protection, LLM cost unchanged.
+- **Session-close/switch reports:** none existed (alerts were only HALT/per-order/ERROR). Added `send_session_report()` — on every equities↔crypto flip (market open 09:30 / close 16:00 ET) it texts equity, today's P&L, trades closed today (count/wins/net $), and open positions. Wired into the loop via last-session tracking.
+- **Crypto trade texts:** confirmed already working — the per-order `send_alert` is session-agnostic, fires on any filled order incl. crypto. Sent a test iMessage to confirm the channel is live.
+- Verified: imports clean, live loop runs `research=300s, stops=60s`, inner stop loop error-free past 60s.
+- **Owner:** Brian Norton
