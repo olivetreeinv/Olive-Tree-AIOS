@@ -41,7 +41,7 @@ from scripts.trading_data   import get_account, is_market_open, get_top_movers, 
 from scripts.trading_research import run_research
 from scripts.trading_quant  import run_walk_forward
 from scripts.trading_risk   import evaluate as risk_evaluate, is_daily_halted
-from scripts.trading_execution import submit_order, sync_fills
+from scripts.trading_execution import submit_order, sync_fills, get_open_positions
 from scripts.trading_report import snapshot_equity, print_performance, send_alert
 from db.connection import Session
 from db.schema import TradingSignal
@@ -111,6 +111,10 @@ def run_cycle(dry_run: bool = False, market_session: str = "equities"):
         return
 
     # ── Steps 2–4: Quant → Risk → Execute per thesis ──────────────
+    # Symbols we already hold — skip them so we don't re-buy the same name every
+    # cycle. Alpaca nets repeat buys into one position, so the risk agent's
+    # MAX_POSITIONS count can't see the concentration; this DB check can.
+    held_symbols = {p["symbol"] for p in get_open_positions()}
     approved_count = 0
     for t in theses:
         symbol    = t.get("symbol", "")
@@ -118,6 +122,10 @@ def run_cycle(dry_run: bool = False, market_session: str = "equities"):
         conviction = t.get("conviction", 0)
 
         print(f"\n  ── {symbol} {direction.upper()} (conviction={conviction}) ──")
+
+        if symbol in held_symbols:
+            print(f"        ⏭  Already holding {symbol} — skipping to avoid stacking the same name")
+            continue
 
         # Alpaca does not support shorting crypto — skip short crypto theses
         is_crypto = "/" in symbol

@@ -246,3 +246,101 @@ Every deal gets a **property folder** named by full street address inside *Olive
 **Alternatives considered:** (1) Zillow/portal scraping per the doc — rejected, blocked + ToS-hostile + wrong source. (2) Forsyth as launch market (Brian's first pick by familiarity) — rejected on the data (no absentee seller pool). (3) Out-of-state honey-hole (Lehigh Acres FL) — deferred; Bartow keeps it in-state and the model works there. (4) Paid stack (PropStream/Buyer Bridge/bulk SMS) from day one — deferred until deals validate the model.
 
 **Owner:** Brian Norton
+
+
+## 2026-06-24 — LOI Submitted: 641 Powder Springs St, Smyrna GA
+
+**Offer:** $910,000 ($65K/unit) vs $1,500,000 ask
+**Rationale:** DSCR-anchored ceiling. Stabilized IRR 23.3%, EM 3.21x at $910K. Property is 57% occupied (43% vacant, 1 delinquent unit). Bridge financing required. Offer is $590K below ask — Andy Lundsberg price-check call recommended before sending. Turnover corrected to JB standard ($5,250/yr); expense ratio 45% — within range for 1965 vintage.
+**Special condition added:** T-12 within 3 days of acceptance + rent roll warranty at closing.
+**LOI Doc:** https://docs.google.com/document/d/1pthPLPpcpeasv_JwAsF2NvfnMRddQSDV4p2pHaZhgSs/edit
+**PDF:** https://drive.google.com/file/d/1JvCObDVqzS9QP4Li5fc0gwKrTKGEGFEM/view?usp=drivesdk
+
+---
+
+## 2026-06-24 — Side deal (personal): Dempsey estate auction flip analysis
+
+**Decision:** Worked up a full flip analysis for the Richard Cole Estate absolute auction (Dempsey Auction, Cartersville/Bartow GA, Thu 6/25/26). For every lot: current bid, max hammer (walk-away), marketplace + viable sale price, time-to-sell, and margin at the low value estimate. Deliverables on Desktop: dempsey-auction-MASTER-workup.md + .pdf.
+
+**Why:** Personal side hustle, NOT Olive Tree multifamily pipeline. Method: max hammer anchored to conservative (low-end) resale, then ~65–70% buffer, then back out 10% buyer's premium + 7% tax (GATE card exempts farm items). Confirmed specs: Ram 3500 = diesel; CAT 420 = 264 hrs (near-new); JD 5115M = 458 hrs; JD 333G = 290 hrs. Low hours made the CAT 420 the top play (+$8,800 margin at low est.), followed by 333G, 5115M, CLS63, Ram diesel.
+
+**Alternatives considered:** Facebook Marketplace for everything — rejected for watches (Chrono24/r/Watchexchange net more) and firearms (FB-banned → GunBroker/Armslist/FFL). Most common firearms already bid past flip-viable; money is in 6 Browning/Benelli/S&W sleepers.
+
+**Owner:** Brian Norton (personal)
+
+---
+
+## 2026-06-26 — Launched Multi-Agent Paper Trading Desk
+
+**Decision:** Built a 5-agent paper-trading system inside the AIOS as a new vertical. Paper-only until a strategy survives walk-forward backtest + sustained paper performance + Brian's explicit go-ahead.
+
+**Stack:**
+- Broker: Alpaca paper (`paper-api.alpaca.markets`) — free, stocks + crypto
+- Data: Polygon (equities history) + Alpaca (crypto + live quotes)
+- Backtest: vectorbt walk-forward (70% IS / 30% OOS)
+- Research: Claude Haiku (~$0.01–0.03/cycle) → ranked JSON theses
+- Alerts: iMessage via existing `notify.sh` (no Twilio)
+- Uptime: `caffeinate -i` wraps loop cycles (no daemon)
+
+**Risk ceiling (Conservative):** −1% stop per position, −2% daily portfolio halt, 5% max position size, 5 max concurrent positions.
+
+**Universe:** ~20 liquid US large-caps/ETFs (SPY, QQQ, AAPL, MSFT, NVDA, AMZN, GOOGL, META, TSLA + 12 more) + BTC/USD, ETH/USD overnight.
+
+**Agent pipeline:** Research → Quant gate → Risk veto → Execution → Equity snapshot.
+
+**Entry point:** `python3 scripts/trading_orchestrator.py --once --dry-run` (dry run), `--once` (live paper), `caffeinate -i python3 scripts/trading_orchestrator.py --loop` (continuous).
+
+**Why:** Stocks + crypto is a 24/7 income stream candidate that reuses existing AIOS infrastructure (Anthropic key, Polygon key, SQLAlchemy DB, notify.sh, skill pattern). Paper-first policy prevents any real capital risk during POC. Walk-forward gate is the anti-overfitting defense — a strategy must pass OOS before it ever touches execution.
+
+**Real money checklist (do NOT skip):** 2+ weeks sustained paper performance (Sharpe > 0.5, max DD < 10%) + walk-forward confirmed + risk ceiling re-approved + live Alpaca keys generated + `_PAPER = True` changed in `trading_execution.py` + Brian explicitly says go.
+
+**Owner:** Brian Norton
+
+## 2026-06-29 — Evaluating Paid Parcel Data for Multi-County Land Expansion
+
+**Decision:** Pursue a paid parcel-data API to scale land wholesaling beyond Bartow — **ReportAllUSA first**, Regrid as fallback. Both free 30-day trials; sales-question drafts staged in Gmail (not sent).
+
+**Why:** Ranked GA exurban land-flip markets by builder demand + cheap basis + absentee pool: top new adds are Carroll (30180), Paulding (30157), Barrow (30680), Spalding. But none are auto-scoutable — their ArcGIS Online parcel layers are geometry-only (Paulding/Barrow) or wrong state (the only "Carroll" AGO layer is Carroll County MD). Owner/mailing/value data for these counties lives in Schneider/qPublic, which `land_parcels.py` can't reach. Bartow works only because its ParcelInfo layer bundles CAMA inline.
+
+**Cost picture:**
+- Regrid Data Store (per-record ~$0.15/parcel): ~$4.5K–$11K per full county — dead on arrival.
+- Regrid API: $500–$2K/mo flat, nationwide; owner mailing = premium (~$1K+/mo). 30-day free trial, no card.
+- ReportAllUSA API: unpublished/sales-quoted but historically the budget option; owner mailing is STANDARD (not paywalled), queries by county FIPS + spatial filter (matches our zip pipeline). 30-day free trial.
+
+**Plan:** Run ReportAll's free trial → pull vacant + out-of-state + 1–10 ac for the 4 counties, cache to olive.db, cancel before billing. Fall back to Regrid only if ReportAll's GA data is thin. Wiring lift ≈ 40 lines: a REGRID/REPORTALL source path in `land_parcels.py` feeding the existing normalize/filter pipeline.
+
+**Interim (free, today):** Stay in Bartow, widen to the buy-box "Watch" zips 30184 (White) + 30137 (Emerson) — same reachable GIS.
+
+**Owner:** Brian Norton
+
+## 2026-06-29 — Land Wholesaling: 6-State Southeast Expansion Target List
+
+**Decision:** Expand the land-wholesaling vertical beyond GA to a 6-state Southeast footprint (GA, AL, NC, SC, TN, KY). Researched and ranked top exurban counties by the buy-box test: cheap rural 1-10 ac + active builder demand + out-of-state absentee pool. Updated both parcel-data vendor drafts (Regrid, ReportAll) to this multi-state scope.
+
+**Target counties (~19, by state):**
+- GA: Carroll (30180), Paulding (30157/30132), Barrow (30680), Spalding (30223/30224)
+- AL: Baldwin inland (36567/36576/36580/36551) ⭐, Autauga (36067/36066/36068) ⭐
+- NC: Stanly (28001/28127/28071) ⭐, Rowan (28147/28144/28023/28039), Franklin
+- SC: Lancaster ⭐, Cherokee (Gaffney), Berkeley (Moncks Corner)
+- TN: Wilson (37090/37087/37184), Rutherford (37128/37130/37060)
+- KY: Bullitt (40165/40047), Nelson (40004/40013) ⭐, Warren (Bowling Green), Scott (Lexington)
+
+**Cheapest basis (⭐ = best wholesale spread, $8-20K/ac):** AL Baldwin inland, AL Autauga, NC Stanly, SC Lancaster, KY Nelson. Pull these first on trial day-one. TN is solid but pricier ($15-30K/ac) → thinner spreads, lower priority.
+
+**Why this strengthens the paid-data decision:** ~19 counties across 6 states is unmanageable via per-county ArcGIS scrapers (most use qPublic/Schneider = unreachable; the few AGO layers are geometry-only, already proven with GA Carroll/Paulding/Barrow). ONE Regrid or ReportAll subscription covers all 6 states nationwide. Free 30-day trial validates at $0 before paying. Wiring lift unchanged: one normalize path in land_parcels.py feeds the existing filter pipeline.
+
+**Source:** Perplexity sonar-pro market research (builder demand + land pricing + absentee patterns), 2026-06-29. None GIS-confirmed yet — trial data settles final per-county viability.
+
+**Owner:** Brian Norton
+
+## 2026-06-29 — Trading desk: dedup + stop-loss fixes
+- **Bug 1 (concentration):** orchestrator re-bought the same symbol every cycle (6× Visa) because the MAX_POSITIONS check counts Alpaca positions, and Alpaca nets repeat buys into one. Fix: skip any thesis whose symbol is already an open position in our DB (`trading_orchestrator.py`).
+- **Bug 2 (inverted stops):** `sync_fills` only recomputed entry/stop on a status-string change, and `get_orders()` returned open-only — so stops went stale vs. the real fill and landed above entry on down-moves. Fix: status=ALL + recompute entry/stop from fill on every sync (`trading_execution.py`).
+- Repaired 2 live inverted stops (positions #6, #8 V) to entry×0.99.
+- Open question: trim the 6-deep Visa stack (~$30K concentrated)? Pending Brian.
+
+## 2026-06-29 — Quant gate: minimum-trades floor
+- Added MIN_OOS_TRADES=5 to the quant gate (`trading_quant.py`). A backtest that made only 1-2 trades (rode one trend, 100% win, huge CAGR) is luck, not signal — it can no longer pass.
+- Factored pass logic into `passes_gate()` + added `--test` self-check (fluke rejected, valid sample passes).
+- Cleared phantom 1-share SPY DB row (#1, never in Alpaca).
+- Watchlist re-test: SOXL (3x, 28% DD) and DTCR now correctly fail. Survivors: AMAT, LRCX, MRVL, MU, UFO.

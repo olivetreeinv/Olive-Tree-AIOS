@@ -34,18 +34,20 @@ from land_sheets import get_token, read_rows, upsert_row  # noqa: E402
 
 TAB = "Land Builders"
 # Land Builders header order (land_setup.TABS):
-# Name|Company|Phone|Email|Markets/Zips|Lot Size Min|Lot Size Max|Price Per Lot|
-# Volume/Mo|Conditions|Close Timeline|Tier|Deals Done|Last Contact|Notes
+# Name|Company|State|City|Phone|Email|Markets/Zips|Avg $/Acre (Comp)|Lot Size Min|
+# Lot Size Max|Price Per Lot|Volume/Mo|Conditions|Close Timeline|Tier|Deals Done|
+# Last Contact|Notes|Intake Portal
 
 
 def _row(a):
     # Price Per Lot column carries either a flat price or "$/acre <n>" note.
     price = f"${a.price_per_acre:g}/ac" if a.price_per_acre else (a.price_per_lot or "")
     return [
-        a.name or "", a.company or "", a.phone or "", a.email or "",
-        a.markets or "", a.min_acres or "", a.max_acres or "", price,
+        a.name or "", a.company or "", a.state or "", a.city or "",
+        a.phone or "", a.email or "",
+        a.markets or "", a.avg_acre or "", a.min_acres or "", a.max_acres or "", price,
         a.volume or "", a.conditions or "", a.timeline or "", a.tier or "B",
-        0, date.today().isoformat(), a.notes or "",
+        0, date.today().isoformat(), a.notes or "", a.intake_portal or "",
     ]
 
 
@@ -96,13 +98,15 @@ def cmd_list(a):
         return
     header, data = rows[0], rows[1:]
     for r in data:
-        if a.market and a.market not in (r[4] if len(r) > 4 else ""):
+        if a.market and a.market not in (r[6] if len(r) > 6 else ""):
             continue
         name = r[0] if r else ""
         company = r[1] if len(r) > 1 else ""
-        markets = r[4] if len(r) > 4 else ""
-        price = r[7] if len(r) > 7 else ""
-        print(f"  {name:24} {company:22} {markets:16} {price}")
+        loc = "/".join(p for p in [(r[2] if len(r) > 2 else ""),
+                                   (r[3] if len(r) > 3 else "")] if p)
+        markets = r[6] if len(r) > 6 else ""
+        price = r[10] if len(r) > 10 else ""
+        print(f"  {name:24} {company:22} {loc:18} {markets:16} {price}")
 
 
 def cmd_price_for(a):
@@ -111,8 +115,8 @@ def cmd_price_for(a):
     rows = read_rows(token, TAB)
     best = None
     for r in rows[1:]:
-        markets = r[4] if len(r) > 4 else ""
-        price = r[7] if len(r) > 7 else ""
+        markets = r[6] if len(r) > 6 else ""
+        price = r[10] if len(r) > 10 else ""
         if a.price_for in markets and "/ac" in price:
             try:
                 v = float(price.replace("$", "").replace("/ac", ""))
@@ -133,14 +137,18 @@ def main():
     ap.add_argument("--price-for", help="Show offer-anchor $/acre for a market zip")
     ap.add_argument("--market", help="Filter --list to a market zip")
     # buy-box fields
-    ap.add_argument("--name"); ap.add_argument("--company"); ap.add_argument("--phone")
+    ap.add_argument("--name"); ap.add_argument("--company")
+    ap.add_argument("--state"); ap.add_argument("--city")
+    ap.add_argument("--phone")
     ap.add_argument("--email"); ap.add_argument("--markets", help="comma-separated zips")
+    ap.add_argument("--avg-acre", help="Avg comp $/acre in the builder's zip(s)")
     ap.add_argument("--price-per-acre", type=float)
     ap.add_argument("--price-per-lot")
     ap.add_argument("--min-acres", type=float); ap.add_argument("--max-acres", type=float)
     ap.add_argument("--volume", type=int, help="lots/month")
     ap.add_argument("--conditions"); ap.add_argument("--timeline"); ap.add_argument("--tier")
     ap.add_argument("--notes")
+    ap.add_argument("--intake-portal", help="Land/lot submission URL")
     a = ap.parse_args()
 
     if a.add:
