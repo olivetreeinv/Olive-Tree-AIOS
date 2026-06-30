@@ -31,6 +31,9 @@ from db.schema import TradingEquityCurve, TradingPosition
 _NOTIFY_TO = os.getenv("NOTIFY_IMESSAGE_TO", "")
 _NOTIFY_SH = str(Path(__file__).parent / "notify.sh")
 _START_EQUITY = 100_000.0   # paper starting equity
+# Soft daily profit goal — tracking/visibility only. Does NOT force or block trades
+# (the -2% daily halt is the only hard daily rule). Override via env.
+_DAILY_TARGET = float(os.getenv("DAILY_TARGET_USD", "1000"))
 
 
 def send_alert(title: str, body: str):
@@ -88,6 +91,11 @@ def snapshot_equity():
 
         open_pos = s.query(TradingPosition).filter_by(status="open").count()
 
+        # Today's $ P&L vs the soft target = today's equity − last prior day's close
+        prior = [r for r in rows if r.date < today_str]
+        prev_equity = prior[-1].portfolio_equity if prior else _START_EQUITY
+        daily_pnl = equity - prev_equity
+
         # Upsert today's row
         existing = s.query(TradingEquityCurve).filter_by(date=today_str).first()
         if existing:
@@ -108,8 +116,12 @@ def snapshot_equity():
     finally:
         s.close()
 
+    pct_target = (daily_pnl / _DAILY_TARGET) if _DAILY_TARGET else 0
+    hit = "✅" if daily_pnl >= _DAILY_TARGET else ""
     print(f"  📊 {today_str} equity=${equity:,.2f}  port={port_return_pct:+.2%}  spy={spy_return_pct:+.2%}  sharpe={sharpe:.2f}  dd={max_dd:.1%}")
-    return {"equity": equity, "port_return_pct": port_return_pct, "spy_return_pct": spy_return_pct}
+    print(f"  🎯 Today P&L ${daily_pnl:+,.2f} / ${_DAILY_TARGET:,.0f} soft target ({pct_target:+.0%}) {hit}")
+    return {"equity": equity, "port_return_pct": port_return_pct,
+            "spy_return_pct": spy_return_pct, "daily_pnl": daily_pnl}
 
 
 def print_performance():
@@ -137,6 +149,10 @@ def print_performance():
     latest = rows[-1]
     alpha  = (latest.port_return_pct or 0) - (latest.spy_return_pct or 0)
     print(f"\n  Alpha vs SPY: {alpha:+.2%}  |  Running Sharpe: {latest.sharpe_running:.2f}  |  Max Drawdown: {latest.max_drawdown:.1%}")
+    if len(rows) >= 2:
+        daily_pnl = latest.portfolio_equity - rows[-2].portfolio_equity
+        hit = "✅" if daily_pnl >= _DAILY_TARGET else ""
+        print(f"  Today P&L: ${daily_pnl:+,.2f} / ${_DAILY_TARGET:,.0f} soft target ({daily_pnl/_DAILY_TARGET:+.0%}) {hit}")
 
 
 def main():

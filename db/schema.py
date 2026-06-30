@@ -260,6 +260,106 @@ class LandDeal(Base):
     builder = relationship("LandBuilder", back_populates="deals")
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Trading Desk tables
+# ─────────────────────────────────────────────────────────────────────────────
+
+class TradingThesis(Base):
+    """Research-agent output: one ranked thesis per symbol per cycle."""
+    __tablename__ = "trading_theses"
+
+    id          = Column(Integer, primary_key=True, autoincrement=True)
+    run_id      = Column(String(40), nullable=False, index=True)  # ISO timestamp of cycle
+    symbol      = Column(String(20), nullable=False)
+    direction   = Column(String(5), nullable=False)   # LONG / SHORT
+    conviction  = Column(Float)                        # 0–1 from LLM
+    rationale   = Column(Text)
+    catalyst    = Column(Text)
+    horizon     = Column(String(30))                   # e.g. "intraday" / "swing"
+    created_at  = Column(String(30), nullable=False)
+
+
+class TradingSignal(Base):
+    """Quant-agent output: backtest + walk-forward metrics per thesis."""
+    __tablename__ = "trading_signals"
+
+    id              = Column(Integer, primary_key=True, autoincrement=True)
+    thesis_id       = Column(Integer, ForeignKey("trading_theses.id"), nullable=True)
+    symbol          = Column(String(20), nullable=False)
+    run_id          = Column(String(40), nullable=False, index=True)
+    sharpe          = Column(Float)
+    max_drawdown    = Column(Float)    # decimal (0.05 = 5%)
+    cagr            = Column(Float)
+    win_rate        = Column(Float)
+    oos_sharpe      = Column(Float)    # out-of-sample (walk-forward)
+    passed_gate     = Column(Boolean)  # True = cleared the quant gate
+    strategy_params = Column(Text)     # JSON: indicator params used
+    created_at      = Column(String(30), nullable=False)
+
+    thesis = relationship("TradingThesis")
+
+
+class TradingPosition(Base):
+    """Current (and closed) paper positions."""
+    __tablename__ = "trading_positions"
+
+    id             = Column(Integer, primary_key=True, autoincrement=True)
+    symbol         = Column(String(20), nullable=False)
+    side           = Column(String(5), nullable=False)   # long / short
+    qty            = Column(Float, nullable=False)
+    entry_price    = Column(Float)
+    stop_price     = Column(Float)                       # −1% ceiling
+    entry_time     = Column(String(30))
+    exit_price     = Column(Float)
+    exit_time      = Column(String(30))
+    pnl            = Column(Float)
+    pnl_pct        = Column(Float)
+    status         = Column(String(20), default="open")  # open / closed / stopped
+    signal_id      = Column(Integer, ForeignKey("trading_signals.id"))
+    notes          = Column(Text)
+
+    signal = relationship("TradingSignal")
+
+
+class TradingOrder(Base):
+    """Alpaca paper order log — one row per order submitted."""
+    __tablename__ = "trading_orders"
+
+    id             = Column(Integer, primary_key=True, autoincrement=True)
+    alpaca_id      = Column(String(60), unique=True)
+    symbol         = Column(String(20), nullable=False)
+    side           = Column(String(5), nullable=False)
+    qty            = Column(Float)
+    order_type     = Column(String(20))   # market / limit / stop
+    limit_price    = Column(Float)
+    stop_price     = Column(Float)
+    filled_price   = Column(Float)
+    filled_qty     = Column(Float)
+    status         = Column(String(30))   # pending / filled / cancelled / rejected
+    submitted_at   = Column(String(30))
+    filled_at      = Column(String(30))
+    position_id    = Column(Integer, ForeignKey("trading_positions.id"))
+
+    position = relationship("TradingPosition")
+
+
+class TradingEquityCurve(Base):
+    """Daily snapshot: portfolio equity vs SPY benchmark."""
+    __tablename__ = "trading_equity_curve"
+
+    id              = Column(Integer, primary_key=True, autoincrement=True)
+    date            = Column(String(20), unique=True, nullable=False)
+    portfolio_equity = Column(Float)
+    cash            = Column(Float)
+    spy_close       = Column(Float)
+    spy_return_pct  = Column(Float)   # SPY cumulative from start
+    port_return_pct = Column(Float)   # portfolio cumulative from start
+    sharpe_running  = Column(Float)
+    max_drawdown    = Column(Float)
+    open_positions  = Column(Integer)
+    daily_halted    = Column(Boolean, default=False)  # True if −2% halt triggered
+
+
 class Document(Base):
     """Index of wiki/markdown files. Path is the unique key; body stays on disk."""
     __tablename__ = "documents"
