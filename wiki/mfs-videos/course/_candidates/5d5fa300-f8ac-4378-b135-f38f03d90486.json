@@ -1,0 +1,29 @@
+{
+  "deal_relevant": "yes",
+  "topic": "capital-raise",
+  "summary": "Justin explains how to source debt financing for multifamily deals, covering the distinction between local commercial banks for smaller loans (under $3M), loan brokers for mid-size deals, and capital advisors for larger deals ($15-20M+). He details bridge debt vs. fixed-rate debt structures, with bridge debt used for value-add renovations and fixed-rate debt for stabilized assets.",
+  "takeaways": [
+    "Loans under $3 million typically come from local commercial banks in that specific market",
+    "For $10M+ acquisition loans, use loan brokers like CBRE or Bercadia, or direct relationships with Freddie/Fannie",
+    "Capital advisors enter at $15-20M+ loan sizes; they charge 3% fee on equity raised and 1% on debt sourced",
+    "You need 500+ units under ownership to work with capital advisors who will vouch for your track record",
+    "Bridge debt is used for value-add: acquisition portion + holdback for renovations, then refinance to fixed-rate debt after stabilization",
+    "Loan brokers can be found via LinkedIn and conferences; build relationships with local players before deal-hunting",
+    "Fixed-rate debt available from Freddie/Fannie or life insurance companies; bridge debt from debt funds and institutional lenders"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "capital-raise",
+      "change": "Develop a tiered debt sourcing strategy based on loan size thresholds",
+      "evidence": "Justin provides specific loan amount breakpoints: under $3M use local commercial banks, $7-10M use loan brokers, $15-20M+ use capital advisors with 500+ unit track record requirement"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Build local debt provider relationships before deal sourcing begins",
+      "evidence": "Justin emphasizes 'getting into those markets in advance, setting up the infrastructure and the relationships is really important' so 'when you start seeing deals, you can start striking'"
+    }
+  ],
+  "id": "5d5fa300-f8ac-4378-b135-f38f03d90486",
+  "title": "Lesson 2: The Debt",
+  "module": "Module 3: Raising The Money"
+}

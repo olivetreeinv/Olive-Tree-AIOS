@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "yes",
+  "topic": "broker-search",
+  "summary": "Justin teaches how to use Crexie.com to identify brokers and properties in target markets, then leverage on-market listings to build broker relationships and gain access to pre-market deals. The key strategy is contacting brokers about on-market properties that didn't sell pre-market, touring them to build rapport, and using that relationship to access the real deal flow.",
+  "takeaways": [
+    "On-market deals (Crexie, LoopNet, CoStar) represent only 40% or less of available inventory; best deals sell pre-market to broker databases 2-3 weeks before listing sites",
+    "On-market deals that appear online 'didn't sell pre-market, so therefore the broker said okay, let's take and see what kind of chump we can get on the real market'",
+    "Filter Crexie by unit size and cap rate to narrow results in your target market",
+    "Click the OM (Offering Memo) button to access broker's marketing package with property details, photos, financials, unit mix, and pro forma",
+    "Call the broker: ask if property was in escrow, current offers, active offers, and tour availability; frame it as 'I'm super interested in this market in particular'",
+    "The entire purpose is building rapport: 'you are not going to get access to the real deals that make sense if you do not build rapport'",
+    "'Leverage the on to get to the off' - execute this with 3 properties in same market/submarket; expect most won't work but they give access to pre-market inventory where deals make financial sense"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "broker-search",
+      "change": "Develop systematic broker relationship building process using on-market listings as entry point",
+      "evidence": "Justin demonstrates exact call script and property selection process: pick 3 on-market properties in target market, call brokers about escrow/offer status, schedule tours to build rapport, then leverage relationships for pre-market access"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Use OM documents from Crexie listings to populate deal analyzer with property financials and underwriting data",
+      "evidence": "'This is a nice little PDF document that gives you the data that you need to input into your deal analyzer that we give you' - OM contains photos, financials, unit mix, current pro forma needed for underwriting"
+    },
+    {
+      "skill": "market-research",
+      "change": "Identify active brokers and deal flow in target market by analyzing on-market listings",
+      "evidence": "'what you are using these websites for is to get access to find out who the heck are doing deals in your market' - filter by unit size to find broker names, then track which brokers have multiple listings"
+    }
+  ],
+  "id": "5ffc0b06-a1c4-4b39-baa3-008bd9efbb04",
+  "title": "Lesson 1A: Crexi.com. Finding A Deal, Talking To Brokers. On To Off Method Explained",
+  "module": "Module 1: How To Find Deals"
+}

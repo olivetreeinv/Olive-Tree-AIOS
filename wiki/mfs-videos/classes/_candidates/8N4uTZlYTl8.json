@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan coaches Julian, a newer investor working on his first multifamily deal in Michigan, on deal underwriting fundamentals including cap rates, debt coverage ratios, interest rate environments, and how to structure financing with renovation budgets. The session covers why broker proformas often show unrealistic returns through negative leverage, how to identify distressed sellers, and the importance of keeping first deals under $1M in total equity raise.",
+  "takeaways": [
+    "Cap rate must be within ~0.5% of interest rate for deals to work\u2014if buying at 5.25% cap with 6.5% rates, you have negative leverage and must put down 40-50%, killing returns",
+    "Debt Coverage Ratio must equal 1.25x minimum: if mortgage payment is $1,000, NOI must be $1,250 to cover debt plus cash flow",
+    "Construction/renovation loans cost 8% vs. permanent loans at 6-6.75%; keep renovations under $100K and raise separately as equity to avoid higher rates",
+    "Rule of thumb: always ask seller 'when did you buy?'\u20142017-2018 buyers have good basis; 2021-2024 buyers selling now are distressed and may have zero/negative equity",
+    "First deal equity raise should stay under $800K-$1M maximum unless you have established HNW investor relationships; Julian's 16-unit at $975K total property price requiring $281-458K equity is sized right",
+    "Light to medium value-add only: target 1970s or newer, avoid heavy renovation (>$5-10K per unit)\u2014properties needing 'bombs' rebuilt are too risky for first deals",
+    "Interest rates 6-6.5% expected in current market; calculate using deal analyzer\u2014if cap rate + 0.5% gap from interest rate, metrics will show poor cash-on-cash (5.5%) and IRR (11%)"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "establish hard cap rate-to-interest-rate spread rule of maximum 0.5 point gap when underwriting",
+      "evidence": "Justin repeatedly emphasized if you're at 5.25% cap with 6.5% rates it doesn't work; showed specific metrics deteriorating (5.5% cash-on-cash, 11% IRR) when gap exceeds threshold"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "structure renovation financing as separate equity raise rather than loan inclusion to avoid 8% construction loan rates vs 6-6.75% permanent rates",
+      "evidence": "Julian initially included $100K renovation in loan at higher rate; Justin showed how this required raising total equity to $458K vs $281K, and coached him to raise renovation separately and get interest-only period on permanent debt"
+    },
+    {
+      "skill": "broker-search",
+      "change": "qualify sellers by purchase date to identify distressed situations with limited equity rather than pursuing sellers with strong basis",
+      "evidence": "Justin's rule: 'always ask when did they buy'\u20142017-2018 = good equity position, 2021-2024 = forced sale with equity likely wiped out; used this to explain deal gaps and broker resistance"
+    }
+  ],
+  "id": "8N4uTZlYTl8",
+  "title": "Weekly Coaching_11-20-25 | Justin Brennan",
+  "duration": 4017
+}

@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "partial",
+  "topic": "capital-raise",
+  "summary": "Justin Brennan teaches how to build a capital foundation before closing deals by establishing business identity, creating a CRM database of 30 contacts, and executing a mock deal (pitch deck, landing page, Loom video, email campaign) to warm up investors and shift how people perceive you as a multifamily investor rather than just your primary profession.",
+  "takeaways": [
+    "Change email signature from 'Realtor Justin' to 'Realtor and Multifamily Investor' with multifamily website link to shift market perception",
+    "Build CRM with minimum 30 people you know (not necessarily wealthy) and use bulk CSV import with name/email/phone",
+    "Create mock deal marketing package: pitch deck + 5-10 minute Loom video summary + dedicated landing page + email to database asking 'who do you know' not asking for money",
+    "Mock deal email template: subject 'quick look [unit count] unit deal,' tone 'I'm closing on it with or without you,' include returns/highlights/video link/pitch deck, ask referrals not investments",
+    "Send mock deal email asking 'Can you send this to anyone you may know?' rather than 'Do you have $50k to invest?'",
+    "Pull mock deal after 3 weeks with message: 'Found issues during escrow, pulling away, thanks for interest, will send next deal'",
+    "Follow SEC guidance: avoid posting specific deal terms on social media; acceptable to send deal details via email to known contacts or warm introductions (506b compliant)"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "capital-raise",
+      "change": "Systematically warm capital before closing real deals using mock deal process",
+      "evidence": "Justin explains mock deal serves dual purpose: (1) marketing exercise showing professional deal packaging, (2) warming database so people understand your multifamily investor identity before asking for real capital commitments"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Identify markets via three-state Crexy pull and broker conversations to narrow based on 'pull' signals",
+      "evidence": "Justin tells Brian: 'take three states, get on Crexy and pull everything 10-50 units, dial for dollars with brokers, narrow based on conversation pull'"
+    },
+    {
+      "skill": "mindset",
+      "change": "Accept and project dual identity (current profession + multifamily investor) to change how others perceive you",
+      "evidence": "Justin changed email signature to include 'multifamily investor,' which shifted client perception from 'commodity realtor' to differentiated investor, resulting in unsolicited investor inquiries and partner referrals"
+    }
+  ],
+  "id": "htqozGW3yHc",
+  "title": "Tuesday Mentorship Q&A - How to Build a Capital Foundation_06/09/26| Justin Brennan",
+  "duration": 3342
+}

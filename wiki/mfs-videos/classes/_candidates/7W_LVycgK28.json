@@ -1,0 +1,40 @@
+{
+  "deal_relevant": "partial",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan guides mentorship group through analyzing multifamily deal financials, focusing on identifying red flags in T12 statements and expense line items. The discussion centers on proper expense categorization, capitalized items versus operational expenses, and benchmarking utilities, maintenance, repairs, and turnover costs for accurate deal underwriting.",
+  "takeaways": [
+    "T12 should show Gross Potential Income, then deduct Loss to Lease, Vacancy, Bad Debt, and Concessions to reach Effective Gross Income (not just collected rent)",
+    "Four critical expense line items to monitor: Turnover ($1,500 per unit when it occurs), Repairs & Maintenance ($700-800/unit), Utilities (varies by market), Property Taxes (research county assessment cycles)",
+    "Total R&M + Turnover should benchmark around $1,000 per unit per year; flag as red flag if significantly higher",
+    "Turnover calculation: 30% of units \u00d7 $1,500 per turned unit; if retaining 70-80% of tenants annually you're performing well",
+    "Utilities at $166/unit/month (~$2,000/year) is abnormally high for 36-unit property; investigate if owner is illegally paying tenant electricity",
+    "Water/Sewer reimbursement typically recovers 60-65% of costs through tenant charges; remainder is landlord expense",
+    "Extract capex items (roof replacement, HVAC condenser replacement, furnace replacement) from operational expenses; monthly plumbing over $1,600+ suggests systemic line issues requiring investigation",
+    "Property taxes: Calculate based on post-purchase county assessment; budget for higher tax rates for first 6 months of ownership until stabilization"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Learn to identify and properly categorize capitalized vs. operational expenses on T12 statements",
+      "evidence": "Justin explains how roof repairs, HVAC condenser replacements, and furnace replacements should move to capex line instead of R&M; discusses how to audit monthly expense patterns to detect one-time capital projects disguised as operations"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Benchmark key expense categories against unit count to detect outliers requiring broker follow-up",
+      "evidence": "Justin provides specific thresholds: utilities ~$166/unit/month is high; maintenance labor for 36-unit should not equal 100-unit property; plumbing at $1,600+/month suggests systemic issues; demonstrates how Gideon used these benchmarks to question $71,000 annual utilities"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Calculate and validate turnover costs using 30% turnover rate \u00d7 $1,500 per unit rule; add to R&M to reach $1,000/unit total benchmark",
+      "evidence": "Michelle asked what turnover involves; Justin clarified it's $1,500 per turned unit (not per unit), not $300-400, and showed the calculation: 3 units \u00d7 $1,500 \u00f7 10 units = $450/unit when annualized"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Request and analyze property tax assessment methodology by county before underwriting to account for post-purchase reassessment risk",
+      "evidence": "Justin advises Kelly and others to calculate property taxes as county assesses them (sale-based vs. 3-5 year cycle) and budget for higher rates during first 6 months post-acquisition until stabilization"
+    }
+  ],
+  "id": "7W_LVycgK28",
+  "title": "Tuesday Mentorship - Master Multifamily Deal Flow_11-25-25 | Justin Brennan",
+  "duration": 2979
+}

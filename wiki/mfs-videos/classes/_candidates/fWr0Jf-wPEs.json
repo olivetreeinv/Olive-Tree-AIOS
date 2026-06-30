@@ -1,0 +1,42 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan coaches on multifamily deal underwriting through two detailed case studies: Julian's closed 23-unit deal in Michigan ($1.15M final price after $150K price reduction via due diligence), and Jason's Cincinnati 31-unit prospect. Key focus areas include financial due diligence red flags, proper expense modeling, and capital raise execution.",
+  "takeaways": [
+    "Use $600-$800 per unit for repairs & maintenance on pre-1980 buildings; don't accept artificially low numbers from sellers",
+    "Request insurance quotes from vendors upfront (quote process takes 2-3 days) rather than relying on seller's rates that may reflect master policies you cannot access",
+    "Property taxes and insurance are the two largest expense line items\u2014verify both independently; use AI tools for tax verification",
+    "Demand to see non-operational expenses line item on P&L; if seller refuses, it signals hidden R&M costs being misclassified",
+    "For 1950-1980 vintage properties, expect 10-12% economic vacancy/credit loss even in 93% occupied scenarios; use historical data to justify",
+    "Ask directly for commitment after presenting: 'Are we doing $50K or $100K?' vs. pause; isolate objections into three buckets: timing/capital, trust/comfort, or deal quality",
+    "Get insurance quotes early at $400-$600/unit baseline for market; flood insurance can add $5,000-$25,000/year\u2014verify before LOI",
+    "Build 10-15 LOIs in pipeline; don't be too selective; broker conversations and seller motivation will determine which land",
+    "Extension options critical: Julian used 30-day extension (90 days total vs. standard 60) when capital raise tightened\u2014ensure contracts allow this",
+    "Verify rent rolls show actual current rents for occupied units; separate vacant units into line items and assume market rent for underwriting purposes"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Establish systematic P&L verification checklist targeting the two largest expense lines (taxes & insurance) and catch revenue manipulation via bad-debt misclassification",
+      "evidence": "Julian discovered seller was counting uncollected bad debt as income on the proforma; Justin demonstrated that requesting non-operational expense line forces transparency; audience shown $600-800/unit R&M benchmark for vintage buildings"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Use vintage-based expense modeling rather than accepting seller financials; back into realistic expense ratio (40-50% for 1980+ properties) when detail is unavailable",
+      "evidence": "Justin showed how Granada property with artificially low 29% expense ratio should operate at 50-51%; demonstrated using industry benchmarks (1980 or older = 40-50% ratio) to override seller assumptions"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Develop vendor network for independent validation (insurance brokers, inspectors, lenders) and call brokers systematically with underwritten offer rather than waiting for perfect information",
+      "evidence": "Justin called three brokers live during session, identified Granada property with 27-year hold and flood zone issue; secured direct contact (Jerry Brewer) for future deal flow; recommended $21-22M offer on Cincinnati property despite gaps"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Execute direct closing logistics (utility transfers, property manager coordination, insurance procurement) in real-time rather than delegating entirely to lawyers; identify tasks that don't require legal review",
+      "evidence": "Julian admitted mistake of not transferring utilities to his name before close\u2014tenants lost electricity; emphasized lawyer costs ($2K+) on routine items that could be handled direct; legal team member recommended calling seller directly on factual questions"
+    }
+  ],
+  "id": "fWr0Jf-wPEs",
+  "title": "Weekly Coaching_05/07/26 | Justin Brennan",
+  "duration": 3804
+}

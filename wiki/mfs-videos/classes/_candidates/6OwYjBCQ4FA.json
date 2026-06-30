@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan coaches Brian Norton on a 10-unit value-add deal in Virginia Highlands, Atlanta, priced at $2M. The core lesson: modern market conditions (6-6.5% cap rates, 6.5% interest rates) require buying based on current cash flow breakeven or better, not future appreciation hopes. Brian must offer ~$1.35M (6% current cap rate) instead of the $2M ask, and use this as a broker negotiation framework.",
+  "takeaways": [
+    "Current cap rate must be 6-6.5% minimum based on today's interest rates\u2014back into purchase price using current NOI, not proforma",
+    "Full HVAC renovation may cost $15-20K/unit; consider mini-splits to save on ducting labor costs",
+    "Comp rents in Virginia Highlands are $1,395-$1,500, not the $1,650-$2,100 broker claims\u2014use actual market rents, not hope-and-pray numbers",
+    "Tell overpricing brokers: 'No bank will loan me based on hope-and-pray numbers. That was 2021-2022. Today it's about cash flow and financials.'",
+    "If broker won't accept your real numbers offer, ask them to co-invest equity\u2014their refusal proves the deal doesn't work",
+    "You cannot carry negative cash flow on current numbers into a 24-month renovation; must break even or cash flow on day-one",
+    "Send underwritten proforma to broker with the line: 'Tell me where I'm wrong' rather than just walking away\u2014keeps door open for future deals"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Use current cap rate (6-6.5%) to back into max purchase price rather than accepting broker's asking price",
+      "evidence": "Justin shows Brian how to adjust the purchase price from $2M to $1.35M by setting current cap rate target in the spreadsheet: 'Back into the current cap rate of 6 to 6 and a half% based on today's numbers. And that'll give you the number that you should be buying it at.'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Validate renovation costs per unit ($15-20K not $10K) and cross-check rent projections against actual comparable rents",
+      "evidence": "Justin tells Brian: 'If you're doing like full HVAC and all that stuff, your cost per unit is going to be higher than that...you may be better off just doing mini splits...You may want to push that up to 15K a unit.' And: 'the property next to it...is renting at 1350 1395' to refute broker's $1,650-$2,100 claims."
+    },
+    {
+      "skill": "broker-search",
+      "change": "Stop accepting overpriced deals; instead, use on-market deals to identify market-making brokers, then build rapport for off-market access",
+      "evidence": "Justin tells Angelica: 'find two, three deals in your marketplace...who are the brokers that appear to be doing the most deals...now I know who the players are.' And: 'The entire purpose of that exercise is to...utilize the onmarket stuff that doesn't make sense to get access to the stuff that actually does.'"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Use exact scripts to neutralize overpricing: ask broker why they won't co-invest equity if it's such a 'smoking deal,' then send proforma and ask 'tell me where I'm wrong'",
+      "evidence": "Justin role-plays: 'Connor, listen, I appreciate it. Why don't you buy it? It's such a smoking deal. You're a commercial broker...Why aren't you stroking a check?' This creates cognitive dissonance that forces honest dialogue about the deal's true value."
+    }
+  ],
+  "id": "6OwYjBCQ4FA",
+  "title": "Weekly Coaching - Deal Analysis & Broker Strategy _06-10-25  | Justin Brennan",
+  "duration": 3235
+}

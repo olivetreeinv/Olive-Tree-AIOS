@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan conducts live multifamily deal analysis on a 27-unit Phoenix property, demonstrating how to use the updated deal analyzer to work backwards from asking price to determine investability. He shows why the property doesn't pencil for syndication at current market prices and explains it's only suitable for a 1031 exchange buyer, then calls two brokers to source additional deals and build relationships.",
+  "takeaways": [
+    "Ask brokers for 'whisper price' or 'price guidance' on unpriced listings to get realistic seller expectations",
+    "Use the 1% rule: monthly gross rent should be at least 1% of purchase price (e.g., $24k monthly rent on $1.6M purchase = 1.5%)",
+    "Target minimum 18% return on cost (ROC) for renovation projects to justify the capital deployment",
+    "Require 40-50% down payment on stabilized deals to achieve acceptable debt coverage ratio (target 1.3x DSCR) and investor returns",
+    "The three critical metrics that must be 'green' are: cash-on-cash return, equity multiple, and IRR (other metrics are nice but not defining)",
+    "When a deal doesn't work financially, don't lower price below lender's loan amount\u2014use non-workable deals to build broker relationships and access pre-market deal flow",
+    "Call brokers 100 miles away from your target market first to practice broker calls before calling in your actual operating territory"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Systematically work backwards from asking price using the deal analyzer to find the price point where a deal's cash-on-cash, equity multiple, and IRR align with investment criteria instead of accepting broker pricing",
+      "evidence": "Justin shows that the 27-unit at asking price of $3.895M doesn't work, then adjusts down to $3.1-3.3M while testing different down payments (35%, 40%, 48%) to find where metrics turn green, teaching the principle of 'rents are rents, expenses are expenses\u2014only price moves'"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Ask specific targeted questions about pre-market deal flow and build relationships by sending email/text follow-ups even when current deal doesn't fit criteria",
+      "evidence": "Justin asks brokers 'Anything you're working on that's in BOV stage?' then says 'I'll text my email when we get off\u2014use the property as the lure' to transition from single-deal call to relationship-building that generates access to off-market inventory"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Practice cold-calling brokers 100 miles away from target market to gain comfort before calling in your actual operating area to avoid damaging local broker relationships",
+      "evidence": "Justin instructs Scott: 'Go about 100 miles away from it and call on brokers out there in the middle of nowhere and burn your bridge out there. Then you can come back in your area again' to get practice reps without market consequences"
+    }
+  ],
+  "id": "9-CgOm6B8tE",
+  "title": "Tuesday Mentorship Q&A - How to Analyze Any Deal_04-07-26 | Justin Brennan",
+  "duration": 3746
+}

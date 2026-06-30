@@ -1,0 +1,35 @@
+{
+  "deal_relevant": "partial",
+  "topic": "deal-analysis",
+  "summary": "Justin discusses seller financing negotiation tactics with Samir and Luis on a challenging 12-unit Texas deal ($954k purchase, $97k repair concession request denied). Key teaching focuses on understanding seller's debt situation and interest rate constraints, plus detailed instruction on deal analyzer mechanics\u2014showing how cap rate compression, rent growth, and expense increases affect IRR projections.",
+  "takeaways": [
+    "Don't place email-based concession requests; move to phone call with broker to understand seller's true position and constraints",
+    "Understand the seller's debt situation first\u2014variable vs. fixed rate, loan amount, and interest payments drive their desperation level",
+    "10-year Treasury below 4% is critical threshold; if it reaches 3.5-4%, commercial mortgage rates can drop to low 5%, compressing cap rates and enabling deals to transact",
+    "For deal underwriting: use conservative 6% exit cap rate, assume 2% annual rent growth and 2% annual operating expense increases",
+    "Run sensitivity analysis on deal analyzer\u2014shift cap rate from 6% to 5.5% and watch IRR jump from 20% to 21%+ to show investors upside potential without overleveraging",
+    "Structure debt as max 5-year fixed term with interest-only period to avoid prepayment penalties if market conditions improve and you want to exit/refinance early",
+    "If seller is stressed by variable-rate debt and can't service it, they have limited runway\u2014emphasize time pressure: 'It's not going to get better for her'",
+    "30-day inspection due diligence period acts as financing contingency in commercial deals; you don't need explicit financing contingency language to preserve exit rights"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Verify revenue and expense growth rates in proforma (2% annually) and test cap rate sensitivity (0.25-0.5% swings) before presenting to investors",
+      "evidence": "Samir's deal analyzer showed 20% IRR initially but was wrong because other income wasn't compounding and operating expenses were flat; Justin had him change cap rate from 6% to 5.75%, then 5.5%, showing how IRR swings to 21-24%"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Use 10-year Treasury rate as primary underwriting anchor; require exits modeled at 5.5-6% cap minimum (not lower) unless macro conditions shift Treasury below 3.7%",
+      "evidence": "Justin emphasized multiple times: 10-year Treasury at 3.97%, if it drops to 3.5-4%, then 5-year commercial mortgage rates become achievable, enabling cap rate compression from 6.5% to 5.5%\u2014this is the only realistic pathway for value growth"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Phone call or in-person meeting beats email for negotiation; offer to join call with broker and seller to pivot from deadlock and uncover debt/financing realities",
+      "evidence": "Samir and Luis stuck in email loop with seller saying 'no' to $97k concession; Justin recommended 'tee up a quick phone call with broker' and offered to join call himself to understand seller's true constraint (likely variable-rate debt stress)"
+    }
+  ],
+  "id": "eKIl5jRFPeA",
+  "title": "Tuesday Mentorship Q&A - Negotiating Seller Financing Terms_10-28-25 | Justin Brennan",
+  "duration": 3348
+}

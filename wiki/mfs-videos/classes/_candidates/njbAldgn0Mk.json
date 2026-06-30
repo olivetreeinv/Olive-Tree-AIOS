@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "partial",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan walks through updates to an automated multifamily deal analyzer tool, focusing on refinancing mechanics, sources & uses breakdown, waterfall distributions, and GP equity splits. He addresses deal structuring questions from mentees, including one participant (Doug) in best-and-final negotiations on a Georgia acquisition. Content is relevant to underwriting and deal modeling but not specific to sourcing or analyzing actual deals.",
+  "takeaways": [
+    "Lender typically covers 80-90% of renovation budget plus ~25% of closing costs; model this in sources & uses to show equity vs. loan breakdown",
+    "Refinance in year 3 example: 70% LTV, 2% closing cost, can generate ~$344k profit after paying preferred returns to investors",
+    "Once investors hit 15-20% annualized IRR (internal rate of return), they can be taken out of deal entirely via refinance proceeds; industry standard is 15%+ IRR to attract capital",
+    "Exit cap rate is a 'big guess' based on interest rate trends\u2014buy high cap rate, sell low cap rate by increasing NOI and compressing caps as rates fall",
+    "Earnest money, inspections, appraisals all count toward GP's total capital commitment; all reimbursed at closing but capital stays in deal",
+    "PPM (private placement memorandum) essential even for friends & family deals; costs $10-13k first time, ~$5k thereafter, reimbursed via closing costs",
+    "Loan guarantor provision in GP split should sunset if guarantor changes at refinance; language protects against future what-ifs"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Use updated analyzer to model refinance scenarios and principal paydown to 'juice' returns ~5-10% higher than prior version",
+      "evidence": "Justin shows how new analyzer automatically pulls refi loan into proforma, applies it to waterfall, and calculates cash-out and equity multiplier; says 'you're going to see returns juice up a little bit because of the principal payown'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Set exit cap rate assumption based on interest rate direction, not static percentages; compress 50-100bps from purchase cap if betting on rate decline",
+      "evidence": "Justin explains: 'if I believe that the trend line is headed downward for interest rates...I may look at a cap rate...compressing or going down a little bit' to model value-add upside from both NOI growth and cap compression"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Structure investor takeout threshold at 18-20% annual IRR rather than equity multiple to enable faster LP exit and GP control shift at refi",
+      "evidence": "Justin: 'once I hit a 18 or 20% annual rate of return, you know, I can take you out of the deal. And the investors would be happy with that...all your money back, plus I wiped out income taxes and I gave you 18% a year'"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Move investor capital to property bank account within days of investor commitment; use temporary company account wire if needed, but don't delay\u2014'money loves speed'",
+      "evidence": "Justin: 'money loves speed...if you do have that, it's nice to have uh the bank account for the property set up as soon as you can' and warns 'one week the investor is ready to go and the next week a family event happens'"
+    }
+  ],
+  "id": "njbAldgn0Mk",
+  "title": "Tuesday Mentorship - How to Structure Real Estate Deals_03-24-26 | Justin Brennan",
+  "duration": 4093
+}

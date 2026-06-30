@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "partial",
+  "topic": "broker-search",
+  "summary": "Justin Brennan conducts a live coaching session covering two main areas: (1) the capital foundation stage, including mock deal setup using Brian Norton's 14-unit Smyrna, GA property as an example with landing page, pitch deck, and Loom video; (2) broker outreach and deal sourcing through live phone call to Kansas broker Bobby Lane about a 28-unit property, demonstrating conversation tactics and pipeline building. While the mock deal setup is tangentially relevant to Brian's deal sourcing drag, the session is primarily instructional methodology rather than direct deal analysis.",
+  "takeaways": [
+    "Use broker listings as 'bait' to start conversations without needing to pitch upfront\u2014discuss the property then pivot to 'Are there other areas you work in or other deals?'",
+    "State your buy box clearly with specific metrics: '10 to 50 unit, B and C class, light to medium value-add, mid-teens IRR (15%+) on property-level returns' to build broker trust and credibility",
+    "Set 30-40 minute maximum drive time from main metro MSA to manage recession risk; properties beyond this threshold face tenant demand risk if economic downturn forces job-center migration",
+    "Target MSAs from top 100 list via ChatGPT; avoid secondary/tertiary markets",
+    "For mixed-income properties, cap section 8 at ~10% of units (3-4 units per 30-unit complex) rather than 100% section 8 due to screening/management challenges at scale when out-of-state",
+    "After broker introduction, add contact to CRM tagged by market, then 'drip' on them weekly with relevant touches; visit in person when conducting market trip to 'shake hands and kiss babies'",
+    "On leverage: acceptable to go 75% LTV on acquisition if operational value-add will rapidly push property value higher; avoid 80-85% LTV; monitor year-two projected LTV drop to 60-67% range"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "broker-search",
+      "change": "Systematically use listed properties as conversation openers rather than cold-calling brokers with generic pitches",
+      "evidence": "Justin demonstrated live: called Bobby Lane on her 28-unit Kansas listing, discussed deal specifics, then asked 'Are there other areas you handle or is it just Wichita?' This opened pipeline discussion. He states: 'I'm simply using their listings as bait and that way I don't really have to come up with a lot of things to say.'"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Qualify and articulate buy box with specific metrics (unit count, class, value-add level, IRR target) during broker conversations to trigger off-market deal flow",
+      "evidence": "Justin told Bobby: 'We're looking for 10 to 50 unit properties, B and C class, light to medium value-add, mid-teens IRR on property level returns.' Bobby responded: 'We get a lot of off-market stuff. What's your email? I'll keep you in the loop.' Justin notes this signals credibility: 'You know what you're kind of talking about...Trust is built.'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Apply 30-40 minute maximum drive time from primary metro to underwriting risk assessment for recession-proofing",
+      "evidence": "Thomas asked about 45-minute distance property. Justin responded: 'You don't want to be too far from main metro and job center...if it hits hard, people need to move closer to job centers.' Recommends staying within 30-40 min max. This filters market risk at underwriting stage."
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Use replacement cost vs. acquisition price analysis to identify structural value\u2014buildings purchased well below rebuild cost signal exceptional deals",
+      "evidence": "On Brian's $1.7M purchase with $5M replacement value: 'You're buying a building for 1.7 that you couldn't rebuild for any less than 5 million. That is an incredible pickup...you always want to buy for less than replacement cost and you're doing it like less than half.'"
+    }
+  ],
+  "id": "YoCa4hGcSSI",
+  "title": "Weekly Coaching_06/18/26 | Justin Brennan",
+  "duration": 3605
+}

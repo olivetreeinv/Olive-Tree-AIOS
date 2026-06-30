@@ -1,0 +1,32 @@
+{
+  "deal_relevant": "partial",
+  "topic": "broker-search",
+  "summary": "Justin conducts a live broker call with Zachary in Charlotte, NC regarding a 16-unit value-add property and discusses deal sourcing strategy, local lender options, and property manager recommendations. While directly relevant to Brian's deal sourcing challenge, the session focuses primarily on relationship-building mechanics rather than deal-specific analysis or underwriting frameworks.",
+  "takeaways": [
+    "Call brokers on specific deals first to establish relationships, then ask 'do you have any others you're working on BOVs for' to uncover pre-market opportunities",
+    "Face-to-face market visits convert phone relationships into trusted local connections - schedule in-person meetings when traveling to a market",
+    "For 10-30 unit deals under $3.2M, target lenders offering bridge-to-permanent products (bridge at acquisition + renovation, roll to permanent at 85% occupancy with no rollover fees)",
+    "Local property managers that traditionally handled single-family but want to enter multifamily offer better terms and service than firms specializing exclusively in multifamily",
+    "When asking brokers for recommendations, use tactful framing: 'what are some property managers your clients use' rather than 'who do you recommend' to get honest intel without putting them on the spot"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "broker-search",
+      "change": "Implement specific conversation flow: lead with current deal intel, transition to 'any BOVs in progress,' then schedule face-to-face meeting during market visits",
+      "evidence": "Justin demonstrates call structure with Zachary: opens discussing 16-unit property details, pivots to pipeline questions ('any BOVs out on with sellers'), closes by arranging Monday/Tuesday in-person meeting. He explains: 'face to face is so powerful, especially when you're out of area' and notes that brokers value knowing you personally."
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Estimate value-add capex by unit economics: 16-unit C-class property with recent renovation likely carries $20k-25k per unit in improvements ($320k-400k total)",
+      "evidence": "Justin reverse-engineers the Cedarhurst deal: 'they probably have at least 20,000 a unit into this thing between the roof and the siding and the windows, the interiors... somewhere between 3 to 400 grand into this property.' Demonstrates how to estimate renovation spend from property condition."
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Create landing page + pitch deck + summary video (5-8 min) as proof-of-execution before pursuing deals; send to 20-30 person database via email with deal link, PDF, and 'who do you know' ask",
+      "evidence": "Justin reviews Kelly's completed mock deal package and emphasizes: 'you've already gone through preseason, you're ready for opening day.' He explains the email should say 'closing in 60-90 days, here's summary/pitch deck/landing page link, who do you know.' This preseason work builds broker confidence."
+    }
+  ],
+  "id": "bcyJSkg3gs4",
+  "title": "Weekly Coaching -03-26-26 | Justin Brennan",
+  "duration": 3065
+}

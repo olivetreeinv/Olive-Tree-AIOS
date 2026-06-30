@@ -1,0 +1,29 @@
+{
+  "deal_relevant": "yes",
+  "topic": "capital-raise",
+  "summary": "Justin outlines the hierarchy of capital sources for multifamily deals, starting with friends and family, then accredited investors, family offices, and institutional/private equity firms. He emphasizes that early-stage deals (15-50 units like Brian's) typically rely on friends/family and high-net-worth individuals, while larger deals access institutional capital. He also clarifies the lending distinction between 1-4 unit residential loans (borrower-focused underwriting) and 5+ unit commercial loans (property cash flow-focused underwriting).",
+  "takeaways": [
+    "Start with friends and family capital\u2014'nine times out of 10' this is your first round",
+    "Accredited investors must meet SEC criteria: certain income levels individually or jointly, or specific net worth thresholds",
+    "Family offices manage hundreds of millions to billions for ultra-wealthy families; relationships take time to build and require sophistication",
+    "Private equity firms charge fees, take equity percentages, and preferred returns; use them when you can't raise capital independently",
+    "Pitch decks must include property details, location, revenue, expenses, business plan, and projected returns",
+    "People invest in people, not just projects\u2014emphasize trust, transparency, and honest communication about problems",
+    "At 5+ units you shift from residential loans (borrower-focused underwriting) to commercial loans (property cash flow-focused underwriting)"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "capital-raise",
+      "change": "Identify and segment capital sources by deal size (friends/family for 15-50 units; institutional for 100+ units)",
+      "evidence": "Justin explicitly categorizes investors into rounds and states 'in the beginning, nine times out of 10, you're going to deal in rounds one or two. Family and friends, high net worth individuals' for small deals, reserving family offices and PE for bigger projects"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Understand commercial lending criteria shift at 5-unit threshold from borrower-focused to property cash flow-focused underwriting",
+      "evidence": "Justin explains: 'one to four units...they're going to underwrite you as the borrower more than the property itself...when you get into five plus units, you're dealing in the commercial space, right? Where they're gonna look at the property and the cash flow of the property'"
+    }
+  ],
+  "id": "4449a10d-3e43-44c9-9049-91457e9569ff",
+  "title": "Lesson 3 - The Money",
+  "module": "Module 5 - The Beginning"
+}

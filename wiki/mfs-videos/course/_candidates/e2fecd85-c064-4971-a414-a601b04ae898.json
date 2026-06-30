@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "yes",
+  "topic": "market-research",
+  "summary": "Justin teaches systematic market due diligence by personally visiting comps, researching major employers, tracking population growth trends (targeting 1%+ annually), and studying municipal development websites for future infrastructure projects. He emphasizes that boots-on-the-ground research often uncovers pricing discrepancies with broker OMs and reveals competitive advantages investors will respect.",
+  "takeaways": [
+    "Visit and walk all comparable properties in person\u2014never rely solely on online maps or apartments.com",
+    "Broker OMs can be 3+ months outdated; your on-the-ground comp research generates insider information that counters stale data",
+    "Target markets with population growth of 1% per year or more",
+    "Research major employers and understand where tenant base works and lives",
+    "Check city development websites for approved/pending projects: light rail, industrial, retail, airports, parks",
+    "Identify 'path of progress' infrastructure like light rail systems coming within 2-3 years\u2014these drive people, jobs, and rents",
+    "Know your comps in detail so you can defend your rent projections with data and facts against lender/investor pushback"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "market-research",
+      "change": "Create a systematic comp-checking process: visit physically, document rent vs. broker OM discrepancies, and build a personal market database",
+      "evidence": "Justin emphasizes 'boots on the ground driving comps and getting into those complexes' and describes discovering rents $150 higher than broker OM; he repeats 'you need to know your comps' three times for emphasis"
+    },
+    {
+      "skill": "market-research",
+      "change": "Screen markets for population growth \u22651% annually before pursuing deals",
+      "evidence": "'Typically you want to see about 1% a year or more' population growth; presented as explicit threshold for market qualification"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Counter rent projection challenges by citing primary market research (employer base, development sites, infrastructure timelines) rather than broker materials",
+      "evidence": "'you can counter anybody too that wants to say, oh, like, oh, rents aren't here...Really? Let me show you why. Right? Counter it. But with data and facts'"
+    }
+  ],
+  "id": "e2fecd85-c064-4971-a414-a601b04ae898",
+  "title": "Lesson 3: Market Due Diligence",
+  "module": "Module 4: Due Diligence & Closing Deals"
+}

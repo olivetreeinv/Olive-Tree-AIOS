@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "partial",
+  "topic": "deal-analysis",
+  "summary": "Justin addresses multifamily and small residential acquisition strategies across various property types. While most content focuses on specific deals under contract (4-unit FHA in Vegas, 6-unit under inspection, mixed-use property tour), the actionable frameworks apply to Brian's core challenge: deal sourcing and underwriting efficiency for 15-50 unit value-add in GA/TN/AL.",
+  "takeaways": [
+    "Lock up off-market/owner-financed deals with contingencies tied to seller completion timelines rather than standard 30-day periods\u2014use 'earnest money fully refundable' + extended escrow tied to renovation completion",
+    "For residential FHA deals, contingencies must be removed in writing (not automatic like commercial); use 'notice to perform' language to extend timelines if renovations incomplete",
+    "Owner-financed deals eliminate underwriting friction: request bank statements directly from mom-and-pop sellers to build P&L yourself; almost 50% of Brennan's deals use owner financing",
+    "Self-manage small units (4-6 unit) using Lorex wired cameras ($300-400 system), one maintenance person on ground, boots-on-the-ground emergency contact, and Rent Tech software (~$50/month) instead of 8% PM fee",
+    "For laundry/washer-dryer operations, lease equipment via CSC or similar (24-36 month agreements) rather than buying; read cancellation clauses carefully to avoid auto-renewal traps",
+    "Mobile home parks: target <100 pads (Brennan owns 6 smaller parks clustered together, cross-collateralized as single loan), ensure surrounding single-family homes >$100k value + apartments >$1,000/month rent + properties within 5 miles of Walmart",
+    "Post-closing deed structure: close residential deals in personal name, then quitclaim to LLC within 7 days via escrow without lender notification; establish LLC in any state (Wyoming preferred for cost at $100), not required to match property state for residential"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Structure offers with contingency periods linked to seller completion milestones rather than fixed calendar dates",
+      "evidence": "Justin advises Samira: 'lock it up...put it into escrow...contingent upon completion of renovations and inspection. So that way they can go slow or as fast as they want. You have 30 days minimum. Or when the renovations are complete.' This protects buyer from time pressure on projects with work pending."
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Request bank statements directly from small/off-market sellers to build underwriting P&L internally, eliminating deal-sourcing friction",
+      "evidence": "Justin states: 'if they don't have the financials cuz they're mom and pop, then...do you have a bank account associated with the property?...I can put together a profit and loss and all the financials for you. I just need access.' Avoids reliance on broker packages."
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Default to owner-financed structures for small multifamily to eliminate conventional lender underwriting delays",
+      "evidence": "'Almost half of the deals that get done here are owner-financed.' Directly reduces deal sourcing drag for Brian's 15-50 unit target in secondary markets where owner motivation is high."
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Use contingency removal in writing (residential-specific rule) and 'notice to perform' to extend timelines beyond initial periods without triggering breach",
+      "evidence": "Justin teaches Samira: 'difference between residential and commercial is residential, you have to remove those contingencies in writing...if you don't remove them in writing, then they just issue what's called a notice to perform. And that just buys you more time.' Critical for managing renovation-completion risks."
+    }
+  ],
+  "id": "F-UNiW1hgpk",
+  "title": "Tuesday Mentorship Q&A - Stop Overpaying For Deals_12/09/25 | Justin Brennan",
+  "duration": 3199
+}

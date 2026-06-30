@@ -1,0 +1,14 @@
+anthropic
+python-dotenv
+SQLAlchemy
+pdfplumber
+fastembed
+sqlite-vec
+apsw
+PyYAML
+yt-dlp
+groq
+playwright
+PyYAML
+beautifulsoup4
+requests

@@ -1,0 +1,40 @@
+{
+  "deal_relevant": "partial",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan conducts a year-end mentorship Q&A covering letter of intent (LOI) fundamentals using Miguel's 50-unit San Antonio deal as a case study, addresses market conditions and deal evaluation across multiple properties, and discusses underwriting challenges including broker number manipulation and location risk assessment.",
+  "takeaways": [
+    "Write 2-3 LOIs per week; they're not legally binding so treat them as practice repetitions to build comfort",
+    "LOI deposit is typically around 1% of purchase price; can negotiate non-refundable status after due diligence period (e.g., 45 days due diligence, 75 days to close)",
+    "Extension clauses should require additional escrow deposit (e.g., $5,000) for 30-day extensions beyond initial closing timeline",
+    "Verify broker underwriting numbers: flag artificially low maintenance/repairs and zero turnover on older buildings (e.g., 1969 building should have realistic M&R)",
+    "For agency debt financing, loan amount must be $1M minimum; below that threshold expect 6.25-6.75% rates from local/regional banks",
+    "Use 8% property tax estimates in underwriting for verification; request Google Maps research on immediate surrounding area for location red flags",
+    "Red flags: 24-hour gas stations/Circle K next door (transient traffic), boarded windows (security screens indicate area issues), highway noise, closed restaurants (economic indicators)",
+    "Debt service coverage ratio and timing matter more than perfect year-one cash flow on value-add deals; acceptable to run negative first year if rents are achievable"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Incorporate market research (Google Maps) into initial deal screening before underwriting",
+      "evidence": "Justin tells Miguel to look at Google Maps of the immediate area, which revealed abandoned commercial space and identified the Circle K gas station as a dealbreaker; this became critical in rejecting the highest-quality unit group"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Identify and correct broker underwriting manipulation: flag artificially low M&R, vacancy, and tax assumptions",
+      "evidence": "Miguel's broker showed 0% turnover and minimal M&R on a 1969 building; Justin instructed proper underwriting with realistic expenses and had Miguel verify tax rates independently, preventing overvaluation"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Use 5-year debt term and 35% down payment structuring for deals with rent growth potential rather than declining offers below loan minimums",
+      "evidence": "Allan's Charlotte deal wouldn't qualify for agency debt below $1M loan; Justin recommended raising down payment to 35% and using 3-5 year fixed local bank debt, keeping offer at $1.1M rather than dropping below it"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Practice LOI writing 2+ times per week to build process repetition, even without active deals",
+      "evidence": "Justin emphasizes LOI writing as repetition exercise: 'write as many as you can per week, ideally a couple a week' and 'throw them out like you throw out the trash' to normalize the document process before deal pressure"
+    }
+  ],
+  "id": "POepy-qJzCo",
+  "title": "Tuesday Mentorship Q&A - End-Of-Year Deal Strategy - 12-23-25 | Justin Brennan",
+  "duration": 2601
+}

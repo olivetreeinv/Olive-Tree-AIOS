@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "yes",
+  "topic": "mindset",
+  "summary": "Justin Brennan teaches critical mistakes to avoid when acquiring multifamily properties, emphasizing the importance of location over paper returns, proper due diligence, and scaling gradually rather than attempting zero-to-hero deals. He stresses managing key vendors (PMs, renovation teams) closely and avoiding undercapitalization to protect investor capital.",
+  "takeaways": [
+    "Never sacrifice location for high cap rates on paper\u2014location determines 99.9% of rental bumps and resale value",
+    "Don't chase paper returns; strong proformas can hide weak fundamentals in bad locations",
+    "Start with 10-15 or 20-30 unit deals before scaling up, not zero-to-hero 100+ unit deals on your first transaction",
+    "Over-capitalize deals slightly rather than under-capitalize and trigger capital calls to investors",
+    "Property managers typically need lots of properties to survive, so actively manage the managers and stay on them",
+    "Test renovation teams on a couple units first; never pay full contract upfront, use max 25% deposit",
+    "Do detailed due diligence on every deal\u2014the Texas 225-unit example lost millions due to missed pipe/drainage issues from skipped checklist items"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Implement detailed due diligence checklist on every acquisition before closing",
+      "evidence": "Justin's Texas 225-unit case study where first-time syndicator lost millions by skipping due diligence on drainage/pipe failures; he emphasizes 'I can't stress this enough' and contrasts smaller early deals that taught him lessons with the catastrophic losses from skipped checklists"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Evaluate location quality as primary driver (99.9%) rather than optimizing for highest paper cap rate",
+      "evidence": "Repeated emphasis: 'Never, ever, ever sacrifice location' and 'Don't chase paper returns'; location provides 'safety net' during market changes and recessions where weak tertiary markets fail"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Start with 10-15 or 20-30 unit deals and self-manage portions before scaling to 100+ units",
+      "evidence": "Direct warning against zero-to-hero: 'don't just go zero to hero, guy...Start with kind of your smaller deals. You're going to learn a lot. Bigger size, learn, boom, then you go'; contrasts with the failed syndicator who went straight to 225 units with no experience"
+    }
+  ],
+  "id": "73458dab-defe-44fc-92b6-4b1bf137237f",
+  "title": "Lesson 1: Avoiding Big Mistakes",
+  "module": "Module 9: Avoiding Big Mistakes"
+}

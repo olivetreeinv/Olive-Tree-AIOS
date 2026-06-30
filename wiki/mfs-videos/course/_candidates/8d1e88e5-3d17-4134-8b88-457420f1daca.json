@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "yes",
+  "topic": "other",
+  "summary": "Justin Brennan shares his framework for scaling multifamily operations from local to out-of-state markets, focusing on the systematic approach required to enter new geographic markets without making costly mistakes. He emphasizes a six-month market preparation phase involving data analysis, broker relationships, property management setup, and operational logistics before sourcing deals. The lesson addresses Brian's deal sourcing challenge by introducing a systematic filtering process to evaluate high volumes of deals efficiently.",
+  "takeaways": [
+    "Spend six months in advance in any new market before sourcing deals - meet brokers, interview property management companies, contractors, get to know neighborhoods and development paths",
+    "Filter deals systematically: bring in someone to review 3-5 deals daily, put metrics in a spreadsheet, then personally dive into only the top deals (reduce 50 deals down to 10-15 for deeper analysis)",
+    "Identify markets using data: population growth, rent growth, job growth, path of progress, development, BRAC realignment, government investments",
+    "Build operational team in new market before dealing: securities attorney, business entity attorney, legal team, property management crews, construction crews, brokers all 'teed up' in advance",
+    "Went from 25 units locally in San Diego to 105 units out-of-state to 1000+ unit goal because California numbers didn't pencil - had to leave for better cap rates and cash-on-cash returns",
+    "Met broker at 2018 David Lindell syndication conference in Boston, spent six months getting comfortable in Kansas City market before sourcing deals there",
+    "Minimize big-time errors and 'one chance to make good first impression' - don't skip the groundwork phase when entering new states"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Implement a systematic deal filtering process using a metrics-based spreadsheet reviewed by dedicated sourcer",
+      "evidence": "'I brought somebody on who's looking at deals literally daily, three to five a day...put them in a nice spreadsheet that we've identified. Here's some metrics we wanna hit...I'm taking maybe 50 deals, sourcing them down to maybe 10...I'm not spending my time on 50 deals'"
+    },
+    {
+      "skill": "market-research",
+      "change": "Conduct a mandatory six-month pre-deal-sourcing market evaluation in any new geographic territory",
+      "evidence": "'six months going into that market, getting to know the property management companies, interviewing them all, the contractors, all the brokers...went out there two to three times, drove the areas, kicked the dirt...And we do that in every single market we enter'"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Proactively build broker and third-party vendor relationships before beginning deal pipeline activities",
+      "evidence": "'you gotta have your property management companies, your contractors, your local brokers in those municipalities and areas teed up and lined up in advance. And that takes time to grow that network'"
+    }
+  ],
+  "id": "8d1e88e5-3d17-4134-8b88-457420f1daca",
+  "title": "Lesson 4 - Scaling Larger",
+  "module": "Module 5 - The Beginning"
+}

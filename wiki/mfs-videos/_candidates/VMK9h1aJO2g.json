@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan teaches the five pillars of multifamily investing: finding deals, analyzing deals, financing, closing, and managing. He emphasizes that deals must meet three key metrics (14-20% IRR, 6-10%+ cash-on-cash, 1.8x+ equity multiple) to successfully raise capital. For Brian's 15-50 unit focus in GA/TN/AL, the deal analysis framework directly addresses his underwriting drag by providing concrete thresholds for deal evaluation.",
+  "takeaways": [
+    "Use brokers' on-market deals to access their pre-market inventory (60%+ of best deals not on websites); cold-call 3 brokers in chosen market to build relationships",
+    "For every $1,000 monthly NOI increase, property value rises $220,000 using formula: Value = NOI / Cap Rate",
+    "First deal must be 10-30 units (not 50+) to access mom-and-pop brokers who return calls and easier debt/capital raise; scale up after proving track record",
+    "Deal must meet ALL THREE metrics simultaneously: IRR 14-20%+, cash-on-cash 6-10%+, equity multiple 1.8x+ or you cannot raise capital",
+    "Acquisition fees are 3% of purchase price (paid at closing from deal costs), asset management 1% of gross revenue monthly, plus 40%+ profit split\u2014income tied to solving multi-million dollar problems",
+    "Red/purple state preference: need 30-60 day eviction timeline vs. blue states' 14-year rent control challenges",
+    "Use deal analyzers (provided tools) to calculate IRR, cash-on-cash, equity multiple\u2014don't manually calculate; this removes underwriting bottleneck"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Apply three-metric deal screen (IRR 14-20%, cash-on-cash 6-10%, equity multiple 1.8x) to eliminate non-fundable deals before deep underwriting",
+      "evidence": "Justin states 'if it does not meet all three of these metrics you move on to the next deal period' and 'if they all meet this you raising money will be the easiest thing you've ever done'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Calculate NOI impact: every $1,000 monthly NOI boost = $220,000 property value increase using Value=NOI/Cap Rate formula",
+      "evidence": "'For every thousand you boost the net operating income on the building you're putting $220,000 in your pocket'"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Build broker relationships via on-market deals: call 3 Brokers in target market about listed deals to gain pre-market deal access without warm introductions",
+      "evidence": "Justin's case study: 'I ring each them up... the whole point of going through the exercise is not to buy the deal... you're making a connection because I guarantee that broker... has plenty of pre-market ones'"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Start with 10-30 unit first deal (not 50+) to ensure broker/lender/seller callbacks and easier capital raise; scale size only after completing 1-2 deals",
+      "evidence": "'Your first deal is going to be somewhere between 10 to 30 units... reason I'm keeping you at 10 to 30 units... mom and pop brokers who will return your phone calls... smaller bite sizable deals less Capital to raise'"
+    }
+  ],
+  "id": "VMK9h1aJO2g",
+  "title": "Master Multifamily Investing: Secrets To Building Wealth In Real Estate",
+  "duration": 4356
+}

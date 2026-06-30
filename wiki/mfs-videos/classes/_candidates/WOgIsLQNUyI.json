@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "partial",
+  "topic": "asset-mgmt",
+  "summary": "Justin Brennan demonstrates capital tracking spreadsheets and investor accounting systems for multifamily syndications, along with PSA negotiation tactics and bookkeeping workflows. While primarily focused on post-deal operational tasks, the content includes deal underwriting concepts and broker engagement strategies relevant to Brian's sourcing and underwriting challenges.",
+  "takeaways": [
+    "Capital tracking spreadsheet set up once, runs itself for life of deal with quarterly investor statements",
+    "Preferred return paid first before GP split; GP double-dips as both investor (Class A) and general partner receiving asset management fees",
+    "Rent concessions must be one-time lump sum (not monthly recurring) on second full month of lease to preserve P&L\u2014capitalize as marketing expense below NOI line",
+    "Stagger lease expirations across 10-14 months to maintain 70%+ tenant retention; target ~9-10 units turning annually on 30-unit building",
+    "Bookkeeper cost ~$250/quarter to input property financials into QuickBooks; CPA ~$2K annually for tax returns; use App Folio or Rent Tech for PM software",
+    "Always use your own LOI template for offers rather than wholesaler/broker documents; back into price based on financials, don't accept asking prices",
+    "Wholesalers stack assignment fees on top of purchase price and often don't know deal financials; request unpriced deals and 'whisper price' guidance but verify independently"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Apply capitalization accounting trick to move one-time lease concessions below NOI line, improving P&L presentation to lenders",
+      "evidence": "Justin explains: 'if it's a one-time concession, you can look at it as a marketing expense and capitalize the expense, meaning you can put that expense below your net operating income line... it will improve your P&L statement'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Design lease staggering strategy targeting 70%+ retention to stabilize cash flow and reduce turnover costs",
+      "evidence": "Justin states: 'if you're operating at 70% retention or greater, you're doing very well' and recommends staggering leases between 10-14 months so 'you don't have like all your leases come due in one month'"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Request unpriced off-market deals and ask for 'whisper price' guidance rather than accepting stated asking prices",
+      "evidence": "Justin advises: 'I love the deals that are unpriced because... they're saying here's the financials, let's back into the numbers based on where it makes sense' and tells Cristiano to negotiate independently of multiple wholesaler pricing"
+    }
+  ],
+  "id": "WOgIsLQNUyI",
+  "title": "Tuesday Mentorship Q&A -Tracking Investor Capital Easily_10-21-25 | Justin Brennan",
+  "duration": 2890
+}

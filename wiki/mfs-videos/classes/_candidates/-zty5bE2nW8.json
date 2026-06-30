@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "partial",
+  "topic": "broker-search",
+  "summary": "Justin Brennan conducts a mentorship Q&A focusing on deal sourcing strategy. While the session covers software tools for finding deals, broker relationships, and market conditions, it provides limited tactical guidance specific to Brian Norton's value-add multifamily sourcing and underwriting challenges in GA/TN/AL markets.",
+  "takeaways": [
+    "Use Real Estate Radar software with filters: 10-40 unit deals, loan maturity dates 06/2025-12/2026 to identify distressed sellers who must refinance or sell",
+    "Direct-to-broker approach requires least time/effort initially\u2014build rapport by submitting lower LOIs with phone calls explaining your underwriting before expecting pre-market deal flow",
+    "When higher interest rates kill deal math (e.g., 7.25% rates), back into offer price explaining to brokers: seller must either finance portion of deal or accept lower price reflecting current market fundamentals",
+    "Propose seller financing by asking broker: Does seller need all money out now? Are they facing large taxable event? If no to both, offer higher price in exchange for 2-3 year seller note",
+    "Vacancy credit loss industry standard 5-7% on pro formas is unrealistic\u2014use 7-10% for most markets, adjust year-by-year as operations improve; Texas market currently seeing 15-20% rent drops with 1-2 months concessions",
+    "Earn equity into partnerships through measurable tasks: sourcing deals, due diligence, boots-on-ground management, loan guarantor, capital raising (allocate up to 30% of GP for capital raised)",
+    "Never overleveraged properties (65% debt max) allows survival through down cycles; multifamily historically doubles in value within 10-year hold period if not forced to sell"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "broker-search",
+      "change": "Build systematic broker relationships by analyzing online deals, calling brokers with pre-tour LOI explanations, then requesting pre-market deal access",
+      "evidence": "Justin teaches the 'song and dance' procedure: analyze online listing, call broker, explain underwriting rationale showing why price doesn't work, ask for pre-market pipeline\u2014entire purpose is rapport building not closing initial online deals"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Adjust vacancy/credit loss and other variables year-by-year in pro formas rather than using static percentages across 5-year hold",
+      "evidence": "Leandra's spreadsheet error\u2014Justin corrected her by making vacancy adjustable in each year of IRR tab (F11 formula) so that vacancy improves over time as operations improve, matching 10% starting vacancy down to 7% by year 5"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Back into maximum offer price using debt service coverage ratio (bank requirement) and current interest rate environment rather than chasing listed asking prices",
+      "evidence": "When Luis asked about competing with cash offers at high prices, Justin explained: 'back into a number that I know works based on decent variables...the bank needs a certain debt coverage ratio...if they're in La La Land they're just not going to sell'"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Execute weekly 6-8 deal analysis challenge (analyze, underwrite, write LOI, submit to broker) regardless of deal quality to build momentum and broker relationships",
+      "evidence": "Justin proposed forcing mentees into weekly motion: 'get everybody in the process of finding, analyzing, right? Writing offers...get you out of a little bit of a rut...throw it out...literally just for shits and giggles'"
+    }
+  ],
+  "id": "-zty5bE2nW8",
+  "title": "Tuesday Mentorship Q&A - Deal Flow Mastery_06-17-25 | Justin Brennan",
+  "duration": 4056
+}

@@ -1,0 +1,35 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan teaches a systematic framework for evaluating multifamily deals using six key metrics: cash on cash, net operating income (NOI), internal rate of return (IRR), equity multiple, price per door, and replacement cost. He provides specific performance thresholds for value-add Class B deals and emphasizes using sensitivity analysis to stress-test deals against market changes.",
+  "takeaways": [
+    "Cash on cash target: 7-10% upon stabilization for Class B value-add deals",
+    "Debt coverage ratio (DCR): minimum 1.2x or greater (NOI \u00f7 debt service)",
+    "IRR target: 18-25% for project-level returns",
+    "Equity multiple: minimum 2.0x for Class B (1.9-2.5x ideal), with Class A at 1.1x+ due to lower risk",
+    "Return on cost: 18% or more on renovation/improvement costs",
+    "Buy at or below replacement cost to ensure competitive advantage",
+    "Use sensitivity tables to model scenarios: price changes, interest rate increases, cap rate shifts, and stress-test against inflation/market downturns",
+    "Detailed financial analysis becomes critical for deals north of 20 units"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Establish specific numerical thresholds for six key deal metrics before evaluating offers",
+      "evidence": "Justin provides exact benchmarks: 7-10% cash on cash, 1.2+ DCR, 18-25% IRR, 2.0x+ equity multiple, 18%+ return on cost, and at/below replacement cost pricing"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Implement sensitivity analysis on all deals 20+ units to model multiple scenarios",
+      "evidence": "Justin emphasizes: 'Very, very, very important to look at this when you're analyzing a deal...stress test it, as they call it, sensitivity analysis to stress test' and states this becomes standard practice for deals north of 20 units"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Use return on cost (18%+) as a leading indicator to validate other metrics",
+      "evidence": "Justin states: 'I know that if we hit that then typically the IRR number is going to be there. Typically the cash on cash is going to be there. Typically this equity multiple is going to be there'"
+    }
+  ],
+  "id": "6f39c6f9-2dc3-4382-bd33-44077d50dd67",
+  "title": "Lesson 2: Is It A Good Deal?",
+  "module": "Module 8: The Four Quadrants Of Multifamily"
+}
