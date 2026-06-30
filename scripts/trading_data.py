@@ -135,11 +135,33 @@ def get_bars(symbol: str, days: int = 60, timeframe: str = "1Day") -> list[dict]
         raw = data.get("bars", {}).get(symbol, [])
         return [{"t": b["t"], "o": b["o"], "h": b["h"], "l": b["l"], "c": b["c"], "v": b["v"]} for b in raw]
     else:
-        # Equities via Polygon — key passed via params dict, never embedded in URL
-        data = _poly(f"/v2/aggs/ticker/{symbol}/range/1/day/{start}/{end}",
-                     {"adjusted": "true", "sort": "asc", "limit": 500})
-        raw = data.get("results", [])
-        return [{"t": r["t"], "o": r["o"], "h": r["h"], "l": r["l"], "c": r["c"], "v": r["v"]} for r in raw]
+        # Equities: Polygon primary (full SIP coverage, best edge). If Polygon is
+        # unreachable — e.g. the cloud egress proxy blocks api.polygon.io — fall
+        # back to Alpaca daily bars so the gate still runs. Alpaca's IEX daily bars
+        # match Polygon for liquid names (verified); thin/borderline names may differ
+        # slightly, so Polygon stays primary wherever it's reachable (local).
+        try:
+            data = _poly(f"/v2/aggs/ticker/{symbol}/range/1/day/{start}/{end}",
+                         {"adjusted": "true", "sort": "asc", "limit": 500})
+            raw = data.get("results", [])
+            if raw:
+                return [{"t": r["t"], "o": r["o"], "h": r["h"], "l": r["l"], "c": r["c"], "v": r["v"]} for r in raw]
+        except Exception:
+            pass
+        return _alpaca_stock_bars(symbol, start, end, timeframe)
+
+
+def _alpaca_stock_bars(symbol: str, start, end, timeframe: str = "1Day") -> list[dict]:
+    """Daily equity bars via Alpaca — fallback for get_bars when Polygon is unreachable.
+    Split-adjusted, IEX feed (free tier); fine for daily-bar backtests on liquid names."""
+    url = (
+        f"{_ALPACA_DATA}/v2/stocks/{symbol}/bars"
+        f"?timeframe={timeframe}&start={start}&end={end}"
+        f"&limit=1000&adjustment=split&feed=iex"
+    )
+    data = _get(url, _alpaca_headers())
+    raw = data.get("bars", []) or []
+    return [{"t": b["t"], "o": b["o"], "h": b["h"], "l": b["l"], "c": b["c"], "v": b["v"]} for b in raw]
 
 
 def _poly(path: str, params: dict | None = None) -> dict:
