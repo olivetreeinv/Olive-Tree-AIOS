@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan conducts a comprehensive multifamily deal analysis coaching session, walking through three specific deals (16-unit Cincinnati townhomes, 22-unit Cincinnati property, and 39-unit Memphis bank-owned deal) to teach Brian Norton's student group proper underwriting methodology, expense ratio targets, and renovation cost ROI calculations. The session emphasizes identifying red flags in proformas and the importance of market-specific underwriting assumptions.",
+  "takeaways": [
+    "Return on renovation cost must be 18% or greater\u2014if below 18%, either increase rents achievable or decrease renovation budget",
+    "Target expense ratio for stabilized multifamily is 49-50% even for older 1960s properties; anything 60%+ indicates operational problems",
+    "For Midwest renovations, budget $10,000-$14,000 per unit; validate property tax numbers through county auditor websites and RAI tool rather than accepting seller proforma figures",
+    "Insurance varies by state: Ohio ~$600-$700/unit annually, Texas ~$1,200-$1,400/unit, Florida ~$3,000/unit\u2014get soft quotes from state-specific brokers",
+    "Utilities with RUBs/reimbursables should generate ~60% recovery; if utilities show $37,000 expense, expect to recover ~$22,000 through reimbursements",
+    "Refinance deals year 3-4 only if interest rate environment allows you to pull enough proceeds and improve cash flows; forced appreciation alone doesn't work if interest rates rise (cap rates follow interest rates)",
+    "On broker calls, move conversation from their listing to pre-market deals by asking about buy box, value-add tolerance, and opportunities 'in the initial stages' before Crexy posting"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Implement 18% minimum return-on-cost threshold for renovation budgets and use county auditor tools to validate property tax assumptions",
+      "evidence": "Justin corrected Cincinnati deal expenses from $78k to $59k property tax using auditor website; taught that renovation ROI under 18% means either raise rents or reduce renovation spend; demonstrated how bumping rent only $60-80/unit doesn't justify $250k renovation budget"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Target and monitor 49-50% expense ratios as standard for Midwest multifamily; flag anything 60%+ as operational red flag requiring investigation",
+      "evidence": "Justin repeatedly emphasized 49-50% expense ratio target for 1960s properties; showed how one deal operating at 60%+ expense ratio indicated something was wrong with operations; demonstrated adjusting utilities with RUBs to hit target ratio"
+    },
+    {
+      "skill": "market-research",
+      "change": "Validate state-specific insurance and tax assumptions through actual broker quotes and county resources rather than relying on proforma estimates",
+      "evidence": "Justin pulled actual Ohio tax rates (1.9-2.2%) from county auditor against inflated proforma assumption; explained state-by-state insurance variation ($600 Ohio vs $3,000 Florida per unit); recommended getting soft quotes from insurance brokers in vendor system by state"
+    },
+    {
+      "skill": "broker-search",
+      "change": "During broker conversations, transition from asking about listed properties to requesting pre-market opportunities by establishing buy box criteria and relationship depth",
+      "evidence": "Justin's live Kansas City broker call showed him starting with listed 48-unit property, then asking 'are you guys dealing with any other things in initial stages?' and 'anything pre-Crexy?' to access off-market deals; he established buying 10-50 units, 15-16% IRR target, and willingness for light-to-medium renovations to qualify for pipeline access"
+    }
+  ],
+  "id": "Otv2HwdPdOU",
+  "title": "Weekly Coaching_05/14/2026 | Justin Brennan",
+  "duration": 3609
+}

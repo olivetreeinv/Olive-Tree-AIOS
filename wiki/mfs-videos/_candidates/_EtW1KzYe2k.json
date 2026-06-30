@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan explains multifamily investing fundamentals for Brian Norton's AIOS, covering why multifamily is superior to single-family (5-8 revenue streams vs 1-3), how to find deals through brokers, analyze using NOI and cap rates, raise capital via OPM, and structure deals with acquisition fees and asset management fees. Real case studies show how to deploy minimal personal capital ($18-45K) while controlling larger properties through syndication.",
+  "takeaways": [
+    "Target 10-30 unit deals under 50 units for easier broker/seller relationships as a beginner",
+    "Aim for 14-20% annual returns, 6-10% cash-on-cash, and 1.8x+ equity multiples to qualify as good deal",
+    "Use 70% loan-to-cost financing (DSCR loans) to minimize equity needed; remaining gap filled by OPM from 5-7 investors",
+    "Leverage on-market broker deals to build rapport and gain access to 60%+ pre-market off-market deals before website listing",
+    "Every $1,000/month NOI increase adds $220,000+ in property value (NOI \u00f7 cap rate formula)",
+    "Generate revenue 5-8 ways: acquisition fee (2-3%), monthly asset management (1-2%), 30-40% cash flow, 30-40% profits, tax write-offs, refi gains, disposition fee (0.5-2%), finder fee (1%)",
+    "With $45K down payment, receive $26K acquisition fee back at close = $19K net out-of-pocket to control 23-unit deal"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Learn to screen deals using NOI-based valuation formula (NOI \u00f7 cap rate) instead of comparable sales approach",
+      "evidence": "Justin teaches commercial deals are valued by math (NOI/cap rate) not comps, and demonstrates $1,000/month NOI increase = $220K value increase; shows analyzing effectively requires deal analyzers/models to run projections"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Build broker relationships systematically by scheduling 3 tours in target market with different brokers on on-market deals to gain pre-market access",
+      "evidence": "Justin details exact script: 'Hey Austin, looking at 23-unit on Melrose, you had it 30 days, any interest? Planning trip in 2 weeks, love to tour it and learn the market since we're buying in Memphis' - goal is rapport not the deal since 95% are overpriced"
+    },
+    {
+      "skill": "capital-raise",
+      "change": "Structure pitch with three components (deal making financial sense, 1-2 page pitch deck, defined process) to reliably raise $400K+ from 5-7 investors at $25K-$100K checks",
+      "evidence": "Justin raised $800K+ on first deal from 7 people, then shows exact Memphis structure: $45K personal + $400K OPM, with pitch citing '18% projected annual returns, $25K minimum, 3-5 year hold, quarterly distributions'"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Identify your personal 'pain motivation' from 7 mountains (business, media, philanthropy, etc.) to fuel sustained effort when market headwinds hit",
+      "evidence": "Justin emphasizes 75% of decisions made on pain-avoidance not pleasure-seeking; shares personal story: 'I had to get to edge of cliff and jump - that fear/pain made me go'; states 'without belly fire, anytime headwind hits you stop'"
+    }
+  ],
+  "id": "_EtW1KzYe2k",
+  "title": "Why Choose Multifamily Real Estate Investing? Real Case Study",
+  "duration": 4261
+}

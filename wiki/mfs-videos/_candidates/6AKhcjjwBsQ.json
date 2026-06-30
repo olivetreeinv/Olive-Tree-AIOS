@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan teaches a comprehensive framework for buying 5+ unit apartment buildings, covering deal sourcing through property management. He demonstrates that apartment investing is more accessible and lucrative than single-family homes, using specific examples (10-unit Huntsville AL property at $625k, 31-unit Kansas City deal) to show how investors can generate 26-35%+ cash-on-cash returns through acquisition fees, cash flow, and profit splits as a general partner.",
+  "takeaways": [
+    "Find deals on CoStar.com (40% on-market), then build broker relationships to access 60% off-market deals\u2014must execute 1-2 on-market deals first to gain credibility",
+    "Structure deals as 10% GP equity / 90% LP investor capital; GP receives 30% profit split (vs 70% for LPs) despite 10% capital, creating leverage opportunity",
+    "Day-one acquisition fee: 3% of purchase price (e.g., $47k on $1.58M purchase); GP also collects 1% asset management fee on operating income and 5% construction management fee",
+    "Purchase $625k property with $100k renovations at $10k/unit; expect 20% property-level return and 26%+ cash-on-cash return on GP capital after fees",
+    "Proforma model plugs in blue fields (rates, down %, units, rents, expenses); black formulas auto-calculate NOI, returns, and cash flows\u2014templates provided",
+    "Manage via four critical reports: Available Units List (vacancy status), Work Order Summary (repairs responded to in 24-48hrs, completed in 7 days), Delinquency List, Expiring Leases (90-day forward view)",
+    "Each tenant departure costs minimum $3,500 (lost rent + turnover); focus on work order execution and lease renewals rather than replacing tenants"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Use plug-and-play proforma template to quickly underwrite multifamily deals and calculate 20%+ property-level returns",
+      "evidence": "Justin shows blue-field proforma templates where investors input purchase price, interest rates, unit count, rents, and expenses; black formulas auto-populate NOI and cash-on-cash returns without manual calculation\u2014accelerates underwriting speed"
+    },
+    {
+      "skill": "market-research",
+      "change": "Prioritize CoStar.com on-market deals initially to build broker relationships needed for 60% of off-market inventory",
+      "evidence": "Justin states 40% of deals are on-market (CoStar.com), 60% are off-market; new investors must execute 1-2 on-market deals and meet brokers in-person ('belly to belly, eyeball to eyeball') to gain access to off-market deals\u2014no broker will give off-market deals to unproven investors"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Track four operational reports (Available Units List, Work Orders, Delinquency, Expiring Leases) to predict property performance 90 days forward and identify PM failures",
+      "evidence": "Justin emphasizes: 'I can come in look at your property with four reports...tell you how your property's doing today and how it's going to do 90 days from now.' Work orders must be responded to in 24-48 hours and completed in 7 days; each tenant move-out costs minimum $3,500, so lease renewal focus via fast repairs is critical ROI lever"
+    }
+  ],
+  "id": "6AKhcjjwBsQ",
+  "title": "How To Buy Apartments LIVE EVENT | Justin Brennan",
+  "duration": 4211
+}

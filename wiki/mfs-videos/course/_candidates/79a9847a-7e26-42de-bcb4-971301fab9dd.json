@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "yes",
+  "topic": "broker-search",
+  "summary": "Justin Brennan teaches how to locate commercial brokers and deals in the 5+ unit multifamily space, emphasizing relationship-building over portals like LoopNet. He stresses starting small (5-10 units) with local brokers before scaling to larger deals, requiring either capital, operational experience, or partnership with experienced syndicators.",
+  "takeaways": [
+    "Avoid LoopNet\u2014deals listed there are 'way overpriced'; go direct to brokerage websites and their email lists instead",
+    "For 5+ unit commercial space, work with smaller local/regional brokers initially, not mega firms like CBRE/JLL/Marcus & Millichap",
+    "Brokers won't give time to first-time syndicators\u2014you must go through local agents, not top brokers",
+    "Start with 2-4 units, graduate to 5-10 units with local brokers, then move to 25+ units once you have capital/experience",
+    "At 25+ units you're dealing with 'bigger zeros'\u2014non-refundable deposits in hundreds of thousands and massive legal fees; one mistake ends your career",
+    "Build broker relationships through conferences, websites, email campaigns, phone calls, and 'boots on the ground' networking over time",
+    "You must bring value to partnerships: either capital, sweat equity, or operational experience\u2014otherwise partners have no reason to work with you"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "broker-search",
+      "change": "Systematically subscribe to local/regional brokerage email lists and websites instead of relying on aggregated portals",
+      "evidence": "Justin states: 'Go to their websites...Get up on their email campaigns. Have things sent to you in the email inbox. You can see all their flow. All the marketing that's coming out on deals that they have, both on and off market.'"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Build broker relationships through in-person networking at conferences and direct outreach before expecting first-look deals",
+      "evidence": "Justin says: 'You've got to go to some of the conferences...meet all the brokers...build those relationships...It's going to take time to build those relationships so you can start seeing things at a first look basis before it goes to full blown market.'"
+    },
+    {
+      "skill": "market-research",
+      "change": "Start deal search in smaller unit counts (5-10 units) with local brokers, then graduate to larger deals only after operational experience",
+      "evidence": "Justin explains: 'We found those through local brokers...And then we went into the 25 plus space, okay? Graduated through that...you need to partner with people. There's a lot of things you're going to learn going through these segments. And by the time you're ready for that, you'll kind of say, okay, I understand it all.'"
+    }
+  ],
+  "id": "79a9847a-7e26-42de-bcb4-971301fab9dd",
+  "title": "Lesson 1: Locating The Brokers",
+  "module": "Module 1: How To Find Deals"
+}

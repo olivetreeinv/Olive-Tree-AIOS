@@ -1,0 +1,49 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan walks through a real live deal that his mentee Michael is pursuing in Indianapolis\u2014a 33-unit value-add apartment complex. The deal doesn't pencil at the asking price of $3.65M, but works at ~$3.1M with a 6.2% cap rate. Justin reviews underwriting fundamentals, value-add strategies (washer/dryer connections, amenity upgrades), and broker relationship dynamics while showing raw footage from on-site property tours.",
+  "takeaways": [
+    "Washer-dryer connections cost $3,700-$5,000 per unit and generate ~$100/month rent bump\u2014highest ROI value-add in older buildings",
+    "Frame laundry closets in kitchen nooks next to drainage/water lines and electrical panel; lose nook space but rent justifies it",
+    "Never pay asking price if numbers don't work; at $3.65M this deal yields only 1.1% cash-on-cash return, uninvestable",
+    "Only boost rents with major value-add (kitchens/baths) if you can increase rent >$200/month; otherwise it's not worth the capex spend",
+    "Kid play areas cost minimum $15-25K installed by certified vendors for liability compliance; dog parks are cheaper with basic 4-foot chain-link fencing",
+    "When touring: visit 1-2 units per type (1BR, 2BR, 3BR), takes 30-45 minutes total; don't tour all units until you're in escrow doing due diligence",
+    "Don't believe broker's verbal comp analysis\u2014do your own homework on rental comps, location, amenities vs. nearby competition (Auburn Place had pool/gym here)",
+    "Current market cap rate floor is 6.0%+ Midwest/South; anything sub-6% is not investable given today's rate environment (10-year Treasury ~4.2-4.3%)",
+    "Smaller loans ($1-2M range) get 6.75% rates from local banks; larger loans ($3M+) qualify for agency debt (Fannie/Freddie) at 5.5-6.1%",
+    "Location aerial review: check for commercial/industrial buffer, train tracks, liquor stores, gas stations, crime zones, curb appeal, single-family residential nearby",
+    "Pre-market access requires existing deal history with broker; new investors can get week head-start via Facebook group + website vs. 2-3 week private list",
+    "Equity multiple = annual returns \u00f7 cash equity invested; at 30% down with 7030 split, investors should see ~14%+ annual return + 2x equity multiple"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Establish 6.0%+ cap rate floor as non-negotiable threshold for all markets before writing LOI",
+      "evidence": "Justin repeats 'you should not be buying anything sub-six anywhere in the Midwest...most cap rates are six to seven' and shows that at asking $3.65M, even with perfect assumptions the deal yields only 1.1% cash-on-cash, making it uninvestable"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Create rent-increase thresholds in underwriting template: only pursue capex value-adds if rent uplift exceeds $200/month minimum",
+      "evidence": "Justin states: 'you would do more value ad to it typically...only when you can boost the rents north of $200 a month that you would do more value ad'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Require expense validation against per-unit benchmarks ($750-800/unit/year maintenance, $200-250/unit/year turnover) before accepting broker OM numbers",
+      "evidence": "When reviewing the 33-unit deal, Justin noted maintenance was running $900/unit/year (high) and flagged missing turnover budget, saying 'this number should be lower anyways'"
+    },
+    {
+      "skill": "market-research",
+      "change": "Run aerial/Google Street View assessment before LOI to identify location hazards: train tracks, industrial zoning, liquor stores, gas stations, setbacks from street",
+      "evidence": "Justin compared two Indianapolis properties via aerial\u201433-unit on quiet single-family street (good) vs 100-unit tucked behind industrial/gas station/train tracks (bad), saying 'it's a big no no...you can't even get to it without going through commercial and industrial'"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Accept lower-level associate brokers and don't expect 'head guy' access until after first deal; build team relationships systematically",
+      "evidence": "Michael found Tony (associate) didn't know property details, and Justin explained: 'you probably won't get to the top guy until you've done a deal...you'll get the lower level associate...that means he didn't know the property that well because it probably wasn't his listing'"
+    }
+  ],
+  "id": "ZPKxL5Zx6YQ",
+  "title": "Tuesday Mentorship Q&A - Apartment Deal Q&A_08-12-25 | Justin Brennan",
+  "duration": 22990
+}

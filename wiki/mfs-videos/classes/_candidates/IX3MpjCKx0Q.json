@@ -1,0 +1,42 @@
+{
+  "deal_relevant": "partial",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan coaches on closing process fundamentals including PSA review, financial due diligence items (lease audits, delinquency lists, bank statements), and property manager hiring/evaluation. He then analyzes two deals: a 122-unit in San Antonio (recommends against due to Texas costs under 150 units) and a 16-unit duplex deal in Missouri (workable at right price with creative financing strategy).",
+  "takeaways": [
+    "Send 22 due diligence questions from acquisition checklist to broker/seller BEFORE signing PSA",
+    "Focus on 'Sellers Representations and Warranties' section in PSA for accountability if seller misrepresents",
+    "Lease audit critical: match tenant names on leases to rent roll exactly; mismatches create legal eviction problems",
+    "Require property bank statements for last 3-6-12 months; collections should match delinquency claims (e.g., if 95% collection on $10K/month rent = ~$9,500 in deposits)",
+    "Don't accept reserve account funds in closing; only prrated rents, deposits, and property expenses transfer",
+    "Incentivize property managers: pay 2x more for renewals at 90-120 days out than new leases to hit 70-80% annual retention",
+    "Request 4 key weekly reports to predict property status 90 days out: delinquency list, work orders, unit availability, expiring leases",
+    "Property threshold: avoid Texas deals under 150 units due to high insurance/property taxes/payroll eating margins (recommend 15% economic loss assumption not 8%)",
+    "Test multiple PMs during first 2 weeks in contract with lease audit exercise; if they don't know what lease audit is, 'run'",
+    "For duplexes with sale upside: model selling 2 units within 24 months, add net profit to cash flow to boost IRR; requires local bank release schedule on debt"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Validate financial claims against bank deposits before closing (match stated delinquency/collections to actual bank statements)",
+      "evidence": "Justin explicitly states: 'if they're collecting 10,000 a month... that's $9,500. Well, that better show up in the bank account' and instructs to request 3-6-12 months of bank statements as non-negotiable"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Assume minimum 15% economic loss on Texas properties (vacancy + bad debt + concessions + loss to lease), not broker's 8%",
+      "evidence": "Justin: 'I don't think I would underwrite a property with less than a 15% economic loss... our property is operating at [higher]... that is our problem child'"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Pre-qualify 2-3 property managers in market before getting under contract; test them with lease audit in first 2 weeks to separate talk from action",
+      "evidence": "Justin: 'you can have two property managers... you would have them work against each other for the first couple weeks... you're going to find out real quick. Talk's cheap. Actions speak louder than words'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Never accept cap rate spread > 0.5% vs interest rate (don't buy at 6% cap if paying 6.5% loan); verify maintenance/repair line items on duplexes are realistic",
+      "evidence": "Justin on Missouri deal: 'you can typically buy things if you have a half point spread... you can't have it where it was because... you're only getting six [cap] but you're paying 6.25 [interest]'"
+    }
+  ],
+  "id": "IX3MpjCKx0Q",
+  "title": "Weekly Coaching_01-22-26 | Justin Brennan",
+  "duration": 3957
+}

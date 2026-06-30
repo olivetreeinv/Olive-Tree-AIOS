@@ -1,0 +1,6 @@
+fastapi
+uvicorn[standard]
+websockets>=12
+httpx
+python-dotenv
+databento   # optional — only needed for FULL (L2/L3 depth) mode

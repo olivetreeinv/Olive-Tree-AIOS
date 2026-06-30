@@ -1,0 +1,29 @@
+.env
+.env.local
+.DS_Store
+*.log
+__pycache__/
+node_modules/
+.claude/settings.local.json
+audits/
+.codex-review/
+
+# Obsidian editor config (machine-specific)
+.obsidian/
+wiki/.obsidian/
+
+# Raw source docs processed into the wiki (kept local)
+wiki/raw/
+
+# Local database (rebuildable from Sheets + markdown; not committed)
+data/*.db
+
+# MCP server config — contains API secrets/tokens, stays local
+.mcp.json
+
+# Generated artifacts (LOI/land-mail/capital-raise outputs; may contain PII)
+output/
+
+# Transient SQLite WAL/SHM files (churn on every DB write)
+data/*.db-wal
+data/*.db-shm

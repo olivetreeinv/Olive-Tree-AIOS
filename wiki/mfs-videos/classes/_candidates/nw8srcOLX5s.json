@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "partial",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan conducts a mentorship session covering deal analysis tools, partnership structures via GP allocations, and due diligence processes. He walks through a 29-unit Oklahoma City value-add deal with Gideon, discussing underwriting mechanics, loan structure, and refinance strategies to return capital to investors within 24-36 months.",
+  "takeaways": [
+    "Use the 0-50 unit deal analyzer (updated this morning with a toggle for renovation dollars in loan vs. separate equity raise)",
+    "Debt Service Coverage Ratio (DSCR) must exceed 1.25 minimum; aim for 1.32+ on tight deals",
+    "Expense ratios for mid-1970s properties should run 40-50%+ (not the 30s brokers often claim)",
+    "On value-add deals, structure initial down payment at 40-45% to meet DSCR, then refinance within 18-24 months to recover 50-60% of capital and reset equity",
+    "Investor preferred returns calculated annually (e.g., 6% per year) paid before capital return; document the threshold (e.g., 'once I achieve 15% annualized return, I can pay you out')",
+    "Section 8 fair market value rents post-renovation can jump significantly (1-bed $900\u2192$1,100, 2-bed $1,000\u2192$1,200) but lenders underwrite current financials, not future hope",
+    "GP allocation: deal-finder 5%, due diligence 10%, boots-on-ground 10%, asset manager 10%, loan signer 20%, risk capital 15%, capital raising 30% (pro-rata split within that bucket)"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Apply the 0-50 unit deal analyzer with the renovation toggle to separate loan dollars from equity raises, enabling clearer capital structure underwriting",
+      "evidence": "Justin highlighted the updated deal analyzer has a dropdown to toggle whether renovation costs are included in the loan amount or raised separately, automatically recalculating equity and DSCR"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Validate expense ratios against property age and market; challenge brokers underestimating operating costs by 10-15 points",
+      "evidence": "Justin told Gideon: 'There is no way on planet Earth an Oklahoma City property mid 1970s would operate with anything less than mid-40s here on your expense ratios'\u2014correcting the broker's low assumptions and showing the deal had insufficient returns at asking price"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Structure down payment (45% vs. 30%) to hit minimum 1.25 DSCR on day-one financials, plan 18-24 month refinance to recover 50-60% of equity for investor payback",
+      "evidence": "Justin modeled: buy at 1.9M, refinance at 3.4M valuation in 2027 (higher NOI post-reno), payout $920k capital (95% recovery) while retaining deal with house money, showing how to juice returns on year 3+ cash flow"
+    }
+  ],
+  "id": "nw8srcOLX5s",
+  "title": "Weekly Coaching_10-02-25 | Justin Brennan",
+  "duration": 3618
+}

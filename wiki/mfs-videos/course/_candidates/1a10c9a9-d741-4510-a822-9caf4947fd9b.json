@@ -1,0 +1,24 @@
+{
+  "deal_relevant": "yes",
+  "topic": "capital-raise",
+  "summary": "Justin explains the equity stack in multifamily deals, covering investor types (friends/family, accredited/non-accredited retail, institutional private equity, family offices, high net worth individuals), typical capital stack structures (70% debt/30% equity), and how to split equity between general partners (Class B) and limited partners (Class A shares) with example profit distributions.",
+  "takeaways": [
+    "Friends and family typically invest $25K-$100K per person in early deals",
+    "Institutional private equity minimum investments typically $5M-$10M",
+    "Standard debt-to-equity split is 70% loan to 30% equity",
+    "In a $7M loan / $3M equity deal, 90% of equity ($2.7M) comes from Class A limited partners, 10% ($300K) from Class B general partners",
+    "Typical profit/cash flow split is 70% to limited partners, 30% to general partners when LPs bring 90% of equity capital",
+    "Family offices and ultra-high-net-worth individuals require strong track record and resume; they conduct extensive underwriting and can write checks of $1M-$2M+ quickly once relationship is built",
+    "Capital stack structures vary by deal type; combo approach recommended early\u2014mix of retail syndication plus institutional private equity"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Learn to properly structure equity splits and capital stacks with Class A/B shares and profit distributions",
+      "evidence": "Justin walks through specific example: 70% loan, 30% equity, with 90/10 split between LP (Class A) and GP (Class B) capital, resulting in 70/30 cash flow distribution"
+    }
+  ],
+  "id": "1a10c9a9-d741-4510-a822-9caf4947fd9b",
+  "title": "Lesson 3: The Equity",
+  "module": "Module 3: Raising The Money"
+}

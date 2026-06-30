@@ -1,0 +1,40 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan walks through underwriting a 28-unit, 1956-built Class C apartment complex in Texas pre-market deal, analyzing physical components, market positioning, financial projections, and key risk factors like chiller systems and plumbing infrastructure with Gupta who toured the property.",
+  "takeaways": [
+    "Inspect all plumbing laterals with cameras down every line\u2014budget $3-5K for a 26-unit for full sewer line inspection; use findings as leverage against seller for price reduction or credit",
+    "Run expense ratio at minimum 10-15% vacancy/credit loss for properties 1980 or older in GA/TN/AL markets (45-55% total operating expense ratio); only drop to 5-7% in tight coastal markets",
+    "Verify copper wiring not aluminum\u2014pull receptacles to confirm; aluminum creates fire risk and insurance cost increases",
+    "Chiller systems are deal-killers if single unit serves all 28 apartments; if it fails in summer heat, property becomes uninhabitable; avoid or require backup parts on-site and trained maintenance staff",
+    "Check utility bills for last 24 months in detail; don't rely on broker estimates\u2014this is where most underwriting errors hide on older buildings",
+    "Aerial inspection: property should be surrounded by single-family homes and other apartments, NOT commercial/industrial; drive streets counting window bars\u2014any bars indicate problem neighborhood",
+    "Pre-market deals from reputable brokers (TMG, MMG) come with pre-market advantage; use 25-question seller disclosure form as addendum before executing contract to create leverage for issues found during due diligence",
+    "On $2.2M deal with $67K equity piece at 10% down: acquisition fee of 2-3% ($45-67K) plus $22K earnest money plus $5-8K inspections = fully covers initial capital requirement, then reimburse from closing costs"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Systematically verify utility bills, expense assumptions, and run expense ratios at 10-15% minimum vacancy for older properties instead of accepting broker projections",
+      "evidence": "Justin showed how broker numbers (32% utilities, 3% vacancy) were severely understated; emphasized 'run it at a minimum 10%' and '10 to 20%' for properties 1980+ in GA/TN/AL; stated 'There's no way on planet Earth you're operating at 32%'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Require full plumbing line camera inspection with leverage mechanism: use sewer findings to negotiate seller credit/price reduction rather than accepting property as-is",
+      "evidence": "Justin spent 15+ minutes on plumbing risks, stated 'you'll know very quickly where there's backups, where there's issues, where there's tree roots' and 'that becomes a negotiation item against the seller to either reduce price or ask for a big credit'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Identify and price-adjust for deal-killer systems (chiller vs individual HVAC units) before making offer; treat 1956-era chiller failures as uninhabitable risk requiring premium equity buffer",
+      "evidence": "Justin: 'if that chiller goes out on all 28 units, you're going to have a show up your ass' and 'you'll be praying to baby Lord Jesus' and 'if you have to replace a chiller, get ready...that's a capex problem'; emphasized avoiding chiller systems 'at all cost'"
+    },
+    {
+      "skill": "market-research",
+      "change": "Conduct aerial and street-view inspection: verify single-family residential surroundings, count window bars for neighborhood safety signal, confirm no liquor stores/smoke shops nearby before touring",
+      "evidence": "Justin showed Google Maps aerial and street view, asked 'does anybody see anything?' and when identifying single-family homes said 'one thing you really like to see...is that your property is surrounded by single family homes'; identified 'bars on the windows' as red flag for neighborhood quality"
+    }
+  ],
+  "id": "YFJ5YF3Zr1w",
+  "title": "Weekly Coaching_06-05-25  | Justin Brennan",
+  "duration": 3709
+}

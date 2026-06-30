@@ -1,0 +1,42 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan analyzed two multifamily deals live: a 12-unit value-add in Miami and a 20-unit stabilized property in Huntsville, Alabama. He walked through underwriting mechanics, cap rate analysis, renovation budgeting, and investor return structures using his deal analyzer tool.",
+  "takeaways": [
+    "Use 5-10% vacancy assumption even on stabilized properties to stress-test and identify true market rents\u2014when you hit that vacancy threshold, you know you're at market rent and running the business correctly",
+    "For value-add deals, aim to force appreciation by improving the cap rate 2 points from acquisition (e.g., buy at 6 cap, improve to 8 cap, then sell at 5.5-6 cap)",
+    "On stabilized properties with no major renovations, moving the cap rate up 1-2 points through operational improvements is sufficient",
+    "Use minimum 1.25 debt service coverage ratio as the hard floor\u2014if numbers don't hit that, back into the price by reducing purchase offer until DCR works",
+    "For a 20-unit stabilized property, budget 6-8% blended management fee (5% base + leasing/commission fees), not the 5% broker's estimate",
+    "Set GP acquisition fee at 2-3% of purchase price, but confirm actual closing costs (title, points, lender fees) fit within total closing cost budget",
+    "Build investor returns with waterfall: preferred return (7% example) until met at 100%, then split equity 70/30 LP/GP; explain simply as annual cash flow percentage plus future appreciation at sale/refi",
+    "For renovation budgets on 12-unit 1-bed/studio: exterior work ~$50k, interior improvements ~$120k total (under $10k/unit with appliances ~$2k, flooring ~$2k), targeting $130+ monthly rent bumps",
+    "Stress-test deals by adjusting expense assumptions upward\u2014if OM shows unusually low expenses, add back management fees and taxes to get realistic 40-50% expense ratio",
+    "Agency debt available for loans over $1M with 90%+ occupancy on 1980s-era product at 6.5% or lower rates"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Replace broker's expense assumptions with reality-tested figures (add management fees, realistic insurance/tax) to avoid overestimating NOI and cash-on-cash returns",
+      "evidence": "Justin identified 12-unit Miami deal had unrealistically low 81k expenses (33% ratio), corrected it to realistic 120k+ (45-50% ratio), and emphasized 'you'd normally see about 45-50%' rather than broker's optimistic number"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Systematize cap rate stress-testing by adjusting rates 0.25-0.5 points downward from broker guidance to model downside scenarios before offering",
+      "evidence": "On 20-unit Huntsville deal, Justin moved from broker's 5% to 5.5% cap, then tested at 6.75%, forcing price down from $1.75M guidance to $1.6M offer to maintain 1.25 DCR minimum"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Build renovation budgets by unit type and cost category (exterior/interior/per-unit), then validate rent bump potential matches the capex spend justification",
+      "evidence": "On Miami 12-unit, Justin prescribed $50k exterior + $120k interior ($10k/unit max with $2k appliances + $2k flooring breakdown) and tied it to $130+ rent bump to verify ROI; instructed 'you have to make sure you're going to get that' rent increase"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Write and send LOI tonight/before market visit rather than waiting; use soft whisper call to broker first at $575-600k to establish negotiation window before formal offer",
+      "evidence": "When Bruce said he was visiting Huntsville in 2.5 weeks, Justin said 'I'd write the offer like tonight if I were you' and coached: 'do a little whisper out to him before you send the LOI' to pretest $1.575-1.6M range rather than surprise broker"
+    }
+  ],
+  "id": "iE7gQt0-0ms",
+  "title": "Tuesday Mentorship Q&A_05-27-25 | Justin Brennan",
+  "duration": 3168
+}

@@ -1,0 +1,43 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan conducts a live walkthrough of how to analyze a multifamily deal using a real Dallas property example from Crexy. He demonstrates using the broker's offering memorandum, extracting data into a deal analyzer, adjusting conservative assumptions, backing into maximum offer price, writing an LOI, and preparing a pitch deck for investors.",
+  "takeaways": [
+    "Use deal analyzer to input unit mix, rents, and expenses directly from broker OM (offering memorandum)",
+    "Separate contract services (pool, landscaping, pest control, cleaning) from repairs/maintenance line items\u2014brokers combine them to hide true costs",
+    "Remove management fees from general administrative expenses and input as separate 6% line item",
+    "Add reserve/replacement line of $250-$300 per unit per year for capital expenditures\u2014brokers omit this entirely",
+    "Set minimum 10% economic loss/vacancy assumption, never believe broker's 5%\u2014\"there's no way you're operating less than 10% in Texas\"",
+    "Target expense ratio of 45-55% for buildings built 1950-1980; 35-45% for 1980-2000; 30s or lower for post-2000 buildings",
+    "Debt coverage ratio (DCR) must be 1.25 or greater for lender approval\u2014this is the critical constraint",
+    "Back into max offer price using required metrics: 14-20% IRR, 6-10% cash-on-cash, 1.8x equity multiple minimum",
+    "Use Chat GPT to verify property taxes by county and market value\u2014can save 30-40 minutes of research",
+    "Write LOI at 1% earnest money deposit (non-binding, refundable until due diligence), shoot out multiple offers\u2014\"you could spit these out 400 a day\"",
+    "Leverage broker relationships by offering professional deal analysis and saying 'show me where I'm wrong'\u2014positions you for pre-market deal flow"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Extract and separate cost categories correctly from broker P&L before inputting into analyzer",
+      "evidence": "Justin shows how brokers hide true operating costs by combining contract services with repairs/maintenance; demonstrates pulling out pool service, landscaping, pest control, and management fees into separate line items to reveal actual 63% expense ratio vs. broker's hidden allocation"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Apply 10% minimum economic loss assumption instead of accepting broker's 5% vacancy projection",
+      "evidence": "Justin repeatedly states 'there's no way on planet Earth you're operating a property in Texas for anything less than 10% economic loss' and explains brokers cherry-pick best-case scenarios; this adjustment directly impacts DCR and max offer price"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Back into maximum offer price using target metrics rather than accepting asking price",
+      "evidence": "Justin demonstrates taking a property listed at unknown price, plugging in corrected assumptions, and determining max offer of $1.6M-$1.8M based on 15% IRR, 6-10% cash-on-cash, 1.25+ DCR requirements; shows working backwards from required return metrics"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Use initial low LOI offers as rapport-building conversation tools, not binding commitments",
+      "evidence": "Justin explains LOI is 'non-binding,' 'means nothing,' and can submit '400 a day'; advises positioning offer as data-driven analysis ('show me where I'm wrong') to transition conversations to off-market deal flow behind the scenes"
+    }
+  ],
+  "id": "N5pXy_cwFvc",
+  "title": "Weekly Coaching_05-15-25 | Justin Brennan",
+  "duration": 3752
+}

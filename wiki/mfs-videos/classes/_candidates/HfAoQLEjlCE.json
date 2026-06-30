@@ -1,0 +1,40 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan conducts a mentorship Q&A focused on financing before raising capital. He reviews due diligence checklists and underwriting documents with mentees, analyzes two specific multifamily deals (16-unit Lansing MI and 28-unit Louisville KY), and provides detailed guidance on deal structuring, loan assumptions, expense modeling, and lender pre-approval letters needed for LOIs.",
+  "takeaways": [
+    "Separate property taxes and insurance from loan payments in underwriting\u2014these are operational expenses that must be listed separately, not wrapped into PITI",
+    "Use the 75% break-even metric: if 25%+ of units go vacant, you should still cover all expenses and mortgage payments",
+    "For underwriting benchmarks: 1% rule, 75% rule, IRR analysis, and check if property relies on appreciation or cash flow",
+    "Section 8 subsidy is better when 70% subsidized (tenant pays 30%) vs 100% paid\u2014subsidy travels with tenant, giving them incentive to maintain unit and keep rental assistance",
+    "Due diligence period should be 28-30 days minimum, not 2 weeks\u2014insufficient time to review all leases, financials, inspections, and secure investor commitments",
+    "Request lender quote on official letterhead stating loan amount contingent on standard conditions\u2014frame it as 'lender quote' not 'pre-approval' to reduce lender friction",
+    "Closing cost estimate should include $10K for legal (not lower), plus standard appraisal, environmental, title, insurance, escrow for 6 months",
+    "Operating reserves: plug 50K capex reserve minimum for older properties to reduce equity requirement; renovations typically 11K per unit for 28-unit example"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Separate debt components in expense models to isolate property taxes and insurance from loan principal/interest",
+      "evidence": "Kevin's response about segmenting property taxes, insurance, and loan payments separately in the expense model so operational expenses are clearly distinguished from financing costs"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Validate rent growth and expense assumptions by requesting detailed unit-level rent rolls and verifying tax/insurance costs don't track property age",
+      "evidence": "Justin's review of Alan's Lansing deal emphasized verifying the $250-$400 rent bump was achievable naturally, catching that insurance was low for building age, and recommending increasing it to $14K"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Apply the 75% break-even rule and 10% vacancy/credit loss floor as underwriting guardrails",
+      "evidence": "Michael's Louisville deal discussion: Justin validated the 75% occupancy break-even target and recommended 10% vacancy assumption across all years as conservative baseline for market metrics"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Request 28-30 day due diligence periods instead of accepting 2-week timelines by conditioning on full financial access",
+      "evidence": "Justin's response: tell brokers 'I can do it in 2 weeks if you give me Google Drive access to all leases, financials, and bank accounts'\u2014forcing them to either extend timeline or admit other competing buyers exist"
+    }
+  ],
+  "id": "HfAoQLEjlCE",
+  "title": "Tuesday Mentorship Q&A - Financing Before Raising Capital_02-03-26 | Justin Brennan",
+  "duration": 3205
+}

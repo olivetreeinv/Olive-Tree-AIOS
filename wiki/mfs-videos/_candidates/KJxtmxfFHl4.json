@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan teaches how to buy a 10-30 unit multifamily property in 90 days with minimal out-of-pocket capital ($4,000-$20,000) by leveraging other people's money, acquisition fees, and proper deal structuring. He breaks down deal analysis metrics (14-20% IRR, 6-10% cash-on-cash returns, 1.8x equity multiple), explains the net operating income formula and its impact on property value, and demonstrates a real 31-unit deal where $18,200 out-of-pocket generated $590,000+ in total returns.",
+  "takeaways": [
+    "Focus on 10-30 unit deals as a sweet spot; avoid 50+ units without experience because sophisticated brokers and lenders won't engage",
+    "Net operating income drives property value: value = NOI divided by cap rate; a $1,000/month NOI increase = $220,000 property value increase at 5.5% cap rate",
+    "Leverage on-market listings (40% of deals) to access off-market brokers (60% of deals never listed); tour 3 on-market properties to build rapport and get pre-market deal access",
+    "Acquisition fees typically 2-3% of purchase price are built into closing costs and often offset your initial out-of-pocket capital",
+    "You get paid 5 ways in multifamily: acquisition fees, cash flow (30-40% of deal), asset management fees (1-2% of revenue), profit splits (30-40%), and tax benefits through depreciation",
+    "Structure deals as general partner with 30% promote for 10% capital contribution; double-dip by also receiving limited partner returns on your own money",
+    "Target minimum returns: IRR 14-20% annually, investor cash-on-cash 6-10%, equity multiple 1.8x or higher to attract capital"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Quickly screen deals using NOI formula without deep Excel modeling",
+      "evidence": "Justin teaches simplified analysis: calculate NOI from gross income minus economic losses (8-12% vacancy, lost-to-lease, bad debt) and expenses, then apply value formula (NOI/cap rate). States this identifies good deals for 14-20% IRR and 1.8x+ equity multiple without needing extensive modeling."
+    },
+    {
+      "skill": "market-research",
+      "change": "Use on-market listings as bridge to off-market deal flow",
+      "evidence": "Justin demonstrates pulling 3 properties from Zillow/LoopNet in same market, using them as lures to call brokers, tour properties to build rapport, then accessing pre-market deals (60% never list). Real example: Kansas City 27-unit, 31-unit, and 30-unit deals accessed through 2-3 day broker tour visits."
+    },
+    {
+      "skill": "broker-search",
+      "change": "Identify and contact 2-3 active brokers per market systematically",
+      "evidence": "Justin instructs: find 3 on-market properties, identify their brokers, set up tours, create rapport during site visits. States this pre-market access is 'close to the vest market 60% plus % of the time' and requires relationship-building rather than relying on websites."
+    }
+  ],
+  "id": "KJxtmxfFHl4",
+  "title": "Multifamily Real Estate: Buy Your First Apartment Building Fast With Minimal Out-Of-Pocket",
+  "duration": 5717
+}

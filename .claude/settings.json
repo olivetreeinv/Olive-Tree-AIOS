@@ -1,0 +1,66 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "prompt=$(jq -r '.prompt // empty'); if echo \"$prompt\" | grep -qiE '^ingest([ \\t]|$)'; then cd \"/Users/olivetree/Documents/Olive AIOS\" && output=$(python3 scripts/wiki_ingest.py 2>&1); jq -n --arg out \"$output\" '{hookSpecificOutput:{hookEventName:\"UserPromptSubmit\",additionalContext:(\"Wiki ingest output:\\n\" + $arg)}}' --arg arg \"$output\"; fi",
+            "timeout": 120,
+            "statusMessage": "Running wiki ingest..."
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(ls)",
+      "Bash(ls *)",
+      "Bash(pwd)",
+      "Bash(echo *)",
+      "Bash(which *)",
+      "Bash(type *)",
+      "Bash(grep *)",
+      "Bash(grep)",
+      "Bash(rg *)",
+      "Bash(find *)",
+      "Bash(cat *)",
+      "Bash(head *)",
+      "Bash(tail *)",
+      "Bash(wc *)",
+      "Bash(sort *)",
+      "Bash(uniq *)",
+      "Bash(cut *)",
+      "Bash(awk *)",
+      "Bash(sed *)",
+      "Bash(tr *)",
+      "Bash(jq *)",
+      "Bash(stat *)",
+      "Bash(file *)",
+      "Bash(diff *)",
+      "Bash(git log *)",
+      "Bash(git log)",
+      "Bash(git status)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git diff)",
+      "Bash(git show *)",
+      "Bash(git branch)",
+      "Bash(git branch *)",
+      "Bash(git remote *)",
+      "Bash(git stash list)",
+      "Bash(git tag *)",
+      "Bash(git rev-parse *)",
+      "Bash(python3 * --dry-run *)",
+      "Bash(curl * localhost:8000*)",
+      "Bash(curl * http://localhost:8000*)",
+      "Bash(curl * sheets.googleapis.com*)",
+      "Bash(curl * oauth2.googleapis.com*)",
+      "Bash(curl * api.sam.gov*)",
+      "Bash(curl * api.usaspending.gov*)",
+      "Bash(gws auth export*)",
+      "Bash(python3 *)"
+    ]
+  }
+}
