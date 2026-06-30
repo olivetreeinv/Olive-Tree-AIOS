@@ -4,13 +4,26 @@ Call/letter scripts for the land vertical. Used by `/land-builders`, `/land-call
 
 ---
 
-## 1. Builder / developer first call (get the buy box)
+## 1. Builder / developer outreach (get the buy box)
 
-Goal: learn price, sizes, zips, conditions, close timeline.
+The buy box is the anchor for everything — one confirmed $/acre = green light to mass-offer that zip. Get it three ways; capture every answer in the **Land Builders** tab.
 
-> "Hi [name] — I see you've been building around [area/zip]. I bring builders off-market land deals. Quick question: what would you pay for a buildable lot in [zip], and what lot sizes are you looking for? … Any conditions that kill it for you — slope, wetlands, utilities? … And how fast can you close on clean title?"
+**Who to hit first.** Lead with **Tier-A regional "build-on-your-lot" / scattered-spec builders** (Adams, DSLD, Stone Martin, True Homes, Sedgewick, Taylor) — they take a *single* 1–10 ac assigned lot and close fast. Nationals (DR Horton, LGI, Smith Douglas) want 50+ lot subdivisions and route through slow land-acquisition portals — work them too, but they're not your fast yes.
 
-Capture into the **Land Builders** tab: price/lot or price/acre, size range, zips, conditions, volume/month, close timeline.
+**Find them where they're already building.** Zillow / Realtor.com "new construction" in the target zip shows which builder names recur — that's your call list (`/land-builders` logs it). Those same listings give you the retail $/acre for the **Avg $/Acre (Comp)** column.
+
+**The four questions (every channel):** price/acre · lot-size range · deal-killers (slope, wetlands, utilities, road frontage) · close speed on clean title.
+
+**a) Call** (Tier-A, when you have a phone):
+> "Hi [name] — I see you've been building around [exact zip/subdivision]. I bring builders off-market vacant land before it hits the MLS. What would you pay per acre for a buildable 1–10 ac lot in [zip], what sizes do you want, and what kills a deal — slope, wetlands, utilities, road frontage? How fast can you close on clean title?"
+
+**b) Email** (no phone, or a warm-up — staged, never auto-sent):
+> Subject: Off-market land for your [county] pipeline
+> Builder-to-builder, ~6 lines: who you are, that you tie up vacant 1–10 ac lots in their exact zips *before MLS*, the four questions, offer a 10-min call. (See the DSLD draft pattern.)
+
+**c) Intake portal** (nationals with "sell your land" forms — Fischer, DR Horton, Smith Douglas, True Homes, DSLD): submit a real or representative parcel to get routed to the local land-acquisition manager; log their reply.
+
+Capture into the **Land Builders** tab: price/lot or price/acre, size range, zips, conditions, volume/month, close timeline, tier, intake-portal URL.
 
 ---
 
