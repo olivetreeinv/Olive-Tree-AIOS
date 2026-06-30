@@ -332,14 +332,26 @@ def get_top_movers(symbols: list[str], n: int = 8, days: int = 5) -> list[str]:
 _ET_TZ = timezone(timedelta(hours=-4), "ET")  # EDT fixed offset; sufficient for market-hours check
 
 
-def is_market_open() -> bool:
-    """True if NYSE is currently open (Mon–Fri 09:30–16:00 ET, no holiday check)."""
+def _is_market_open_heuristic() -> bool:
+    """Mon–Fri 09:30–16:00 ET. No holiday awareness — fallback only."""
     now_et = datetime.now(_ET_TZ)
     if now_et.weekday() >= 5:
         return False
     market_open  = now_et.replace(hour=9,  minute=30, second=0, microsecond=0)
     market_close = now_et.replace(hour=16, minute=0,  second=0, microsecond=0)
     return market_open <= now_et < market_close
+
+
+def is_market_open() -> bool:
+    """
+    True if NYSE is currently open, per Alpaca's clock (knows holidays + half-days).
+    Falls back to the weekday-window heuristic if the API is unreachable, so a
+    network blip can't wedge the session selector.
+    """
+    try:
+        return bool(_get(f"{_ALPACA_BASE}/v2/clock", _alpaca_headers()).get("is_open", False))
+    except Exception:
+        return _is_market_open_heuristic()
 
 
 # ── CLI smoke test ────────────────────────────────────────────────────────────
