@@ -34,19 +34,33 @@ import land_parcels as lp
 
 load_dotenv(Path(__file__).parent.parent / ".env")
 
-def fmls_median_ppa(zip_code):
-    """Return FMLS median active $/acre for a zip, or None if unavailable."""
+def fmls_median_ppa(zip_code, min_acres=None, max_acres=None,
+                    status="Active", price_field="ListPrice"):
+    """Return FMLS median $/acre for a zip, or None if unavailable.
+
+    status/price_field pick the signal:
+      • 'Active' + 'ListPrice'  — what's on market now (asking). /land-scout.
+      • 'Closed' + 'ClosePrice' — what actually sold (true comp). /land-comps.
+    min/max_acres (optional) restrict to a lot-size band so the comp is
+    apples-to-apples with what you wholesale — without it, tiny commercial/infill
+    lots inflate $/acre badly.
+    """
     token = os.getenv("FMLS_API_TOKEN", "")
     dataset = os.getenv("FMLS_DATASET_ID", "fmls")
     if not token:
         return None
     base = f"https://api.bridgedataoutput.com/api/v2/OData/{dataset}"
+    clauses = [
+        "PropertyType eq 'Land'", f"StandardStatus eq '{status}'",
+        f"PostalCode eq '{zip_code}'",
+    ]
+    if min_acres is not None:
+        clauses.append(f"LotSizeAcres ge {min_acres}")
+    if max_acres is not None:
+        clauses.append(f"LotSizeAcres le {max_acres}")
     params = {
-        "$filter": (
-            f"PropertyType eq 'Land' and StandardStatus eq 'Active'"
-            f" and PostalCode eq '{zip_code}'"
-        ),
-        "$select": "ListPrice,LotSizeAcres",
+        "$filter": " and ".join(clauses),
+        "$select": f"{price_field},LotSizeAcres",
         "$top": 200,
     }
     url, ppa_vals = f"{base}/Property", []
@@ -60,7 +74,7 @@ def fmls_median_ppa(zip_code):
             break
         data = r.json()
         for prop in data.get("value", []):
-            p = prop.get("ListPrice") or 0
+            p = prop.get(price_field) or 0
             a = prop.get("LotSizeAcres") or 0
             if p > 0 and a > 0:
                 ppa_vals.append(p / a)

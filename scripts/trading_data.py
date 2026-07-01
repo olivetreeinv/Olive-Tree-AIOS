@@ -46,7 +46,7 @@ EQUITY_UNIVERSE = [
 ]
 
 # ── Crypto universe (traded 24/7, active overnight when equities are closed) ─
-CRYPTO_UNIVERSE = ["BTC/USD", "ETH/USD"]
+CRYPTO_UNIVERSE = ["BTC/USD", "ETH/USD", "SOL/USD"]
 
 UNIVERSE = EQUITY_UNIVERSE + CRYPTO_UNIVERSE
 
@@ -124,15 +124,21 @@ def get_bars(symbol: str, days: int = 60, timeframe: str = "1Day") -> list[dict]
     start = end - timedelta(days=days + 10)   # buffer for weekends/holidays
 
     if "/" in symbol:
-        # Crypto via Alpaca
+        # Crypto via Alpaca — paginate; one page caps at 1000 bars (hourly over weeks exceeds that)
         sym_enc = symbol.replace("/", "%2F")
-        url = (
+        base = (
             f"{_ALPACA_DATA}/v1beta3/crypto/us/bars"
             f"?symbols={sym_enc}&timeframe={timeframe}"
             f"&start={start}&end={end}&limit=1000"
         )
-        data = _get(url, _alpaca_headers())
-        raw = data.get("bars", {}).get(symbol, [])
+        raw, page_token = [], None
+        while True:
+            url = base + (f"&page_token={page_token}" if page_token else "")
+            data = _get(url, _alpaca_headers())
+            raw.extend(data.get("bars", {}).get(symbol, []))
+            page_token = data.get("next_page_token")
+            if not page_token:
+                break
         return [{"t": b["t"], "o": b["o"], "h": b["h"], "l": b["l"], "c": b["c"], "v": b["v"]} for b in raw]
     else:
         # Equities via Polygon — key passed via params dict, never embedded in URL
@@ -143,13 +149,24 @@ def get_bars(symbol: str, days: int = 60, timeframe: str = "1Day") -> list[dict]
 
 
 def _poly(path: str, params: dict | None = None) -> dict:
-    """GET a Polygon endpoint with API key injected. Stocks Advanced = ~9 req/s, no delay needed."""
+    """GET a Polygon endpoint with API key injected. Stocks Advanced = ~9 req/s, no delay needed.
+
+    Retries transient network failures (timeout / connection reset) up to 3 times
+    with 2s, 4s backoff so one slow response doesn't kill a whole trade cycle.
+    """
     poly_key = os.getenv("POLYGON_API_KEY", "")
     p = dict(params or {})
     p["apiKey"] = poly_key
-    resp = requests.get(f"{_POLY_BASE}{path}", params=p, timeout=15)
-    resp.raise_for_status()
-    return resp.json()
+    url = f"{_POLY_BASE}{path}"
+    for attempt in range(3):
+        try:
+            resp = requests.get(url, params=p, timeout=15)
+            resp.raise_for_status()
+            return resp.json()
+        except (requests.Timeout, requests.ConnectionError) as e:
+            if attempt == 2:
+                raise
+            time.sleep(2 * (attempt + 1))  # 2s, then 4s
 
 
 def get_intraday_bars(symbol: str, minutes: int = 5, limit: int = 20) -> list[dict]:
@@ -332,14 +349,26 @@ def get_top_movers(symbols: list[str], n: int = 8, days: int = 5) -> list[str]:
 _ET_TZ = timezone(timedelta(hours=-4), "ET")  # EDT fixed offset; sufficient for market-hours check
 
 
-def is_market_open() -> bool:
-    """True if NYSE is currently open (Mon–Fri 09:30–16:00 ET, no holiday check)."""
+def _is_market_open_heuristic() -> bool:
+    """Mon–Fri 09:30–16:00 ET. No holiday awareness — fallback only."""
     now_et = datetime.now(_ET_TZ)
     if now_et.weekday() >= 5:
         return False
     market_open  = now_et.replace(hour=9,  minute=30, second=0, microsecond=0)
     market_close = now_et.replace(hour=16, minute=0,  second=0, microsecond=0)
     return market_open <= now_et < market_close
+
+
+def is_market_open() -> bool:
+    """
+    True if NYSE is currently open, per Alpaca's clock (knows holidays + half-days).
+    Falls back to the weekday-window heuristic if the API is unreachable, so a
+    network blip can't wedge the session selector.
+    """
+    try:
+        return bool(_get(f"{_ALPACA_BASE}/v2/clock", _alpaca_headers()).get("is_open", False))
+    except Exception:
+        return _is_market_open_heuristic()
 
 
 # ── CLI smoke test ────────────────────────────────────────────────────────────

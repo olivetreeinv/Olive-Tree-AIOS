@@ -16,19 +16,17 @@ from land_parcels import (
 # (a target), one improved in-state lot (should be filtered out).
 SAMPLE = [
     {  # TARGET: vacant, FL owner, 4.5 ac
-        "parcel_id": "001-A", "addr_number": "100", "addr_street_name": "Timber",
-        "addr_street_suffix": "Trl", "physzip": "40004",
+        "parcel_id": "001-A", "address": "100 Timber Trl", "addr_zip": "40004",
         "acreage_calc": 4.5, "land_use_code": "100", "mkt_val_bldg": 0,
         "owner": "SMITH JANE", "mail_address1": "9 Beach Rd",
-        "mail_city": "Naples", "mail_state": "FL", "mail_zip": "34102",
+        "mail_placename": "Naples", "mail_statename": "FL", "mail_zipcode": "34102",
         "mkt_val_land": 38000,
     },
     {  # SKIP: improved (has building value), KY owner
-        "parcel_id": "002-B", "addr_number": "55", "addr_street_name": "Main",
-        "addr_street_suffix": "St", "physzip": "40004",
+        "parcel_id": "002-B", "address": "55 Main St", "addr_zip": "40004",
         "acreage_calc": 0.3, "land_use_code": "200", "mkt_val_bldg": 145000,
         "owner": "DOE JOHN", "mail_address1": "55 Main St",
-        "mail_city": "Bardstown", "mail_state": "KY", "mail_zip": "40004",
+        "mail_placename": "Bardstown", "mail_statename": "KY", "mail_zipcode": "40004",
         "mkt_val_land": 20000,
     },
 ]
@@ -39,7 +37,7 @@ def test_normalize_maps_canonical_fields():
     assert rec["parcel_id"] == "001-A"
     assert rec["site_address"] == "100 Timber Trl"
     assert rec["acres"] == 4.5
-    assert rec["owner_state"] == "FL"
+    assert rec["owner_state"] == "FL"      # mail_statename -> canonical owner_state
     assert rec["land_value"] == 38000.0
 
 

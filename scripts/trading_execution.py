@@ -85,11 +85,13 @@ def submit_order(decision: RiskDecision, signal_id: int | None = None) -> dict:
     client = _client()
     side   = OrderSide.BUY if decision.side == "long" else OrderSide.SELL
 
+    # Alpaca rejects DAY for crypto ("invalid crypto time_in_force") — crypto needs GTC.
+    tif = TimeInForce.GTC if "/" in decision.symbol else TimeInForce.DAY
     req = MarketOrderRequest(
         symbol=decision.symbol,
         qty=decision.qty,
         side=side,
-        time_in_force=TimeInForce.DAY,
+        time_in_force=tif,
     )
 
     order = client.submit_order(req)
@@ -176,6 +178,81 @@ def cancel_all_orders() -> int:
     return n
 
 
+def _compute_pnl(side: str, entry: float, exit_price: float, qty: float) -> tuple[float, float]:
+    """Realized P&L ($) and P&L % for a closed position. Pure — testable in isolation."""
+    direction = 1 if side == "long" else -1
+    pnl = direction * (exit_price - entry) * qty
+    cost = entry * qty
+    pnl_pct = (pnl / cost * 100) if cost else 0.0
+    return round(pnl, 2), round(pnl_pct, 4)
+
+
+def _close_position(s, pos, exit_price: float, exit_time: str | None, status: str = "stopped") -> None:
+    """Mark a position closed and record realized P&L from a stop/exit fill."""
+    pos.exit_price = exit_price
+    pos.exit_time  = exit_time or datetime.now(timezone.utc).isoformat()
+    pos.pnl, pos.pnl_pct = _compute_pnl(pos.side, pos.entry_price or 0, exit_price, pos.qty)
+    pos.status = status
+    print(f"  🔒 Closed {pos.symbol} {pos.side} exit=${exit_price:.2f} "
+          f"pnl=${pos.pnl:+,.2f} ({pos.pnl_pct:+.2f}%)")
+
+
+def check_stops() -> list[dict]:
+    """
+    Monitor-based stop-loss for ALL open positions, checked once per cycle.
+    Alpaca can't hold resting stop orders for crypto OR fractional-share equities
+    (the sizer produces fractional qty), so a server-side stop isn't an option —
+    instead we compare the live price to the stored stop and fire a market exit
+    on breach. Exit TIF: DAY for equities (fractional requires DAY), GTC for crypto.
+
+    ponytail: protection is per-cycle (~5 min) and only while the desk is running.
+    A gap between cycles, or the Mac asleep, leaves a position unguarded until the
+    next check. Upgrade path = tighter interval or a separate always-on watcher.
+    Equity exits only fill during market hours; an after-hours breach retries until
+    the open (no order row is written on failure, so the idempotency guard re-fires).
+    """
+    from scripts.trading_data import get_quote
+    client = _client()
+    fired = []
+    s = Session()
+    try:
+        positions = s.query(TradingPosition).filter_by(status="open").all()
+        for pos in positions:
+            if not pos.stop_price:
+                continue
+            # Idempotent: a pending exit already submitted for this position.
+            if s.query(TradingOrder).filter_by(position_id=pos.id, order_type="stop").first():
+                continue
+            price = get_quote(pos.symbol).get("last", 0)
+            if not price:
+                continue
+            breached = ((pos.side == "long"  and price <= pos.stop_price) or
+                        (pos.side == "short" and price >= pos.stop_price))
+            if not breached:
+                continue
+            exit_side = OrderSide.SELL if pos.side == "long" else OrderSide.BUY
+            is_crypto = "/" in pos.symbol
+            try:
+                ex = client.submit_order(MarketOrderRequest(
+                    symbol=pos.symbol, qty=pos.qty, side=exit_side,
+                    time_in_force=TimeInForce.GTC if is_crypto else TimeInForce.DAY))
+            except Exception as e:
+                print(f"  ⚠️  Stop exit failed for {pos.symbol} (pos {pos.id}): {e}")
+                continue
+            s.add(TradingOrder(
+                alpaca_id=str(ex.id), symbol=pos.symbol,
+                side="sell" if exit_side == OrderSide.SELL else "buy",
+                qty=pos.qty, order_type="stop", stop_price=pos.stop_price,
+                status=str(ex.status), submitted_at=datetime.now(timezone.utc).isoformat(),
+                position_id=pos.id))
+            print(f"  🛡  Stop breached — market exit {pos.symbol} @ ~${price:.2f} (stop ${pos.stop_price:.2f})")
+            fired.append({"symbol": pos.symbol, "price": price, "stop": pos.stop_price})
+        s.commit()
+    finally:
+        s.close()
+    return fired
+
+
 def sync_fills() -> list[dict]:
     """
     Pull recent filled orders from Alpaca and update SQLite records.
@@ -197,16 +274,19 @@ def sync_fills() -> list[dict]:
             row.filled_qty  = float(o.filled_qty or 0)
             row.filled_price = float(o.filled_avg_price or 0)
             row.filled_at   = o.filled_at.isoformat() if o.filled_at else None
-            # Always re-derive entry + stop from the actual fill, every sync —
-            # not just on the first status change. A partial fill's avg price
-            # keeps moving across cycles; the stop must track it or it goes stale
-            # (and on a down-move ends up above entry, an inverted stop).
             if o.filled_avg_price and row.position_id:
                 pos = s.query(TradingPosition).filter_by(id=row.position_id).first()
-                if pos:
-                    fill = float(o.filled_avg_price)
+                fill = float(o.filled_avg_price)
+                if pos and row.order_type == "market" and pos.status == "open":
+                    # Entry fill: re-derive entry + stop from the actual fill every sync —
+                    # a partial fill's avg price keeps moving; the stop must track it or it
+                    # goes stale. check_stops() enforces this level each cycle.
                     pos.entry_price = fill
-                    pos.stop_price = round(_stop(fill, pos.side), 4)
+                    pos.stop_price  = round(_stop(fill, pos.side), 4)
+                elif pos and row.order_type == "stop" and pos.status == "open" \
+                        and o.status == OrderStatus.FILLED:
+                    # Stop fill (equity resting stop or crypto synthetic exit): close it.
+                    _close_position(s, pos, fill, row.filled_at, status="stopped")
             s.commit()
             updates.append({"alpaca_id": str(o.id), "status": row.status})
     finally:
@@ -233,7 +313,20 @@ def main():
     ap.add_argument("--test",       action="store_true", help="Place then immediately cancel a test order")
     ap.add_argument("--positions",  action="store_true", help="Show open positions in SQLite")
     ap.add_argument("--cancel-all", action="store_true", help="Cancel all open Alpaca orders")
+    ap.add_argument("--check-pnl",  action="store_true", help="Self-check P&L math (no network)")
     args = ap.parse_args()
+
+    if args.check_pnl:
+        # Long loss: V #5 — entry 350, exit 342, qty 14.28225 → −114.26 / −2.29%
+        pnl, pct = _compute_pnl("long", 350.0, 342.0, 14.28225)
+        assert pnl == -114.26 and abs(pct - (-2.2857)) < 1e-3, (pnl, pct)
+        # Long win symmetric
+        assert _compute_pnl("long", 100.0, 101.0, 10.0) == (10.0, 1.0)
+        # Short wins when price falls
+        assert _compute_pnl("short", 100.0, 99.0, 10.0) == (10.0, 1.0)
+        assert _compute_pnl("short", 100.0, 101.0, 10.0) == (-10.0, -1.0)
+        print("  ✅ _compute_pnl self-check passed.")
+        return
 
     if args.test:
         print("── Execution agent test ─────────────────────────────────────")
