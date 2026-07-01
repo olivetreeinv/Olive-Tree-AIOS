@@ -37,11 +37,12 @@ from dotenv import load_dotenv
 load_dotenv(Path(__file__).parent.parent / ".env")
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from scripts.trading_data   import get_account, is_market_open, get_top_movers, EQUITY_UNIVERSE, CRYPTO_UNIVERSE
+from scripts.trading_data   import get_account, is_market_open, is_extended_hours, get_top_movers, get_afterhours_movers, EQUITY_UNIVERSE, CRYPTO_UNIVERSE
 from scripts.trading_research import run_research
 from scripts.trading_quant  import run_walk_forward
 from scripts.trading_risk   import evaluate as risk_evaluate, is_daily_halted
 from scripts.trading_execution import submit_order, sync_fills, get_open_positions, check_stops
+from scripts.trading_options   import find_contract, size_contracts, submit_option_order
 from scripts.trading_report import snapshot_equity, print_performance, send_alert, send_session_report
 from db.connection import Session
 from db.schema import TradingSignal
@@ -73,7 +74,8 @@ def _save_signal(thesis_id: int | None, result: dict) -> int | None:
         s.close()
 
 
-def run_cycle(dry_run: bool = False, market_session: str = "equities"):
+def run_cycle(dry_run: bool = False, market_session: str = "equities",
+              with_insiders: bool = False, with_options: bool = False):
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     print(f"\n{'='*60}")
     print(f"  Trading Desk Cycle — {now}  [{market_session}]")
@@ -94,17 +96,31 @@ def run_cycle(dry_run: bool = False, market_session: str = "equities"):
         send_alert("Trading Desk — HALT", msg)
         return
 
+    # ── Insider signals (optional, fetched once per cycle) ────────
+    insider_long:  set[str] = set()
+    insider_short: set[str] = set()
+    if with_insiders:
+        print("\n  [0/4] Insider signals...")
+        from scripts.trading_insiders import get_insider_signal, format_signal_block, get_insider_tickers
+        insider_signal = get_insider_signal()
+        insider_long, insider_short = get_insider_tickers(insider_signal)
+        if insider_long or insider_short:
+            print(f"        Long flags:  {sorted(insider_long)  or 'none'}")
+            print(f"        Short flags: {sorted(insider_short) or 'none'}")
+
     # ── Step 1: Research ───────────────────────────────────────────
-    # For equities: narrow to top 8 movers to stay within Polygon rate limits.
-    # For crypto: use full universe (only 2 symbols).
     if market_session == "crypto":
         symbols = CRYPTO_UNIVERSE
+    elif market_session == "extended":
+        symbols = get_afterhours_movers(EQUITY_UNIVERSE, n=15)
+        print(f"  After-hours movers ({len(symbols)}): {symbols}")
     else:
-        symbols = get_top_movers(EQUITY_UNIVERSE, n=8)
-        print(f"  Top movers selected: {symbols}")
+        symbols = get_top_movers(EQUITY_UNIVERSE, n=15)
+        print(f"  Top movers ({len(symbols)}): {symbols}")
     print(f"\n  [1/4] Research agent ({len(symbols)} symbols)...")
     run_id = datetime.now(timezone.utc).isoformat()
-    theses = run_research(symbols, market_session=market_session, dry_run=dry_run, run_id=run_id)
+    theses = run_research(symbols, market_session=market_session, dry_run=dry_run, run_id=run_id,
+                          with_insiders=with_insiders)
 
     if not theses:
         print("  No theses returned. Nothing to trade.")
@@ -177,6 +193,7 @@ def run_cycle(dry_run: bool = False, market_session: str = "equities"):
             entry_price=entry_price,
             quant_passed=passed,
             portfolio_equity=equity,
+            extended_hours=(market_session == "extended"),
         )
 
         if decision.approved:
@@ -187,10 +204,47 @@ def run_cycle(dry_run: bool = False, market_session: str = "equities"):
 
         # Step 4: Execute
         print(f"  [4/4] Execution...")
+
+        # Options eligibility:
+        #   - Best-judgment path: conviction ≥ 0.80 (Claude's highest-conviction calls)
+        #   - Insider path:       insider signal matches this direction (any conviction ≥ 0.60)
+        # Options only during regular equities session — no extended or crypto options.
+        insider_match = (
+            (direction == "long"  and symbol in insider_long)
+            or (direction == "short" and symbol in insider_short)
+        )
+        use_options = (
+            with_options
+            and market_session == "equities"
+            and (conviction >= 0.80 or (insider_match and conviction >= 0.60))
+        )
+
         if dry_run:
-            print(f"        [DRY RUN] Would submit {symbol} {direction.upper()} qty={decision.qty:.4f}")
+            tag = " [OPTIONS]" if use_options else ""
+            print(f"        [DRY RUN] Would submit {symbol} {direction.upper()} qty={decision.qty:.4f}{tag}")
+        elif use_options:
+            contract, premium = find_contract(symbol, direction, entry_price)
+            if contract:
+                n = size_contracts(equity, premium)
+                result = submit_option_order(contract, n)
+                if result.get("submitted"):
+                    approved_count += 1
+                    cost = n * premium * 100
+                    send_alert(
+                        f"📊 {symbol} {direction.upper()} — Options Paper",
+                        f"{n}x {contract}  est. cost=${cost:,.0f}  {'INSIDER' if insider_match else 'HIGH-CONV'}",
+                    )
+            else:
+                print(f"        No options contract found for {symbol} — falling back to equity")
+                result = submit_order(decision, signal_id=signal_id, session=market_session)
+                if result.get("submitted"):
+                    approved_count += 1
+                    send_alert(
+                        f"📈 {symbol} {direction.upper()} — Paper (equity fallback)",
+                        f"qty={decision.qty:.4f}  notional=${decision.position_usd:,.2f}",
+                    )
         else:
-            result = submit_order(decision, signal_id=signal_id)
+            result = submit_order(decision, signal_id=signal_id, session=market_session)
             if result.get("submitted"):
                 approved_count += 1
                 send_alert(
@@ -203,7 +257,7 @@ def run_cycle(dry_run: bool = False, market_session: str = "equities"):
     # check live price vs stop and fire exits first, then sync_fills() reconciles every
     # fill (incl. those stop exits) → closes positions with realized P&L.
     if not dry_run:
-        check_stops()
+        check_stops(session=market_session)
         sync_fills()
 
     # ── Equity snapshot (end-of-cycle update) ─────────────────────
@@ -223,9 +277,11 @@ def main():
     ap.add_argument("--interval",      type=int, default=3600, help="Seconds between research cycles (default 3600)")
     ap.add_argument("--stop-interval", type=int, default=60, help="Seconds between stop checks within a cycle (default 60)")
     ap.add_argument("--dry-run",       action="store_true", help="No orders, no equity snapshot")
+    ap.add_argument("--insiders",      action="store_true", help="Fetch Pelosi + Burry signals each cycle")
+    ap.add_argument("--options",       action="store_true", help="Options trading: high-conviction + insider-flagged symbols")
     ap.add_argument("--backtest-only", action="store_true", help="Run quant gate on all symbols and exit")
     ap.add_argument("--report",        action="store_true", help="Print P&L table and exit")
-    ap.add_argument("--market-session", default="auto", choices=["auto", "equities", "crypto"],
+    ap.add_argument("--market-session", default="auto", choices=["auto", "equities", "extended", "crypto", "idle"],
                     help="Force session type (default auto-detects by time)")
     args = ap.parse_args()
 
@@ -243,10 +299,15 @@ def main():
     def _session() -> str:
         if args.market_session != "auto":
             return args.market_session
-        return "equities" if is_market_open() else "crypto"
+        if is_market_open():
+            return "equities"
+        if is_extended_hours():
+            return "extended"
+        return "idle"  # 8pm–4am ET: no active session
 
     if args.once:
-        run_cycle(dry_run=args.dry_run, market_session=_session())
+        run_cycle(dry_run=args.dry_run, market_session=_session(),
+                  with_insiders=args.insiders, with_options=args.options)
         return
 
     if args.loop:
@@ -259,11 +320,16 @@ def main():
         while True:
             sess = _session()
             try:
-                # Session flip (equities↔crypto = market open/close) → activity report.
+                # Session flip → activity report (skip idle transitions — nothing to report).
                 if last_session and sess != last_session and not args.dry_run:
-                    send_session_report(last_session, sess)
+                    if "idle" not in (last_session, sess):
+                        send_session_report(last_session, sess)
                 last_session = sess
-                run_cycle(dry_run=args.dry_run, market_session=sess)
+                if sess == "idle":
+                    print(f"  Markets closed (8pm–4am ET). Next check in {args.stop_interval}s.")
+                else:
+                    run_cycle(dry_run=args.dry_run, market_session=sess,
+                              with_insiders=args.insiders, with_options=args.options)
             except KeyboardInterrupt:
                 print("\n  Loop stopped by user.")
                 break
@@ -279,7 +345,7 @@ def main():
                 elapsed += args.stop_interval
                 if not args.dry_run:
                     try:
-                        if check_stops():      # only reconcile if an exit actually fired
+                        if check_stops(session=sess):  # only reconcile if an exit actually fired
                             sync_fills()
                     except KeyboardInterrupt:
                         raise
