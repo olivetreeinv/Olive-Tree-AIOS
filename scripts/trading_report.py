@@ -26,7 +26,7 @@ load_dotenv(Path(__file__).parent.parent / ".env")
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from scripts.trading_data import get_bars, get_account
 from db.connection import Session
-from db.schema import TradingEquityCurve, TradingPosition
+from db.schema import TradingEquityCurve, TradingPosition, TradingSignal
 
 _NOTIFY_TO = os.getenv("NOTIFY_IMESSAGE_TO", "")
 _NOTIFY_SH = str(Path(__file__).parent / "notify.sh")
@@ -155,20 +155,142 @@ def print_performance():
         print(f"  Today P&L: ${daily_pnl:+,.2f} / ${_DAILY_TARGET:,.0f} soft target ({daily_pnl/_DAILY_TARGET:+.0%}) {hit}")
 
 
+def _win_stats(pnls: list[float]) -> dict:
+    """Win rate + avg win/loss + profit factor from a list of realized $ P&L per trade."""
+    n = len(pnls)
+    if n == 0:
+        return {"n": 0, "win_rate": 0.0, "avg_win": 0.0, "avg_loss": 0.0, "profit_factor": 0.0}
+    wins   = [p for p in pnls if p > 0]
+    losses = [p for p in pnls if p <= 0]
+    gross_win  = sum(wins)
+    gross_loss = abs(sum(losses))
+    return {
+        "n":             n,
+        "win_rate":      len(wins) / n,
+        "avg_win":       (gross_win / len(wins)) if wins else 0.0,
+        "avg_loss":      (gross_loss / len(losses)) if losses else 0.0,
+        # ponytail: profit_factor=inf when no losses yet; cap display, not the math
+        "profit_factor": (gross_win / gross_loss) if gross_loss > 0 else float("inf"),
+    }
+
+
+def print_win_rates():
+    """Backtest-expected (OOS) vs realized (closed trades) win rates, side by side, + definitions."""
+    s = Session()
+    try:
+        closed = s.query(TradingPosition).filter(
+            TradingPosition.status.in_(("closed", "stopped"))
+        ).all()
+        # Backtest-expected: the trades we actually approved (passed the gate)
+        passed = s.query(TradingSignal).filter_by(passed_gate=True).all()
+    finally:
+        s.close()
+
+    realized = _win_stats([p.pnl for p in closed if p.pnl is not None])
+    bt_wr    = (sum(x.win_rate for x in passed) / len(passed)) if passed else 0.0
+    bt_dd    = (sum((x.max_drawdown or 0) for x in passed) / len(passed)) if passed else 0.0
+    bt_shp   = (sum((x.oos_sharpe or 0) for x in passed) / len(passed)) if passed else 0.0
+
+    pf = realized["profit_factor"]
+    pf_str = "∞ (no losses yet)" if pf == float("inf") else f"{pf:.2f}"
+
+    print("\n  ── Win Rates: Backtest-Expected vs Realized ──")
+    print(f"  {'Metric':22s}  {'Backtest (OOS)':>16s}  {'Realized (live)':>16s}")
+    print("  " + "-" * 60)
+    print(f"  {'Win rate':22s}  {bt_wr:>15.0%}   {realized['win_rate']:>15.0%}")
+    print(f"  {'Sample size (trades)':22s}  {len(passed):>15d}   {realized['n']:>15d}")
+    print(f"  {'OOS Sharpe (avg)':22s}  {bt_shp:>16.2f}  {'—':>16s}")
+    print(f"  {'Max drawdown (avg)':22s}  {bt_dd:>15.0%}   {'—':>16s}")
+    print(f"  {'Avg win  ($/trade)':22s}  {'—':>16s}  ${realized['avg_win']:>14,.2f}")
+    print(f"  {'Avg loss ($/trade)':22s}  {'—':>16s}  ${realized['avg_loss']:>14,.2f}")
+    print(f"  {'Profit factor':22s}  {'—':>16s}  {pf_str:>16s}")
+
+    if realized["n"] == 0:
+        print("\n  (No closed trades yet — realized column fills in once paper trades exit.)")
+
+    print("""
+  ── What the metrics mean ──
+  Win rate         % of trades that closed profitable. 45% is the gate floor —
+                   a good system can win <50% if wins are bigger than losses.
+  Backtest (OOS)   Out-of-sample: measured on price history the strategy was
+                   NOT tuned on. The honest estimate of forward performance.
+  Realized (live)  What actually happened on closed paper trades. If this drifts
+                   well below Backtest, the edge isn't holding live — investigate.
+  Sample size      How many trades the number is based on. Small N = low trust;
+                   a 100% win rate on 2 trades is luck, not skill.
+  OOS Sharpe       Return per unit of risk (volatility), out-of-sample. >1 good,
+                   >2 excellent. Negative = losing money for the risk taken.
+  Max drawdown     Worst peak-to-trough equity drop. 15% cap = if it falls more,
+                   the strategy is rejected. This is your 'how bad does it hurt'.
+  Avg win/loss     Mean $ on winning vs losing trades. Win > loss means you can
+                   profit even below a 50% win rate.
+  Profit factor    Gross profit ÷ gross loss. >1 = profitable; 1.5+ is healthy;
+                   below 1 means losers outweigh winners.
+  Alpha vs SPY     Your return minus just buying-and-holding the S&P 500. The
+                   only number that says whether the bot beats doing nothing.""")
+
+
+def send_session_report(prev_session: str, new_session: str):
+    """Text an activity summary when the market session flips (equities↔crypto)."""
+    acct   = get_account()
+    equity = acct["equity"]
+    s = Session()
+    try:
+        today = date.today().isoformat()
+        open_pos = s.query(TradingPosition).filter_by(status="open").all()
+        closed_today = [p for p in s.query(TradingPosition).filter(
+            TradingPosition.status.in_(("closed", "stopped"))).all()
+            if (p.exit_time or "").startswith(today) and p.pnl is not None]
+        row = s.query(TradingEquityCurve).filter_by(date=today).first()
+    finally:
+        s.close()
+
+    daily_pnl = (row.portfolio_equity - _START_EQUITY) if row else 0.0
+    wins   = sum(1 for p in closed_today if p.pnl > 0)
+    realized = sum(p.pnl for p in closed_today)
+    n = len(closed_today)
+    open_list = ", ".join(f"{p.symbol} {p.side}" for p in open_pos) or "none"
+
+    body = (
+        f"{prev_session.upper()} → {new_session.upper()}\n"
+        f"Equity ${equity:,.0f}  (today {daily_pnl:+,.0f})\n"
+        f"Closed today: {n} trades, {wins} win{'s' if wins != 1 else ''}, "
+        f"net ${realized:+,.0f}\n"
+        f"Open now: {open_list}"
+    )
+    send_alert(f"Trading Desk — {prev_session} close", body)
+    print(f"  📋 Session report sent ({prev_session}→{new_session})")
+
+
 def main():
     ap = argparse.ArgumentParser(description="Trading Desk report + alerts")
     ap.add_argument("--snapshot", action="store_true", help="Record today's equity snapshot")
-    ap.add_argument("--print",    action="store_true", help="Print performance table")
+    ap.add_argument("--print",    action="store_true", help="Print performance table + win rates")
+    ap.add_argument("--win-rates", action="store_true", help="Win rates (backtest vs realized) + metric definitions")
     ap.add_argument("--alert",    help="Send a test iMessage alert")
+    ap.add_argument("--test",     action="store_true", help="Self-check win-stat math")
     args = ap.parse_args()
+
+    if args.test:
+        w = _win_stats([10, 10, -5, -5, -10])
+        assert w["n"] == 5 and abs(w["win_rate"] - 0.4) < 1e-9, w
+        assert abs(w["avg_win"] - 10) < 1e-9 and abs(w["avg_loss"] - (20/3)) < 1e-9, w
+        assert abs(w["profit_factor"] - 1.0) < 1e-9, w          # 20 won / 20 lost
+        assert _win_stats([])["win_rate"] == 0.0
+        assert _win_stats([5, 5])["profit_factor"] == float("inf")  # no losses
+        print("  ✅ _win_stats self-check passed.")
+        return
 
     if args.alert:
         send_alert("Trading Desk — Test", args.alert)
         print(f"  📱 Alert sent: {args.alert}")
     elif args.snapshot:
         snapshot_equity()
+    elif args.win_rates:
+        print_win_rates()
     elif args.print:
         print_performance()
+        print_win_rates()
     else:
         ap.print_help()
 

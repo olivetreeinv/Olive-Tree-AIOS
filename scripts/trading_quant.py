@@ -93,8 +93,13 @@ def _compute_signals(close: pd.Series, params: dict, direction: str = "long") ->
     return entries
 
 
-def _backtest_fold(close: pd.Series, params: dict, direction: str = "long") -> dict:
-    """Run a vectorised backtest on a price series slice. Returns metrics dict."""
+def _backtest_fold(close: pd.Series, params: dict, direction: str = "long",
+                   periods_per_year: int = 252, freq: str = "D") -> dict:
+    """Run a vectorised backtest on a price series slice. Returns metrics dict.
+
+    periods_per_year / freq annualize Sharpe & CAGR for the bar size (252/"D" daily,
+    8760/"1h" hourly). Wrong values here silently mis-scale Sharpe by ~sqrt(ratio).
+    """
     import vectorbt as vbt
 
     signal = _compute_signals(close, params, direction)
@@ -126,12 +131,12 @@ def _backtest_fold(close: pd.Series, params: dict, direction: str = "long") -> d
         win_rate = sum(1 for r in trade_rets if r > 0) / n_trades if n_trades > 0 else 0.0
 
         total_return = float((equity.iloc[-1] / 100_000) - 1)
-        years = len(close) / 252
+        years = len(close) / periods_per_year
         cagr  = ((1 + total_return) ** (1 / max(years, 0.01))) - 1
 
         active_rets = strat_ret[signal]
         if len(active_rets) > 1 and active_rets.std() > 0:
-            sharpe = float(active_rets.mean() / active_rets.std() * (252 ** 0.5))
+            sharpe = float(active_rets.mean() / active_rets.std() * (periods_per_year ** 0.5))
         else:
             sharpe = 0.0
 
@@ -145,7 +150,7 @@ def _backtest_fold(close: pd.Series, params: dict, direction: str = "long") -> d
             close,
             entries=entries,
             exits=exits,
-            freq="D",
+            freq=freq,
             init_cash=100_000,
             fees=0.001,
             slippage=0.0005,
@@ -158,7 +163,7 @@ def _backtest_fold(close: pd.Series, params: dict, direction: str = "long") -> d
         drawdown     = float(pf.max_drawdown())
         total_return = float(pf.total_return())
         win_rate     = float(stats.get("Win Rate [%]", 0) or 0) / 100
-        years        = len(close) / 252
+        years        = len(close) / periods_per_year
         cagr         = ((1 + total_return) ** (1 / max(years, 0.01))) - 1
 
     return {
@@ -172,15 +177,21 @@ def _backtest_fold(close: pd.Series, params: dict, direction: str = "long") -> d
     }
 
 
-def run_walk_forward(symbol: str, days: int = 365, params: dict | None = None, direction: str = "long") -> dict:
+# Annualization per bar size: (periods_per_year, vectorbt freq alias).
+_TF_ANNUAL = {"1Day": (252, "D"), "1Hour": (24 * 365, "1h")}
+
+
+def run_walk_forward(symbol: str, days: int = 365, params: dict | None = None,
+                     direction: str = "long", timeframe: str = "1Day") -> dict:
     """
-    Walk-forward backtest on `symbol` using `days` of history.
+    Walk-forward backtest on `symbol` using `days` of history at `timeframe` bars.
     Returns a result dict with in-sample, out-of-sample metrics, and a passed_gate flag.
     """
     if params is None:
         params = DEFAULT_PARAMS
+    ppy, freq = _TF_ANNUAL.get(timeframe, (252, "D"))
 
-    bars = get_bars(symbol, days=days)
+    bars = get_bars(symbol, days=days, timeframe=timeframe)
     if len(bars) < 60:
         return {"symbol": symbol, "error": f"Insufficient bars ({len(bars)} < 60)", "passed_gate": False}
 
@@ -192,8 +203,8 @@ def run_walk_forward(symbol: str, days: int = 365, params: dict | None = None, d
     if len(is_close) < 30 or len(oos_close) < 10:
         return {"symbol": symbol, "error": "Folds too short after split", "passed_gate": False}
 
-    is_metrics  = _backtest_fold(is_close,  params, direction)
-    oos_metrics = _backtest_fold(oos_close, params, direction)
+    is_metrics  = _backtest_fold(is_close,  params, direction, ppy, freq)
+    oos_metrics = _backtest_fold(oos_close, params, direction, ppy, freq)
 
     passed = passes_gate(oos_metrics)
 

@@ -41,8 +41,8 @@ from scripts.trading_data   import get_account, is_market_open, get_top_movers, 
 from scripts.trading_research import run_research
 from scripts.trading_quant  import run_walk_forward
 from scripts.trading_risk   import evaluate as risk_evaluate, is_daily_halted
-from scripts.trading_execution import submit_order, sync_fills, get_open_positions
-from scripts.trading_report import snapshot_equity, print_performance, send_alert
+from scripts.trading_execution import submit_order, sync_fills, get_open_positions, check_stops
+from scripts.trading_report import snapshot_equity, print_performance, send_alert, send_session_report
 from db.connection import Session
 from db.schema import TradingSignal
 
@@ -133,9 +133,13 @@ def run_cycle(dry_run: bool = False, market_session: str = "equities"):
             print(f"        ⏭  Skipping SHORT {symbol} — Alpaca doesn't support crypto shorts")
             continue
 
-        # Step 2: Quant gate (direction-aware)
+        # Step 2: Quant gate (direction-aware). Crypto trades 24/7 — daily bars fire
+        # the signal only 1-3x (no valid sample); hourly gives a real trade count.
         print(f"  [2/4] Quant gate...")
-        quant_result = run_walk_forward(symbol, days=365, direction=direction)
+        if is_crypto:
+            quant_result = run_walk_forward(symbol, days=60, direction=direction, timeframe="1Hour")
+        else:
+            quant_result = run_walk_forward(symbol, days=365, direction=direction)
         passed = quant_result.get("passed_gate", False)
         if passed:
             oos = quant_result["oos"]
@@ -195,7 +199,11 @@ def run_cycle(dry_run: bool = False, market_session: str = "equities"):
                 )
 
     # ── Reconcile fills ────────────────────────────────────────────
+    # Stops are monitor-based (Alpaca can't rest stops on crypto or fractional equity) —
+    # check live price vs stop and fire exits first, then sync_fills() reconciles every
+    # fill (incl. those stop exits) → closes positions with realized P&L.
     if not dry_run:
+        check_stops()
         sync_fills()
 
     # ── Equity snapshot (end-of-cycle update) ─────────────────────
@@ -212,7 +220,8 @@ def main():
     ap = argparse.ArgumentParser(description="Olive Tree Trading Desk orchestrator")
     ap.add_argument("--once",          action="store_true", help="Run one cycle and exit")
     ap.add_argument("--loop",          action="store_true", help="Run continuously (use with caffeinate -i)")
-    ap.add_argument("--interval",      type=int, default=3600, help="Seconds between cycles (default 3600)")
+    ap.add_argument("--interval",      type=int, default=3600, help="Seconds between research cycles (default 3600)")
+    ap.add_argument("--stop-interval", type=int, default=60, help="Seconds between stop checks within a cycle (default 60)")
     ap.add_argument("--dry-run",       action="store_true", help="No orders, no equity snapshot")
     ap.add_argument("--backtest-only", action="store_true", help="Run quant gate on all symbols and exit")
     ap.add_argument("--report",        action="store_true", help="Print P&L table and exit")
@@ -241,10 +250,20 @@ def main():
         return
 
     if args.loop:
-        print(f"  Starting loop (interval={args.interval}s). Wrap with 'caffeinate -i' to keep Mac awake.")
+        # Research/quant (the costly part — Claude + data) runs every --interval.
+        # Stops are cheap (one quote per open position), so we enforce them every
+        # --stop-interval in between without paying for extra research cycles.
+        print(f"  Starting loop (research={args.interval}s, stops={args.stop_interval}s). "
+              f"Wrap with 'caffeinate -i' to keep Mac awake.")
+        last_session = None
         while True:
+            sess = _session()
             try:
-                run_cycle(dry_run=args.dry_run, market_session=_session())
+                # Session flip (equities↔crypto = market open/close) → activity report.
+                if last_session and sess != last_session and not args.dry_run:
+                    send_session_report(last_session, sess)
+                last_session = sess
+                run_cycle(dry_run=args.dry_run, market_session=sess)
             except KeyboardInterrupt:
                 print("\n  Loop stopped by user.")
                 break
@@ -253,7 +272,19 @@ def main():
                 print(f"  ⚠️  {msg}")
                 traceback.print_exc()
                 send_alert("Trading Desk — ERROR", msg)
-            time.sleep(args.interval)
+            # Sleep until the next research cycle, enforcing stops every stop_interval.
+            elapsed = 0
+            while elapsed < args.interval:
+                time.sleep(min(args.stop_interval, args.interval - elapsed))
+                elapsed += args.stop_interval
+                if not args.dry_run:
+                    try:
+                        if check_stops():      # only reconcile if an exit actually fired
+                            sync_fills()
+                    except KeyboardInterrupt:
+                        raise
+                    except Exception as e:
+                        print(f"  ⚠️  Stop-check error: {e}")
         return
 
     ap.print_help()

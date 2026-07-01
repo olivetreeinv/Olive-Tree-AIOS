@@ -13,7 +13,7 @@ For each post, creates two content formats:
 - **Carousel** — multi-slide educational or story-driven post (3–8 slides)
 - **Video post** — titled post with motion (Reel or animated graphic, 15–60 sec)
 
-Full pipeline: Ideation → Canva design → Instagram publish via GHL Social Planner (or Meta Graph API as fallback).
+Full pipeline: Ideation → render slides (`scripts/carousel_render.py`, free/local) → Instagram publish via the Metricool MCP (GHL or Meta Graph API as fallback).
 
 ---
 
@@ -30,6 +30,10 @@ Full pipeline: Ideation → Canva design → Instagram publish via GHL Social Pl
 | `references/gohighlevel-api.md` | GHL Social Planner API — scheduling and posting |
 | `context/about-me.md` | Brian's identity and mission |
 | `context/about-business.md` | Olive Tree's structure, markets, investor types |
+
+**Design taste (invoke via the Skill tool, not file reads):**
+- `brandkit` — premium brand-consistent imagery, identity boards, mockups. Use when crafting Higgsfield cover/Reel prompts so visuals look art-directed, not generic.
+- `design-taste-frontend` (taste-skill) — anti-slop layout, typography, and spacing taste. Apply its principles when writing the carousel slide spec (titles, hierarchy, restraint) to avoid templated-looking slides.
 
 ---
 
@@ -191,16 +195,21 @@ Show Brian the briefs and ask: "Want me to adjust anything before I build in Can
 
 Read `references/higgsfield-cli.md` before this step.
 
-**Carousel (multi-slide → export as individual JPEGs) — Canva:**
-1. Use `mcp__claude_ai_Canva__create-design-from-brand-template` or `mcp__claude_ai_Canva__generate-design` to create the design
-2. Build one page per slide in the design
-3. Export: `mcp__claude_ai_Canva__export-design` with format `jpg`, specifying the pages array for each slide
-4. Collect public URLs for each slide image
+**Taste gate (do this first):** Invoke the `design-taste-frontend` skill and apply its layout/typography/spacing principles to the carousel slide spec before rendering — tight hierarchy, intentional restraint, no templated symmetry. When generating any Higgsfield cover or Reel imagery, invoke the `brandkit` skill to keep visuals brand-consistent and art-directed. These run in-session via the Skill tool; don't render slides or generate images without passing through them.
 
-**Carousel hero image — Higgsfield (optional enhancement):**
-- If Brian provides a property photo, run it through Higgsfield to produce a cinematic hero for Slide 1
+**Carousel (multi-slide → 1080×1350 PNGs) — `scripts/carousel_render.py` (free, local, no API):**
+1. Turn the approved carousel concept into a slides spec — one object per slide with `kicker` (short label), `title` (the hook/point), `body` (one supporting line). Keep titles tight; the renderer word-wraps but short reads better.
+2. Write the spec to a temp JSON, then render:
+   ```bash
+   python3 scripts/carousel_render.py --json /tmp/slides.json --out output/carousel/<date>-<slug>
+   ```
+3. The script writes `slide01.png … slideNN.png` (auto page counter, olive brand, `@olivetreeinv.io` footer). Show Brian the rendered slides for approval before publishing.
+4. Brand colors/fonts/logo live in the `BRAND` dict at the top of the script — tweak there if Brian refines the look.
+
+**Carousel hero cover — Higgsfield (optional, only when a post deserves the flash):**
+- Generate ONE custom cover for slide 1, then pass it to the renderer as `cover_image` in the spec (it's used verbatim as slide 1; the rest stay rendered).
 - Pattern: `hf upload create ./photo.jpg` → `hf generate create nano_banana_2 --prompt "..." --image <uuid> --wait`
-- Always run `hf generate cost nano_banana_2 --prompt "..."` first and show Brian the credit cost before proceeding
+- Always run `hf generate cost nano_banana_2 --prompt "..."` first and show Brian the credit cost before proceeding. Skip this for routine posts — rendered slides are the default.
 
 **Video post / Reel — Higgsfield (primary for AI-generated video):**
 1. `hf account status` — confirm credit balance
@@ -223,7 +232,37 @@ Read `references/higgsfield-cli.md` before this step.
 
 ### Step 5: Post to Instagram
 
-**Primary path — GHL Social Planner** (`references/gohighlevel-api.md`):
+**Primary path for carousels — Metricool MCP** (free, already connected as `olivetreeinv.io`):
+
+The renderer outputs local PNGs; `createScheduledPost`'s `media` field needs **public image URLs** — Metricool fetches each one and re-hosts it on its own CDN. **Proven working on the FREE tier (2026-06-30)** with Drive-public-link hosting — no Premium, no paid Drive integration.
+> ⚠️ Don't use Metricool's built-in Google Drive *integration* (that's paid-tier). Instead host the slides yourself and pass plain public URLs.
+
+**Proven hosting recipe (free) — use `scripts/social_drive_upload.py`:**
+```bash
+python3 scripts/social_drive_upload.py --slides-dir output/carousel/<date>-<slug> \
+    --date YYYY-MM-DD --title "Human Title"
+```
+It uploads the slides into Brian's social folder (`SOCIAL_FOLDER_ID` in the script) under a dated+titled subfolder `YYYY-MM-DD — Title/`, sets each public, and prints the `https://lh3.googleusercontent.com/d/<id>` URLs **in slide order** — pass those straight to `media`. (Under the hood: `gws_auth.get_token()` + `deal_archive.upload_file` + `permissions{role:reader,type:anyone}`.) brandId/blogId = `6192268`.
+
+1. Run the uploader; collect the printed `lh3` URLs **in slide order**.
+2. Best time: `mcp__claude_ai_Metricool_Instragram_MCP__getBestTimeToPostByNetwork` (network `instagram`, brandId from `getBrandSettings`, timezone `America/New_York`).
+3. Schedule the carousel — multiple images in `media` = an Instagram carousel:
+   ```
+   mcp__claude_ai_Metricool_Instragram_MCP__createScheduledPost
+     blogId: <id from getBrandSettings>
+     date:   <ISO 8601 best-time>
+     info: {
+       text: "<caption>",
+       media: ["<drive_url_slide1>", "<drive_url_slide2>", ...],   # in order
+       providers: [{"network": "instagram"}],
+       instagramData: {"type": "POST"},
+       publicationDate: {dateTime: "<YYYY-MM-DDTHH:mm:ss>", timezone: "America/New_York"},
+       autoPublish: true, draft: false
+     }
+   ```
+   Set `draft: true` on the first run so Brian reviews it inside Metricool before it goes live.
+
+**Alternate path — GHL Social Planner** (`references/gohighlevel-api.md`):
 
 ```
 POST /social-media-posting/{locationId}/posts
@@ -260,6 +299,14 @@ Video:
 - Adjust based on Metricool best-time data (`mcp__claude_ai_Metricool_Instragram_MCP__getBestTimeToPostByNetwork`)
 
 ### Step 6: Confirm and log
+
+**Log every scheduled post to the tracking sheet** "Olive Tree Investments - Instagram Posts" (mirrors the Looms sheet) — one row per post:
+```bash
+python3 scripts/social_sheet.py --date YYYY-MM-DD --title "Title" --type "MF Carousel" \
+    --topic "..." --caption "..." --slides "<drive folder url>" \
+    --metricool "<planner url>" --status Draft
+```
+(Helper: `scripts/social_sheet.py`, `SHEET_ID` set inside. Use the Drive folder URL printed by `social_drive_upload.py` and the `plannerUrl` from the `createScheduledPost` response. Update Status → Scheduled/Published as it progresses.)
 
 After scheduling:
 ```
