@@ -133,9 +133,13 @@ def run_cycle(dry_run: bool = False, market_session: str = "equities"):
             print(f"        ⏭  Skipping SHORT {symbol} — Alpaca doesn't support crypto shorts")
             continue
 
-        # Step 2: Quant gate (direction-aware)
+        # Step 2: Quant gate (direction-aware). Crypto trades 24/7 — daily bars fire
+        # the signal only 1-3x (no valid sample); hourly gives a real trade count.
         print(f"  [2/4] Quant gate...")
-        quant_result = run_walk_forward(symbol, days=365, direction=direction)
+        if is_crypto:
+            quant_result = run_walk_forward(symbol, days=60, direction=direction, timeframe="1Hour")
+        else:
+            quant_result = run_walk_forward(symbol, days=365, direction=direction)
         passed = quant_result.get("passed_gate", False)
         if passed:
             oos = quant_result["oos"]

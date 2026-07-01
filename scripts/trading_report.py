@@ -230,6 +230,43 @@ def print_win_rates():
                    only number that says whether the bot beats doing nothing.""")
 
 
+def _send_session_email(prev: str, new: str, equity: float, daily_pnl: float,
+                        n: int, wins: int, realized: float, open_list: str):
+    """Send a Gmail performance summary email at session flip."""
+    try:
+        import base64
+        from email.mime.text import MIMEText
+        from email.header import Header
+        import sys
+        sys.path.insert(0, str(Path(__file__).parent.parent))
+        from gws_auth import get_token
+        token = get_token()
+        subject = f"Trading Desk — {prev.upper()} session close"
+        html_body = (
+            f"<h3>{prev.upper()} → {new.upper()}</h3>"
+            f"<p><b>Equity:</b> ${equity:,.0f} &nbsp; (today {daily_pnl:+,.0f})</p>"
+            f"<p><b>Closed today:</b> {n} trade{'s' if n != 1 else ''}, "
+            f"{wins} win{'s' if wins != 1 else ''}, net ${realized:+,.0f}</p>"
+            f"<p><b>Open now:</b> {open_list}</p>"
+        )
+        msg = MIMEText(html_body, "html", "utf-8")
+        msg["to"] = "brian@olivetreeinv.io"
+        msg["from"] = "brian@olivetreeinv.io"
+        msg["subject"] = str(Header(subject, "utf-8"))
+        raw = base64.urlsafe_b64encode(msg.as_bytes()).decode()
+        import requests as _req
+        r = _req.post(
+            "https://gmail.googleapis.com/gmail/v1/users/me/messages/send",
+            headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
+            json={"raw": raw},
+            timeout=20,
+        )
+        r.raise_for_status()
+        print(f"  📧 Session email sent to brian@olivetreeinv.io")
+    except Exception as e:
+        print(f"  ⚠️  Session email failed: {e}")
+
+
 def send_session_report(prev_session: str, new_session: str):
     """Text an activity summary when the market session flips (equities↔crypto)."""
     acct   = get_account()
@@ -259,6 +296,7 @@ def send_session_report(prev_session: str, new_session: str):
         f"Open now: {open_list}"
     )
     send_alert(f"Trading Desk — {prev_session} close", body)
+    _send_session_email(prev_session, new_session, equity, daily_pnl, n, wins, realized, open_list)
     print(f"  📋 Session report sent ({prev_session}→{new_session})")
 
 
