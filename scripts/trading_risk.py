@@ -81,6 +81,13 @@ def size_position(equity: float, entry_price: float) -> tuple[float, float]:
     return qty, qty * entry_price
 
 
+def size_position_extended(equity: float, entry_price: float) -> tuple[float, float]:
+    """Whole-share sizing for extended hours — Alpaca rejects fractional limit orders."""
+    max_usd = equity * MAX_POSITION_PCT
+    qty     = int(max_usd / entry_price) if entry_price > 0 else 0
+    return float(qty), float(qty) * entry_price
+
+
 def stop_price(entry_price: float, side: str) -> float:
     """Return hard stop price: -1% from entry for longs, +1% for shorts."""
     if side == "long":
@@ -94,6 +101,7 @@ def evaluate(
     entry_price: float,
     quant_passed: bool,
     portfolio_equity: float,
+    extended_hours: bool = False,
 ) -> RiskDecision:
     """
     Core risk gate. Returns a RiskDecision with approved=True/False and sizing.
@@ -121,7 +129,8 @@ def evaluate(
         base.veto_reason = "Invalid entry price ≤ 0"
         return base
 
-    qty, pos_usd = size_position(portfolio_equity, entry_price)
+    _size = size_position_extended if extended_hours else size_position
+    qty, pos_usd = _size(portfolio_equity, entry_price)
     if qty <= 0:
         base.veto_reason = "Position size computed to zero"
         return base
