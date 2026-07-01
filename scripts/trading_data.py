@@ -46,7 +46,7 @@ EQUITY_UNIVERSE = [
 ]
 
 # ── Crypto universe (traded 24/7, active overnight when equities are closed) ─
-CRYPTO_UNIVERSE = ["BTC/USD", "ETH/USD"]
+CRYPTO_UNIVERSE = ["BTC/USD", "ETH/USD", "SOL/USD"]
 
 UNIVERSE = EQUITY_UNIVERSE + CRYPTO_UNIVERSE
 
@@ -73,9 +73,16 @@ def _alpaca_headers() -> dict:
 
 
 def _get(url: str, headers: dict) -> dict:
+    # ponytail: same retry pattern as _poly() — 3 attempts, 2s/4s backoff
     req = urllib.request.Request(url, headers=headers)
-    with urllib.request.urlopen(req, context=_SSL, timeout=15) as r:
-        return json.loads(r.read())
+    for attempt in range(3):
+        try:
+            with urllib.request.urlopen(req, context=_SSL, timeout=15) as r:
+                return json.loads(r.read())
+        except (urllib.error.URLError, TimeoutError):
+            if attempt == 2:
+                raise
+            time.sleep(2 * (attempt + 1))
 
 
 def get_account() -> dict:
@@ -124,15 +131,22 @@ def get_bars(symbol: str, days: int = 60, timeframe: str = "1Day") -> list[dict]
     start = end - timedelta(days=days + 10)   # buffer for weekends/holidays
 
     if "/" in symbol:
-        # Crypto via Alpaca
+        # Crypto via Alpaca — paginate; one page caps at 1000 bars (hourly over weeks exceeds that)
         sym_enc = symbol.replace("/", "%2F")
-        url = (
+        base = (
             f"{_ALPACA_DATA}/v1beta3/crypto/us/bars"
             f"?symbols={sym_enc}&timeframe={timeframe}"
             f"&start={start}&end={end}&limit=1000"
         )
-        data = _get(url, _alpaca_headers())
-        raw = data.get("bars", {}).get(symbol, [])
+        raw, page_token, page = [], None, 0
+        while page < 20:  # ponytail: 20 pages × 1000 bars = 20K bars max guard
+            url = base + (f"&page_token={page_token}" if page_token else "")
+            data = _get(url, _alpaca_headers())
+            raw.extend(data.get("bars", {}).get(symbol, []))
+            page_token = data.get("next_page_token")
+            page += 1
+            if not page_token:
+                break
         return [{"t": b["t"], "o": b["o"], "h": b["h"], "l": b["l"], "c": b["c"], "v": b["v"]} for b in raw]
     else:
         # Equities via Polygon — key passed via params dict, never embedded in URL
@@ -143,13 +157,24 @@ def get_bars(symbol: str, days: int = 60, timeframe: str = "1Day") -> list[dict]
 
 
 def _poly(path: str, params: dict | None = None) -> dict:
-    """GET a Polygon endpoint with API key injected. Stocks Advanced = ~9 req/s, no delay needed."""
+    """GET a Polygon endpoint with API key injected. Stocks Advanced = ~9 req/s, no delay needed.
+
+    Retries transient network failures (timeout / connection reset) up to 3 times
+    with 2s, 4s backoff so one slow response doesn't kill a whole trade cycle.
+    """
     poly_key = os.getenv("POLYGON_API_KEY", "")
     p = dict(params or {})
     p["apiKey"] = poly_key
-    resp = requests.get(f"{_POLY_BASE}{path}", params=p, timeout=15)
-    resp.raise_for_status()
-    return resp.json()
+    url = f"{_POLY_BASE}{path}"
+    for attempt in range(3):
+        try:
+            resp = requests.get(url, params=p, timeout=15)
+            resp.raise_for_status()
+            return resp.json()
+        except (requests.Timeout, requests.ConnectionError) as e:
+            if attempt == 2:
+                raise
+            time.sleep(2 * (attempt + 1))  # 2s, then 4s
 
 
 def get_intraday_bars(symbol: str, minutes: int = 5, limit: int = 20) -> list[dict]:
