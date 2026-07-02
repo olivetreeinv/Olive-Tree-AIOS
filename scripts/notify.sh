@@ -44,13 +44,14 @@ if [ -n "$TWILIO_ACCOUNT_SID" ] && [ -n "$TWILIO_TO" ]; then
     -u "$TWILIO_ACCOUNT_SID:$TWILIO_AUTH_TOKEN" >/dev/null
 fi
 
-# 3) iMessage to self — kept for the Mac thread/history; does NOT notify the phone.
-if [ -n "$NOTIFY_IMESSAGE_TO" ]; then
-  osascript <<EOF
-tell application "Messages"
-    set targetService to 1st service whose service type = iMessage
-    set targetBuddy to buddy "$NOTIFY_IMESSAGE_TO" of targetService
-    send "$TITLE: $MESSAGE" to targetBuddy
-end tell
-EOF
-fi
+# 3) iMessage to self — disabled; ntfy push covers phone notifications.
+# Restore by uncommenting if you want the Mac Messages thread history back.
+# if [ -n "$NOTIFY_IMESSAGE_TO" ]; then
+#   osascript <<EOF
+# tell application "Messages"
+#     set targetService to 1st service whose service type = iMessage
+#     set targetBuddy to buddy "$NOTIFY_IMESSAGE_TO" of targetService
+#     send "$TITLE: $MESSAGE" to targetBuddy
+# end tell
+# EOF
+# fi

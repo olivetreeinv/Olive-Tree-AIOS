@@ -37,16 +37,31 @@ from dotenv import load_dotenv
 load_dotenv(Path(__file__).parent.parent / ".env")
 
 # ── Equity + ETF universe (NYSE/NASDAQ, traded during market hours) ─────────
-EQUITY_UNIVERSE = [
-    "SPY", "QQQ",                                    # broad market ETFs / benchmark
-    "AAPL", "MSFT", "NVDA", "AMZN", "GOOGL", "META", "TSLA",
-    "BRK.B", "JPM", "V", "UNH", "XOM",
-    "AMD", "NFLX", "CRM", "ADBE",
-    "IWM", "GLD", "TLT",                             # small-cap, gold, long-bond ETFs
-]
+_SP500_FILE = Path(__file__).parent.parent / "data" / "sp500.txt"
+
+def _load_sp500() -> list[str]:
+    # SPY + QQQ are ETFs (not S&P 500 members) but kept as market anchors
+    anchors = ["SPY", "QQQ"]
+    if _SP500_FILE.exists():
+        sp500 = [l.strip() for l in _SP500_FILE.read_text().splitlines() if l.strip()]
+        return anchors + [s for s in sp500 if s not in anchors]
+    # ponytail: fallback to legacy list if file missing; run scripts/trading_data.py --refresh-sp500
+    return anchors + [
+        "AAPL", "MSFT", "NVDA", "AMZN", "GOOGL", "META", "TSLA",
+        "BRK.B", "JPM", "V", "UNH", "XOM", "AMD", "NFLX", "CRM", "ADBE",
+        "IWM", "GLD", "TLT",
+    ]
+
+EQUITY_UNIVERSE = _load_sp500()  # S&P 500 constituents + SPY/QQQ anchors; refresh with --refresh-sp500
+
+# ── Top-rated ETFs — always evaluated alongside the day's S&P movers ─────────
+# Only the 6 that clear the walk-forward gate on a 730d window (verified 2026-07-01):
+# small-cap (IWM), broad (VTI), dividend (SCHD), growth (VUG), tech (XLK), gold (GLD).
+# ETFs need the 730d window in the orchestrator — at 365d they fire too few trades.
+ETF_UNIVERSE = ["IWM", "VTI", "SCHD", "VUG", "XLK", "GLD"]
 
 # ── Crypto universe (traded 24/7, active overnight when equities are closed) ─
-CRYPTO_UNIVERSE = ["BTC/USD", "ETH/USD", "SOL/USD"]
+CRYPTO_UNIVERSE = ["BTC/USD", "ETH/USD"]  # SOL removed; overnight crypto session retired
 
 UNIVERSE = EQUITY_UNIVERSE + CRYPTO_UNIVERSE
 
@@ -73,9 +88,16 @@ def _alpaca_headers() -> dict:
 
 
 def _get(url: str, headers: dict) -> dict:
+    # ponytail: same retry pattern as _poly() — 3 attempts, 2s/4s backoff
     req = urllib.request.Request(url, headers=headers)
-    with urllib.request.urlopen(req, context=_SSL, timeout=15) as r:
-        return json.loads(r.read())
+    for attempt in range(3):
+        try:
+            with urllib.request.urlopen(req, context=_SSL, timeout=15) as r:
+                return json.loads(r.read())
+        except (urllib.error.URLError, TimeoutError):
+            if attempt == 2:
+                raise
+            time.sleep(2 * (attempt + 1))
 
 
 def get_account() -> dict:
@@ -131,12 +153,13 @@ def get_bars(symbol: str, days: int = 60, timeframe: str = "1Day") -> list[dict]
             f"?symbols={sym_enc}&timeframe={timeframe}"
             f"&start={start}&end={end}&limit=1000"
         )
-        raw, page_token = [], None
-        while True:
+        raw, page_token, page = [], None, 0
+        while page < 20:  # ponytail: 20 pages × 1000 bars = 20K bars max guard
             url = base + (f"&page_token={page_token}" if page_token else "")
             data = _get(url, _alpaca_headers())
             raw.extend(data.get("bars", {}).get(symbol, []))
             page_token = data.get("next_page_token")
+            page += 1
             if not page_token:
                 break
         return [{"t": b["t"], "o": b["o"], "h": b["h"], "l": b["l"], "c": b["c"], "v": b["v"]} for b in raw]
@@ -325,22 +348,32 @@ def get_fear_greed() -> dict:
         return {}
 
 
-def get_top_movers(symbols: list[str], n: int = 8, days: int = 5) -> list[str]:
+def get_top_movers(symbols: list[str], n: int = 15, days: int = 5) -> list[str]:
     """
-    Return the top N symbols by absolute 5d price move (biggest movers — long or short).
-    Always includes SPY and QQQ as macro anchors. Respects rate limits.
+    Return the top N symbols by absolute 5d price move using ONE Polygon snapshot
+    call instead of one call per symbol — O(1) vs O(N) regardless of universe size.
+    Always includes SPY and QQQ as macro anchors.
     """
     anchors = [s for s in ["SPY", "QQQ"] if s in symbols]
-    rest    = [s for s in symbols if s not in anchors]
+    sym_set = set(symbols) - set(anchors)
 
-    moves = {}
-    for sym in rest:
-        try:
-            bars = get_bars(sym, days=days + 5)
-            if len(bars) >= 2:
+    try:
+        tickers = _poly("/v2/snapshot/locale/us/markets/stocks/tickers").get("tickers", [])
+        # todaysChangePerc = 1-day move; use as a proxy for momentum / activity
+        moves = {
+            t["ticker"]: abs(t.get("todaysChangePerc", 0))
+            for t in tickers
+            if t["ticker"] in sym_set
+        }
+    except Exception:
+        # ponytail: fallback to legacy per-symbol scan if snapshot call fails
+        moves = {}
+        for sym in sym_set:
+            try:
+                bars = get_bars(sym, days=days + 5)
                 moves[sym] = abs(bars[-1]["c"] / bars[-5]["c"] - 1) if len(bars) >= 5 else 0
-        except Exception:
-            moves[sym] = 0
+            except Exception:
+                moves[sym] = 0
 
     top = sorted(moves, key=moves.get, reverse=True)[: max(0, n - len(anchors))]
     return anchors + top
@@ -369,6 +402,39 @@ def is_market_open() -> bool:
         return bool(_get(f"{_ALPACA_BASE}/v2/clock", _alpaca_headers()).get("is_open", False))
     except Exception:
         return _is_market_open_heuristic()
+
+
+def is_extended_hours() -> bool:
+    """True if current time is in the after-hours window: 4:00pm–8:00pm ET, Mon–Fri."""
+    now_et = datetime.now(_ET_TZ)
+    if now_et.weekday() >= 5:
+        return False
+    ah_start = now_et.replace(hour=16, minute=0, second=0, microsecond=0)
+    ah_end   = now_et.replace(hour=20, minute=0, second=0, microsecond=0)
+    return ah_start <= now_et < ah_end
+
+
+def get_afterhours_movers(symbols: list[str], n: int = 15) -> list[str]:
+    """
+    Return top N S&P 500 stocks by absolute after-hours price move in ONE snapshot call.
+    Compares lastTrade.price vs day.close — the gap is the after-hours move.
+    """
+    anchors = [s for s in ["SPY", "QQQ"] if s in symbols]
+    sym_set = set(symbols) - set(anchors)
+    try:
+        tickers = _poly("/v2/snapshot/locale/us/markets/stocks/tickers").get("tickers", [])
+        moves = {}
+        for t in tickers:
+            if t["ticker"] not in sym_set:
+                continue
+            day_close = t.get("day", {}).get("c", 0)
+            ah_price  = t.get("lastTrade", {}).get("p", 0)
+            if day_close and ah_price:
+                moves[t["ticker"]] = abs(ah_price / day_close - 1)
+        top = sorted(moves, key=moves.get, reverse=True)[: max(0, n - len(anchors))]
+        return anchors + top
+    except Exception:
+        return get_top_movers(symbols, n=n)  # ponytail: fallback if snapshot fails
 
 
 # ── CLI smoke test ────────────────────────────────────────────────────────────

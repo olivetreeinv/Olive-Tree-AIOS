@@ -99,7 +99,8 @@ def fmls_median_ppa_by_zip(zips):
 # Owners that aren't real sellers (common areas, lender/REO, government).
 EXCLUDE_OWNER = re.compile(
     r"\b(ASSOC|HOA|HOMEOWNERS|OWNERS ASSN|BANK|COUNTY|CITY OF|STATE OF|"
-    r"UNITED STATES|AUTHORITY|CHURCH)\b", re.I)
+    r"UNITED STATES|AUTHORITY|CHURCH|RAILROAD|RAILWAY|CSX|BELLSOUTH|"
+    r"TELEPHONE|ELECTRIC)\b", re.I)
 # Entities (vs. individuals). Individuals are the prime motivated absentee target;
 # entities (esp. builders/developers) are kept but ranked lower and tagged.
 ENTITY_HINT = re.compile(
@@ -189,15 +190,23 @@ def build_list(county, zip_code, band, price_per_acre, spread, cap=4000):
             "buy_pr_est": buy,
             "package": owner_counts.get(owner, 1) > 1,
             "entity": is_entity(owner),
+            # Uniform mail cohorts: small buildable SFR lots vs. rural acreage.
+            "tier": "buildable" if r["acres"] < 1.0 else "acreage",
+            # Brian's personal buy-box: 2–10 ac tracts he may keep (not wholesale).
+            "personal": 2.0 <= r["acres"] <= 10.0,
         })
-    # Individuals first (prime absentee target), then packages, then larger offers.
-    out.sort(key=lambda s: (s["entity"], not s["package"], -(s["offer"] or 0)))
+    # Group by tier (buildable first) so mail campaigns hit uniform cohorts; then
+    # individuals before entities, packages, and larger offers within each tier.
+    out.sort(key=lambda s: (s["tier"] != "buildable", s["entity"],
+                            not s["package"], -(s["offer"] or 0)))
     return out
 
 
 def _row(s):
     # Land Sellers header order (land_setup.TABS).
     notes = " ".join(t for t in (
+        s["tier"].upper(),  # BUILDABLE (0.25–1 ac) or ACREAGE (1–10 ac) mail cohort
+        "PERSONAL" if s.get("personal") else "",  # 2–10 ac — Brian may keep
         "PACKAGE" if s["package"] else "",
         "ENTITY" if s["entity"] else "INDIVIDUAL",
     ) if t)
