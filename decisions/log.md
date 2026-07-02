@@ -410,3 +410,15 @@ Closed the three follow-ups from the stop-loss fix:
 **Next when unblocked:** email support@reportallusa.com for a quota bump / paid quote, then run the 12 zips with one command each.
 
 **Owner:** Brian Norton
+
+---
+
+## 2026-07-01 — Trading Desk: 15 positions @ 4%, add 6 ETFs on a 730d gate
+
+**Decision:** Raised the paper trading desk's concurrent-position cap from 5 → 15 and cut per-position size from 5% → 4% of equity (15 × 4% = 60% max deployed, 40% cash buffer). Added a top-rated ETF set — IWM, VTI, SCHD, VUG, XLK, GLD — evaluated every equities cycle alongside the day's top-15 S&P movers. ETFs run the quant walk-forward on a 730d window (vs 365d for stocks); theses are conviction-sorted so the best fill the 15 slots. Stops (−1%) and daily halt (−2%) unchanged.
+
+**Why:** Brian wanted broader coverage (S&P + top ETFs) and more names held, with size dropped to stay manageable. At the default 365d window 0/12 candidate ETFs cleared the gate — not on quality (Sharpe 3–4) but on trade count (1–4 trades < the 5-trade sample floor), same issue crypto hit on daily bars. A 730d window fires enough trades: 6/12 pass. Kept only those 6.
+
+**Alternatives considered:** (a) Diversifiers only (GLD + SCHD) — leaner, less redundant beta; (b) drop ETFs entirely. Brian chose all 6 that pass at 730d for max coverage. Noted risks: the 6 passes are regime-favorable (fail at a 3yr window / through 2022) and 4 of them (IWM/VTI/VUG/XLK) are equity beta overlapping the S&P names — GLD is the one true diversifier. Rejected lowering MIN_OOS_TRADES (would defeat the significance guard).
+
+**Owner:** Brian Norton

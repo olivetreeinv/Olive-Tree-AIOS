@@ -37,7 +37,7 @@ from dotenv import load_dotenv
 load_dotenv(Path(__file__).parent.parent / ".env")
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from scripts.trading_data   import get_account, is_market_open, is_extended_hours, get_top_movers, get_afterhours_movers, EQUITY_UNIVERSE, CRYPTO_UNIVERSE
+from scripts.trading_data   import get_account, is_market_open, is_extended_hours, get_top_movers, get_afterhours_movers, EQUITY_UNIVERSE, ETF_UNIVERSE, CRYPTO_UNIVERSE
 from scripts.trading_research import run_research
 from scripts.trading_quant  import run_walk_forward
 from scripts.trading_risk   import evaluate as risk_evaluate, is_daily_halted
@@ -115,8 +115,11 @@ def run_cycle(dry_run: bool = False, market_session: str = "equities",
         symbols = get_afterhours_movers(EQUITY_UNIVERSE, n=15)
         print(f"  After-hours movers ({len(symbols)}): {symbols}")
     else:
-        symbols = get_top_movers(EQUITY_UNIVERSE, n=15)
-        print(f"  Top movers ({len(symbols)}): {symbols}")
+        # Always evaluate the top-rated ETFs + the day's top S&P movers, then hold
+        # the best MAX_POSITIONS by conviction. dict.fromkeys dedups, keeps order.
+        movers  = get_top_movers(EQUITY_UNIVERSE, n=15)
+        symbols = list(dict.fromkeys(ETF_UNIVERSE + movers))
+        print(f"  ETFs + top movers ({len(symbols)}): {symbols}")
     print(f"\n  [1/4] Research agent ({len(symbols)} symbols)...")
     run_id = datetime.now(timezone.utc).isoformat()
     theses = run_research(symbols, market_session=market_session, dry_run=dry_run, run_id=run_id,
@@ -132,6 +135,9 @@ def run_cycle(dry_run: bool = False, market_session: str = "equities",
     # MAX_POSITIONS count can't see the concentration; this DB check can.
     held_symbols = {p["symbol"] for p in get_open_positions()}
     approved_count = 0
+    # Highest conviction first → when more theses pass the gates than open slots,
+    # the top MAX_POSITIONS win (the risk agent vetoes the rest at the cap).
+    theses.sort(key=lambda t: t.get("conviction") or 0, reverse=True)
     for t in theses:
         symbol    = t.get("symbol", "")
         direction = t.get("direction", "LONG").lower()  # long / short
@@ -154,6 +160,9 @@ def run_cycle(dry_run: bool = False, market_session: str = "equities",
         print(f"  [2/4] Quant gate...")
         if is_crypto:
             quant_result = run_walk_forward(symbol, days=60, direction=direction, timeframe="1Hour")
+        elif symbol in ETF_UNIVERSE:
+            # ETFs are smooth — 365d fires too few trades to clear the sample floor.
+            quant_result = run_walk_forward(symbol, days=730, direction=direction)
         else:
             quant_result = run_walk_forward(symbol, days=365, direction=direction)
         passed = quant_result.get("passed_gate", False)
