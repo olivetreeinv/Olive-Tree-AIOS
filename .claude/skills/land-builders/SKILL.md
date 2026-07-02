@@ -47,15 +47,19 @@ python3 scripts/land_builders.py --list --market 30120
 
 # Offer anchor: highest builder $/acre covering a zip
 python3 scripts/land_builders.py --price-for 30120
+
+# Auto-discover builder leads for a zip via Google Places (unverified rows to call)
+python3 scripts/land_builders.py --discover-builders 30120
 ```
 
 ## How to find builders to call
 
-After a GO scout, builders show up two ways:
-1. **New-construction parcels** — recently built lots in the zip (county data / a drive-by / a WebSearch for "[city] new homes builder").
-2. **WebSearch** — "[city] GA home builders" / "[city] new construction"; call the names that recur.
+After a GO scout, builders show up three ways:
+1. **`--discover-builders [zip]`** — fastest. Google Places search ("home builders" + "land developers" in the zip) drops name/phone/city/website into the sheet as `Tier=unverified` rows. Dedups by phone (one builder, not one row per community they sell). No email — Places doesn't carry it; capture it on the call. Needs `GOOGLE_MAPS_API_KEY` in `.env` (Places API **New** enabled; ~$0/mo at this volume — $200/mo free credit, ~2 calls/zip).
+2. **New-construction parcels** — recently built lots in the zip (county data / a drive-by).
+3. **WebSearch** — "[city] GA home builders"; call the names that recur.
 
-LGI Homes already appears as an out-of-state land buyer in Bartow data — a known national builder to approach.
+Discovered rows have blank buy-box fields (price/acre, lot band, conditions), so `/land-sellers` and `--price-for` safely ignore them until you call and `--add` to verify. Occasional false positives (a subdivision POI, a gov office) — skip on the call. LGI Homes already appears as an out-of-state land buyer in Bartow data — a known national builder to approach.
 
 ## Output
 

@@ -2,10 +2,10 @@
 """
 trading_risk.py — Risk agent for the Olive Tree Trading Desk.
 
-Conservative ceiling (locked 2026-06-26):
+Conservative ceiling (updated 2026-07-01):
   - Max loss per position: -1% of entry value
-  - Max concurrent positions: 5
-  - Max position size: 5% of portfolio equity
+  - Max concurrent positions: 15
+  - Max position size: 4% of portfolio equity (15 × 4% = 60% max deployed, 40% cash buffer)
   - Daily portfolio halt: if portfolio drops -2% from day-open equity, stop all trading
 
 The risk agent sizes every approved signal and can VETO outright.
@@ -31,8 +31,8 @@ from db.schema import TradingPosition, TradingEquityCurve
 from scripts.trading_data import get_open_position_count as _alpaca_position_count
 
 # ── Conservative ceilings ─────────────────────────────────────────────────────
-MAX_POSITION_PCT   = 0.05   # 5% of portfolio equity per position
-MAX_POSITIONS      = 5      # concurrent open positions
+MAX_POSITION_PCT   = 0.04   # 4% of portfolio equity per position (15 × 4% = 60% max deployed)
+MAX_POSITIONS      = 15     # concurrent open positions — top 15 by conviction
 STOP_LOSS_PCT      = 0.01   # 1% loss from entry → hard stop
 DAILY_HALT_PCT     = 0.02   # 2% portfolio drawdown from day-open → halt all trades
 
@@ -81,6 +81,13 @@ def size_position(equity: float, entry_price: float) -> tuple[float, float]:
     return qty, qty * entry_price
 
 
+def size_position_extended(equity: float, entry_price: float) -> tuple[float, float]:
+    """Whole-share sizing for extended hours — Alpaca rejects fractional limit orders."""
+    max_usd = equity * MAX_POSITION_PCT
+    qty     = int(max_usd / entry_price) if entry_price > 0 else 0
+    return float(qty), float(qty) * entry_price
+
+
 def stop_price(entry_price: float, side: str) -> float:
     """Return hard stop price: -1% from entry for longs, +1% for shorts."""
     if side == "long":
@@ -94,6 +101,7 @@ def evaluate(
     entry_price: float,
     quant_passed: bool,
     portfolio_equity: float,
+    extended_hours: bool = False,
 ) -> RiskDecision:
     """
     Core risk gate. Returns a RiskDecision with approved=True/False and sizing.
@@ -121,7 +129,8 @@ def evaluate(
         base.veto_reason = "Invalid entry price ≤ 0"
         return base
 
-    qty, pos_usd = size_position(portfolio_equity, entry_price)
+    _size = size_position_extended if extended_hours else size_position
+    qty, pos_usd = _size(portfolio_equity, entry_price)
     if qty <= 0:
         base.veto_reason = "Position size computed to zero"
         return base
@@ -166,7 +175,7 @@ def main():
 
     # 3. Max positions → veto (mock open positions by patching count)
     import unittest.mock as mock
-    with mock.patch(__name__ + "._open_position_count", return_value=5):
+    with mock.patch(__name__ + "._open_position_count", return_value=MAX_POSITIONS):
         r3 = evaluate("AAPL", "long", entry_price=200.0, quant_passed=True, portfolio_equity=equity)
         assert not r3.approved
         print(f"  ✅ Max pos veto:     {r3.veto_reason}")

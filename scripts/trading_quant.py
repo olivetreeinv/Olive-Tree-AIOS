@@ -256,8 +256,10 @@ def main():
         return
 
     if args.backtest_all:
-        universe = EQUITY_UNIVERSE + CRYPTO_UNIVERSE
-        print(f"Walk-forward backtest — {len(universe)} symbols — {args.days}d history")
+        # ponytail: cap backtest to 25 top movers — backtesting all 500 takes ~30min
+        from scripts.trading_data import get_top_movers
+        universe = get_top_movers(EQUITY_UNIVERSE, n=23) + CRYPTO_UNIVERSE
+        print(f"Walk-forward backtest — {len(universe)} symbols (top movers from S&P 500) — {args.days}d history")
         print(f"Gate: Trades≥{MIN_OOS_TRADES}  OOS Sharpe≥{MIN_OOS_SHARPE}  DD≤{MAX_OOS_DRAWDOWN:.0%}  WinRate≥{MIN_WIN_RATE:.0%}\n")
         results = []
         for sym in universe:

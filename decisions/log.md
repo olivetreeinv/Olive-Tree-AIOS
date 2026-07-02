@@ -383,3 +383,42 @@ Closed the three follow-ups from the stop-loss fix:
 - **Crypto trade texts:** confirmed already working — the per-order `send_alert` is session-agnostic, fires on any filled order incl. crypto. Sent a test iMessage to confirm the channel is live.
 - Verified: imports clean, live loop runs `research=300s, stops=60s`, inner stop loop error-free past 60s.
 - **Owner:** Brian Norton
+
+## 2026-06-30 — Land builders: Google Places over BBB for lead discovery
+- **Question:** scrape the Better Business Bureau to auto-populate viable builders (full contact + into the sheet)?
+- **Decision:** No BBB. Built `--discover-builders [zip]` on the **Google Places API (New)** instead.
+- **Why BBB lost:** (1) no email published — BBB gives name/phone/address/site only, so it never delivered "full contact info" anyway; (2) Cloudflare anti-bot 403s the sandbox (same class as Crexi/LoopNet/Zillow) → needs a paid proxy to run reliably; (3) ToS prohibits automated collection. Google Places is an official API — no 403 games, official quota, returns the same fields BBB would minus the accreditation badge.
+- **Cost:** $200/mo free credit, ~2 calls/zip → effectively $0/mo. Key in `.env` as `GOOGLE_MAPS_API_KEY`; Places API (New) enabled on GCP project 693920842531.
+- **Scope kept lazy:** discovery only feeds *leads* (name/phone/city/website) as `Tier=unverified` rows. Buy-box fields (price/acre, lot band, conditions) stay blank — those come from the call, so `/land-sellers` and `--price-for` ignore unverified rows. Dedups by phone (one builder, not one row per community). Verified live on 30120: 20 clean leads after phone-dedup + no-phone filter.
+- **Skipped, add when needed:** county building-permit discovery (higher signal = *active* permit-pullers, but per-county parsing); email enrichment (no clean free source).
+- **Owner:** Brian Norton
+
+---
+
+## 2026-07-01 — SE land-flip re-evaluation: 12 candidates logged; data-scout blocked on vendor quota
+
+**Decision:** Re-ranked the top Southeast land-flipping zips (full 6-state+FL scope) and logged 12 as `CANDIDATE` rows to the Land Markets tab. Two distinct strategies surfaced and are tagged per row:
+- **STRAT-A** — exurban acreage (1–10 ac), the proven Bartow model: Hall/30506, Maury-TN/38401, Jackson-GA/30549, Limestone-AL/35611, Johnston-NC/27520, Paulding/30157, York-SC/29730.
+- **STRAT-B** — uniform platted small-lot (0.2–0.5 ac), highest-volume land-flip meccas: Marion-FL/34472 (Ocala), Lee-FL/33972 (Lehigh Acres), Charlotte-FL/33948 (Port Charlotte), Citrus-FL/34434. Horry-SC/29526 (Conway) straddles both.
+
+**Blocker (external, not code):** Data-verified scouting (real vacant/absentee counts) is blocked — the **ReportAll free trial hit its all-time 1000-request quota**. Regrid has no key/trial started. Free ArcGIS reaches only ~3 GA counties, all geometry-only (no owner/mailing → can't compute the absentee pool). Every path to finish now costs money.
+
+**Brian's call:** Pause the data spend — the 12 ranked candidates are enough for now. Revisit a paid parcel feed later.
+
+**Shipped anyway (free, push-button for when quota returns):** Wired a `--source reportall` path into `land_markets.py` (`screen_zip_reportall`) so any unwired SE county scouts by zip via ReportAll, reusing the existing normalize/filter/stats pipeline. Bills per parcel returned → `--cap` guards it (default 2000); Total/Vacant counts left blank (no free count-only endpoint); `Vacant Out-of-State` is the capped in-band pool (a floor if cap is hit). Offline mapping test passes; dispatch verified to route correctly (dies only at the 429 quota boundary). Doc updated in `land-scout/SKILL.md`.
+
+**Next when unblocked:** email support@reportallusa.com for a quota bump / paid quote, then run the 12 zips with one command each.
+
+**Owner:** Brian Norton
+
+---
+
+## 2026-07-01 — Trading Desk: 15 positions @ 4%, add 6 ETFs on a 730d gate
+
+**Decision:** Raised the paper trading desk's concurrent-position cap from 5 → 15 and cut per-position size from 5% → 4% of equity (15 × 4% = 60% max deployed, 40% cash buffer). Added a top-rated ETF set — IWM, VTI, SCHD, VUG, XLK, GLD — evaluated every equities cycle alongside the day's top-15 S&P movers. ETFs run the quant walk-forward on a 730d window (vs 365d for stocks); theses are conviction-sorted so the best fill the 15 slots. Stops (−1%) and daily halt (−2%) unchanged.
+
+**Why:** Brian wanted broader coverage (S&P + top ETFs) and more names held, with size dropped to stay manageable. At the default 365d window 0/12 candidate ETFs cleared the gate — not on quality (Sharpe 3–4) but on trade count (1–4 trades < the 5-trade sample floor), same issue crypto hit on daily bars. A 730d window fires enough trades: 6/12 pass. Kept only those 6.
+
+**Alternatives considered:** (a) Diversifiers only (GLD + SCHD) — leaner, less redundant beta; (b) drop ETFs entirely. Brian chose all 6 that pass at 730d for max coverage. Noted risks: the 6 passes are regime-favorable (fail at a 3yr window / through 2022) and 4 of them (IWM/VTI/VUG/XLK) are equity beta overlapping the S&P names — GLD is the one true diversifier. Rejected lowering MIN_OOS_TRADES (would defeat the significance guard).
+
+**Owner:** Brian Norton

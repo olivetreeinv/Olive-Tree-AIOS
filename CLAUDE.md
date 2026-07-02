@@ -48,12 +48,13 @@ Read `references/removed-framework.md` once. It's how Brian thinks about AI work
 ### Land Wholesaling (separate vertical — Bartow/Cartersville GA launch market)
 
 - `/land-scout [zip]` — Automated go/no-go from county GIS data. Scores vacant-lot count, uniformity (cookie-cutter test), and out-of-state-owner pool. Logs to Land Markets tab. Uses `scripts/land_markets.py` + `land_parcels.py`. Read `references/land-wholesale-buy-box.md` first.
-- `/land-builders` — Capture spec builders' buy boxes (price/acre, sizes, zips, conditions). The anchor for all offer prices. Uses `scripts/land_builders.py`. Logs to Land Builders tab.
+- `/land-builders` — Capture spec builders' buy boxes (price/acre, sizes, zips, conditions). The anchor for all offer prices. `--discover-builders [zip]` auto-pulls builder leads (name/phone/website) via Google Places into the sheet as unverified rows to call. Uses `scripts/land_builders.py`. Logs to Land Builders tab.
 - `/land-sellers` — Auto-build the seller list from county parcel data: vacant + out-of-state + in-band, with mailing addresses and computed offers. Individuals (★) ranked first; packages flagged. Uses `scripts/land_sellers.py`. Logs to Land Sellers tab.
 - `/land-mail` — Generate mass direct-mail offer letters for all mail-channel sellers. Merges `templates/land-mail-offer.md` per parcel → printable files in `output/land-mail/<date>-<zip>/`. Nothing sends automatically. Uses `scripts/land_mail.py`.
 - `/land-call` — Daily cold-call cockpit for phone-enriched sellers. Shows the seller script with pre-filled offer, logs outcomes (interested/no/callback/contracted), schedules callbacks. Add phones via `--add-phone`. Uses `scripts/land_call.py`.
 - `/land-contract` — Draft the assignable Vacant Land PSA (to seller) + Assignment Agreement (to builder) for a parcel with an accepted offer. Saves locally + uploads to Drive under `Olive Tree Investments - Deals / Land Wholesale / [parcel]/`. ⚠️ Attorney review required before sending. Uses `scripts/land_contract.py`.
 - `/land-deal` — Deal cockpit: tracks status from contract through close, runs the deal-killer checklist (wetlands/slope/flood/title), fires post-close actions ($1K referral letter + neighbor first-look script). Uses `scripts/land_deal.py`. Logs to Land Deals tab.
+- `/bpo [address]` — Single-family Broker Price Opinion. Pulls 3 active + 3 sold comps from FMLS (same zip, ±1 bed, ±25% sqft, ±15 yr age). Creates Google Doc + PDF in `Olive Tree Investments - BPOs / [address]`. Works on listed and unlisted properties. Uses `scripts/bpo.py`.
 
 ## Where things live
 

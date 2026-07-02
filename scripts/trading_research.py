@@ -116,9 +116,11 @@ def _build_symbol_block(symbol: str, is_crypto: bool = False) -> str:
     return "\n".join(lines)
 
 
-def build_prompt(symbols: list[str], market_session: str = "equities") -> str:
+def build_prompt(symbols: list[str], market_session: str = "equities",
+                 insider_block: str = "") -> str:
     today     = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     is_crypto = market_session == "crypto"
+    is_ext    = market_session == "extended"
 
     # Macro context block
     macro_lines = [f"## Market Context — {today}  Session: {market_session.upper()}"]
@@ -131,7 +133,7 @@ def build_prompt(symbols: list[str], market_session: str = "equities") -> str:
             elif fg["value"] >= 80:
                 macro_lines.append("  ⚠️  Extreme Greed — assess whether upside is priced in.")
     else:
-        # Use SPY snapshot as macro backdrop
+        # Use SPY snapshot as macro backdrop (equities + extended sessions)
         spy = get_snapshot("SPY")
         if spy.get("change_pct") is not None:
             macro_lines.append(f"SPY today: {spy['change_pct']:+.2f}%  VWAP: {spy.get('vwap','')}")
@@ -141,6 +143,10 @@ def build_prompt(symbols: list[str], market_session: str = "equities") -> str:
         fg = get_fear_greed()
         if fg:
             macro_lines.append(f"Crypto Fear & Greed (risk appetite proxy): {fg['value']}/100 — {fg['label']}")
+        if is_ext:
+            macro_lines.append("Session: EXTENDED HOURS (4–8pm ET). Focus on earnings surprises, "
+                               "post-catalyst gaps, and names with significant after-hours moves. "
+                               "Wider spreads — only high-conviction setups.")
 
     macro_block = "\n".join(macro_lines)
 
@@ -151,8 +157,10 @@ def build_prompt(symbols: list[str], market_session: str = "equities") -> str:
 
     symbols_text = "\n\n".join(symbol_blocks)
 
-    return f"""{macro_block}
+    insider_section = f"\n{insider_block}\n" if insider_block else ""
 
+    return f"""{macro_block}
+{insider_section}
 ## Symbol Data
 
 {symbols_text}
@@ -170,7 +178,7 @@ Rules:
 - Use news, RSI, MACD, Fear & Greed, and price trend together — not price alone.
 - RSI < 35 = oversold (long bias), RSI > 65 = overbought (short bias).
 - MACD histogram turning positive = bullish momentum shift; negative = bearish.
-- Horizon: "intraday", "swing" (2–5 days), or "position" (1–4 weeks).
+- Horizon: "intraday", "swing" (2–5 days), or "position" (1–4 weeks).{"" if not is_ext else " Extended-hours plays are almost always intraday — set horizon accordingly."}
 - Return ONLY valid JSON. No prose, no markdown fences.
 
 JSON schema:
@@ -187,12 +195,19 @@ def run_research(
     dry_run: bool = False,
     save: bool = True,
     run_id: str | None = None,
+    with_insiders: bool = False,
 ) -> list[dict]:
     """
     Run the research agent and return a list of thesis dicts.
     Saves each thesis to SQLite (trading_theses) unless save=False.
     """
-    prompt = build_prompt(symbols, market_session)
+    insider_block = ""
+    if with_insiders:
+        from scripts.trading_insiders import get_insider_signal, format_signal_block
+        print("  📋 Fetching insider signals...")
+        insider_block = format_signal_block(get_insider_signal())
+
+    prompt = build_prompt(symbols, market_session, insider_block)
 
     if dry_run:
         print("── [DRY RUN] Prompt ─────────────────────────────────────────")
@@ -258,14 +273,16 @@ def run_research(
 def main():
     ap = argparse.ArgumentParser(description="Research agent — Claude market theses")
     ap.add_argument("--symbols", nargs="+", help="Override symbol list")
-    ap.add_argument("--market-session", default="equities", choices=["equities", "crypto"],
+    ap.add_argument("--market-session", default="equities", choices=["equities", "crypto", "extended"],
                     help="Session context for prompt")
     ap.add_argument("--model", default=DEFAULT_MODEL)
-    ap.add_argument("--dry-run", action="store_true", help="Print prompt, no API call")
+    ap.add_argument("--dry-run",   action="store_true", help="Print prompt, no API call")
+    ap.add_argument("--insiders",  action="store_true", help="Inject Congress + Burry 13F signals into prompt")
     args = ap.parse_args()
 
     symbols = args.symbols or (CRYPTO_UNIVERSE if args.market_session == "crypto" else EQUITY_UNIVERSE)
-    theses  = run_research(symbols, args.market_session, args.model, args.dry_run)
+    theses  = run_research(symbols, args.market_session, args.model, args.dry_run,
+                           with_insiders=args.insiders)
 
     if not args.dry_run:
         print(f"\n── {len(theses)} thesis(es) returned ─────────────────────────")
