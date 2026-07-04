@@ -20,6 +20,20 @@ Keep it terse. Future-you will thank present-you for capturing the *why*, not ju
 
 ---
 
+## 2026-07-03 — SE land-flip 12-zip pull: still quota-blocked; wired seller path + one-button scout
+
+**Decision:** Ship the SE-expansion data pull as push-button, blocked only on vendor quota. Brian emailed Scott at ReportAll directly for a quota bump.
+
+**State:** The `.env` key (`in09INjjWJ`) is the *same* trial key that hit its **1000-request all-time cap** on 2026-07-01 — still 429ing ("exceeded alltime quota limit of 1000 requests"). One verification call slipped through as the last request under the cap; all 12 candidate scouts then 429'd (0 logged). Not spending more until Scott bumps it or a new client id lands in `.env`.
+
+**Shipped (free, ready for when quota clears):**
+- `land_sellers.py` now takes `--source reportall --state XX --cap N` (was ArcGIS-only, 2 wired GA counties) — any unwired SE county builds a seller list by zip. Guard message if you forget `--source` on an unwired county. Skill doc updated.
+- `scripts/scout_se_candidates.py` — one command runs all 12 ranked candidates (7 STRAT-A acreage + 5 STRAT-B small-lot), logs each to Land Markets, prints a verdict table. cap=500/zip (~12 requests).
+
+**Next when unblocked:** swap the new key into `.env` → `python3 scripts/scout_se_candidates.py`.
+
+**Owner:** Brian Norton
+
 ## 2026-05-28 — Added Lebanon TN (37087) to buy box
 
 **Decision:** Lebanon, TN zip 37087 added as active market #10. Strategy: Value-add/Emerging.
