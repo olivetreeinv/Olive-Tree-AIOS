@@ -33,20 +33,29 @@ from scripts.trading_data import get_open_position_count as _alpaca_position_cou
 # ── Conservative ceilings ─────────────────────────────────────────────────────
 MAX_POSITION_PCT   = 0.04   # 4% of portfolio equity per position (15 × 4% = 60% max deployed)
 MAX_POSITIONS      = 15     # concurrent open positions — top 15 by conviction
-STOP_LOSS_PCT      = 0.01   # 1% loss from entry → hard stop
+STOP_LOSS_PCT      = 0.01   # 1% loss from entry → hard stop (fallback; ATR replaces this live)
 DAILY_HALT_PCT     = 0.02   # 2% portfolio drawdown from day-open → halt all trades
+
+# ── Momentum book ─────────────────────────────────────────────────────────────
+MOMENTUM_BOOK_USD  = 50_000  # position sizing runs off this sub-book, not total equity
+
+# ── ATR stop config ───────────────────────────────────────────────────────────
+ATR_MULT           = 1.5    # stop distance = ATR(14) × 1.5
+ATR_STOP_MIN_PCT   = 0.01   # clamp: minimum 1% of entry
+ATR_STOP_MAX_PCT   = 0.03   # clamp: maximum 3% of entry
 
 
 @dataclass
 class RiskDecision:
-    approved:     bool
-    veto_reason:  str        # empty if approved
-    symbol:       str
-    side:         str        # long / short
-    qty:          float      # share/coin count (0 if vetoed)
-    position_usd: float      # USD notional (0 if vetoed)
-    stop_price:   float      # hard stop price (0 if vetoed)
-    entry_price:  float
+    approved:           bool
+    veto_reason:        str        # empty if approved
+    symbol:             str
+    side:               str        # long / short
+    qty:                float      # share/coin count (0 if vetoed)
+    position_usd:       float      # USD notional (0 if vetoed)
+    stop_price:         float      # hard stop price (0 if vetoed)
+    entry_price:        float
+    initial_stop_dist:  float = 0.0  # $ distance from entry (1R); used for trail + breakeven
 
 
 def _open_position_count() -> int:
@@ -89,10 +98,46 @@ def size_position_extended(equity: float, entry_price: float) -> tuple[float, fl
 
 
 def stop_price(entry_price: float, side: str) -> float:
-    """Return hard stop price: -1% from entry for longs, +1% for shorts."""
+    """Return hard stop price: -1% from entry for longs, +1% for shorts.
+    Fallback only — atr_stop() is preferred when bars are available."""
     if side == "long":
         return entry_price * (1 - STOP_LOSS_PCT)
     return entry_price * (1 + STOP_LOSS_PCT)
+
+
+def atr_stop(entry_price: float, side: str, symbol: str) -> tuple[float, float]:
+    """
+    Compute ATR(14)-based stop. Returns (stop_price, stop_distance).
+    stop_distance is the $ distance from entry — stored on the position as 1R.
+    Falls back to STOP_LOSS_PCT (1%) if bars can't be fetched.
+
+    ponytail: fetches 30d of daily bars each call; fine for once-per-entry.
+    If called hot in a loop, cache bars externally and pass in atr directly.
+    """
+    try:
+        from scripts.trading_data import get_bars
+        bars = get_bars(symbol, days=30)
+        if len(bars) < 15:
+            raise ValueError("not enough bars")
+        # True Range for each bar (no overnight gap for crypto, but close enough for sizing)
+        trs = []
+        for i in range(1, len(bars)):
+            high, low, prev_c = bars[i]["h"], bars[i]["l"], bars[i-1]["c"]
+            tr = max(high - low, abs(high - prev_c), abs(low - prev_c))
+            trs.append(tr)
+        atr = sum(trs[-14:]) / 14
+        raw_dist = atr * ATR_MULT
+        # Clamp between 1% and 3% of entry
+        lo = entry_price * ATR_STOP_MIN_PCT
+        hi = entry_price * ATR_STOP_MAX_PCT
+        dist = max(lo, min(hi, raw_dist))
+    except Exception:
+        # ponytail: fallback to flat 1%; upgrade = retry with exponential backoff
+        dist = entry_price * STOP_LOSS_PCT
+
+    if side == "long":
+        return round(entry_price - dist, 4), round(dist, 4)
+    return round(entry_price + dist, 4), round(dist, 4)
 
 
 def evaluate(
@@ -135,6 +180,8 @@ def evaluate(
         base.veto_reason = "Position size computed to zero"
         return base
 
+    sp, stop_dist = atr_stop(entry_price, side, symbol)
+
     return RiskDecision(
         approved=True,
         veto_reason="",
@@ -142,8 +189,9 @@ def evaluate(
         side=side,
         qty=round(qty, 8),
         position_usd=round(pos_usd, 2),
-        stop_price=round(stop_price(entry_price, side), 4),
+        stop_price=sp,
         entry_price=entry_price,
+        initial_stop_dist=stop_dist,
     )
 
 
@@ -160,13 +208,16 @@ def main():
     equity = 100_000.0
     print("── Risk agent unit tests ──────────────────────────────────────\n")
 
-    # 1. Normal approval
+    # 1. Normal approval (SPY bars will be fetched; ATR stop expected, falls back to 1% if no data)
     r = evaluate("SPY", "long", entry_price=734.0, quant_passed=True, portfolio_equity=equity)
     assert r.approved, "Should be approved"
     assert r.qty > 0
-    assert r.stop_price < 734.0
+    assert r.stop_price < 734.0, f"Long stop must be below entry: {r.stop_price}"
+    assert r.initial_stop_dist > 0, "initial_stop_dist must be set"
+    # ATR stop: between 1% and 3% of entry (or exactly 1% if fallback triggered)
+    assert 734.0 * 0.009 < r.initial_stop_dist <= 734.0 * 0.031, f"Stop dist out of band: {r.initial_stop_dist}"
     assert r.position_usd <= equity * MAX_POSITION_PCT + 1
-    print(f"  ✅ Normal approval: qty={r.qty:.4f}  pos=${r.position_usd:,.2f}  stop={r.stop_price:.2f}")
+    print(f"  ✅ Normal approval: qty={r.qty:.4f}  pos=${r.position_usd:,.2f}  stop={r.stop_price:.2f}  1R=${r.initial_stop_dist:.2f}")
 
     # 2. Quant gate not cleared → veto
     r2 = evaluate("SPY", "long", entry_price=734.0, quant_passed=False, portfolio_equity=equity)
@@ -188,8 +239,25 @@ def main():
 
     # 5. Stop price check — short side
     r5 = evaluate("QQQ", "short", entry_price=500.0, quant_passed=True, portfolio_equity=equity)
-    assert r5.stop_price > 500.0, "Short stop must be above entry"
-    print(f"  ✅ Short stop above entry: stop={r5.stop_price:.2f} vs entry=500.00")
+    assert r5.stop_price > 500.0, f"Short stop must be above entry: {r5.stop_price}"
+    assert r5.initial_stop_dist > 0
+    print(f"  ✅ Short stop above entry: stop={r5.stop_price:.2f} vs entry=500.00  1R=${r5.initial_stop_dist:.2f}")
+
+    # 6. ATR fallback (bad symbol → no bars → 1% stop)
+    r6 = evaluate("XXXXXXX", "long", entry_price=100.0, quant_passed=True, portfolio_equity=equity)
+    if r6.approved:
+        assert abs(r6.initial_stop_dist - 1.0) < 1e-6, f"Fallback should be 1%: {r6.initial_stop_dist}"
+        print(f"  ✅ ATR fallback (1%): stop_dist={r6.initial_stop_dist:.2f}")
+    else:
+        print(f"  ✅ ATR fallback test skipped (vetoed for other reason: {r6.veto_reason})")
+
+    # 7. MOMENTUM_BOOK_USD: position sizes off $50k not full equity (mock halt + pos count)
+    with mock.patch(__name__ + "._day_open_equity", return_value=None), \
+         mock.patch(__name__ + "._open_position_count", return_value=0):
+        r7 = evaluate("MSFT", "long", entry_price=400.0, quant_passed=True, portfolio_equity=MOMENTUM_BOOK_USD)
+    assert r7.approved, f"Should approve: {r7.veto_reason}"
+    assert r7.position_usd <= MOMENTUM_BOOK_USD * MAX_POSITION_PCT + 1
+    print(f"  ✅ Momentum book sizing: pos=${r7.position_usd:,.2f} (max ${MOMENTUM_BOOK_USD*MAX_POSITION_PCT:,.0f})")
 
     print("\n  All risk checks passed. ✅")
 

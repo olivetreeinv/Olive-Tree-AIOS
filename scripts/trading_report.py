@@ -154,6 +154,13 @@ def print_performance():
         hit = "✅" if daily_pnl >= _DAILY_TARGET else ""
         print(f"  Today P&L: ${daily_pnl:+,.2f} / ${_DAILY_TARGET:,.0f} soft target ({daily_pnl/_DAILY_TARGET:+.0%}) {hit}")
 
+    # ── Two-book breakdown: momentum (table above) + covered-call book ──
+    cc = _cc_book_summary()
+    if cc:
+        print(f"  CC book: {cc['underlyings']} underlyings "
+              f"({cc['covered']} covered, {cc['uncovered']} naked)  "
+              f"premium MTD ${cc['premium_mtd']:,.0f}  realized ${cc['realized_pnl']:+,.0f}")
+
 
 def _win_stats(pnls: list[float]) -> dict:
     """Win rate + avg win/loss + profit factor from a list of realized $ P&L per trade."""
@@ -238,7 +245,7 @@ def _send_session_email(prev: str, new: str, equity: float, daily_pnl: float,
         from email.mime.text import MIMEText
         from email.header import Header
         import sys
-        sys.path.insert(0, str(Path(__file__).parent.parent))
+        sys.path.insert(0, str(Path(__file__).parent))
         from gws_auth import get_token
         token = get_token()
         subject = f"Trading Desk — {prev.upper()} session close"
@@ -267,6 +274,36 @@ def _send_session_email(prev: str, new: str, equity: float, daily_pnl: float,
         print(f"  ⚠️  Session email failed: {e}")
 
 
+def _cc_book_summary() -> dict:
+    """Summarize the covered-call book: positions, premium MTD, realized P&L, market value."""
+    from db.schema import TradingCCPosition
+    s = Session()
+    try:
+        today = date.today().isoformat()
+        mtd_start = today[:7] + "-01"  # YYYY-MM-01
+        open_cc = s.query(TradingCCPosition).filter_by(status="open").all()
+        closed_cc = s.query(TradingCCPosition).filter(
+            TradingCCPosition.status.in_(("closed", "assigned", "expired", "wheeled")),
+            TradingCCPosition.closed_at >= mtd_start,
+        ).all()
+        premium_mtd = sum((r.premium_received or 0) for r in open_cc) + \
+                      sum((r.premium_received or 0) for r in closed_cc)
+        realized_pnl = sum((r.realized_pnl or 0) for r in closed_cc)
+        covered   = sum(1 for r in open_cc if r.option_symbol)
+        uncovered = sum(1 for r in open_cc if not r.option_symbol)
+        return {
+            "underlyings":   len(open_cc),
+            "covered":       covered,
+            "uncovered":     uncovered,
+            "premium_mtd":   round(premium_mtd, 2),
+            "realized_pnl":  round(realized_pnl, 2),
+        }
+    except Exception:
+        return {}
+    finally:
+        s.close()
+
+
 def send_session_report(prev_session: str, new_session: str):
     """Text an activity summary when the market session flips (equities↔crypto)."""
     acct   = get_account()
@@ -288,16 +325,28 @@ def send_session_report(prev_session: str, new_session: str):
     n = len(closed_today)
     open_list = ", ".join(f"{p.symbol} {p.side}" for p in open_pos) or "none"
 
+    # ── Two-book breakdown ─────────────────────────────────────────
+    cc = _cc_book_summary()
+    cc_line = ""
+    if cc:
+        cc_line = (
+            f"\nCC book: {cc['underlyings']} underlyings "
+            f"({cc['covered']} covered, {cc['uncovered']} naked)  "
+            f"premium MTD ${cc['premium_mtd']:,.0f}  realized ${cc['realized_pnl']:+,.0f}"
+        )
+
     body = (
         f"{prev_session.upper()} → {new_session.upper()}\n"
         f"Equity ${equity:,.0f}  (today {daily_pnl:+,.0f})\n"
-        f"Closed today: {n} trades, {wins} win{'s' if wins != 1 else ''}, "
-        f"net ${realized:+,.0f}\n"
-        f"Open now: {open_list}"
+        f"[Momentum] Closed today: {n} trades, {wins} win{'s' if wins != 1 else ''}, "
+        f"net ${realized:+,.0f}  |  Open: {open_list}"
+        f"{cc_line}"
     )
     send_alert(f"Trading Desk — {prev_session} close", body)
     _send_session_email(prev_session, new_session, equity, daily_pnl, n, wins, realized, open_list)
     print(f"  📋 Session report sent ({prev_session}→{new_session})")
+    if cc_line:
+        print(f"  {cc_line.strip()}")
 
 
 def main():

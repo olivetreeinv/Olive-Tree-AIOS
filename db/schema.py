@@ -303,20 +303,22 @@ class TradingPosition(Base):
     """Current (and closed) paper positions."""
     __tablename__ = "trading_positions"
 
-    id             = Column(Integer, primary_key=True, autoincrement=True)
-    symbol         = Column(String(20), nullable=False)
-    side           = Column(String(5), nullable=False)   # long / short
-    qty            = Column(Float, nullable=False)
-    entry_price    = Column(Float)
-    stop_price     = Column(Float)                       # −1% ceiling
-    entry_time     = Column(String(30))
-    exit_price     = Column(Float)
-    exit_time      = Column(String(30))
-    pnl            = Column(Float)
-    pnl_pct        = Column(Float)
-    status         = Column(String(20), default="open")  # open / closed / stopped
-    signal_id      = Column(Integer, ForeignKey("trading_signals.id"))
-    notes          = Column(Text)
+    id                   = Column(Integer, primary_key=True, autoincrement=True)
+    symbol               = Column(String(20), nullable=False)
+    side                 = Column(String(5), nullable=False)   # long / short
+    qty                  = Column(Float, nullable=False)
+    entry_price          = Column(Float)
+    stop_price           = Column(Float)                       # current stop (ATR-based or trailing)
+    initial_stop_distance = Column(Float)                     # 1R distance at entry; used as trail distance
+    high_water_price     = Column(Float)                      # highest/lowest price seen (for trailing)
+    entry_time           = Column(String(30))
+    exit_price           = Column(Float)
+    exit_time            = Column(String(30))
+    pnl                  = Column(Float)
+    pnl_pct              = Column(Float)
+    status               = Column(String(20), default="open")  # open / closed / stopped
+    signal_id            = Column(Integer, ForeignKey("trading_signals.id"))
+    notes                = Column(Text)
 
     signal = relationship("TradingSignal")
 
@@ -358,6 +360,25 @@ class TradingEquityCurve(Base):
     max_drawdown    = Column(Float)
     open_positions  = Column(Integer)
     daily_halted    = Column(Boolean, default=False)  # True if −2% halt triggered
+
+
+class TradingCCPosition(Base):
+    """Covered-call book positions — one row per stock lot + its short call."""
+    __tablename__ = "trading_cc_positions"
+
+    id              = Column(Integer, primary_key=True, autoincrement=True)
+    underlying      = Column(String(20), nullable=False)
+    shares_qty      = Column(Integer, default=100)        # always 100-share lots
+    avg_cost        = Column(Float)                       # cost basis per share
+    option_symbol   = Column(String(30))                  # OCC symbol or NULL (uncovered)
+    option_type     = Column(String(5))                   # call / put
+    strike          = Column(Float)
+    expiry          = Column(String(12))                  # YYYY-MM-DD
+    premium_received = Column(Float)                      # total premium collected
+    status          = Column(String(20), default="open")  # open / closed / assigned / expired
+    opened_at       = Column(String(30))
+    closed_at       = Column(String(30))
+    realized_pnl    = Column(Float)
 
 
 class Document(Base):

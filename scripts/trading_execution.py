@@ -67,11 +67,11 @@ def _client() -> TradingClient:
     return TradingClient(key, secret, paper=_PAPER)
 
 
-def submit_order(decision: RiskDecision, signal_id: int | None = None) -> dict:
+def submit_order(decision: RiskDecision, signal_id: int | None = None, session: str = "equities") -> dict:
     """
-    Submit a market order for an approved RiskDecision.
+    Submit an order for an approved RiskDecision.
+    Extended hours: limit order (whole shares, extended_hours=True). Regular/crypto: market order.
     Records the order + a new open Position in SQLite.
-    Returns a summary dict.
     """
     if not decision.approved:
         return {"submitted": False, "reason": decision.veto_reason}
@@ -84,15 +84,37 @@ def submit_order(decision: RiskDecision, signal_id: int | None = None) -> dict:
 
     client = _client()
     side   = OrderSide.BUY if decision.side == "long" else OrderSide.SELL
+    is_crypto = "/" in decision.symbol
+    is_ext    = session == "extended" and not is_crypto
 
-    # Alpaca rejects DAY for crypto ("invalid crypto time_in_force") — crypto needs GTC.
-    tif = TimeInForce.GTC if "/" in decision.symbol else TimeInForce.DAY
-    req = MarketOrderRequest(
-        symbol=decision.symbol,
-        qty=decision.qty,
-        side=side,
-        time_in_force=tif,
-    )
+    if is_ext:
+        # Extended hours: limit at ask (long) or bid (short); whole shares; extended_hours flag required.
+        # entry_price comes from the ask — a short limit priced at the ask sits above the
+        # market and never fills, so re-quote the bid for shorts.
+        limit = decision.entry_price
+        if decision.side == "short":
+            try:
+                from scripts.trading_data import get_quote
+                limit = get_quote(decision.symbol).get("bid") or limit
+            except Exception:
+                pass  # keep entry_price — worst case the order rests unfilled, as before
+        req = LimitOrderRequest(
+            symbol=decision.symbol,
+            qty=decision.qty,
+            side=side,
+            time_in_force=TimeInForce.DAY,
+            limit_price=round(limit, 2),
+            extended_hours=True,
+        )
+    else:
+        # Regular session or crypto: market order.
+        tif = TimeInForce.GTC if is_crypto else TimeInForce.DAY
+        req = MarketOrderRequest(
+            symbol=decision.symbol,
+            qty=decision.qty,
+            side=side,
+            time_in_force=tif,
+        )
 
     order = client.submit_order(req)
     now   = datetime.now(timezone.utc).isoformat()
@@ -106,6 +128,8 @@ def submit_order(decision: RiskDecision, signal_id: int | None = None) -> dict:
             qty=decision.qty,
             entry_price=decision.entry_price,  # pre-order quote; updated by sync_fills()
             stop_price=None,
+            initial_stop_distance=decision.initial_stop_dist if decision.initial_stop_dist else None,
+            high_water_price=decision.entry_price,
             entry_time=now,
             status="open",
             signal_id=signal_id,
@@ -197,24 +221,28 @@ def _close_position(s, pos, exit_price: float, exit_time: str | None, status: st
           f"pnl=${pos.pnl:+,.2f} ({pos.pnl_pct:+.2f}%)")
 
 
-def check_stops() -> list[dict]:
+def check_stops(session: str = "equities") -> list[dict]:
     """
     Monitor-based stop-loss for ALL open positions, checked once per cycle.
-    Alpaca can't hold resting stop orders for crypto OR fractional-share equities
-    (the sizer produces fractional qty), so a server-side stop isn't an option —
-    instead we compare the live price to the stored stop and fire a market exit
-    on breach. Exit TIF: DAY for equities (fractional requires DAY), GTC for crypto.
+    Extended hours: uses limit orders (extended_hours=True) for whole-share positions;
+    fractional positions (entered during regular hours) are deferred to market open.
+    Crypto: GTC market exit as before.
+
+    Also handles breakeven + trailing ratchet:
+      - When unrealized gain >= 1R (initial_stop_distance): move stop to entry (breakeven)
+      - After that: trail at high_water_price - initial_stop_distance (longs)
+        or low_water_price + initial_stop_distance (shorts)
+    Stops never move backwards (long only ratchets up, short only down).
 
     ponytail: protection is per-cycle (~5 min) and only while the desk is running.
     A gap between cycles, or the Mac asleep, leaves a position unguarded until the
     next check. Upgrade path = tighter interval or a separate always-on watcher.
-    Equity exits only fill during market hours; an after-hours breach retries until
-    the open (no order row is written on failure, so the idempotency guard re-fires).
     """
     from scripts.trading_data import get_quote
     client = _client()
     fired = []
     s = Session()
+    is_ext = session == "extended"
     try:
         positions = s.query(TradingPosition).filter_by(status="open").all()
         for pos in positions:
@@ -226,16 +254,59 @@ def check_stops() -> list[dict]:
             price = get_quote(pos.symbol).get("last", 0)
             if not price:
                 continue
+
+            # ── Breakeven + trailing ratchet ──────────────────────────────────
+            if pos.initial_stop_distance and pos.entry_price:
+                trail_dist = pos.initial_stop_distance
+                # Update high-water mark (long) / low-water mark (short)
+                if pos.side == "long":
+                    hwp = max(pos.high_water_price or pos.entry_price, price)
+                    if hwp != pos.high_water_price:
+                        pos.high_water_price = hwp
+                else:
+                    hwp = min(pos.high_water_price or pos.entry_price, price)
+                    if hwp != pos.high_water_price:
+                        pos.high_water_price = hwp
+
+                unrealized = (price - pos.entry_price) if pos.side == "long" else (pos.entry_price - price)
+                if unrealized >= trail_dist:
+                    # At or past 1R — trail from high-water
+                    if pos.side == "long":
+                        new_stop = round(hwp - trail_dist, 4)
+                        if new_stop > pos.stop_price:  # never ratchet down
+                            pos.stop_price = new_stop
+                            print(f"  🔼 Trail up {pos.symbol}: stop=${new_stop:.2f} (hwp=${hwp:.2f})")
+                    else:
+                        new_stop = round(hwp + trail_dist, 4)
+                        if new_stop < pos.stop_price:  # never ratchet up for shorts
+                            pos.stop_price = new_stop
+                            print(f"  🔽 Trail dn {pos.symbol}: stop=${new_stop:.2f} (lwp=${hwp:.2f})")
+
             breached = ((pos.side == "long"  and price <= pos.stop_price) or
                         (pos.side == "short" and price >= pos.stop_price))
             if not breached:
                 continue
             exit_side = OrderSide.SELL if pos.side == "long" else OrderSide.BUY
             is_crypto = "/" in pos.symbol
+            is_whole  = pos.qty == int(pos.qty)
+
+            # Extended hours: fractional equity positions can't exit until open — skip.
+            if is_ext and not is_crypto and not is_whole:
+                print(f"  ⏳ {pos.symbol} stop breached but fractional qty — queued for market open")
+                continue
+
             try:
-                ex = client.submit_order(MarketOrderRequest(
-                    symbol=pos.symbol, qty=pos.qty, side=exit_side,
-                    time_in_force=TimeInForce.GTC if is_crypto else TimeInForce.DAY))
+                if is_ext and not is_crypto:
+                    ex = client.submit_order(LimitOrderRequest(
+                        symbol=pos.symbol, qty=pos.qty, side=exit_side,
+                        time_in_force=TimeInForce.DAY,
+                        limit_price=round(pos.stop_price, 2),
+                        extended_hours=True,
+                    ))
+                else:
+                    ex = client.submit_order(MarketOrderRequest(
+                        symbol=pos.symbol, qty=pos.qty, side=exit_side,
+                        time_in_force=TimeInForce.GTC if is_crypto else TimeInForce.DAY))
             except Exception as e:
                 print(f"  ⚠️  Stop exit failed for {pos.symbol} (pos {pos.id}): {e}")
                 continue
@@ -262,7 +333,6 @@ def sync_fills() -> list[dict]:
     # status=ALL so fully-filled (now-closed) market orders are still returned —
     # the default open-only list drops them before we ever see the fill price.
     orders = client.get_orders(filter=GetOrdersRequest(status=QueryOrderStatus.ALL, limit=200))
-    from scripts.trading_risk import stop_price as _stop
     updates = []
     s = Session()
     try:
@@ -278,11 +348,18 @@ def sync_fills() -> list[dict]:
                 pos = s.query(TradingPosition).filter_by(id=row.position_id).first()
                 fill = float(o.filled_avg_price)
                 if pos and row.order_type == "market" and pos.status == "open":
-                    # Entry fill: re-derive entry + stop from the actual fill every sync —
-                    # a partial fill's avg price keeps moving; the stop must track it or it
-                    # goes stale. check_stops() enforces this level each cycle.
+                    # Entry fill: derive the ATR stop from the actual fill. Re-derive while
+                    # a partial fill's avg price is still moving; once the order is FILLED
+                    # and a stop exists, leave it alone — the breakeven/trail ratchet in
+                    # check_stops() owns stop_price from then on, and recomputing here
+                    # every sync would drag a trailed stop backwards.
                     pos.entry_price = fill
-                    pos.stop_price  = round(_stop(fill, pos.side), 4)
+                    if pos.stop_price is None or o.status != OrderStatus.FILLED:
+                        from scripts.trading_risk import atr_stop
+                        sp, dist = atr_stop(fill, pos.side, pos.symbol)
+                        pos.stop_price = sp
+                        pos.initial_stop_distance = dist
+                        pos.high_water_price = pos.high_water_price or fill
                 elif pos and row.order_type == "stop" and pos.status == "open" \
                         and o.status == OrderStatus.FILLED:
                     # Stop fill (equity resting stop or crypto synthetic exit): close it.

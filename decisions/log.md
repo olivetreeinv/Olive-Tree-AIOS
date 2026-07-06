@@ -20,6 +20,20 @@ Keep it terse. Future-you will thank present-you for capturing the *why*, not ju
 
 ---
 
+## 2026-07-03 — SE land-flip 12-zip pull: still quota-blocked; wired seller path + one-button scout
+
+**Decision:** Ship the SE-expansion data pull as push-button, blocked only on vendor quota. Brian emailed Scott at ReportAll directly for a quota bump.
+
+**State:** The `.env` key (`in09INjjWJ`) is the *same* trial key that hit its **1000-request all-time cap** on 2026-07-01 — still 429ing ("exceeded alltime quota limit of 1000 requests"). One verification call slipped through as the last request under the cap; all 12 candidate scouts then 429'd (0 logged). Not spending more until Scott bumps it or a new client id lands in `.env`.
+
+**Shipped (free, ready for when quota clears):**
+- `land_sellers.py` now takes `--source reportall --state XX --cap N` (was ArcGIS-only, 2 wired GA counties) — any unwired SE county builds a seller list by zip. Guard message if you forget `--source` on an unwired county. Skill doc updated.
+- `scripts/scout_se_candidates.py` — one command runs all 12 ranked candidates (7 STRAT-A acreage + 5 STRAT-B small-lot), logs each to Land Markets, prints a verdict table. cap=500/zip (~12 requests).
+
+**Next when unblocked:** swap the new key into `.env` → `python3 scripts/scout_se_candidates.py`.
+
+**Owner:** Brian Norton
+
 ## 2026-05-28 — Added Lebanon TN (37087) to buy box
 
 **Decision:** Lebanon, TN zip 37087 added as active market #10. Strategy: Value-add/Emerging.
@@ -422,3 +436,17 @@ Closed the three follow-ups from the stop-loss fix:
 **Alternatives considered:** (a) Diversifiers only (GLD + SCHD) — leaner, less redundant beta; (b) drop ETFs entirely. Brian chose all 6 that pass at 730d for max coverage. Noted risks: the 6 passes are regime-favorable (fail at a 3yr window / through 2022) and 4 of them (IWM/VTI/VUG/XLK) are equity beta overlapping the S&P names — GLD is the one true diversifier. Rejected lowering MIN_OOS_TRADES (would defeat the significance guard).
 
 **Owner:** Brian Norton
+
+## 2026-07-06 — Trading desk split into two $50k books + covered-call trader shipped
+
+**Decision:** Split the $100k paper account into two $50k books on the same Alpaca account: (1) the momentum desk, now sizing off `min(equity, $50k)`, and (2) a new covered-call income book (`scripts/trading_covered_calls.py`) — pure rules, no LLM cost.
+
+**Covered-call rules (best-practice consensus):** 100-share lots of quality names (20-name universe, 100 shares ≤ $25k), sell 30–45 DTE calls at ~0.25Δ (0.20–0.30 band, 4% OTM fallback), min 10% annualized premium yield, max 3 underlyings, 10% cash buffer. Close at 70% profit captured; roll at ≤21 DTE net-credit-only; NEVER sell a strike below cost basis; wheel via ~0.25Δ cash-secured puts on assignment. Income target $500+/mo. Runs inside the orchestrator equities loop at most every 4h (`--no-cc` to disable).
+
+**Momentum upgrades (aimed at the realized-win-rate gap):** ATR(14)×1.5 stops clamped 1–3% (replaces the fixed −1% whipsaw stop), breakeven at +1R then high-water trailing (ratchet-only), SPY 200d-SMA regime filter (fail-flat on data errors — no new entries either direction).
+
+**Book isolation:** symbol-partitioned; each book excludes the other's live Alpaca positions + open orders (option orders block their underlying via OCC parse). Daily −2% halt stays whole-account.
+
+**Process:** designed on Fable, built by a Sonnet subagent, money-path review by an Opus subagent (9 findings: 3 HIGH — fill-confirmation before DB writes, per-leg crash recovery, P&L booked at mid vs ask — all fixed and re-verified). All order legs now confirm fills via poll→cancel→recheck before any DB/ledger write.
+
+**Verified:** risk tests 7/7, CC self-checks 5/5, dry-run cycles clean, `_PAPER=True` everywhere. launchd job restarted 2026-07-06 12:33 ET on the new code — first cycle logged the book split + RISK-ON regime.
