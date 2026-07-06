@@ -450,3 +450,37 @@ Closed the three follow-ups from the stop-loss fix:
 **Process:** designed on Fable, built by a Sonnet subagent, money-path review by an Opus subagent (9 findings: 3 HIGH — fill-confirmation before DB writes, per-leg crash recovery, P&L booked at mid vs ask — all fixed and re-verified). All order legs now confirm fills via poll→cancel→recheck before any DB/ledger write.
 
 **Verified:** risk tests 7/7, CC self-checks 5/5, dry-run cycles clean, `_PAPER=True` everywhere. launchd job restarted 2026-07-06 12:33 ET on the new code — first cycle logged the book split + RISK-ON regime.
+
+## 2026-07-06 — Ops cadence layer: /heartbeat, /loose-ends, /q3-scoreboard, /deal-intake
+
+**Trigger:** Session-history review of all 91 sessions (Jun 2–Jul 6) found: 47 manual status-check questions ("is the trading desk running?", "didn't get daily brief"), loose ends rotting for weeks (GOOGLE_* cloud vars, Metricool link), cadence skills built but not run (/level-up 1×, /lets-get-to-work ~3×), and session time skewed to side books while the $400K capital-raise goal got ~2 sessions.
+
+**Decision:** Ship an ops-cadence layer instead of new capability:
+- `/heartbeat` (`scripts/heartbeat.py`) — weekday 7:45am launchd job (`com.olivetree.heartbeat`) + ntfy push. Checks launchd jobs, trading-desk log freshness (<20 min), daily scan, Morning Brief arrival (Gmail via gws keyring, .env GOOGLE_* fallback), olive.db, new deal drops, top-3 loose ends, Mon/Fri cadence nudges. Kills the status-polling tax.
+- `/loose-ends` (`scripts/loose_ends.py`) — harvests pending/blocked/deferred lines from decisions log (60d) + memory; `--done` suppress list in `data/loose_ends_done.txt`.
+- `/q3-scoreboard` — Friday scorecard vs the 3 Q3 goals; pulls `capital_raise.py track` for the $400K line; ends with one #1 action.
+- `/deal-intake` (`scripts/deal_intake.py`) — scans ~/Downloads for OM/T-12/Rent-Roll drops, prints ready-to-paste workup commands; wired into /lets-get-to-work Phase 0 + heartbeat. First scan surfaced 5 waiting deal folders.
+
+**Also:** `/capital-raise` was marked DRAFT in CLAUDE.md but has been LIVE since 6/19 — fixed. The "Monday cloud pre-scan" idea already exists (`pipeline_cloud.py` + unified 5am Morning Brief) and was verified delivering (Jul 2, 3, 6 at 5:12am) — the gap was delivery *verification*, which heartbeat now owns.
+
+**Verified:** heartbeat 8/8 green live, ntfy push received, launchd job loaded, /code-review warnings fixed (monitor can't be killed by aux sections; notify failure can't crash it; intake walk capped).
+
+**Owner:** Brian Norton
+
+## 2026-07-06 — SPY core sweep + conviction-weighted sizing (cash-drag fix)
+
+**Trigger:** Bottom Line showed the desk behind SPY by ~$1,800 over 10 days with ~$32k (32%) idle cash — structural drag, not strategy failure.
+
+**Decision:** (1) `scripts/trading_core.py` — idle cash above a $3,000 floor auto-sweeps into fractional SPY at the end of each equities cycle; books call `release_core()` to sell SPY back when they need capital. Core SPY has no stop, no gates — it is the benchmark, making "match the S&P" the default and the momentum/CC books pure overlay. (2) Momentum sizing now scales 4%→8% of the $50k book linearly with conviction (0.60→1.00), with a 90% book-deployment veto. Reviewed the netting risk: stop exits sell the DB row's qty only, so the legacy 6.78-share momentum SPY lot and core SPY can't liquidate each other; SPY is excluded from new momentum theses once core exists.
+
+**Honest framing:** consistently beating SPY is a bar most funds miss. Realistic goal = match it in up markets (core), add CC income, lose less in down markets (stops/regime/premium). The 30-day Bottom Line verdict is the judge.
+
+**Verified:** risk tests 10/10 (incl. conviction sizing + deployment cap), core self-checks pass, dry-runs clean. First live sweep ≈ $29.4k → SPY on the next equities cycle after daemon restart.
+
+## 2026-07-06 — Covered calls: monthly → weekly + two-stage fills + hourly cycles
+
+**Trigger:** All 3 call sells (INTC/QCOM/CSCO) failed — limit at mid, 45s timeout, cancelled; the 4h retry throttle pushed the next attempt past the close. Lots sat naked earning nothing. Brian also wants the income concept proven faster.
+
+**Decision:** (1) Weekly options: DTE window 30–45 → 4–10 (next-Friday weeklys), profit-close 70% → 60%, roll rule 21-DTE → manage at ≤1 DTE (ITM → roll next week for net credit; OTM → let expire, premium banks, re-sell). ~4x more premium events per month = faster proof + higher gross yield, at the cost of more assignment churn and gamma risk near expiry. (2) Two-stage fill pricing: mid for 45s, then bid — floored at the price where annualized yield stays ≥10% (skip if bid is below floor). Mirrored for buy-to-close (mid → ask). (3) CC cycle throttle 4h → 1h.
+
+**Known ceiling:** no earnings-date filter — weeklys will occasionally straddle an earnings print (INTC/QCOM late July). Acceptable in paper; wire an earnings calendar before real money.

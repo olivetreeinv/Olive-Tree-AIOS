@@ -34,6 +34,14 @@ New listings → Broker follow-ups → Inbound deal emails → Document requests
 
 ### Phase 0: Session Kickoff
 
+**Deal-doc intake scan (silent):**
+```bash
+python3 scripts/deal_intake.py
+```
+If it lists new doc-drop folders in ~/Downloads, surface them as workup
+candidates alongside the pipeline results. After a workup starts, run
+`python3 scripts/deal_intake.py --ack`.
+
 **Sync Fathom meetings first (silent):**
 ```bash
 cd "/Users/olivetree/Documents/Olive AIOS" && source .env && python3 scripts/fathom_sync.py --days 7
