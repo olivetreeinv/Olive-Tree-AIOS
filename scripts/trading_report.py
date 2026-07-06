@@ -224,6 +224,14 @@ def print_performance():
               f"({cc['covered']} covered, {cc['uncovered']} naked)  "
               f"premium MTD ${cc['premium_mtd']:,.0f}  realized ${cc['realized_pnl']:+,.0f}")
 
+    # ── Core SPY holding (idle-cash sweep) ────────────────────────────────────
+    try:
+        from scripts.trading_core import core_value
+        cv = core_value()
+        print(f"  Core S&P holding: ${cv:,.0f} (auto-invested idle cash)")
+    except Exception:
+        pass
+
 
 def _win_stats(pnls: list[float]) -> dict:
     """Win rate + avg win/loss + profit factor from a list of realized $ P&L per trade."""
@@ -503,6 +511,15 @@ def _build_scorecard_html(prev: str, new: str, is_friday: bool = False) -> tuple
     bl = _bottom_line(equity=equity)
     bottom_line_html = "<br>".join(bl[:-1]) + f"<br><b>{bl[-1]}</b>"
 
+    # ── Core SPY holding ──────────────────────────────────────────────────────
+    core_html = ""
+    try:
+        from scripts.trading_core import core_value
+        cv = core_value()
+        core_html = f" &nbsp;|&nbsp; <b>Core S&amp;P holding:</b> ${cv:,.0f} (auto-invested idle cash)"
+    except Exception:
+        pass
+
     # ── Assemble HTML ─────────────────────────────────────────────────────────
     html = f"""
 <h2>Trading Desk — Daily Scorecard ({today})</h2>
@@ -512,6 +529,7 @@ def _build_scorecard_html(prev: str, new: str, is_friday: bool = False) -> tuple
 <p>
   <b>Equity:</b> ${equity:,.0f} &nbsp;|&nbsp;
   <b>Today P&amp;L:</b> <span style="color:{'green' if today_pnl_dollar>=0 else 'red'}">${today_pnl_dollar:+,.0f} ({today_pnl_pct:+.2%})</span>
+  {core_html}
 </p>
 
 <h3>Momentum Book</h3>

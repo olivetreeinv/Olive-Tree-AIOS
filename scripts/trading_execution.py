@@ -246,6 +246,8 @@ def check_stops(session: str = "equities") -> list[dict]:
     try:
         positions = s.query(TradingPosition).filter_by(status="open").all()
         for pos in positions:
+            if pos.side == "core":
+                continue  # ponytail: core SPY has no stop by design — it IS the benchmark
             if not pos.stop_price:
                 continue
             # Idempotent: a pending exit already submitted for this position.
@@ -353,8 +355,9 @@ def sync_fills() -> list[dict]:
                     # and a stop exists, leave it alone — the breakeven/trail ratchet in
                     # check_stops() owns stop_price from then on, and recomputing here
                     # every sync would drag a trailed stop backwards.
+                    # Core rows never get a stop — skip ATR derivation for them.
                     pos.entry_price = fill
-                    if pos.stop_price is None or o.status != OrderStatus.FILLED:
+                    if pos.side != "core" and (pos.stop_price is None or o.status != OrderStatus.FILLED):
                         from scripts.trading_risk import atr_stop
                         sp, dist = atr_stop(fill, pos.side, pos.symbol)
                         pos.stop_price = sp

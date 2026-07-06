@@ -24,8 +24,10 @@ Shared data layer: `scripts/trading_data.py` (Polygon equities, Alpaca crypto, a
 ## Two books, one paper account ($50k each — since 2026-07-06)
 
 - **Momentum book ($50k):** the original desk. All sizing runs off `min(account equity, MOMENTUM_BOOK_USD)`.
-- **Covered-call book ($50k):** `scripts/trading_covered_calls.py`. Pure rules, no LLM ($0/cycle). Buys 100-share lots of quality names, sells 30–45 DTE calls at ~0.25Δ, closes at 70% profit captured, rolls at ≤21 DTE (net credit only), wheels via cash-secured puts on assignment. Never sells a strike below cost basis. Income target: $500+/mo premium.
+- **Covered-call book ($50k):** `scripts/trading_covered_calls.py`. Pure rules, no LLM ($0/cycle). Buys 100-share lots of quality names, sells WEEKLY calls (4–10 DTE, ~0.25Δ), closes at 60% profit captured; at ≤1 DTE: ITM → roll to next week for net credit, OTM → let expire and re-sell. Wheels via cash-secured puts on assignment. Never sells a strike below cost basis. Two-stage fills: mid 45s → bid (floored at the 10%-annualized-yield price). Income target: $500+/mo premium.
 - Books are symbol-partitioned: each excludes the other's live symbols + open orders. Daily halt (−2%) spans the whole account.
+- **SPY core sweep (2026-07-06):** idle cash above a $3k floor auto-invests into SPY at the end of each equities cycle (`scripts/trading_core.py`); either book sells core SPY back (`release_core`) when it needs capital. Core has no stop/gate — it IS the benchmark. `python3 scripts/trading_core.py --status` to inspect.
+- **Conviction-weighted sizing:** momentum positions scale 4% → 8% of the book linearly with thesis conviction (0.60 → 1.00); new entries vetoed past 90% book deployment.
 
 ```bash
 python3 scripts/trading_covered_calls.py --status           # CC book + premium MTD vs $500 target

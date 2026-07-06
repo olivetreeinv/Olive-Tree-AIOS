@@ -41,15 +41,16 @@ from scripts.trading_data   import get_account, is_market_open, is_extended_hour
 from scripts.trading_research import run_research
 from scripts.trading_quant  import run_walk_forward
 from scripts.trading_risk   import evaluate as risk_evaluate, is_daily_halted, MOMENTUM_BOOK_USD
+from scripts.trading_core  import sweep_to_core, release_core, CORE_BUFFER_USD
 from scripts.trading_execution import submit_order, sync_fills, get_open_positions, check_stops
 from scripts.trading_options   import find_contract, size_contracts, submit_option_order
 from scripts.trading_report import snapshot_equity, print_performance, send_alert, send_session_report
 from db.connection import Session
 from db.schema import TradingSignal
 
-# ── State file for CC 4-hour throttle ────────────────────────────────────────
-_CC_STATE_FILE = Path(__file__).parent.parent / "data" / "cc_last_run.txt"
-_CC_INTERVAL_S = 4 * 3600  # run CC cycle at most once every 4 hours
+# ── State file for CC cycle throttle ─────────────────────────────────────────
+_CC_STATE_FILE  = Path(__file__).parent.parent / "data" / "cc_last_run.txt"
+CC_CYCLE_SECONDS = 3600  # run CC cycle at most once per hour
 
 
 def _get_regime() -> str:
@@ -74,12 +75,12 @@ def _get_regime() -> str:
 
 
 def _maybe_run_cc(dry_run: bool = False):
-    """Run CC cycle at most once every 4 hours. Uses a timestamp file as state."""
+    """Run CC cycle at most once per hour. Uses a timestamp file as state."""
     try:
         import time as _time
         last = float(_CC_STATE_FILE.read_text().strip()) if _CC_STATE_FILE.exists() else 0
-        if _time.time() - last < _CC_INTERVAL_S:
-            secs_left = int(_CC_INTERVAL_S - (_time.time() - last))
+        if _time.time() - last < CC_CYCLE_SECONDS:
+            secs_left = int(CC_CYCLE_SECONDS - (_time.time() - last))
             print(f"  [CC] Skipping — next run in {secs_left//60}m")
             return
         from scripts.trading_covered_calls import run_cc_cycle
@@ -284,6 +285,7 @@ def run_cycle(dry_run: bool = False, market_session: str = "equities",
             quant_passed=passed,
             portfolio_equity=momentum_equity,
             extended_hours=(market_session == "extended"),
+            conviction=conviction,
         )
 
         if decision.approved:
@@ -294,6 +296,17 @@ def run_cycle(dry_run: bool = False, market_session: str = "equities",
 
         # Step 4: Execute
         print(f"  [4/4] Execution...")
+
+        # Cash guard: if account cash < position notional, try to release from core SPY first
+        if not dry_run and decision.approved and decision.position_usd > 0:
+            try:
+                cash_now = get_account().get("cash", 0)
+                shortfall = decision.position_usd - (cash_now - CORE_BUFFER_USD)
+                if shortfall > 0:
+                    print(f"  [core] low cash — releasing ${shortfall:,.0f} before {symbol} entry")
+                    release_core(shortfall)
+            except Exception as _cge:
+                print(f"  ⚠️  [core] cash guard failed ({_cge}) — continuing anyway")
 
         # Options eligibility:
         #   - Best-judgment path: conviction ≥ 0.80 (Claude's highest-conviction calls)
@@ -345,6 +358,11 @@ def run_cycle(dry_run: bool = False, market_session: str = "equities",
     # ── CC cycle (equities + extended sessions only, throttled to 4h) ─────────
     if market_session in ("equities", "extended") and not no_cc:
         _maybe_run_cc(dry_run=dry_run)
+
+    # ── Core SPY sweep — idle cash → SPY after all other entries ──────────────
+    # Only equities session (market hours); skipped for crypto/extended/idle.
+    if market_session == "equities":
+        sweep_to_core(dry_run=dry_run)
 
     # ── Reconcile fills ────────────────────────────────────────────
     # Stops are monitor-based (Alpaca can't rest stops on crypto or fractional equity) —
