@@ -765,6 +765,49 @@ def run_cc_cycle(dry_run: bool = False):
     print(f"\n  CC cycle complete.")
 
 
+def cc_next_actions() -> list[str]:
+    """
+    Deterministic next-action lines for each open CC position.
+    Used in --status output and the daily scorecard email.
+    """
+    rows = _open_cc_positions()
+    lines = []
+    today = date.today()
+    for row in rows:
+        sym = row.underlying
+        if row.option_type == "put" and not row.shares_qty:
+            # Wheel / CSP leg
+            exp_str = row.expiry or "?"
+            lines.append(
+                f"{sym} ${row.strike:.2f} put exp {exp_str} — awaiting expiry/assignment"
+            )
+        elif row.option_symbol and row.option_type == "call":
+            # Covered call: show profit-close trigger and roll window
+            prem = row.premium_received or 0
+            buyback_trigger = round(prem * (1 - CC_PROFIT_CLOSE), 2)  # buy back ≤ this → 70% captured
+            dte = _dte(row.expiry or "")
+            roll_date = ""
+            if row.expiry:
+                try:
+                    exp = date.fromisoformat(row.expiry)
+                    roll_open = exp - timedelta(days=CC_ROLL_DTE)
+                    if roll_open >= today:
+                        roll_date = f"; roll window opens {roll_open.isoformat()}"
+                    else:
+                        roll_date = f"; roll window OPEN now (DTE={dte})"
+                except Exception:
+                    pass
+            lines.append(
+                f"{sym} ${row.strike:.2f} call exp {row.expiry} (DTE {dte}) — "
+                f"profit-close triggers if buyback ≤ ${buyback_trigger:.2f}/contract"
+                f"{roll_date}"
+            )
+        else:
+            # Naked lot — waiting for a call to be sold
+            lines.append(f"{sym} — will retry selling a call next cycle (naked lot)")
+    return lines
+
+
 def _print_status():
     """Print CC book positions + MTD premium vs $500 target."""
     s = Session()
@@ -809,6 +852,12 @@ def _print_status():
         except Exception:
             pass
     print(f"  Book market value: ~${book_value:,.0f}")
+
+    actions = cc_next_actions()
+    if actions:
+        print(f"\n  ── Planned Moves ───────────────────────────────────")
+        for a in actions:
+            print(f"  • {a}")
 
 
 # ── Self-check: CC decision logic ─────────────────────────────────────────────
