@@ -451,6 +451,25 @@ Closed the three follow-ups from the stop-loss fix:
 
 **Verified:** risk tests 7/7, CC self-checks 5/5, dry-run cycles clean, `_PAPER=True` everywhere. launchd job restarted 2026-07-06 12:33 ET on the new code — first cycle logged the book split + RISK-ON regime.
 
+## 2026-07-06 — Platform upgrades: Sonnet 5 everywhere, /usage-audit monthly, /audit retired
+
+**Decision:** Adopted the June 2026 Claude releases across the AIOS, retired `/audit` (moved to `archives/skills/audit/`), and replaced it with `/usage-audit` — a monthly retro that mines the past month's sessions AND scans Claude's latest releases, modeled on the 2026-07-06 91-session review.
+
+**Shipped:**
+- Claude Code CLI 2.1.190 → 2.1.201 (background sessions survive sleep/wake; subagent partial-work recovery).
+- All 5 active cloud routines (Daily Brief, Deal Docs, Pitch Deck Archive, Loom Sync, Weekly Docs Sync) switched `claude-sonnet-4-6` → `claude-sonnet-5` (released 6/30, promo pricing through Aug 31; headless-verified the model ID).
+- `fallbackModel: ["claude-sonnet-5"]` in user settings — model hiccups degrade instead of failing.
+- PostToolUse hook (project settings): any Write/Edit under wiki/, references/, context/, decisions/ auto-runs `scripts/aios_index.py` (async) — the recall index stays fresh without remembering to reindex. Pipe-tested + jq-validated.
+- **Root-cause fix found by the hook's pipe-test:** fastembed's model cache lived in macOS's purgeable `/var/folders` temp dir and had been wiped — `aios_index.py`/`aios_recall.py` were BOTH broken. Now pinned to `~/.cache/fastembed`.
+- First custom subagent: `.claude/agents/underwriting-reviewer.md` — fresh-context second pass on every deal verdict (Sonnet 5, read-only tools).
+- `/usage-audit` (skill + `scripts/usage_audit.py`) scheduled via launchd `com.olivetree.usage-audit`, 1st of month 9:05am, headless `claude -p`, emails the report; added to heartbeat's watchlist. Chosen over session cron (7-day expiry) and cloud routine (can't read local session transcripts).
+
+**Also today:** 641 Powder Springs drip enrollment ran — **633 enrolled, 0 errors** (`raise-641-enrolled` tag set; GHL "Deal Funnel Pitch Deck" workflow now driving email/SMS/Loom follow-up).
+
+**Skipped:** Claude Code Artifacts (Team/Enterprise plan gate); effortLevel left at medium (speed-first preference — flip to high per-session for underwriting).
+
+**Owner:** Brian Norton
+
 ## 2026-07-06 — Ops cadence layer: /heartbeat, /loose-ends, /q3-scoreboard, /deal-intake
 
 **Trigger:** Session-history review of all 91 sessions (Jun 2–Jul 6) found: 47 manual status-check questions ("is the trading desk running?", "didn't get daily brief"), loose ends rotting for weeks (GOOGLE_* cloud vars, Metricool link), cadence skills built but not run (/level-up 1×, /lets-get-to-work ~3×), and session time skewed to side books while the $400K capital-raise goal got ~2 sessions.

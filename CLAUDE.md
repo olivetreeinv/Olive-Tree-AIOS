@@ -30,7 +30,7 @@ Read `references/removed-framework.md` once. It's how Brian thinks about AI work
 ## Your skills
 
 - `/onboard` — already run. Re-run any time after editing `aios-intake.md` to refresh.
-- `/audit` — Four-Cs gap report. Run on Day 7, then weekly. Watch the score climb.
+- `/usage-audit` — Monthly retro: session mining (time mix vs quarter goals, cadence check, unused skills) + scan of Claude's latest releases for features worth adopting. Runs automatically 1st of each month 9:05am via launchd (`com.olivetree.usage-audit`), emails the report. Replaces the retired `/audit`. Uses `scripts/usage_audit.py`.
 - `/level-up` — Weekly [removed framework] interview. Find one automation, scope it, ship it. One per week.
 - `/daily-brief` — Morning intelligence pull. Calendar + inbox + Q3 pulse + one ready-to-send draft. Run every weekday morning.
 - `/market-research [city]` — Deal-triggered market scorecard. 7-criteria go/no-go on a market. Phase 1 of the deal evaluation pipeline. Always checks `references/buy-box.md` first.
@@ -59,6 +59,7 @@ Read `references/removed-framework.md` once. It's how Brian thinks about AI work
 - `/land-contract` — Draft the assignable Vacant Land PSA (to seller) + Assignment Agreement (to builder) for a parcel with an accepted offer. Saves locally + uploads to Drive under `Olive Tree Investments - Deals / Land Wholesale / [parcel]/`. ⚠️ Attorney review required before sending. Uses `scripts/land_contract.py`.
 - `/land-deal` — Deal cockpit: tracks status from contract through close, runs the deal-killer checklist (wetlands/slope/flood/title), fires post-close actions ($1K referral letter + neighbor first-look script). Uses `scripts/land_deal.py`. Logs to Land Deals tab.
 - `/bpo [address]` — Single-family Broker Price Opinion. Pulls 3 active + 3 sold comps from FMLS (same zip, ±1 bed, ±25% sqft, ±15 yr age). Creates Google Doc + PDF in `Olive Tree Investments - BPOs / [address]`. Works on listed and unlisted properties. Uses `scripts/bpo.py`.
+- `/crm` — Local contact database (804 contacts imported from GHL). Search, tag, note, unsub, and import contacts. Source of truth now that GoHighLevel is being decommissioned. Uses `scripts/crm.py`.
 
 ## Where things live
 
@@ -91,14 +92,14 @@ Match the register in `references/voice.md`. Direct. Short sentences. Numbers up
 |---|---|---|
 | Revenue / Financials | QuickBooks | not yet connected |
 | Revenue / Financials | Bluevine | not yet connected |
-| CRM / Investor Pipeline | GoHighLevel | not yet connected |
+| CRM / Investor Pipeline | GoHighLevel | migrating to local CRM (data/olive.db) |
 | Email | Gmail (Google Workspace) | mcp — connected |
 | Calendar | Google Calendar | mcp — connected |
 | Docs / Files / Notes | Google Drive | mcp — connected |
 | DMs | Apple Messages | not yet connected |
 | Design / Content | Canva | key+ref — OAuth tokens in `.env`, `scripts/canva_api.py` |
 
-Run `/audit` to see full coverage gaps.
+Run `/usage-audit` for the monthly usage + coverage retro.
 
 ## GWS Quick Reference
 

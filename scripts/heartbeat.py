@@ -44,6 +44,7 @@ EXPECTED_JOBS = {
     "com.olivetree.dailyscan": "calendar",
     "com.olivetree.aios-autocommit": "calendar",
     "com.olivetree.heartbeat": "calendar",
+    "com.olivetree.usage-audit": "calendar",
 }
 
 
