@@ -34,6 +34,7 @@ from carousel_render import source_cover, palette_from_image  # reuse photo sour
 ROOT = Path(__file__).resolve().parent.parent
 LOGO_DARK = ROOT / "assets" / "brand" / "olive-tree-mark-dark.png"
 LOGO_LIGHT = ROOT / "assets" / "brand" / "olive-tree-mark-white.png"
+FONT_DIR = ROOT / "assets" / "fonts"
 W, H = 1080, 1350
 
 # Light & airy tokens (olive brand; NOT the banned cream/beige family).
@@ -73,8 +74,22 @@ def _esc(t):
     return _html.escape(t or "")
 
 
+def _font_css():
+    """Local variable fonts embedded as base64 — Google Fonts @import silently
+    failed at screenshot time and every render fell back to Helvetica."""
+    faces = [
+        ("Outfit", "normal", FONT_DIR / "Outfit-normal.woff2"),
+        ("Fraunces", "normal", FONT_DIR / "Fraunces-normal.woff2"),
+        ("Fraunces", "italic", FONT_DIR / "Fraunces-italic.woff2"),
+    ]
+    return "".join(
+        f"@font-face{{font-family:'{fam}';font-style:{style};font-weight:300 700;"
+        f"src:url(data:font/woff2;base64,{_b64(p)}) format('woff2');}}"
+        for fam, style, p in faces if p.exists()
+    )
+
+
 CSS = """
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 * { margin:0; padding:0; box-sizing:border-box; }
 .slide {
   width:1080px; height:1350px; position:relative; overflow:hidden;
@@ -114,6 +129,17 @@ CSS = """
 .content .body { margin-top:30px; }
 .content .uline { width:104px; height:6px; background:var(--accent); margin-top:26px; border-radius:3px; }
 
+/* Quote: typography-led, serif, no photo */
+.quote .stack { margin-top:auto; margin-bottom:auto; }
+.quote .qmark { font-family:'Fraunces',serif; font-size:220px; line-height:.55;
+  color:var(--accent); height:120px; }
+.quote .headline { font-family:'Fraunces',serif; font-weight:420; font-style:italic;
+  line-height:1.22; letter-spacing:0; }
+.quote .attr { margin-top:56px; display:flex; align-items:center; gap:24px; }
+.quote .attr .bar { width:56px; height:3px; background:var(--accent); border-radius:2px; }
+.quote .attr .who { font-size:34px; font-weight:600; letter-spacing:.02em; }
+.quote .attr .role { font-size:29px; font-weight:400; color:%(MUTED)s; margin-top:6px; }
+
 /* CTA: inverted olive */
 .cta { background:var(--accent); color:%(CTA_TEXT)s; }
 .cta .stack { margin-top:auto; margin-bottom:auto; }
@@ -127,9 +153,24 @@ CSS = """
 
 def _slide_html(slide, i, total, stype, handle, accent, photo_b64):
     frac = i / total
-    foot = (f'<div class="foot"><span>{_esc(handle)}</span>'
-            f'<span>{i}/{total}</span></div>')
-    prog = f'<div class="progress"><i style="width:{frac*100:.1f}%"></i></div>'
+    counter = f'<span>{i}/{total}</span>' if total > 1 else "<span></span>"
+    foot = f'<div class="foot"><span>{_esc(handle)}</span>{counter}</div>'
+    prog = (f'<div class="progress"><i style="width:{frac*100:.1f}%"></i></div>'
+            if total > 1 else "")
+
+    if stype == "quote":
+        text = slide.get("title", "").replace("'", "’")  # curly apostrophe in serif
+        # size to quote length so short punchy lines fill and long ones still fit
+        size = 84 if len(text) <= 90 else 72 if len(text) <= 150 else 60
+        logo = f'<div class="mark"><img src="data:image/png;base64,{_b64(LOGO_DARK)}"></div>'
+        who = _esc(slide.get("who", "Brian Norton"))
+        role = _esc(slide.get("role", "Founder, Olive Tree Investments"))
+        return (f'<div class="slide quote"><div class="pad">{prog}'
+                f'<div class="stack"><div class="qmark">&ldquo;</div>'
+                f'<div class="headline" style="font-size:{size}px">{_esc(text)}</div>'
+                f'<div class="attr"><div class="bar"></div>'
+                f'<div><div class="who">{who}</div><div class="role">{role}</div></div></div>'
+                f'</div></div>{logo}{foot}</div>')
 
     if stype == "cover":
         logo = (f'<div class="mark"><img src="data:image/png;base64,{_b64(LOGO_DARK)}"></div>')
@@ -169,11 +210,11 @@ def _page_html(spec, accent, photo_b64):
     body = []
     for idx, s in enumerate(slides, 1):
         stype = s.get("type") or ("cover" if idx == 1 else "cta" if idx == total else "content")
-        if idx == 1 and not photo_b64:
+        if stype == "cover" and not photo_b64:
             stype = "content"  # no hero available -> fall back to text slide
         body.append(_slide_html(s, idx, total, stype, handle, accent, photo_b64))
-    return (f'<!doctype html><html><head><meta charset="utf-8"><style>:root{{--accent:{accent}}}'
-            f'{css}</style></head><body>{"".join(body)}</body></html>')
+    return (f'<!doctype html><html><head><meta charset="utf-8"><style>{_font_css()}'
+            f':root{{--accent:{accent}}}{css}</style></head><body>{"".join(body)}</body></html>')
 
 
 def render_carousel(spec, out_dir):
@@ -228,7 +269,11 @@ def demo():
     assert len(paths) == 3
     for p in paths:
         assert p.exists() and Image.open(p).size == (W, H)
-    print(f"OK — {len(paths)} slides -> {out}")
+    quote = {"slides": [{"type": "quote",
+                         "title": "We underwrite by submarket, not by metro. That's the edge."}]}
+    qpaths = render_carousel(quote, ROOT / "output" / "carousel" / "_demo_quote")
+    assert len(qpaths) == 1 and Image.open(qpaths[0]).size == (W, H)
+    print(f"OK — {len(paths)} slides -> {out}, 1 quote -> _demo_quote")
 
 
 def main():

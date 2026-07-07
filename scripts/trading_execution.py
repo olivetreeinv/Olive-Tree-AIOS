@@ -89,12 +89,21 @@ def submit_order(decision: RiskDecision, signal_id: int | None = None, session: 
 
     if is_ext:
         # Extended hours: limit at ask (long) or bid (short); whole shares; extended_hours flag required.
+        # entry_price comes from the ask — a short limit priced at the ask sits above the
+        # market and never fills, so re-quote the bid for shorts.
+        limit = decision.entry_price
+        if decision.side == "short":
+            try:
+                from scripts.trading_data import get_quote
+                limit = get_quote(decision.symbol).get("bid") or limit
+            except Exception:
+                pass  # keep entry_price — worst case the order rests unfilled, as before
         req = LimitOrderRequest(
             symbol=decision.symbol,
             qty=decision.qty,
             side=side,
             time_in_force=TimeInForce.DAY,
-            limit_price=round(decision.entry_price, 2),
+            limit_price=round(limit, 2),
             extended_hours=True,
         )
     else:
@@ -119,6 +128,8 @@ def submit_order(decision: RiskDecision, signal_id: int | None = None, session: 
             qty=decision.qty,
             entry_price=decision.entry_price,  # pre-order quote; updated by sync_fills()
             stop_price=None,
+            initial_stop_distance=decision.initial_stop_dist if decision.initial_stop_dist else None,
+            high_water_price=decision.entry_price,
             entry_time=now,
             status="open",
             signal_id=signal_id,
@@ -217,6 +228,12 @@ def check_stops(session: str = "equities") -> list[dict]:
     fractional positions (entered during regular hours) are deferred to market open.
     Crypto: GTC market exit as before.
 
+    Also handles breakeven + trailing ratchet:
+      - When unrealized gain >= 1R (initial_stop_distance): move stop to entry (breakeven)
+      - After that: trail at high_water_price - initial_stop_distance (longs)
+        or low_water_price + initial_stop_distance (shorts)
+    Stops never move backwards (long only ratchets up, short only down).
+
     ponytail: protection is per-cycle (~5 min) and only while the desk is running.
     A gap between cycles, or the Mac asleep, leaves a position unguarded until the
     next check. Upgrade path = tighter interval or a separate always-on watcher.
@@ -229,6 +246,8 @@ def check_stops(session: str = "equities") -> list[dict]:
     try:
         positions = s.query(TradingPosition).filter_by(status="open").all()
         for pos in positions:
+            if pos.side == "core":
+                continue  # ponytail: core SPY has no stop by design — it IS the benchmark
             if not pos.stop_price:
                 continue
             # Idempotent: a pending exit already submitted for this position.
@@ -237,6 +256,34 @@ def check_stops(session: str = "equities") -> list[dict]:
             price = get_quote(pos.symbol).get("last", 0)
             if not price:
                 continue
+
+            # ── Breakeven + trailing ratchet ──────────────────────────────────
+            if pos.initial_stop_distance and pos.entry_price:
+                trail_dist = pos.initial_stop_distance
+                # Update high-water mark (long) / low-water mark (short)
+                if pos.side == "long":
+                    hwp = max(pos.high_water_price or pos.entry_price, price)
+                    if hwp != pos.high_water_price:
+                        pos.high_water_price = hwp
+                else:
+                    hwp = min(pos.high_water_price or pos.entry_price, price)
+                    if hwp != pos.high_water_price:
+                        pos.high_water_price = hwp
+
+                unrealized = (price - pos.entry_price) if pos.side == "long" else (pos.entry_price - price)
+                if unrealized >= trail_dist:
+                    # At or past 1R — trail from high-water
+                    if pos.side == "long":
+                        new_stop = round(hwp - trail_dist, 4)
+                        if new_stop > pos.stop_price:  # never ratchet down
+                            pos.stop_price = new_stop
+                            print(f"  🔼 Trail up {pos.symbol}: stop=${new_stop:.2f} (hwp=${hwp:.2f})")
+                    else:
+                        new_stop = round(hwp + trail_dist, 4)
+                        if new_stop < pos.stop_price:  # never ratchet up for shorts
+                            pos.stop_price = new_stop
+                            print(f"  🔽 Trail dn {pos.symbol}: stop=${new_stop:.2f} (lwp=${hwp:.2f})")
+
             breached = ((pos.side == "long"  and price <= pos.stop_price) or
                         (pos.side == "short" and price >= pos.stop_price))
             if not breached:
@@ -288,7 +335,6 @@ def sync_fills() -> list[dict]:
     # status=ALL so fully-filled (now-closed) market orders are still returned —
     # the default open-only list drops them before we ever see the fill price.
     orders = client.get_orders(filter=GetOrdersRequest(status=QueryOrderStatus.ALL, limit=200))
-    from scripts.trading_risk import stop_price as _stop
     updates = []
     s = Session()
     try:
@@ -304,11 +350,19 @@ def sync_fills() -> list[dict]:
                 pos = s.query(TradingPosition).filter_by(id=row.position_id).first()
                 fill = float(o.filled_avg_price)
                 if pos and row.order_type == "market" and pos.status == "open":
-                    # Entry fill: re-derive entry + stop from the actual fill every sync —
-                    # a partial fill's avg price keeps moving; the stop must track it or it
-                    # goes stale. check_stops() enforces this level each cycle.
+                    # Entry fill: derive the ATR stop from the actual fill. Re-derive while
+                    # a partial fill's avg price is still moving; once the order is FILLED
+                    # and a stop exists, leave it alone — the breakeven/trail ratchet in
+                    # check_stops() owns stop_price from then on, and recomputing here
+                    # every sync would drag a trailed stop backwards.
+                    # Core rows never get a stop — skip ATR derivation for them.
                     pos.entry_price = fill
-                    pos.stop_price  = round(_stop(fill, pos.side), 4)
+                    if pos.side != "core" and (pos.stop_price is None or o.status != OrderStatus.FILLED):
+                        from scripts.trading_risk import atr_stop
+                        sp, dist = atr_stop(fill, pos.side, pos.symbol)
+                        pos.stop_price = sp
+                        pos.initial_stop_distance = dist
+                        pos.high_water_price = pos.high_water_price or fill
                 elif pos and row.order_type == "stop" and pos.status == "open" \
                         and o.status == OrderStatus.FILLED:
                     # Stop fill (equity resting stop or crypto synthetic exit): close it.

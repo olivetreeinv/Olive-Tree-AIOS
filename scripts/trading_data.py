@@ -58,6 +58,7 @@ EQUITY_UNIVERSE = _load_sp500()  # S&P 500 constituents + SPY/QQQ anchors; refre
 # Only the 6 that clear the walk-forward gate on a 730d window (verified 2026-07-01):
 # small-cap (IWM), broad (VTI), dividend (SCHD), growth (VUG), tech (XLK), gold (GLD).
 # ETFs need the 730d window in the orchestrator — at 365d they fire too few trades.
+# SPY removed: core sweep module owns SPY going forward (idle-cash benchmark position).
 ETF_UNIVERSE = ["IWM", "VTI", "SCHD", "VUG", "XLK", "GLD"]
 
 # ── Crypto universe (traded 24/7, active overnight when equities are closed) ─

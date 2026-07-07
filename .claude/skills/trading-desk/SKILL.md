@@ -15,10 +15,26 @@ trading_orchestrator.py  (entry point)
   ↓ quant_agent()      scripts/trading_quant.py      — vectorbt walk-forward gate
   ↓ risk_agent()       scripts/trading_risk.py       — Conservative ceiling + veto
   ↓ execution_agent()  scripts/trading_execution.py  — Alpaca paper orders
-  ↓ report()           scripts/trading_report.py     — SQLite equity curve + iMessage alerts
+  ↓ cc_trader()        scripts/trading_covered_calls.py — covered-call book (every ≤4h)
+  ↓ report()           scripts/trading_report.py     — SQLite equity curve + ntfy alerts
 ```
 
 Shared data layer: `scripts/trading_data.py` (Polygon equities, Alpaca crypto, account balance).
+
+## Two books, one paper account ($50k each — since 2026-07-06)
+
+- **Momentum book ($50k):** the original desk. All sizing runs off `min(account equity, MOMENTUM_BOOK_USD)`.
+- **Covered-call book ($50k):** `scripts/trading_covered_calls.py`. Pure rules, no LLM ($0/cycle). Buys 100-share lots of quality names, sells WEEKLY calls (4–10 DTE, ~0.25Δ), closes at 60% profit captured; at ≤1 DTE: ITM → roll to next week for net credit, OTM → let expire and re-sell. Wheels via cash-secured puts on assignment. Never sells a strike below cost basis. Two-stage fills: mid 45s → bid (floored at the 10%-annualized-yield price). Income target: $500+/mo premium.
+- Books are symbol-partitioned: each excludes the other's live symbols + open orders. Daily halt (−2%) spans the whole account.
+- **SPY core sweep (2026-07-06):** idle cash above a $3k floor auto-invests into SPY at the end of each equities cycle (`scripts/trading_core.py`); either book sells core SPY back (`release_core`) when it needs capital. Core has no stop/gate — it IS the benchmark. `python3 scripts/trading_core.py --status` to inspect.
+- **Conviction-weighted sizing:** momentum positions scale 4% → 8% of the book linearly with thesis conviction (0.60 → 1.00); new entries vetoed past 90% book deployment.
+
+```bash
+python3 scripts/trading_covered_calls.py --status           # CC book + premium MTD vs $500 target
+python3 scripts/trading_covered_calls.py --once --dry-run   # print intended CC actions
+python3 scripts/trading_covered_calls.py --test             # stub-driven rules self-check
+```
+Orchestrator runs the CC cycle inside equities sessions at most every 4h (`data/cc_last_run.txt`); disable with `--no-cc`.
 
 ## Run commands
 
@@ -60,14 +76,16 @@ SPY QQQ AAPL MSFT NVDA AMZN GOOGL META TSLA BRK.B JPM V UNH XOM AMD NFLX CRM ADB
 
 Benchmark: SPY buy-and-hold (shown in `--report`).
 
-## Risk ceiling (Conservative — locked 2026-06-26)
+## Risk ceiling (Conservative — updated 2026-07-06)
 
 | Rule | Value |
 |---|---|
-| Max loss per position | −1% of entry |
-| Max position size | 5% of portfolio equity |
-| Max concurrent positions | 5 |
-| Daily portfolio halt | −2% from day-open equity → stop all trading |
+| Stop per position | ATR(14) × 1.5, clamped 1–3% of entry (fallback 1%) |
+| Stop management | breakeven at +1R, then high-water trailing; stops only ratchet forward |
+| Max position size | 4% of the $50k momentum book |
+| Max concurrent positions | 15 |
+| Regime filter | SPY vs 200d SMA: above → longs only; below → shorts only; data failure → no new entries |
+| Daily portfolio halt | −2% from day-open equity (whole account) → stop all trading |
 
 To change ceilings, edit constants at the top of `scripts/trading_risk.py` and log the decision in `decisions/log.md`.
 

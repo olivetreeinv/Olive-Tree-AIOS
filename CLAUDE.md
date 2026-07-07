@@ -30,7 +30,7 @@ Read `references/removed-framework.md` once. It's how Brian thinks about AI work
 ## Your skills
 
 - `/onboard` — already run. Re-run any time after editing `aios-intake.md` to refresh.
-- `/audit` — Four-Cs gap report. Run on Day 7, then weekly. Watch the score climb.
+- `/usage-audit` — Monthly retro: session mining (time mix vs quarter goals, cadence check, unused skills) + scan of Claude's latest releases for features worth adopting. Runs automatically 1st of each month 9:05am via launchd (`com.olivetree.usage-audit`), emails the report. Replaces the retired `/audit`. Uses `scripts/usage_audit.py`.
 - `/level-up` — Weekly [removed framework] interview. Find one automation, scope it, ship it. One per week.
 - `/daily-brief` — Morning intelligence pull. Calendar + inbox + Q3 pulse + one ready-to-send draft. Run every weekday morning.
 - `/market-research [city]` — Deal-triggered market scorecard. 7-criteria go/no-go on a market. Phase 1 of the deal evaluation pipeline. Always checks `references/buy-box.md` first.
@@ -41,7 +41,11 @@ Read `references/removed-framework.md` once. It's how Brian thinks about AI work
 - `/lets-get-to-work` — Full weekly deal pipeline in one session. Scans listings, discovers new brokers, checks follow-ups, reviews inbound emails, runs deal analysis, and drafts LOIs. Nothing sends without Brian's approval. Run every Monday. Uses `scripts/deal_search.py`, `broker_search.py`, `broker_followup.py`, `deal_inbox.py`, `deal_analysis.py`.
 - `/loi` — Draft a Letter of Intent after a go (PURSUE LOI). Prompts the broker price-check call, anchors to the DSCR max-defensible-offer ceiling, drafts from `templates/loi-template.md`, saves the LOI as a Google Doc in the property's deal folder, and stages the broker email. Nothing sends without approval.
 - `/pitch-deck [deal name]` — Build a deal-specific LP pitch deck in Canva after a go. Clones the 641 Powder Springs deck (`DAHIppfBwgs`), writes the deal's content into the slides via the Canva editing API, exports PDF to the property's deal folder. Uses `scripts/canva_api.py` + Canva MCP.
-- `/capital-raise` — *(DRAFT)* LP capital raise for a specific deal: soft-commit pipeline, deal-first investor outreach drafts, track commitments vs. the $400K Q3 target. Scoped from Justin Brennan mentorship mining; needs GoHighLevel + scripts before going live.
+- `/capital-raise` — LP capital raise for a specific deal: GHL audience sizing, drip enrollment (nothing sends without `--send`), soft-commit tracking vs. the $400K Q3 target. LIVE since 2026-06-19 (first raise: 641 Powder Springs). Uses `scripts/capital_raise.py`.
+- `/heartbeat` — One-shot ops health check: launchd jobs, trading desk, daily scan, Morning Brief delivery, olive.db, new deal drops, top loose ends. Runs weekdays 7:45am via launchd + ntfy push. Answer any "is X running / did Y send" question by running `scripts/heartbeat.py` first.
+- `/loose-ends` — Harvest every pending/blocked/deferred item from decisions log + memory into one actionable list. Top 3 appear in each heartbeat. Uses `scripts/loose_ends.py`.
+- `/q3-scoreboard` — Friday scorecard vs. the three Q3 goals (deal under contract, $400K commits, broker flow), with a #1 action for next week. Run every Friday.
+- `/deal-intake` — Scan ~/Downloads for new OM/T-12/Rent-Roll drops and print the ready-to-paste workup command. New drops surface in heartbeat. Uses `scripts/deal_intake.py`.
 - `/asset-mgmt` — *(DRAFT)* Post-close asset management: the 4 weekly ops reports, PM accountability ("manage the manager"), renewal watch, quarterly investor updates. Activates once a deal closes.
 - `/govcon` — Government contracting pipeline coach. Checks the live bid pipeline at localhost:8000, surfaces next actions per bid, drafts subcontractor outreach scripts and emails, and updates bid status. Run any time you want to know what to do next on a bid. App must be running first.
 
@@ -55,6 +59,7 @@ Read `references/removed-framework.md` once. It's how Brian thinks about AI work
 - `/land-contract` — Draft the assignable Vacant Land PSA (to seller) + Assignment Agreement (to builder) for a parcel with an accepted offer. Saves locally + uploads to Drive under `Olive Tree Investments - Deals / Land Wholesale / [parcel]/`. ⚠️ Attorney review required before sending. Uses `scripts/land_contract.py`.
 - `/land-deal` — Deal cockpit: tracks status from contract through close, runs the deal-killer checklist (wetlands/slope/flood/title), fires post-close actions ($1K referral letter + neighbor first-look script). Uses `scripts/land_deal.py`. Logs to Land Deals tab.
 - `/bpo [address]` — Single-family Broker Price Opinion. Pulls 3 active + 3 sold comps from FMLS (same zip, ±1 bed, ±25% sqft, ±15 yr age). Creates Google Doc + PDF in `Olive Tree Investments - BPOs / [address]`. Works on listed and unlisted properties. Uses `scripts/bpo.py`.
+- `/crm` — Local contact database (804 contacts imported from GHL). Search, tag, note, unsub, and import contacts. Source of truth now that GoHighLevel is being decommissioned. Uses `scripts/crm.py`.
 
 ## Where things live
 
@@ -87,14 +92,14 @@ Match the register in `references/voice.md`. Direct. Short sentences. Numbers up
 |---|---|---|
 | Revenue / Financials | QuickBooks | not yet connected |
 | Revenue / Financials | Bluevine | not yet connected |
-| CRM / Investor Pipeline | GoHighLevel | not yet connected |
+| CRM / Investor Pipeline | GoHighLevel | migrating to local CRM (data/olive.db) |
 | Email | Gmail (Google Workspace) | mcp — connected |
 | Calendar | Google Calendar | mcp — connected |
 | Docs / Files / Notes | Google Drive | mcp — connected |
 | DMs | Apple Messages | not yet connected |
 | Design / Content | Canva | key+ref — OAuth tokens in `.env`, `scripts/canva_api.py` |
 
-Run `/audit` to see full coverage gaps.
+Run `/usage-audit` for the monthly usage + coverage retro.
 
 ## GWS Quick Reference
 

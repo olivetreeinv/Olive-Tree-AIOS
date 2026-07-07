@@ -133,6 +133,27 @@ REPORTALL_API = "https://reportallusa.com/api/parcels"
 REPORTALL_VERSION = 9
 REPORTALL_RPP = 1000  # rows per page (API max)
 
+# MapServer endpoint — supports real WHERE clause; bills only rows returned (not total scanned).
+# Use this path for seller pulls (vacant + out-of-state server-side) to avoid paying for houses.
+# ponytail: key embedded in URL per ReportAll's own pattern (no separate auth header)
+REPORTALL_MAPSERVER = "https://reportallusa.com/api/rest_services/client={key}/Parcels/MapServer/0/query"
+
+# FIPS county_id values required by the MapServer WHERE clause for SE expansion markets.
+# county_id = 5-digit FIPS (leading zeros dropped by the API).
+REPORTALL_FIPS = {
+    "bartow-ga":    (13015, "GA"),
+    "forsyth-ga":   (13117, "GA"),
+    "hall-ga":      (13139, "GA"),
+    "jackson-ga":   (13157, "GA"),
+    "paulding-ga":  (13223, "GA"),
+    "maury-tn":     (47119, "TN"),
+    "limestone-al": (1083,  "AL"),
+    "johnston-nc":  (37101, "NC"),
+    "york-sc":      (45091, "SC"),
+    "lee-fl":       (12071, "FL"),
+    "horry-sc":     (45051, "SC"),
+}
+
 REPORTALL_FIELD_MAP = {
     "parcel_id":    "parcel_id",
     "site_address": "address",        # assembled situs address
@@ -340,6 +361,53 @@ def query_parcels_reportall(region=None, zip_code=None, county_id=None,
         if len(rows) < REPORTALL_RPP:                      # last page
             break
         page += 1
+    return records
+
+
+def query_sellers_mapserver(county, zip_code, home_state, min_acres, max_acres,
+                            api_key=None, max_records=None, timeout=30):
+    """Pull ONLY vacant + out-of-state sellers via the ReportAll MapServer WHERE clause.
+
+    Costs credits = rows returned (sellers only, not all parcels). Use instead of
+    query_parcels_reportall for any county in REPORTALL_FIPS — ~12x more efficient
+    because houses are excluded server-side.
+
+    Returns canonical records (same shape as query_parcels / query_parcels_reportall).
+    """
+    api_key = api_key or os.environ.get("REPORTALL_API_KEY")
+    if not api_key:
+        raise RuntimeError("REPORTALL_API_KEY not set — add it to .env.")
+    if county not in REPORTALL_FIPS:
+        raise ValueError(f"No FIPS entry for '{county}'. Add it to REPORTALL_FIPS.")
+
+    cid, _ = REPORTALL_FIPS[county]
+    where = (
+        f"county_id={cid} AND addr_zip='{zip_code}'"
+        f" AND acreage_calc>={min_acres} AND acreage_calc<={max_acres}"
+        f" AND (buildings=0 OR buildings IS NULL)"
+        f" AND mail_statename<>'{home_state}' AND mail_statename IS NOT NULL"
+    )
+    url = REPORTALL_MAPSERVER.format(key=api_key)
+    out_fields = ",".join(REPORTALL_FIELD_MAP.values()) + ",buildings"
+
+    records, offset = [], 0
+    while True:
+        params = {"where": where, "f": "json", "returnGeometry": "false",
+                  "outFields": out_fields, "resultOffset": offset,
+                  "resultRecordCount": 1000}
+        data = _get_json(url, params, timeout=timeout)
+        feats = data.get("features", [])
+        for ft in feats:
+            a = ft["attributes"]
+            rec = _normalize(a, REPORTALL_FIELD_MAP)
+            if rec["acres"] is None:
+                rec["acres"] = _to_float(a.get("acreage"))
+            records.append(rec)
+            if max_records and len(records) >= max_records:
+                return records
+        if not data.get("exceededTransferLimit"):
+            break
+        offset += len(feats)
     return records
 
 

@@ -234,6 +234,14 @@ Show briefs. Ask: "Approve to render and schedule?"
 
 ### Step 6: Render → host → schedule → log
 
+**Cover art — source in this order (anti-slop ladder):**
+
+1. **Brian's own art (best)** — Luma Dream Machine board (`app.lumalabs.ai/boards`), Midjourney, or ChatGPT images. Brian downloads the image; pass its path as `"cover_image"` in the slide spec JSON. Manual by design — no Luma API integration (usage-billed, not worth automating at current volume).
+2. **Higgsfield** — `python3 scripts/higgsfield_hero.py --prompt "[subject]" --out output/carousel/[slug]/hero.png` (2 credits/image; checks balance first, falls back automatically). Then pass as `cover_image`.
+3. **Pexels via `cover_query` (last resort)** — query must name a real, specific place or scene from the story ("Atlanta Midtown skyline dusk", not "city buildings" or "business meeting"). Generic stock is the #1 slop tell.
+
+Prompt recipe for 1 & 2: real place from the story + light/airy editorial photo language, vertical 4:5. Never text-in-image, never people's faces (AI hands/faces = instant slop flag).
+
 **Render** (HTML renderer — primary):
 ```bash
 python3 scripts/carousel_render_html.py --json /tmp/slides_mf.json \

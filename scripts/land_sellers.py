@@ -145,9 +145,15 @@ def build_list(county, zip_code, band, price_per_acre, spread, cap=4000,
     lo, hi = band
     if source == "reportall":
         home = (state or "GA").upper()
-        recs = lp.query_parcels_reportall(
-            zip_code=zip_code, vacant_only=True, min_acres=lo, max_acres=hi,
-            max_records=cap)
+        # MapServer WHERE path: pulls only vacant+OOS sellers server-side (~12x cheaper
+        # than the Standard API which returns all parcels including houses then filters).
+        if county in lp.REPORTALL_FIPS:
+            recs = lp.query_sellers_mapserver(county, zip_code, home, lo, hi, max_records=cap)
+        else:
+            # ponytail: Standard API fallback for counties not yet in REPORTALL_FIPS
+            recs = lp.query_parcels_reportall(
+                zip_code=zip_code, vacant_only=True, min_acres=lo, max_acres=hi,
+                max_records=cap)
     else:
         cfg = lp.COUNTIES[county]
         home = cfg["state"]

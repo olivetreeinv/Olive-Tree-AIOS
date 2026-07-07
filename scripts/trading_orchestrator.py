@@ -40,12 +40,56 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from scripts.trading_data   import get_account, is_market_open, is_extended_hours, get_top_movers, get_afterhours_movers, EQUITY_UNIVERSE, ETF_UNIVERSE, CRYPTO_UNIVERSE
 from scripts.trading_research import run_research
 from scripts.trading_quant  import run_walk_forward
-from scripts.trading_risk   import evaluate as risk_evaluate, is_daily_halted
+from scripts.trading_risk   import evaluate as risk_evaluate, is_daily_halted, MOMENTUM_BOOK_USD
+from scripts.trading_core  import sweep_to_core, release_core, CORE_BUFFER_USD
 from scripts.trading_execution import submit_order, sync_fills, get_open_positions, check_stops
 from scripts.trading_options   import find_contract, size_contracts, submit_option_order
 from scripts.trading_report import snapshot_equity, print_performance, send_alert, send_session_report
 from db.connection import Session
 from db.schema import TradingSignal
+
+# ── State file for CC cycle throttle ─────────────────────────────────────────
+_CC_STATE_FILE  = Path(__file__).parent.parent / "data" / "cc_last_run.txt"
+CC_CYCLE_SECONDS = 3600  # run CC cycle at most once per hour
+
+
+def _get_regime() -> str:
+    """
+    'RISK-ON' if SPY is above its 200-day SMA, 'RISK-OFF' if below,
+    'UNKNOWN' if the data can't be fetched. UNKNOWN fails FLAT — new entries
+    blocked in both directions (stops/exits unaffected; check_stops runs regardless).
+    """
+    try:
+        from scripts.trading_data import get_bars, get_quote
+        bars = get_bars("SPY", days=320)  # 200 trading days needs ~300 calendar days
+        if len(bars) < 200:
+            return "UNKNOWN"
+        sma200 = sum(b["c"] for b in bars[-200:]) / 200
+        q = get_quote("SPY")
+        spy_price = q.get("last") or q.get("ask") or 0
+        if not spy_price:
+            return "UNKNOWN"
+        return "RISK-ON" if spy_price >= sma200 else "RISK-OFF"
+    except Exception:
+        return "UNKNOWN"
+
+
+def _maybe_run_cc(dry_run: bool = False):
+    """Run CC cycle at most once per hour. Uses a timestamp file as state."""
+    try:
+        import time as _time
+        last = float(_CC_STATE_FILE.read_text().strip()) if _CC_STATE_FILE.exists() else 0
+        if _time.time() - last < CC_CYCLE_SECONDS:
+            secs_left = int(CC_CYCLE_SECONDS - (_time.time() - last))
+            print(f"  [CC] Skipping — next run in {secs_left//60}m")
+            return
+        from scripts.trading_covered_calls import run_cc_cycle
+        run_cc_cycle(dry_run=dry_run)
+        if not dry_run:  # a dry-run shouldn't consume the real desk's 4h window
+            _CC_STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
+            _CC_STATE_FILE.write_text(str(_time.time()))
+    except Exception as e:
+        print(f"  ⚠️  CC cycle error: {e}")
 
 
 def _save_signal(thesis_id: int | None, result: dict) -> int | None:
@@ -75,7 +119,8 @@ def _save_signal(thesis_id: int | None, result: dict) -> int | None:
 
 
 def run_cycle(dry_run: bool = False, market_session: str = "equities",
-              with_insiders: bool = False, with_options: bool = False):
+              with_insiders: bool = False, with_options: bool = False,
+              no_cc: bool = False):
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     print(f"\n{'='*60}")
     print(f"  Trading Desk Cycle — {now}  [{market_session}]")
@@ -90,11 +135,16 @@ def run_cycle(dry_run: bool = False, market_session: str = "equities",
     if not dry_run:
         snapshot_equity()
 
+    # ponytail: daily halt checks whole-account equity — it spans both momentum + CC books
     if is_daily_halted(equity):
         msg = f"Daily halt active — portfolio down ≥2% today. No new trades."
         print(f"  🛑 {msg}")
         send_alert("Trading Desk — HALT", msg)
         return
+
+    # ── Momentum book — all sizing runs off $50k sub-book ─────────────────────
+    momentum_equity = min(equity, MOMENTUM_BOOK_USD)
+    print(f"  📦 Momentum book: ${momentum_equity:,.0f}  (full equity ${equity:,.0f})")
 
     # ── Insider signals (optional, fetched once per cycle) ────────
     insider_long:  set[str] = set()
@@ -125,8 +175,20 @@ def run_cycle(dry_run: bool = False, market_session: str = "equities",
     theses = run_research(symbols, market_session=market_session, dry_run=dry_run, run_id=run_id,
                           with_insiders=with_insiders)
 
+    # ── Regime filter (runs before thesis loop, logged even if no theses) ────────
+    regime = "N/A" if market_session == "crypto" else _get_regime()
+    if regime == "UNKNOWN":
+        print(f"\n  ⚠️  Regime: UNKNOWN (SPY data unavailable) — blocking NEW equity entries "
+              f"both directions this cycle (fail-flat); stops/exits unaffected")
+    elif regime != "N/A":
+        print(f"\n  Regime: {regime} (SPY {'above' if regime == 'RISK-ON' else 'below'} 200d SMA)"
+              f"{' — shorts filtered' if regime == 'RISK-ON' else ' — longs filtered'}")
+
     if not theses:
         print("  No theses returned. Nothing to trade.")
+        # Still run CC cycle — it's independent of momentum theses
+        if market_session in ("equities", "extended") and not no_cc:
+            _maybe_run_cc(dry_run=dry_run)
         return
 
     # ── Steps 2–4: Quant → Risk → Execute per thesis ──────────────
@@ -134,6 +196,13 @@ def run_cycle(dry_run: bool = False, market_session: str = "equities",
     # cycle. Alpaca nets repeat buys into one position, so the risk agent's
     # MAX_POSITIONS count can't see the concentration; this DB check can.
     held_symbols = {p["symbol"] for p in get_open_positions()}
+    # CC book underlyings are off-limits to the momentum desk (avoids double exposure)
+    try:
+        from scripts.trading_covered_calls import cc_held_symbols
+        held_symbols |= cc_held_symbols()
+    except Exception:
+        pass  # ponytail: CC module optional; desk continues without it
+
     approved_count = 0
     # Highest conviction first → when more theses pass the gates than open slots,
     # the top MAX_POSITIONS win (the risk agent vetoes the rest at the cap).
@@ -154,6 +223,19 @@ def run_cycle(dry_run: bool = False, market_session: str = "equities",
         if is_crypto and direction == "short":
             print(f"        ⏭  Skipping SHORT {symbol} — Alpaca doesn't support crypto shorts")
             continue
+
+        # Regime filter: RISK-ON → only longs; RISK-OFF → only shorts;
+        # UNKNOWN → fail flat, no new equity entries. Crypto unaffected.
+        if not is_crypto:
+            if regime == "UNKNOWN":
+                print(f"        ⏭  Regime UNKNOWN — blocking new entry for {symbol} (fail-flat)")
+                continue
+            if regime == "RISK-ON"  and direction == "short":
+                print(f"        ⏭  Regime RISK-ON  — skipping SHORT {symbol}")
+                continue
+            if regime == "RISK-OFF" and direction == "long":
+                print(f"        ⏭  Regime RISK-OFF — skipping LONG  {symbol}")
+                continue
 
         # Step 2: Quant gate (direction-aware). Crypto trades 24/7 — daily bars fire
         # the signal only 1-3x (no valid sample); hourly gives a real trade count.
@@ -201,8 +283,9 @@ def run_cycle(dry_run: bool = False, market_session: str = "equities",
             side=direction,
             entry_price=entry_price,
             quant_passed=passed,
-            portfolio_equity=equity,
+            portfolio_equity=momentum_equity,
             extended_hours=(market_session == "extended"),
+            conviction=conviction,
         )
 
         if decision.approved:
@@ -213,6 +296,17 @@ def run_cycle(dry_run: bool = False, market_session: str = "equities",
 
         # Step 4: Execute
         print(f"  [4/4] Execution...")
+
+        # Cash guard: if account cash < position notional, try to release from core SPY first
+        if not dry_run and decision.approved and decision.position_usd > 0:
+            try:
+                cash_now = get_account().get("cash", 0)
+                shortfall = decision.position_usd - (cash_now - CORE_BUFFER_USD)
+                if shortfall > 0:
+                    print(f"  [core] low cash — releasing ${shortfall:,.0f} before {symbol} entry")
+                    release_core(shortfall)
+            except Exception as _cge:
+                print(f"  ⚠️  [core] cash guard failed ({_cge}) — continuing anyway")
 
         # Options eligibility:
         #   - Best-judgment path: conviction ≥ 0.80 (Claude's highest-conviction calls)
@@ -261,6 +355,15 @@ def run_cycle(dry_run: bool = False, market_session: str = "equities",
                     f"qty={decision.qty:.4f}  notional=${decision.position_usd:,.2f}  stop=${decision.stop_price:.2f}",
                 )
 
+    # ── CC cycle (equities + extended sessions only, throttled to 4h) ─────────
+    if market_session in ("equities", "extended") and not no_cc:
+        _maybe_run_cc(dry_run=dry_run)
+
+    # ── Core SPY sweep — idle cash → SPY after all other entries ──────────────
+    # Only equities session (market hours); skipped for crypto/extended/idle.
+    if market_session == "equities":
+        sweep_to_core(dry_run=dry_run)
+
     # ── Reconcile fills ────────────────────────────────────────────
     # Stops are monitor-based (Alpaca can't rest stops on crypto or fractional equity) —
     # check live price vs stop and fire exits first, then sync_fills() reconciles every
@@ -292,6 +395,7 @@ def main():
     ap.add_argument("--report",        action="store_true", help="Print P&L table and exit")
     ap.add_argument("--market-session", default="auto", choices=["auto", "equities", "extended", "crypto", "idle"],
                     help="Force session type (default auto-detects by time)")
+    ap.add_argument("--no-cc", action="store_true", help="Disable covered-call cycle this run")
     args = ap.parse_args()
 
     if args.report:
@@ -316,7 +420,8 @@ def main():
 
     if args.once:
         run_cycle(dry_run=args.dry_run, market_session=_session(),
-                  with_insiders=args.insiders, with_options=args.options)
+                  with_insiders=args.insiders, with_options=args.options,
+                  no_cc=args.no_cc)
         return
 
     if args.loop:
@@ -338,7 +443,8 @@ def main():
                     print(f"  Markets closed (8pm–4am ET). Next check in {args.stop_interval}s.")
                 else:
                     run_cycle(dry_run=args.dry_run, market_session=sess,
-                              with_insiders=args.insiders, with_options=args.options)
+                              with_insiders=args.insiders, with_options=args.options,
+                              no_cc=args.no_cc)
             except KeyboardInterrupt:
                 print("\n  Loop stopped by user.")
                 break
