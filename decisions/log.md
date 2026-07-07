@@ -451,6 +451,23 @@ Closed the three follow-ups from the stop-loss fix:
 
 **Verified:** risk tests 7/7, CC self-checks 5/5, dry-run cycles clean, `_PAPER=True` everywhere. launchd job restarted 2026-07-06 12:33 ET on the new code — first cycle logged the book split + RISK-ON regime.
 
+## 2026-07-06 — underwriting-reviewer first run: CHALLENGE on 641 Powder Springs narrative (price stands)
+
+**Trigger:** First live run of the new `underwriting-reviewer` subagent, on the 641 Powder Springs GO (LOI out at $910K; 633 investors enrolled today).
+
+**Verdict: CHALLENGE — the $910K offer is defensible; the internal numbers used to sell it don't reproduce.**
+1. **Cap rate mislabeled:** "7.85% on offer" is actually the cap on the $1.5M ASK. Real going-in on the $910K offer = 12.95%.
+2. **Stabilized NOI overstated ~8%:** stated $117,850; recomputes to $108,108 from its own inputs (14u × $1,300 × 12, 10% vacancy, 45% expenses); ~$104K at the KB's 12–15% economic-loss floor.
+3. **Exit cap never stressed:** single-point 6.5% exit vs 12.95% going-in — ~645bps of unstressed compression; KB requires +50bps minimum stress.
+4. **Tax proforma used the banned scale-to-price method** ($16,000); correct = $12,554 × 1.03 ≈ $12,930 (violation was conservative in direction, still a process miss).
+5. **Buy-box misfit:** 43% vacant, 1965, bridge-only, $65K/unit — hits Smyrna's own "stabilized" red flags; profile is distressed value-add, not the bucket it was screened in.
+
+**Funnel exposure checked:** live drip first-touch quotes fund-level targets (6% pref, ~18.21% ROI, 2.09x), NOT the challenged 23.3%/3.21x — no misrepresentation in flight. Pitch deck + Loom in the funnel still need a spot-check for deal-specific return claims.
+
+**Open (Brian to green-light):** rebuild the Analyzer at $104–108K NOI, rerun returns off $910K, stress exit 7.0–7.5%, reclassify the deal value-add, spot-check the deck/Loom.
+
+**Owner:** Brian Norton
+
 ## 2026-07-06 — Platform upgrades: Sonnet 5 everywhere, /usage-audit monthly, /audit retired
 
 **Decision:** Adopted the June 2026 Claude releases across the AIOS, retired `/audit` (moved to `archives/skills/audit/`), and replaced it with `/usage-audit` — a monthly retro that mines the past month's sessions AND scans Claude's latest releases, modeled on the 2026-07-06 91-session review.
