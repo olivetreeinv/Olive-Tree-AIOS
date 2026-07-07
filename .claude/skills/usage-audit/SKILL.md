@@ -48,14 +48,16 @@ Compose the report (Brian's voice, numbers up front, ≤1 page):
 `VERDICT` → `TIME MIX` vs goals → `CADENCE` → `NOT USING` (new features mapped
 to setup) → `TOP 3 CHANGES` for next month, each sized (5-min / 1-session / big).
 
-Email it:
+Email it — the GOOGLE_* vars in `.env` are EMPTY placeholders locally; pull
+creds from the gws keyring first (verified working 2026-07-06):
 ```bash
-# write report to /tmp/usage_audit.txt, then send via Gmail (gws keyring auth)
-python3 scripts/daily_brief_cloud.py send --to brian@olivetreeinv.io \
+# write report to /tmp/usage_audit.txt, then:
+creds=$(gws auth export --unmasked | python3 -c "import json,sys; d=json.load(sys.stdin); print(d['client_id'], d['client_secret'], d['refresh_token'])")
+read -r cid csec crt <<< "$creds"
+GOOGLE_CLIENT_ID="$cid" GOOGLE_CLIENT_SECRET="$csec" GOOGLE_REFRESH_TOKEN="$crt" \
+  python3 scripts/daily_brief_cloud.py send --to brian@olivetreeinv.io \
   --subject "Monthly Usage Audit — $(date '+%b %Y')" --body-file /tmp/usage_audit.txt
 ```
-(Local runs can fall back to `_google_token()`-style gws auth if GOOGLE_* env
-vars are empty — see `scripts/heartbeat.py`.)
 Then ntfy: `sh scripts/notify.sh "Usage Audit" "Monthly audit emailed — <verdict one-liner>"`
 
 ## Cadence
