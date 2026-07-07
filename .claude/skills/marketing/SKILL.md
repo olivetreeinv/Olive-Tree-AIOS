@@ -1,16 +1,17 @@
 # Marketing Skill — Olive Tree Investments
-**Trigger:** `/marketing`, "blog ideas", "what should I write about this week", "generate blog ideas", "write a blog", "newsletter ideas"
+**Trigger:** `/marketing`, "write the newsletter", "weekly content", "create campaign", "newsletter", "blog ideas", "what should I write this week"
 
 ---
 
 ## What this skill does
 
-Weekly content engine for Olive Tree Investments. Two modes:
+Weekly content engine — one run produces the **newsletter campaign** (MF story + SF story → local Gmail send via `scripts/newsletter.py`) and the **Instagram posts** (carousels derived from that same newsletter, not re-scanned). One signal scan. One source of truth. Everything cohesive.
 
-- **Ideation mode** (default): Scans live sources, generates 5–7 ranked blog ideas, presents them as a menu. Brian picks one.
-- **Draft mode**: Takes Brian's chosen idea and writes a full blog post in Olive Tree voice.
+Two modes:
+- **Full run** (default): Signal scan → newsletter draft → build + test-send + send via `scripts/newsletter.py` → IG posts rendered + scheduled
+- **Newsletter only** (`--newsletter-only`): Stops after the newsletter send
 
-Fully automated — no manual input needed. Pulls from live sources every run.
+Nothing sends without approval. Newsletter: Brian approves the draft in chat → test-send lands in his inbox → he eyeballs it → only then the real send runs. IG posts = `draft: true` in Metricool until Brian approves.
 
 ---
 
@@ -18,11 +19,12 @@ Fully automated — no manual input needed. Pulls from live sources every run.
 
 | File | Why |
 |---|---|
-| `references/news-research.md` | Source stack, rate tables, blog angle pairings |
-| `references/voice.md` | Brian's voice — direct, numbers-first, no filler |
-| `references/buy-box.md` | Active markets — stay consistent with geographies |
+| `references/social-media-examples.md` | **Read first.** Brian's 4 hook formulas, preview text patterns, newsletter opening formula, 7 pillars, 3 content blocks. Every story must use these. |
+| `references/news-research.md` | Source stack, rate tables, macro event framework, angle pairings |
+| `references/voice.md` | Brian's tone — direct, numbers-first, no filler, signs -Brian |
+| `references/buy-box.md` | 13 active markets — stay consistent with active geographies |
 | `context/about-me.md` | Brian's background and mission |
-| `context/about-business.md` | Olive Tree's structure and investor types |
+| `context/about-business.md` | Olive Tree's structure, markets, investor types |
 
 ---
 
@@ -30,123 +32,329 @@ Fully automated — no manual input needed. Pulls from live sources every run.
 
 ### Step 1: Read references
 
-Read all five reference files before doing anything else. This grounds every idea and every draft in Brian's actual business, markets, and voice.
-
-### Step 2: Scan live sources (Ideation mode)
-
-Search the following in parallel. Use WebSearch for each:
-
-1. **CRE Daily** — `site:credaily.com multifamily` (last 7 days)
-2. **GlobeSt** — `site:globest.com multifamily` (last 7 days)
-3. **CoStar / Multifamily Dive** — `CoStar multifamily rent vacancy 2026` and `multifamilydive.com news 2026`
-4. **Macro / Rates / Big Events** — `Federal Reserve interest rates commercial real estate 2026` and `10 year treasury SOFR multifamily 2026` and `[any major breaking news: war, tariffs, government policy, legislation] real estate impact 2026`
-5. **BiggerPockets** — `site:biggerpockets.com multifamily syndication` (for LP education angle signals)
-6. **Southeast / Active markets** — `multifamily Georgia Tennessee Alabama 2026 market`
-
-Pull the 3–5 most relevant headlines or data points from each search. Note the source and date.
-
-### Step 3: Cross-reference against Brian's context
-
-Filter and rank signals through these lenses:
-
-- **Timeliness** — is this happening *right now*? Breaking > evergreen.
-- **Market relevance** — does it touch GA, TN, or AL? Does it touch the buy box (15–50 units, value-add)?
-- **Audience fit** — would a potential LP or existing investor find this useful or credible?
-- **Brian's differentiation** — is there an angle only an operator-on-the-ground can write? Prefer that over generic takes.
-- **Rate environment** — always check current rate tables in `references/news-research.md`. Any week with a notable rate move gets a rate-angle idea in the list.
-- **Big world events** — if a war, major tariff, significant legislation, or Fed surprise broke this week, it earns a slot in the idea list. Use the "How Big Events Connect to Multifamily Underwriting" table in `references/news-research.md` to identify the specific CRE angle. Don't write about the event generically — write about what it means for a multifamily buyer or LP in Georgia, Tennessee, or Alabama.
-
-### Step 4: Generate idea menu
-
-Output **5–7 blog ideas**, ranked by timeliness + audience fit. For each idea:
-
-```
-### [#]. [Headline]
-**Angle:** One sentence — why this matters right now, from an investor or operator POV.
-**Hook:** The opening line or stat that makes someone stop scrolling.
-**Source anchor:** [Source name] — specific headline or data point to reference.
-**Content type:** Market Intel | LP Education | Operator POV | Faith + Mission | Deal Transparency
-**Estimated read time:** X min
-```
-
-Present as a numbered list. End with:
-
-> "Which of these do you want to run with? Say the number and I'll write the full draft."
-
-### Step 5: Draft mode (triggered when Brian picks an idea)
-
-When Brian selects an idea (by number or description), write the full blog post.
-
-**Draft structure:**
-
-```
-HEADLINE
-[Punchy, specific — number or data point up front when possible]
-
-INTRO (2–3 sentences)
-[The hook. What's happening, why it matters, why Brian is the right person to say it.]
-
-BODY (3–5 sections with subheads)
-[Each section = one point. Lead with the insight, support with data or example.
-No filler. No "it's a complex landscape." No generic platitudes.
-Every section should pass: "Would a seasoned investor already know this?" If yes, cut or sharpen.]
-
-CLOSE / CTA (2–3 sentences)
-[What to do with this information. For LP-facing posts: subtle invitation to connect or learn more.
-No hard sell. No "reach out today!" energy.]
-
-SIGN-OFF
--Brian
-```
-
-**Voice rules (from `references/voice.md`):**
-- Short sentences. Numbers up front.
-- Dashes over commas for asides — like this.
-- Bullet points over paragraphs when listing.
-- No corporate filler ("in today's dynamic landscape", "it's important to note").
-- Write like Brian talks, not like a press release.
-
-**Length:** 400–700 words for a standard post. Flag if the topic warrants longer.
-
-**After drafting**, ask:
-> "Want me to also format this for LinkedIn (shorter, punchier opening) or as an email newsletter intro?"
+Read all six files above before proceeding.
 
 ---
 
-## Output format
+### Step 2: Scan live signals (once — shared by newsletter + IG)
 
-### Ideation mode output example:
+**Tier 1 — pull every run (in parallel):**
+
+1. **CRE Daily** — `site:credaily.com multifamily` — top headline + key stat
+2. **GlobeSt** — `site:globest.com multifamily` — Southeast/Sun Belt focus, key number
+3. **CoStar** — `CoStar multifamily vacancy rent growth [year]` — data anchor (vacancy %, rent growth %)
+4. **Southeast signal** — `multifamily Georgia Tennessee Alabama [year] rent apartment`
+
+**Rate snapshot — pull every run:**
+- SF: `site:mortgagenewsdaily.com 30 year mortgage rate today`
+- MF: `site:commercialloandirect.com multifamily loan rates` or `site:apartmentloanstore.com rates`
+
+Compare to `references/news-research.md` rate tables. Flag if >0.25% move or table is >7 days old.
+
+**Tier 2 — pull only if a macro event broke this week:**
+
+Check: Fed decision, rate move, tariff, jobs report, inflation print, war/geopolitical event, major housing legislation?
+
+If YES → pull Reuters/AP (macro headline) + Bloomberg (rate/credit depth). Use the "How Big Events Connect to Multifamily Underwriting" table in `references/news-research.md` to identify the CRE angle. If NO → skip.
+
+**Output Signal Report before proceeding:**
 
 ```
-## Blog Ideas — Week of [Date]
+## Signal Report — [Date]
 
-**What's moving this week:**
-[2–3 sentence summary of the dominant signal from the source scan — rates, market shift, macro event]
+**Tier 1:**
+- CRE Daily: [headline] | [key stat]
+- GlobeSt: [headline] | [market] | [key stat]
+- CoStar: [data point] | [implication]
+- Southeast: [headline or data point]
+
+**Tier 2 (macro event this week? Y/N):**
+- [Event + CRE impact] OR N/A
+
+**Rate snapshot:**
+- 30-yr fixed (SF): [X]% ([up/down/flat] vs. reference)
+- Fannie Mae (MF): [X–X]%
+- Rate table last updated: [date] — [flag if stale]
+
+**Strongest signal:** [one sentence]
+**MF story angle:** [pillar + why now]
+**SF story angle:** [pillar + why now]
+
+Confirm angles or override before I draft.
+```
+
+**Wait for Brian's confirmation before Step 3.**
 
 ---
 
-### 1. [Headline]
-**Angle:** ...
-**Hook:** ...
-**Source anchor:** ...
-**Content type:** ...
-**Estimated read time:** X min
+### Step 3: Draft the newsletter (MF story + SF story)
 
-### 2. [Headline]
-...
+Structure each story using Brian's newsletter opening formula from `references/social-media-examples.md`:
 
-[continue through 5–7]
+```
+[Month] brings [the thing most people overlook or get backward].
+
+Here's what's happening: [1–2 specific data points]
+
+Here's what the market isn't telling you: [the contrarian read]
+
+Translation: [plain English implication for the reader]
+```
+
+**Subject line:** generate 3 variants using the 4 formulas from `references/social-media-examples.md`. Pick the strongest.
+
+**Preview text:** 3–8 words. Stat or sharp consequence. Ends "Position now." when appropriate.
+
+**MF Story** (pillars 1–5, 7 — investor/operator audience):
+- 400–600 words in Brian's voice
+- Numbers always specific — never "many investors", always "51% of investors"
+- Contrarian setup: "While most... the data says..."
+- "Translation:" move before the close
+- Urgency close: "Position now." / "The window closes when [event]."
+- Signs off: `-Brian`
+
+**SF Story** (pillar 6 — homebuyer/retail audience):
+- 250–350 words — shorter, simpler
+- Rate environment + affordability + seasonal timing angle
+- Same voice, lighter on operator jargon
+
+**Output:**
+
+```
+## Newsletter Draft — [Month YYYY]
+
+**Subject:** [chosen subject line]
+**Preview text:** [3–8 words]
 
 ---
-Which one do you want to run with? Say the number and I'll write the full draft.
+
+### MF Story
+[full draft — 400–600 words]
+
+---
+
+### SF Story
+[full draft — 250–350 words]
 ```
+
+Show draft. Ask: "Approve to build the campaign, or any edits first?"
+
+**Wait for Brian's approval before Step 4.**
+
+---
+
+### Step 4: Build + send via local Gmail engine
+
+Send IS available locally now — `scripts/newsletter.py` replaces the GHL campaign flow entirely.
+
+**1. Build** (once the draft is approved in chat — save the approved body as markdown first):
+```bash
+python3 scripts/newsletter.py build \
+    --name "[Month YYYY] Newsletter" \
+    --subject "[chosen subject line]" \
+    --markdown /path/to/approved-body.md
+# → writes output/newsletters/<slug>.html + campaigns row (status: draft)
+```
+Show Brian the generated HTML path (open it if he wants to see the render).
+
+**2. Test-send** (on approval):
+```bash
+python3 scripts/newsletter.py test-send --campaign "[Month YYYY] Newsletter"
+# → sends ONE copy to brian@olivetreeinv.io, subject prefixed [TEST]
+```
+Brian eyeballs it in his inbox.
+
+**3. Send** (only after Brian confirms the test looks right):
+```bash
+python3 scripts/newsletter.py send --campaign "[Month YYYY] Newsletter" --dry-run
+# → prints audience size, sends nothing — show Brian the count first
+python3 scripts/newsletter.py send --campaign "[Month YYYY] Newsletter"
+# → real send
+```
+
+**Audience rule:** contacts tagged `newsletter` in `data/olive.db`, with an email, minus anyone `unsubscribed`. Override with `--tag X` if Brian wants a different segment. Sends go out individually (2–4s apart), each logged to `email_log` — the send is resume-safe if interrupted (already-sent contacts are skipped on re-run).
+
+**Unsubscribes:** run `python3 scripts/newsletter.py scan-unsubs --days 30` after each campaign to flag UNSUBSCRIBE replies in the DB.
+
+Confirm once sent:
+```
+✅ Newsletter sent: "[Month YYYY] Newsletter"
+[N] delivered, [N] failed — logged in email_log
+```
+
+If `--newsletter-only` flag: stop here.
+
+---
+
+### Step 5: Derive IG briefs from newsletter
+
+**Do NOT re-scan signals.** Use the approved newsletter content as source of truth.
+
+Map each story to a carousel spec using the carousel-adaptation rules in `references/social-media-examples.md`:
+
+**Post 1 (MF) — from the MF story:**
+- Cover slide: newsletter subject line adapted as bold hook + `cover_query` for Pexels
+- Body slides (2–4): the 3 strongest data points / contrarian moves from the MF story, one per slide
+- Translation slide: the "Translation:" sentence from the story in bold
+- CTA slide (inverted olive): "Position now." + "Follow @olivetreeinv"
+
+**Post 2 (SF) — from the SF story:**
+- Cover slide: SF hook + `cover_query`
+- Body slides (2–4): top 3 points
+- CTA slide: seasonal or rate close
+
+**Output:**
+
+```
+## IG Post Briefs — [Date]
+
+### POST 1: Multifamily
+**Slide spec (JSON-ready):**
+[
+  {"type": "cover", "kicker": "MARKET INTEL", "title": "[hook]", "body": "[subhook]", "cover_query": "[pexels search]"},
+  {"type": "content", "kicker": "[LABEL]", "title": "[point]", "body": "[support line]"},
+  {"type": "content", "kicker": "TRANSLATION", "title": "[plain English]", "body": ""},
+  {"type": "cta", "kicker": "OLIVE TREE", "title": "[urgency close]", "body": "Follow @olivetreeinv"}
+]
+**Caption:** [hook] / [2–3 value lines] / [soft CTA] / [3–5 hashtags]
+
+### POST 2: Single Family
+[same structure]
+```
+
+Show briefs. Ask: "Approve to render and schedule?"
+
+**Wait for Brian's approval before Step 6.**
+
+---
+
+### Step 6: Render → host → schedule → log
+
+**Cover art — source in this order (anti-slop ladder):**
+
+1. **kie.ai — GPT Image 2 (default)** — `python3 scripts/kie_hero.py --prompt "[subject]" --out output/carousel/[slug]/hero.png` (~6 credits ≈ $0.03/image; checks balance first, falls back automatically). Pass the returned path as `"cover_image"` in the slide spec JSON. Uses `KIE_API_KEY` in `.env`.
+2. **Brian's own art** — Luma board (`app.lumalabs.ai/boards`), Midjourney, or ChatGPT — for posts he wants to art-direct by hand. He downloads it; pass its path as `"cover_image"`.
+3. **Pexels via `cover_query` (last resort)** — query must name a real, specific place or scene from the story ("Atlanta Midtown skyline dusk", not "city buildings" or "business meeting"). Generic stock is the #1 slop tell.
+
+Prompt recipe for 1 & 2: real place from the story + light/airy editorial photo language. The `kie_hero.py` light-airy wrapper + `4:3` default already suit the cover band; override with `--aspect`. Never text-in-image, never people's faces (AI hands/faces = instant slop flag). `higgsfield_hero.py` is retired — kie is cheaper and one API for image + motion.
+
+**Motion cover (optional, for Reels/video posts):** animate a still into a short MP4 (Veo 3 Fast, ~$0.33/8s; kie doesn't carry Luma). The still must be a *public* URL — use the one kie returns, or upload the PNG first.
+```bash
+python3 scripts/kie_hero.py --prompt "<public image URL>" --out output/carousel/[slug]/hero.mp4 --motion
+python3 scripts/social_drive_upload.py --video output/carousel/[slug]/hero.mp4 --date YYYY-MM-DD --title "..."
+# → prints a drive.usercontent.google.com/download URL; pass it in Metricool `media` as an IG REEL
+```
+Metricool re-hosts the MP4 to its own CDN (verified 2026-07-07). Schedule with `instagramData: {"type": "REEL"}` and `draft: true`. The image-CDN `lh3` URL does NOT work for video — `social_drive_upload.py --video` returns the correct download URL.
+
+**Render** (HTML renderer — primary):
+```bash
+python3 scripts/carousel_render_html.py --json /tmp/slides_mf.json \
+    --out output/carousel/[date]-mf
+python3 scripts/carousel_render_html.py --json /tmp/slides_sf.json \
+    --out output/carousel/[date]-sf
+```
+
+Show rendered PNGs to Brian. Ask: "Approve to upload and schedule?"
+
+**Host** (once approved):
+```bash
+python3 scripts/social_drive_upload.py \
+    --slides-dir output/carousel/[date]-mf \
+    --date YYYY-MM-DD --title "MF Story Title"
+# → prints lh3.googleusercontent.com/d/<id> URLs in slide order
+
+python3 scripts/social_drive_upload.py \
+    --slides-dir output/carousel/[date]-sf \
+    --date YYYY-MM-DD --title "SF Story Title"
+```
+
+**Best time:**
+```
+mcp__claude_ai_Metricool_Instragram_MCP__getBestTimeToPostByNetwork
+  network: instagram, brandId: 6192268, timezone: America/New_York
+```
+Default: Post 1 (MF) = 9:00 AM ET | Post 2 (SF) = 6:00 PM ET. Adjust if Metricool data differs significantly.
+
+**Schedule** (Metricool MCP — primary):
+```
+mcp__claude_ai_Metricool_Instragram_MCP__createScheduledPost
+  blogId: 6192268
+  info: {
+    text: "<caption>",
+    media: ["<lh3_url_1>", "<lh3_url_2>", ...],   ← in slide order
+    providers: [{"network": "instagram"}],
+    instagramData: {"type": "POST"},
+    publicationDate: {dateTime: "YYYY-MM-DDTHH:mm:ss", timezone: "America/New_York"},
+    autoPublish: true,
+    draft: true   ← always draft on first run
+  }
+```
+
+**Fallback** (if Metricool fails): GHL Social Planner → `POST /social-media-posting/$GHL_LOCATION_ID/posts` — see `references/gohighlevel-api.md`.
+
+**Log** (once per post):
+```bash
+python3 scripts/social_sheet.py \
+    --date YYYY-MM-DD --title "Title" --type "MF Carousel" \
+    --topic "..." --caption "..." \
+    --slides "<drive_folder_url>" --metricool "<plannerUrl>" \
+    --status Draft
+```
+
+**Final confirm:**
+```
+✅ Weekly content pipeline complete — [Date]
+
+NEWSLETTER
+"[Month YYYY] Newsletter" — [sent: N delivered | or: built + test-sent, awaiting Brian's go]
+
+INSTAGRAM
+Post 1 (MF) — [time] ET | [N] slides | draft in Metricool
+Post 2 (SF) — [time] ET | [N] slides | draft in Metricool
+
+IG posts are drafts in Metricool — approve when ready.
+```
+
+---
+
+## Caption formula
+
+```
+[Hook line — specific stat or question]
+
+[2–3 short lines of value]
+
+[Soft CTA — "Save this." / "Tag someone who needs to see this."]
+
+[3–5 hashtags]
+```
+
+**Hashtag pools:**
+- MF: `#multifamilyinvesting #apartmentinvesting #realestateinvesting #passiveincome #syndicationinvesting #atlantarealestate #georgiarealestate`
+- SF: `#realestate #homebuying #firsttimehomebuyer #housingmarket #realestatetips #atlantahomes #georgiahomes`
+
+---
+
+## Key IDs
+
+| Item | Value |
+|---|---|
+| Newsletter engine | `scripts/newsletter.py` (build / test-send / send / scan-unsubs) |
+| Newsletter template | `templates/newsletter.html` |
+| Audience | tag `newsletter` in `data/olive.db`, minus unsubscribed |
+| GHL Location ID (legacy, social fallback only) | `$GHL_LOCATION_ID` (SLq7B2pldVzfQLKjGpvw) |
+| Metricool brandId/blogId | `6192268` |
+| IG Posts sheet | `1wSdYytgnEZrLGiwVarA-OIN2OfJ1WOlB7MOYBMdRKrQ` |
+| Social Drive folder | `1a46dKGTj8ggEWbTaRN-TuZv_EL__a6AY` |
 
 ---
 
 ## Notes
 
-- Rate tables in `references/news-research.md` are a snapshot. If the last-updated date is >7 days old, flag it before publishing any rate-sensitive content.
-- Never fabricate headlines, data, or quotes. If a search returns no clear signal, say so and generate evergreen ideas from Brian's context instead.
-- If two ideas are tied on timeliness, prefer the one that touches an active buy-box market (GA, TN, AL).
-- BiggerPockets signals what retail investors are asking — use it to find LP education angles, not as a primary news source.
-- For Faith + Mission ideas: these are powerful but use sparingly (1 per month max). Flag when suggesting one.
+- **Rate tables age fast.** Flag if `references/news-research.md` is >7 days old before any rate-angle content.
+- **Never fabricate data.** If a source isn't returning live results, note it and ask Brian to verify.
+- **Faith + Mission posts:** powerful but max 1/month. Flag when suggesting one.
+- **Newsletter send is local now** — `scripts/newsletter.py` via Gmail API. GHL email campaigns are retired; the only remaining GHL use here is the social-posting fallback in Step 6.
+- **Metricool free tier:** 20 posts/month cap. Always `draft: true` on first run.
+- **IG posts always derived from newsletter** — never run a second signal scan. One source of truth.
+- **`carousel_render_html.py` is the primary renderer.** Pillow (`carousel_render.py`) kept only for `source_cover`/`palette_from_image` helpers.

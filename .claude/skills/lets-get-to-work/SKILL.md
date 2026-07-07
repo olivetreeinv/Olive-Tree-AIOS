@@ -34,6 +34,14 @@ New listings → Broker follow-ups → Inbound deal emails → Document requests
 
 ### Phase 0: Session Kickoff
 
+**Deal-doc intake scan (silent):**
+```bash
+python3 scripts/deal_intake.py
+```
+If it lists new doc-drop folders in ~/Downloads, surface them as workup
+candidates alongside the pipeline results. After a workup starts, run
+`python3 scripts/deal_intake.py --ack`.
+
 **Sync Fathom meetings first (silent):**
 ```bash
 cd "/Users/olivetree/Documents/Olive AIOS" && source .env && python3 scripts/fathom_sync.py --days 7
@@ -127,13 +135,20 @@ After the scan, present a summary:
    [Platform] | Broker: [name] <[email]>
 2. ...
 
+🔶 NEAR BUY BOX ([n] found — unit count 10–65, off the 15–50 target):
+1. [Property Name] — [n] units | [zip], [market] | $[price/unit]/unit
+   [Platform] | Broker: [name] <[email]>
+2. ...
+
 ⚠️ OUTSIDE BUY BOX ([n] flagged):
 - [Property Name] — [zip] not in active markets
 
-All logged to Deal Sourcing tab.
+All logged to Deal Sourcing tab (Near matches as `Near — Review`, not `Pass`).
 
 Any of these worth a closer look? (list numbers, or 'none')
 ```
+
+Near-buy-box listings are worth underwriting even when Brian won't pursue them — the point is the broker relationship (they may bring the next listing that's a real fit) and the practice of pricing outside a clean 15–50 unit deal. Offer to run `/deal-analysis` on any Near pick same as an in-box one.
 
 If Brian identifies a deal → jump to Phase 5 for that deal.
 If none → continue to Phase 2.

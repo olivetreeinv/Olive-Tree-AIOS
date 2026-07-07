@@ -17,7 +17,7 @@ All other fields are typed columns with UNIQUE / FK constraints for dedup + join
 """
 
 from sqlalchemy import (
-    Boolean, Column, Float, ForeignKey, Integer, String, Text
+    Boolean, Column, Float, ForeignKey, Integer, String, Text, UniqueConstraint
 )
 from sqlalchemy.orm import DeclarativeBase, relationship
 
@@ -260,6 +260,141 @@ class LandDeal(Base):
     builder = relationship("LandBuilder", back_populates="deals")
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Trading Desk tables
+# ─────────────────────────────────────────────────────────────────────────────
+
+class TradingThesis(Base):
+    """Research-agent output: one ranked thesis per symbol per cycle."""
+    __tablename__ = "trading_theses"
+
+    id          = Column(Integer, primary_key=True, autoincrement=True)
+    run_id      = Column(String(40), nullable=False, index=True)  # ISO timestamp of cycle
+    symbol      = Column(String(20), nullable=False)
+    direction   = Column(String(5), nullable=False)   # LONG / SHORT
+    conviction  = Column(Float)                        # 0–1 from LLM
+    rationale   = Column(Text)
+    catalyst    = Column(Text)
+    horizon     = Column(String(30))                   # e.g. "intraday" / "swing"
+    created_at  = Column(String(30), nullable=False)
+
+
+class TradingSignal(Base):
+    """Quant-agent output: backtest + walk-forward metrics per thesis."""
+    __tablename__ = "trading_signals"
+
+    id              = Column(Integer, primary_key=True, autoincrement=True)
+    thesis_id       = Column(Integer, ForeignKey("trading_theses.id"), nullable=True)
+    symbol          = Column(String(20), nullable=False)
+    run_id          = Column(String(40), nullable=False, index=True)
+    sharpe          = Column(Float)
+    max_drawdown    = Column(Float)    # decimal (0.05 = 5%)
+    cagr            = Column(Float)
+    win_rate        = Column(Float)
+    oos_sharpe      = Column(Float)    # out-of-sample (walk-forward)
+    passed_gate     = Column(Boolean)  # True = cleared the quant gate
+    strategy_params = Column(Text)     # JSON: indicator params used
+    created_at      = Column(String(30), nullable=False)
+
+    thesis = relationship("TradingThesis")
+
+
+class TradingPosition(Base):
+    """Current (and closed) paper positions."""
+    __tablename__ = "trading_positions"
+
+    id                   = Column(Integer, primary_key=True, autoincrement=True)
+    symbol               = Column(String(20), nullable=False)
+    side                 = Column(String(5), nullable=False)   # long / short
+    qty                  = Column(Float, nullable=False)
+    entry_price          = Column(Float)
+    stop_price           = Column(Float)                       # current stop (ATR-based or trailing)
+    initial_stop_distance = Column(Float)                     # 1R distance at entry; used as trail distance
+    high_water_price     = Column(Float)                      # highest/lowest price seen (for trailing)
+    entry_time           = Column(String(30))
+    exit_price           = Column(Float)
+    exit_time            = Column(String(30))
+    pnl                  = Column(Float)
+    pnl_pct              = Column(Float)
+    status               = Column(String(20), default="open")  # open / closed / stopped
+    signal_id            = Column(Integer, ForeignKey("trading_signals.id"))
+    notes                = Column(Text)
+
+    signal = relationship("TradingSignal")
+
+
+class TradingOrder(Base):
+    """Alpaca paper order log — one row per order submitted."""
+    __tablename__ = "trading_orders"
+
+    id             = Column(Integer, primary_key=True, autoincrement=True)
+    alpaca_id      = Column(String(60), unique=True)
+    symbol         = Column(String(20), nullable=False)
+    side           = Column(String(5), nullable=False)
+    qty            = Column(Float)
+    order_type     = Column(String(20))   # market / limit / stop
+    limit_price    = Column(Float)
+    stop_price     = Column(Float)
+    filled_price   = Column(Float)
+    filled_qty     = Column(Float)
+    status         = Column(String(30))   # pending / filled / cancelled / rejected
+    submitted_at   = Column(String(30))
+    filled_at      = Column(String(30))
+    position_id    = Column(Integer, ForeignKey("trading_positions.id"))
+
+    position = relationship("TradingPosition")
+
+
+class TradingEquityCurve(Base):
+    """Daily snapshot: portfolio equity vs SPY benchmark."""
+    __tablename__ = "trading_equity_curve"
+
+    id              = Column(Integer, primary_key=True, autoincrement=True)
+    date            = Column(String(20), unique=True, nullable=False)
+    portfolio_equity = Column(Float)
+    cash            = Column(Float)
+    spy_close       = Column(Float)
+    spy_return_pct  = Column(Float)   # SPY cumulative from start
+    port_return_pct = Column(Float)   # portfolio cumulative from start
+    sharpe_running  = Column(Float)
+    max_drawdown    = Column(Float)
+    open_positions  = Column(Integer)
+    daily_halted    = Column(Boolean, default=False)  # True if −2% halt triggered
+
+
+class TradingCCPosition(Base):
+    """Covered-call book positions — one row per stock lot + its short call."""
+    __tablename__ = "trading_cc_positions"
+
+    id              = Column(Integer, primary_key=True, autoincrement=True)
+    underlying      = Column(String(20), nullable=False)
+    shares_qty      = Column(Integer, default=100)        # always 100-share lots
+    avg_cost        = Column(Float)                       # cost basis per share
+    option_symbol   = Column(String(30))                  # OCC symbol or NULL (uncovered)
+    option_type     = Column(String(5))                   # call / put
+    strike          = Column(Float)
+    expiry          = Column(String(12))                  # YYYY-MM-DD
+    premium_received = Column(Float)                      # total premium collected
+    status          = Column(String(20), default="open")  # open / closed / assigned / expired
+    opened_at       = Column(String(30))
+    closed_at       = Column(String(30))
+    realized_pnl    = Column(Float)
+
+
+class TradingIVHistory(Base):
+    """Daily ATM implied-vol snapshot per symbol — builds the IV-rank history the
+    screener needs. Bootstrap mode (screener falls back to IV/RV ratio) runs until
+    a symbol has >=60 stored days, then the screener switches to true IV rank."""
+    __tablename__ = "trading_iv_history"
+    __table_args__ = (UniqueConstraint("symbol", "date", name="uq_iv_history_symbol_date"),)
+
+    id         = Column(Integer, primary_key=True, autoincrement=True)
+    symbol     = Column(String(20), nullable=False, index=True)
+    date       = Column(String(12), nullable=False)   # YYYY-MM-DD
+    atm_iv     = Column(Float)                         # annualized decimal, e.g. 0.32
+    created_at = Column(String(30))
+
+
 class Document(Base):
     """Index of wiki/markdown files. Path is the unique key; body stays on disk."""
     __tablename__ = "documents"
@@ -296,3 +431,108 @@ class Chunk(Base):
     content      = Column(Text, nullable=False)
     content_hash = Column(String(64), nullable=False)   # SHA-256 of content for incremental re-index
     last_indexed = Column(String(30), nullable=False)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# GHL CRM tables (Phase 1 export + future capital-raise / drip phases)
+# ─────────────────────────────────────────────────────────────────────────────
+
+from sqlalchemy import UniqueConstraint  # noqa: E402 — grouped with its tables
+
+
+class Contact(Base):
+    """GHL contact — master record keyed on ghl_id."""
+    __tablename__ = "contacts"
+
+    id             = Column(Integer, primary_key=True, autoincrement=True)
+    ghl_id         = Column(String(60), unique=True, nullable=False)
+    first_name     = Column(String(200))
+    last_name      = Column(String(200))
+    email          = Column(String(200))
+    phone          = Column(String(50))
+    company        = Column(String(200))
+    address        = Column(String(300))
+    city           = Column(String(100))
+    state          = Column(String(50))
+    postal_code    = Column(String(20))
+    custom_fields  = Column(Text)               # JSON string
+    source         = Column(String(100))
+    dnd            = Column(Boolean)
+    unsubscribed   = Column(Boolean, default=False)
+    date_added     = Column(String(30))
+    created_at     = Column(String(30))
+
+    tags  = relationship("ContactTag",  back_populates="contact", cascade="all, delete-orphan")
+    notes = relationship("ContactNote", back_populates="contact", cascade="all, delete-orphan")
+    email_logs = relationship("EmailLog", back_populates="contact")
+    drip_enrollments = relationship("DripEnrollment", back_populates="contact")
+
+
+class ContactTag(Base):
+    """One tag per row; (contact_id, tag) is unique."""
+    __tablename__ = "contact_tags"
+    __table_args__ = (UniqueConstraint("contact_id", "tag", name="uq_contact_tag"),)
+
+    id         = Column(Integer, primary_key=True, autoincrement=True)
+    contact_id = Column(Integer, ForeignKey("contacts.id"), nullable=False)
+    tag        = Column(String(200), nullable=False)
+
+    contact = relationship("Contact", back_populates="tags")
+
+
+class ContactNote(Base):
+    """GHL notes attached to a contact."""
+    __tablename__ = "contact_notes"
+
+    id          = Column(Integer, primary_key=True, autoincrement=True)
+    contact_id  = Column(Integer, ForeignKey("contacts.id"), nullable=False)
+    body        = Column(Text)
+    ghl_note_id = Column(String(60), unique=True)
+    created_at  = Column(String(30))
+
+    contact = relationship("Contact", back_populates="notes")
+
+
+class Campaign(Base):
+    """GHL email campaign schedule record."""
+    __tablename__ = "campaigns"
+
+    id         = Column(Integer, primary_key=True, autoincrement=True)
+    name       = Column(String(300))
+    subject    = Column(String(300))
+    html_path  = Column(String(500))
+    status     = Column(String(20))     # draft / sent
+    sent_count = Column(Integer)
+    created_at = Column(String(30))
+
+    email_logs = relationship("EmailLog", back_populates="campaign")
+
+
+class EmailLog(Base):
+    """Outbound email audit trail — one row per send."""
+    __tablename__ = "email_log"
+
+    id          = Column(Integer, primary_key=True, autoincrement=True)
+    contact_id  = Column(Integer, ForeignKey("contacts.id"), nullable=False)
+    campaign_id = Column(Integer, ForeignKey("campaigns.id"))
+    drip_step   = Column(String(100))
+    subject     = Column(String(300))
+    sent_at     = Column(String(30))
+    status      = Column(String(50))
+
+    contact  = relationship("Contact",  back_populates="email_logs")
+    campaign = relationship("Campaign", back_populates="email_logs")
+
+
+class DripEnrollment(Base):
+    """Tracks where each contact sits in a named drip sequence."""
+    __tablename__ = "drip_enrollments"
+
+    id          = Column(Integer, primary_key=True, autoincrement=True)
+    contact_id  = Column(Integer, ForeignKey("contacts.id"), nullable=False)
+    drip_name   = Column(String(200))
+    step        = Column(Integer)
+    next_due    = Column(String(30))
+    status      = Column(String(20))    # active / done / stopped
+
+    contact = relationship("Contact", back_populates="drip_enrollments")

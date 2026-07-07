@@ -65,6 +65,22 @@ SOLD_SIGNALS = [
 
 MIN_UNITS = 15
 MAX_UNITS = 50
+# ponytail: "close to buy box" = unit count near-miss inside a buy-box zip.
+# Zip-adjacency (e.g. a submarket bordering Chamblee) needs a geo dataset we
+# don't have yet — add if near-zip misses turn out to matter.
+NEAR_MIN  = 10
+NEAR_MAX  = 65
+
+
+def classify_units(units):
+    """Return 'fit' | 'near' | 'off' | None (unknown) for a unit count."""
+    if units is None:
+        return None
+    if MIN_UNITS <= units <= MAX_UNITS:
+        return "fit"
+    if NEAR_MIN <= units <= NEAR_MAX:
+        return "near"
+    return "off"
 
 EMAIL_QUERIES = {
     "crexi":   'from:crexi.com subject:(listing OR alert OR "new properties" OR "saved search")',
@@ -317,7 +333,7 @@ def parse_email_listings(text, source):
             "broker_email":  broker_email,
             "broker_phone":  broker_phone,
             "in_buy_box":    zip_code in BUY_BOX,
-            "unit_fit":      (MIN_UNITS <= units <= MAX_UNITS) if units else None,
+            "unit_fit":      classify_units(units),
             "listing_url":   _find_listing_url(block, source),
             "availability":  "unverified",
         })
@@ -391,7 +407,7 @@ def _fmls_to_listing(prop):
         "broker_email":  prop.get("ListAgentEmail", ""),
         "broker_phone":  prop.get("ListAgentDirectPhone", ""),
         "in_buy_box":    zip_code in BUY_BOX,
-        "unit_fit":      MIN_UNITS <= units <= MAX_UNITS,
+        "unit_fit":      classify_units(units),
         "listing_url":   prop.get("VirtualTourURLUnbranded", ""),
         "availability":  "available",  # FMLS Active = available
     }
@@ -453,12 +469,19 @@ def build_deal_row(listing):
     notes = []
     if not listing["in_buy_box"]:
         notes.append(f"⚠️ Outside buy box (zip {listing['zip']})")
-    if listing["unit_fit"] is False:
+    if listing["unit_fit"] == "near":
+        notes.append(f"🔶 Unit count {listing['units']} near 15–50 range — worth a broker call")
+    elif listing["unit_fit"] == "off":
         notes.append(f"⚠️ Unit count {listing['units']} outside 15–50 range")
     if listing.get("availability") == "unverified":
         notes.append("❓ Availability unverified")
 
-    stage = "Pass" if (not listing["in_buy_box"] or listing["unit_fit"] is False) else "New"
+    if listing["in_buy_box"] and listing["unit_fit"] in ("fit", None):
+        stage = "New"
+    elif listing["in_buy_box"] and listing["unit_fit"] == "near":
+        stage = "Near — Review"
+    else:
+        stage = "Pass"
 
     return [
         listing["market"] or listing["zip"],
@@ -562,18 +585,25 @@ def run(days=7, dry_run=False, source=None):
         else:
             new_deals.append(listing)
 
-    inbox  = [l for l in new_deals if l["in_buy_box"] and l["unit_fit"] is not False]
-    outbox = [l for l in new_deals if not l["in_buy_box"] or l["unit_fit"] is False]
+    inbox  = [l for l in new_deals if l["in_buy_box"] and l["unit_fit"] in ("fit", None)]
+    near   = [l for l in new_deals if l["in_buy_box"] and l["unit_fit"] == "near"]
+    outbox = [l for l in new_deals if not l["in_buy_box"] or l["unit_fit"] == "off"]
 
     print(f"\n{'='*50}")
     print(f"IN BUY BOX:    {len(inbox)}")
+    print(f"NEAR BUY BOX:  {len(near)} (units {NEAR_MIN}-{NEAR_MAX}, logged as Near — Review — broker worth a call)")
     print(f"OUT OF BOX:    {len(outbox)} (logged as Pass)")
     print(f"DUPLICATES:    {len(skipped)} (skipped)")
 
     deal_rows = []
     for listing in new_deals:
         deal_rows.append(build_deal_row(listing))
-        flag = "✅" if (listing["in_buy_box"] and listing["unit_fit"] is not False) else "⚠️ "
+        if listing["in_buy_box"] and listing["unit_fit"] in ("fit", None):
+            flag = "✅"
+        elif listing["in_buy_box"] and listing["unit_fit"] == "near":
+            flag = "🔶"
+        else:
+            flag = "⚠️ "
         print(f"  {flag} {listing['property_name'] or listing['address']} "
               f"({listing['zip']}) — {listing['units'] or '?'} units — {listing['price']} "
               f"[{listing['source'].upper()}]")

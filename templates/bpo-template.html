@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Broker Price Opinion</title>
+<style>
+  @page { size: 8.5in 11in; margin: 0; }
+  body { margin: 0; background: #fff; color: #000; }
+  * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  [contenteditable]:focus { outline: none; background: #fffde7; }
+  @media print { body { background: #fff; } .sheet { box-shadow: none !important; } }
+</style>
+</head>
+<body>
+<div class="sheet" style="width:816px; margin:0 auto; background:#fff; padding:12px 18px 10px; font-family:Arial, Helvetica, sans-serif; color:#000; font-size:9px; line-height:1.2;">
+
+  <div style="text-align:center; font-size:14px; font-weight:700; letter-spacing:2px; margin-bottom:4px;">BROKER PRICE OPINION</div>
+
+  <!-- Header identity -->
+  <table style="width:100%; border-collapse:collapse; margin-bottom:3px;">
+    <tr>
+      <td style="width:56%; padding:1px 4px; border-bottom:1px solid #000;"><span style="font-weight:700;">Property Address:</span> <span contenteditable="true" style="display:inline-block; min-width:180px;">$address</span></td>
+      <td style="width:44%; padding:1px 4px; border-bottom:1px solid #000;"><span style="font-weight:700;">Listing Agent:</span> <span contenteditable="true" style="display:inline-block; min-width:120px;">$agent</span></td>
+    </tr>
+    <tr>
+      <td style="padding:1px 4px; border-bottom:1px solid #000;"><span style="font-weight:700;">City, ST, Zip:</span> <span contenteditable="true" style="display:inline-block; min-width:180px;">$city_st_zip</span></td>
+      <td style="padding:1px 4px; border-bottom:1px solid #000;">&nbsp;</td>
+    </tr>
+  </table>
+
+  <!-- Occupancy -->
+  <div style="display:flex; align-items:center; gap:22px; padding:2px 2px; margin-bottom:3px;">
+    <label style="display:flex; align-items:center; gap:5px;"><span data-cb style="cursor:pointer; font-size:11px;">☐</span> No Drive-by</label>
+    <label style="display:flex; align-items:center; gap:5px;"><span data-cb style="cursor:pointer; font-size:11px;">☐</span> Interior</label>
+    <span style="flex:1;"></span>
+    <span style="font-weight:700;">Is the Subject:</span>
+    <label style="display:flex; align-items:center; gap:5px;"><span data-cb style="cursor:pointer; font-size:11px;">☐</span> Vacant</label>
+    <label style="display:flex; align-items:center; gap:5px;"><span data-cb style="cursor:pointer; font-size:11px;">☐</span> Occupied</label>
+    <label style="display:flex; align-items:center; gap:5px;"><span data-cb style="cursor:pointer; font-size:11px;">☐</span> Unknown</label>
+  </div>
+
+  <!-- SUBJECT PROPERTY -->
+  <div style="background:#d9d9d9; border:1px solid #000; border-bottom:none; font-weight:700; padding:2px 6px;">SUBJECT PROPERTY</div>
+  <table style="width:100%; border-collapse:collapse; table-layout:fixed; text-align:center; font-size:8.5px;">
+    <tr style="background:#efefef;">
+      <th style="border:1px solid #000; padding:2px 2px; width:20%;">DESCRIPTION / STYLE</th>
+      <th style="border:1px solid #000; padding:2px 2px;">Cond</th>
+      <th style="border:1px solid #000; padding:2px 2px;">Sq Ft</th>
+      <th style="border:1px solid #000; padding:2px 2px;">Living<br>Rooms</th>
+      <th style="border:1px solid #000; padding:2px 2px;">Bdrms</th>
+      <th style="border:1px solid #000; padding:2px 2px;">Baths</th>
+      <th style="border:1px solid #000; padding:2px 2px;">Gar</th>
+      <th style="border:1px solid #000; padding:2px 2px;">Lot Sz</th>
+      <th style="border:1px solid #000; padding:2px 2px;">Age<br>Yrs</th>
+      <th style="border:1px solid #000; padding:2px 2px;">DOM</th>
+      <th style="border:1px solid #000; padding:2px 2px;">Orig<br>List $</th>
+      <th style="border:1px solid #000; padding:2px 2px;">List $</th>
+    </tr>
+    $subject_row
+  </table>
+  <div style="display:flex; align-items:center; gap:16px; border:1px solid #000; border-top:none; padding:2px 6px;">
+    <span style="font-weight:700;">Listed?</span>
+    <label style="display:flex; align-items:center; gap:5px;"><span data-cb style="cursor:pointer; font-size:11px;">$cb_listed_yes</span> Yes</label>
+    <label style="display:flex; align-items:center; gap:5px;"><span data-cb style="cursor:pointer; font-size:11px;">$cb_listed_no</span> No</label>
+    <span style="font-weight:700; margin-left:8px;">Listing Company:</span>
+    <span contenteditable="true" style="flex:1; border-bottom:1px solid #000;">$office</span>
+    <span style="font-weight:700;">Phone:</span>
+    <span contenteditable="true" style="width:120px; border-bottom:1px solid #000;">$phone</span>
+  </div>
+  <div style="display:flex; align-items:baseline; gap:6px; border:1px solid #000; border-top:none; padding:2px 6px; min-height:16px;">
+    <span style="font-weight:700;">COMMENTS:</span>
+    <span contenteditable="true" style="flex:1;">$subject_comments</span>
+  </div>
+
+  <!-- COMPARABLE SALES -->
+  <div style="background:#d9d9d9; border:1px solid #000; border-bottom:none; font-weight:700; padding:2px 6px; margin-top:4px;">
+    COMPARABLE SALES: <span style="font-weight:400; font-style:italic; font-size:8.5px;">(Must be the most recent &amp; closest to subject. If over 6 months old please give explanation)</span>
+  </div>
+  <table style="width:100%; border-collapse:collapse; table-layout:fixed; text-align:center; font-size:8px;">
+    <tr style="background:#efefef;">
+      <th style="border:1px solid #000; padding:2px 1px; width:20%;">ADDRESS</th>
+      <th style="border:1px solid #000; padding:2px 1px;">Sq Ft.</th>
+      <th style="border:1px solid #000; padding:2px 1px;">Living<br>Rms</th>
+      <th style="border:1px solid #000; padding:2px 1px;">Brms</th>
+      <th style="border:1px solid #000; padding:2px 1px;">Bath</th>
+      <th style="border:1px solid #000; padding:2px 1px;">Gar.</th>
+      <th style="border:1px solid #000; padding:2px 1px;">Lot Sz</th>
+      <th style="border:1px solid #000; padding:2px 1px;">Age</th>
+      <th style="border:1px solid #000; padding:2px 1px;">DOM</th>
+      <th style="border:1px solid #000; padding:2px 1px;">List<br>Price</th>
+      <th style="border:1px solid #000; padding:2px 1px;">Sale<br>Price</th>
+      <th style="border:1px solid #000; padding:2px 1px;">Sale<br>Date</th>
+      <th style="border:1px solid #000; padding:2px 1px;">Prox to<br>Subj</th>
+    </tr>
+    $sold_rows
+  </table>
+  <div style="display:flex; align-items:baseline; gap:6px; border:1px solid #000; border-top:none; padding:2px 6px; min-height:16px;">
+    <span style="font-weight:700;">COMMENTS:</span>
+    <span contenteditable="true" style="flex:1;">$sold_comments</span>
+  </div>
+
+  <!-- COMPETITIVE PROPERTIES -->
+  <div style="background:#d9d9d9; border:1px solid #000; border-bottom:none; font-weight:700; padding:2px 6px; margin-top:4px;">
+    COMPETITIVE PROPERTIES <span style="font-weight:400; font-style:italic; font-size:8.5px;">(All comps must be closest to subject)</span>
+  </div>
+  <table style="width:100%; border-collapse:collapse; table-layout:fixed; text-align:center; font-size:8px;">
+    <tr style="background:#efefef;">
+      <th style="border:1px solid #000; padding:2px 1px; width:22%;">ADDRESS</th>
+      <th style="border:1px solid #000; padding:2px 1px;">Sq Ft<br>Living</th>
+      <th style="border:1px solid #000; padding:2px 1px;">Rms</th>
+      <th style="border:1px solid #000; padding:2px 1px;">Bdrms</th>
+      <th style="border:1px solid #000; padding:2px 1px;">Bath</th>
+      <th style="border:1px solid #000; padding:2px 1px;">Gar.</th>
+      <th style="border:1px solid #000; padding:2px 1px;">Lot Sz</th>
+      <th style="border:1px solid #000; padding:2px 1px;">Age</th>
+      <th style="border:1px solid #000; padding:2px 1px;">DOM</th>
+      <th style="border:1px solid #000; padding:2px 1px;">List Price</th>
+      <th style="border:1px solid #000; padding:2px 1px;">Prox to<br>Subject</th>
+    </tr>
+    $active_rows
+  </table>
+  <div style="display:flex; align-items:baseline; gap:6px; border:1px solid #000; border-top:none; padding:2px 6px; min-height:16px;">
+    <span style="font-weight:700;">COMMENTS:</span>
+    <span contenteditable="true" style="flex:1;">$active_comments</span>
+  </div>
+
+  <!-- VALUE INFORMATION -->
+  <div style="background:#d9d9d9; border:1px solid #000; border-bottom:none; font-weight:700; padding:2px 6px; margin-top:4px;">VALUE INFORMATION</div>
+  <table style="width:100%; border-collapse:collapse; table-layout:fixed; text-align:center;">
+    <tr style="background:#efefef;">
+      <th style="border:1px solid #000; padding:2px 6px; text-align:left; width:34%;">Est. Marketing Time</th>
+      <th style="border:1px solid #000; padding:2px 6px;">Quick Sale</th>
+      <th style="border:1px solid #000; padding:2px 6px;">30 – 60 days</th>
+      <th style="border:1px solid #000; padding:2px 6px;">60 – 100 days</th>
+    </tr>
+    $value_rows
+  </table>
+
+  <!-- MARKETABILITY -->
+  <div style="background:#d9d9d9; border:1px solid #000; border-bottom:none; font-weight:700; padding:2px 6px; margin-top:4px;">MARKETABILITY OF SUBJECT</div>
+  <div style="border:1px solid #000; border-bottom:none; padding:2px 6px;">
+    <div style="display:flex; align-items:baseline; gap:6px;"><span style="font-weight:700; white-space:nowrap;">1. Explain any functional or economic obsolescence:</span><span contenteditable="true" style="flex:1; border-bottom:1px solid #000;">&nbsp;</span></div>
+  </div>
+  <div style="border:1px solid #000; border-bottom:none; padding:2px 6px; display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+    <span style="font-weight:700;">2. Will this property be a problem for resale?</span>
+    <label style="display:flex; align-items:center; gap:5px;"><span data-cb style="cursor:pointer; font-size:11px;">☐</span> No</label>
+    <label style="display:flex; align-items:center; gap:5px;"><span data-cb style="cursor:pointer; font-size:11px;">☐</span> Yes</label>
+    <span style="font-weight:700;">If yes, why?</span>
+    <span contenteditable="true" style="flex:1; min-width:120px; border-bottom:1px solid #000;">&nbsp;</span>
+  </div>
+  <div style="border:1px solid #000; border-bottom:none; padding:2px 6px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+    <span style="font-weight:700;">NEIGHBORHOOD TREND:</span>
+    <label style="display:flex; align-items:center; gap:5px;"><span data-cb style="cursor:pointer; font-size:11px;">☐</span> Improving</label>
+    <label style="display:flex; align-items:center; gap:5px;"><span data-cb style="cursor:pointer; font-size:11px;">☐</span> Stable</label>
+    <label style="display:flex; align-items:center; gap:5px;"><span data-cb style="cursor:pointer; font-size:11px;">☐</span> Declining</label>
+    <span style="width:16px;"></span>
+    <span style="font-weight:700;">PRIDE OF OWNERSHIP:</span>
+    <label style="display:flex; align-items:center; gap:5px;"><span data-cb style="cursor:pointer; font-size:11px;">☐</span> Good</label>
+    <label style="display:flex; align-items:center; gap:5px;"><span data-cb style="cursor:pointer; font-size:11px;">☐</span> Fair</label>
+    <label style="display:flex; align-items:center; gap:5px;"><span data-cb style="cursor:pointer; font-size:11px;">☐</span> Poor</label>
+  </div>
+  <div style="border:1px solid #000; border-bottom:none; padding:2px 6px; display:flex; align-items:center; gap:8px;">
+    <span style="font-weight:700; white-space:nowrap;"># Listings in Immediate Area:</span>
+    <span contenteditable="true" style="width:70px; border-bottom:1px solid #000;">&nbsp;</span>
+    <span style="font-weight:700; white-space:nowrap;">Price Range:</span>
+    <span contenteditable="true" style="flex:1; border-bottom:1px solid #000;">&nbsp;</span>
+  </div>
+  <div style="border:1px solid #000; border-bottom:none; padding:2px 6px; display:flex; align-items:center; gap:8px;">
+    <span style="font-weight:700; white-space:nowrap;">Avg. Marketing Time of Comp Listings:</span>
+    <span contenteditable="true" style="width:90px; border-bottom:1px solid #000;">&nbsp;</span>
+    <span style="font-weight:700; white-space:nowrap;">Sales:</span>
+    <span contenteditable="true" style="flex:1; border-bottom:1px solid #000;">&nbsp;</span>
+  </div>
+  <div style="border:1px solid #000; border-bottom:none; padding:2px 6px;">
+    <div style="font-weight:700;">Describe any negative neighborhood factors that will detract from subject:</div>
+    <div contenteditable="true" style="border-bottom:1px solid #000; min-height:12px; margin-top:2px;">&nbsp;</div>
+  </div>
+  <div style="border:1px solid #000; border-bottom:none; padding:2px 6px;">
+    <div style="font-weight:700;">Describe any repairs needed to maximize return on investment:</div>
+    <div contenteditable="true" style="border-bottom:1px solid #000; min-height:12px; margin-top:2px;">&nbsp;</div>
+  </div>
+  <div style="border:1px solid #000; border-bottom:none; padding:2px 6px; display:flex; align-items:center; gap:6px;">
+    <span style="font-weight:700;">Estimate for Repairs: $</span>
+    <span contenteditable="true" style="flex:1; border-bottom:1px solid #000;">&nbsp;</span>
+  </div>
+  <div style="border:1px solid #000; padding:2px 6px;">
+    <span style="font-weight:700;">Other Remarks:</span>
+    <div contenteditable="true" style="min-height:14px; margin-top:3px;">&nbsp;</div>
+  </div>
+
+</div>
+<script>
+document.addEventListener('click', function (e) {
+  var cb = e.target.closest('[data-cb]');
+  if (!cb) return;
+  cb.textContent = cb.textContent.trim() === '☑' ? '☐' : '☑';
+});
+</script>
+</body>
+</html>

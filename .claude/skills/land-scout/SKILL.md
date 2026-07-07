@@ -47,7 +47,16 @@ python3 scripts/land_markets.py --county forsyth-ga --zip 30040 --dry-run
 
 # Override the seller acreage band (default: bartow 1–10 ac)
 python3 scripts/land_markets.py --zip 30184 --min-acres 1 --max-acres 10
+
+# Scout an UNWIRED county via ReportAll (nationwide, by zip) — for the 6-state
+# SE candidates whose counties run qPublic/Schneider or geometry-only AGO layers.
+# Needs REPORTALL_API_KEY with live quota. Bills per parcel returned → --cap guards it.
+python3 scripts/land_markets.py --zip 30506 --county hall-ga --source reportall --cap 2000
 ```
+
+**Note:** `--source reportall` leaves Total/Vacant parcel counts blank (no free
+count-only endpoint); the seller pool `Vacant Out-of-State` is the capped in-band
+pool (a floor if `--cap` is hit — verdict still holds once it clears 50).
 
 ## Wired counties
 
