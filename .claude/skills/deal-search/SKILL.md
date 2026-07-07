@@ -92,11 +92,13 @@ python3 scripts/deal_search.py --source fmls
 ## Buy box filter
 
 All 10 zips are hardcoded in `scripts/deal_search.py`. Deals are evaluated against:
-- Zip in buy box + units 15–50 → logged as `New`, Stage = `Prospect`
-- Zip in buy box + units outside 15–50 → logged as `Pass` with ⚠️ flag in Notes
-- Zip outside buy box → logged as `Pass` with ⚠️ flag in Notes
+- Zip in buy box + units 15–50 → logged `New` (🟢 fit)
+- Zip in buy box + units 10–65 but outside 15–50 → logged `Near — Review` (🔶 near-miss — worth a broker call, since a 55-unit deal on a broker's book today can become a 45-unit split or lead to their next listing)
+- Zip outside buy box, or units outside 10–65 → logged `Pass` (⚠️)
 
-Flagged deals still get logged — they're useful for broker relationship tracking even if the deal itself doesn't fit.
+Every listing gets logged regardless of fit — broker contact info is captured on `Pass` and `Near — Review` rows too, for relationship tracking even when the deal itself doesn't qualify.
+
+`NEAR_MIN`/`NEAR_MAX` (10/65) in `scripts/deal_search.py` set the near-miss unit band. Zip-adjacency (e.g. a submarket bordering Chamblee) isn't modeled — no geo dataset wired in yet; add if near-zip misses turn out to matter more than near-unit misses.
 
 ---
 
@@ -140,3 +142,10 @@ Run **every Monday morning** as part of `/lets-get-to-work`. Alerts accumulate o
 The email parsers use regex patterns tuned to Crexi's and LoopNet's known alert email formats. On first run use `--dry-run` to verify parsing accuracy. If fields are missing, update the `find_*` functions in `scripts/deal_search.py`.
 
 Reference: `references/google-workspace-api.md` for Gmail API details.
+
+## Known ceiling: no live Crexi/LoopNet browsing
+
+Confirmed 2026-07-07: both crexi.com and loopnet.com hard-403 non-browser requests (tested via `curl` and via Claude's own WebFetch tool) — this is Cloudflare/bot-wall protection, not a parser bug. That means:
+- Gmail alert-email parsing is the only automated channel today for these two sources. FMLS runs on a real API and isn't affected.
+- No code fix gets around the 403 — the only upgrade path is paying for the Crexi partner API / LoopNet (CoStar) enterprise API and setting `CREXI_API_KEY` / `LOOPNET_API_KEY` in `.env` (`scripts/broker_search.py` and `scripts/deal_search.py` already read those vars and will use the API automatically once set — no code change needed).
+- If Brian has a specific listing URL or pasted listing text, hand it to Claude directly in chat — that's read as provided content, not fetched live, so it isn't blocked.

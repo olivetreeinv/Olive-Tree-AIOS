@@ -1,13 +1,21 @@
 #!/usr/bin/env python3
 """
-trading_covered_calls.py — Covered-call (wheel) trader for the Olive Tree Trading Desk.
+trading_covered_calls.py — Premium Desk v2: CSP-first wheel trader for the
+Olive Tree Trading Desk.
 
-Pure rules, NO LLM calls. One run = one idempotent manage cycle:
+Pure rules, NO LLM calls (except the opt-in AI event-screen pass in the
+screener). One run = one idempotent manage cycle:
   1. SYNC   — reconcile Alpaca positions with DB
-  2. MANAGE — profit-close / roll open short calls
+  2. MANAGE — profit-close / 21-DTE roll (ITM up-and-out, OTM to next monthly)
   3. COVER  — sell calls against any naked 100-share lots
-  4. ENTER  — buy new underlyings from CC_UNIVERSE if slots available
-  5. WHEEL  — sell CSP on assigned underlyings
+  4. ENTER  — CSP-first: sell cash-secured puts on screener-ranked candidates
+  5. WHEEL  — sell CSP on assigned underlyings (re-enter after assignment)
+
+Entries are CSP-first (scripts/trading_screener.py ranks candidates by IV
+richness after price/spread/earnings filters) — new capital deploys via
+0.25Δ cash-secured puts, not by buying shares outright. Share-buy + cover
+still runs for existing lots and immediately after assignment (never below
+cost basis).
 
 Usage:
   python3 scripts/trading_covered_calls.py --once           # one full cycle
@@ -37,25 +45,39 @@ from db.connection import Session
 from db.schema import TradingCCPosition
 from scripts.trading_report import send_alert
 from scripts.trading_data import _get as _http_get, _alpaca_headers
+from scripts.trading_screener import (
+    screen_candidates, SECTOR as SCREENER_SECTOR, CANDIDATE_UNIVERSE,
+    earnings_max_expiry, get_next_earnings, SCR_DTE_FLOOR,
+)
 
 _PAPER = True  # hard-coded — never flip without explicit Brian approval
 
-# ── Config ────────────────────────────────────────────────────────────────────
+# ── Config: book + sizing ─────────────────────────────────────────────────────
 CC_BOOK_USD         = 50_000
-CC_MAX_UNDERLYINGS  = 3
-CC_MAX_POSITION_USD = 25_000      # 100 shares must cost <= this
-CC_TARGET_DELTA     = 0.25        # accept 0.20–0.30
-CC_DTE_MIN          = 4            # weekly options: next Friday is ~4–10 DTE away
-CC_DTE_MAX          = 10
-CC_MANAGE_DTE       = 1           # for weeklys: manage at ≤1 DTE (ITM roll, OTM let expire)
-CC_PROFIT_CLOSE     = 0.60        # buy back when 60% of premium captured (faster recycling on weeklys)
-CC_MIN_ANNUAL_YIELD = 0.10        # skip entries yielding < 10% annualized
-CC_CASH_BUFFER      = 0.10        # keep >=10% of book in cash
-CC_UNIVERSE = [
-    "AAPL", "MSFT", "NVDA", "AMD", "GOOGL", "AMZN",
-    "XOM", "JPM", "KO", "CSCO", "INTC", "VZ", "T",
-    "PFE", "F", "WMT", "CVX", "MRK", "ORCL", "QCOM",
-]
+CC_MAX_UNDERLYINGS  = 8
+CC_MAX_POSITION_USD = 10_000      # <=20% of book per underlying (100sh lot <= $100/share)
+CC_MAX_PER_SECTOR   = 2           # max underlyings per SECTOR bucket (see trading_screener.SECTOR)
+CC_CASH_BUFFER      = 0.05        # keep >=5% of book in cash
+
+# ── Config: option selection ──────────────────────────────────────────────────
+CC_TARGET_DELTA     = 0.30        # covered calls target 0.30Δ (accept 0.25–0.35)
+CC_DELTA_BAND       = (0.25, 0.35)
+CSP_TARGET_DELTA    = 0.25        # cash-secured puts target 0.25Δ (accept 0.20–0.30)
+CSP_DELTA_BAND      = (0.20, 0.30)
+
+# ── Config: DTE window + management ───────────────────────────────────────────
+CC_DTE_MIN          = 30           # monthly-ish options: 30–45 DTE at entry
+CC_DTE_MAX          = 45
+CC_MANAGE_DTE       = 21           # manage at 21 DTE: ITM roll out(+up), or OTM roll if <60% captured
+CC_PROFIT_CLOSE     = 0.60         # buy back when 60% of premium captured
+CC_MIN_ANNUAL_YIELD = 0.10         # skip entries yielding < 10% annualized
+CC_LADDER_SPREAD_DAYS = 7          # spread new-position expiries across ~weekly buckets
+
+# ── Config: universe (legacy fallback if the screener is unreachable) ─────────
+CC_UNIVERSE = CANDIDATE_UNIVERSE
+
+# ── Config: reporting ──────────────────────────────────────────────────────────
+CC_MONTHLY_TARGET_USD = 1_250.0   # 30% annualized / 12 on the $50k book
 
 # ── Alpaca client ─────────────────────────────────────────────────────────────
 def _client() -> TradingClient:
@@ -85,17 +107,19 @@ def _parse_occ(sym: str) -> Optional[tuple[str, str, float]]:
         return None
 
 
-def _get_option_snapshots(underlying: str, opt_type: str = "call") -> list[dict]:
+def _get_option_snapshots(underlying: str, opt_type: str = "call",
+                          dte_min: int = CC_DTE_MIN) -> list[dict]:
     """
     Option snapshots (greeks + quotes) for an underlying, server-filtered to the
-    CC DTE window. Returns list of snapshot dicts (with "symbol" key). [] on error.
-    ponytail: indicative feed; fine for paper/CC sizing. Live feed = upgrade to opra.
+    CC DTE window. Put callers pass dte_min=SCR_DTE_FLOOR so _pick_put can duck
+    under an earnings date. Returns list of snapshot dicts (with "symbol" key).
+    [] on error.
     """
     today = date.today()
     base = (
         f"{_DATA_BASE}/snapshots/{underlying}"
-        f"?feed=indicative&limit=1000&type={opt_type}"
-        f"&expiration_date_gte={today + timedelta(days=CC_DTE_MIN)}"
+        f"?feed=opra&limit=1000&type={opt_type}"
+        f"&expiration_date_gte={today + timedelta(days=dte_min)}"
         f"&expiration_date_lte={today + timedelta(days=CC_DTE_MAX)}"
     )
     out, token, page = [], None, 0
@@ -116,9 +140,9 @@ def _get_option_snapshots(underlying: str, opt_type: str = "call") -> list[dict]
 
 
 def _option_quote(occ: str) -> tuple[float, float, float]:
-    """(bid, ask, mid) for a single contract from the latest indicative quote. Zeros on error."""
+    """(bid, ask, mid) for a single contract from the latest OPRA quote. Zeros on error."""
     try:
-        data = _http_get(f"{_DATA_BASE}/quotes/latest?symbols={occ}&feed=indicative",
+        data = _http_get(f"{_DATA_BASE}/quotes/latest?symbols={occ}&feed=opra",
                          _alpaca_headers())
         q = (data.get("quotes") or {}).get(occ) or {}
         bid, ask = float(q.get("bp") or 0), float(q.get("ap") or 0)
@@ -144,8 +168,8 @@ def _select_call(underlying: str, avg_cost: float, dry_run: bool = False
     Returns (occ_symbol, strike, premium, expiry) or (None, 0, 0, "").
 
     Selection logic:
-      1. Filter to calls in DTE window
-      2. Rank by delta closest to CC_TARGET_DELTA (0.20–0.30 band)
+      1. Filter to calls in the 30–45 DTE window
+      2. Rank by delta closest to CC_TARGET_DELTA (CC_DELTA_BAND: 0.25–0.35)
       3. HARD RULE: never sell below avg_cost basis
       4. Fallback: if no greeks, pick strike nearest 4% OTM in DTE window
     """
@@ -192,11 +216,84 @@ def _pick_call(snaps: list[dict], avg_cost: float) -> Optional[dict]:
 
     if not calls:
         return None
-    band = [c for c in calls if c["delta"] is not None and 0.20 <= c["delta"] <= 0.30]
+    lo, hi = CC_DELTA_BAND
+    band = [c for c in calls if c["delta"] is not None and lo <= c["delta"] <= hi]
     if band:
         return min(band, key=lambda c: abs(c["delta"] - CC_TARGET_DELTA))
     # Fallback: no greeks in band → nearest 4% OTM above basis
     best = min(calls, key=lambda c: abs(c["strike"] - avg_cost * 1.04))
+    return {**best, "_fallback": True}
+
+
+def _ladder_pick(band: list[dict], used_expiries: list[str], target_delta: float,
+                 spread_days: int = CC_LADDER_SPREAD_DAYS) -> dict:
+    """
+    Expiry laddering: among a delta-band, prefer a contract whose expiry is NOT
+    within spread_days of any expiry already used this cycle, so multiple entries
+    don't stack onto one date. Falls back to pure delta-closeness if every
+    candidate collides with an already-used week (small band, or single expiry).
+    """
+    def collides(c):
+        return any(abs((date.fromisoformat(c["expiry"]) - date.fromisoformat(u)).days) < spread_days
+                   for u in used_expiries)
+    pool = [c for c in band if not collides(c)] or band
+    return min(pool, key=lambda c: abs(c["delta"] - target_delta))
+
+
+def _pick_put(snaps: list[dict], max_strike: float,
+             used_expiries: Optional[list[str]] = None,
+             max_expiry: Optional[date] = None) -> Optional[dict]:
+    """
+    Pure selection: filter snapshots to sellable puts (DTE window, quote present,
+    strike <= max_strike so the CSP fits available cash), pick delta closest to
+    CSP_TARGET_DELTA in CSP_DELTA_BAND (laddered against used_expiries when given),
+    falling back to nearest 4% OTM below spot. Mirrors _pick_call's structure —
+    used for CSP entries and the wheel re-entry leg.
+
+    max_expiry = pre-earnings cutoff (earnings - 2d). When it cuts below the
+    normal 30-DTE floor, the floor relaxes to SCR_DTE_FLOOR (14) so we sell the
+    expiry BEFORE earnings instead of skipping the name; if nothing >= 14 DTE
+    clears the cutoff, returns None (caller skips).
+    """
+    dte_floor = CC_DTE_MIN
+    if max_expiry and (max_expiry - date.today()).days < CC_DTE_MIN:
+        dte_floor = SCR_DTE_FLOOR
+    puts = []
+    for snap in snaps:
+        parsed = _parse_occ(snap.get("symbol", ""))
+        if not parsed:
+            continue
+        option_type, exp_str, strike = parsed
+        if option_type != "put":
+            continue
+        dte = _dte(exp_str)
+        if not (dte_floor <= dte <= CC_DTE_MAX):
+            continue
+        if max_expiry and date.fromisoformat(exp_str) > max_expiry:
+            continue  # expiry would cross earnings
+        if strike <= 0 or strike > max_strike:
+            continue
+        greeks = snap.get("greeks", {}) or {}
+        delta  = greeks.get("delta", None)
+        delta  = abs(delta) if delta is not None else None  # puts carry negative delta
+        quote  = snap.get("latestQuote", {}) or {}
+        bid = float(quote.get("bp", 0) or 0)
+        ask = float(quote.get("ap", 0) or 0)
+        mid = (bid + ask) / 2 if (bid or ask) else 0
+        if mid <= 0:
+            continue
+        puts.append({"symbol": snap["symbol"], "strike": strike, "expiry": exp_str,
+                     "dte": dte, "delta": delta, "premium": mid})
+
+    if not puts:
+        return None
+    lo, hi = CSP_DELTA_BAND
+    band = [p for p in puts if p["delta"] is not None and lo <= p["delta"] <= hi]
+    if band:
+        if used_expiries:
+            return _ladder_pick(band, used_expiries, CSP_TARGET_DELTA)
+        return min(band, key=lambda p: abs(p["delta"] - CSP_TARGET_DELTA))
+    best = min(puts, key=lambda p: abs(p["strike"] - max_strike * 0.96))
     return {**best, "_fallback": True}
 
 
@@ -467,10 +564,12 @@ def _sync(client, dry_run: bool = False):
 # ── Step 2: MANAGE ────────────────────────────────────────────────────────────
 def _manage(client, dry_run: bool = False):
     """
-    Weekly manage rules:
-      - Profit-close at CC_PROFIT_CLOSE (60%) captured — two-stage buy.
-      - At ≤1 DTE: if call is ITM → roll to next week's ~0.25Δ strike for net credit only.
-                   if call is OTM → do nothing; let SYNC/expiry path book the premium.
+    Manage rules (30-45 DTE entries, monthly-ish cadence):
+      - Profit-close at CC_PROFIT_CLOSE (60%) captured — two-stage buy, checked first.
+      - At CC_MANAGE_DTE (21) DTE, if not already profit-closed:
+          ITM  → roll out (and up, via _select_call's basis-anchored band) for net credit.
+          OTM  → roll to the next monthly-ish expiry for net credit (< 60% captured).
+        Debit rolls are skipped — let it ride to the next cycle instead.
     """
     print("\n  [CC 2/5] Manage open calls...")
     s = Session()
@@ -523,9 +622,11 @@ def _manage(client, dry_run: bool = False):
                     s.commit()
                 continue
 
-            # Weekly ≤1 DTE management:
-            #   ITM → roll to next week ~0.25Δ for net credit only.
-            #   OTM → do nothing; SYNC's expiry path books the premium Friday close.
+            # 21-DTE management: profit-close above already caught the >=60%-captured
+            # case, so reaching here means <60% captured. Roll for credit either way —
+            # ITM rolls out (and up, since _select_call never sells below basis and
+            # targets the fresh 30-45 DTE window at the 0.30Δ band), OTM rolls to the
+            # next monthly-ish expiry rather than riding it out. Debit rolls are skipped.
             if dte <= CC_MANAGE_DTE:
                 try:
                     from scripts.trading_data import get_quote
@@ -534,20 +635,16 @@ def _manage(client, dry_run: bool = False):
                 except Exception:
                     spot = 0
                 itm = spot > (row.strike or 0) and spot > 0
-                if not itm:
-                    print(f"  ⏭  {row.underlying}: DTE={dte} OTM (spot ${spot:.2f} < strike ${row.strike:.2f}) "
-                          f"— letting expire; premium banks after close")
-                    continue
-                # ITM: roll only if next week's ~0.25Δ call gives a net credit
                 new_sym, new_strike, new_prem, new_exp = _select_call(row.underlying, row.avg_cost, dry_run)
                 if not new_sym:
-                    print(f"  ⏭  {row.underlying}: ITM DTE={dte} but no roll candidate ≥ basis — letting ride")
+                    print(f"  ⏭  {row.underlying}: DTE={dte} but no roll candidate ≥ basis — letting ride")
                     continue
                 roll_credit = (new_prem - mid) * 100
                 if roll_credit < 0:
-                    print(f"  ⏭  {row.underlying}: ITM roll would be a debit (${roll_credit:,.0f}) — letting ride")
+                    print(f"  ⏭  {row.underlying}: roll would be a debit (${roll_credit:,.0f}) — letting ride")
                     continue
-                print(f"  🔄 {row.underlying}: ITM at DTE={dte}, rolling {row.option_symbol} → "
+                tag = "ITM" if itm else "OTM, <60% captured"
+                print(f"  🔄 {row.underlying}: {tag} at DTE={dte}, rolling {row.option_symbol} → "
                       f"{new_sym} for ~${roll_credit:,.0f} credit")
                 if dry_run:
                     _submit_limit(client, row.option_symbol, 1, OrderSide.BUY, ask or mid,
@@ -627,10 +724,21 @@ def _cover(client, dry_run: bool = False):
         s.close()
 
 
-# ── Step 4: ENTER ─────────────────────────────────────────────────────────────
+def _sector_of(ticker: str) -> str:
+    return SCREENER_SECTOR.get(ticker, "Unknown")
+
+
+# ── Step 4: ENTER (CSP-first) ──────────────────────────────────────────────────
 def _enter(client, dry_run: bool = False):
-    """Buy new underlyings from CC_UNIVERSE if slots + cash allow."""
-    print("\n  [CC 4/5] Enter new positions...")
+    """
+    CSP-first entry: new capital deploys by selling ~0.25Δ cash-secured puts on
+    screener-ranked candidates (richest IV first, after price/spread/earnings
+    filters — see trading_screener.py), not by buying shares outright. Share-buy
+    + cover still happens for existing lots (COVER step) and after assignment
+    (WHEEL step). Sector caps (max CC_MAX_PER_SECTOR per SECTOR bucket) and
+    expiry laddering (spread across weeks, not stacked on one date) apply here.
+    """
+    print("\n  [CC 4/5] Enter new positions (CSP-first)...")
     s = Session()
     try:
         open_rows = s.query(TradingCCPosition).filter_by(status="open").all()
@@ -639,6 +747,9 @@ def _enter(client, dry_run: bool = False):
         if slots <= 0:
             print(f"  ⏭  At max {CC_MAX_UNDERLYINGS} underlyings — no new entries")
             return
+
+        from collections import Counter
+        sector_counts = Counter(_sector_of(u) for u in held)
 
         # Estimate book cash: CC_BOOK_USD minus cost of open lots + cash reserved for CSPs
         # ponytail: cost-basis proxy, not marked-to-market; Alpaca account cash is shared
@@ -679,105 +790,93 @@ def _enter(client, dry_run: bool = False):
             print(f"  ⚠️  Could not fetch account buying power ({e}) — skipping entries this cycle")
             return
 
-        # Screen universe: price × 100 <= CC_MAX_POSITION_USD, chain has DTE-window contracts
-        candidates = []
-        from scripts.trading_data import get_quote
-        for ticker in CC_UNIVERSE:
-            if ticker in held or ticker in live_syms:
-                continue
-            try:
-                q = get_quote(ticker)
-                price = q.get("ask") or q.get("last") or 0
-                if price <= 0 or price * 100 > CC_MAX_POSITION_USD:
-                    continue
-                sym, strike, premium, expiry = _select_call(ticker, price)
-                if not sym or premium <= 0:
-                    continue
-                dte = _dte(expiry)
-                yld = _annualized_yield(premium, strike, dte)
-                if yld < CC_MIN_ANNUAL_YIELD:
-                    continue
-                candidates.append({"ticker": ticker, "price": price, "sym": sym,
-                                   "strike": strike, "premium": premium,
-                                   "expiry": expiry, "dte": dte, "yield": yld})
-            except Exception as e:
-                print(f"  ⚠️  Screen {ticker}: {e}")
+        # Screen: IV-richest candidates first, already filtered on price/spread/
+        # earnings. AI event-screen runs during live entry cycles (ai=True).
+        try:
+            candidates = screen_candidates(CC_DTE_MIN, CC_DTE_MAX, ai=True)
+        except Exception as e:
+            print(f"  ⚠️  Screener failed ({e}) — no entries this cycle")
+            candidates = []
 
-        candidates.sort(key=lambda c: c["yield"], reverse=True)
-        entered = 0
+        entered, used_expiries = 0, []
         for c in candidates:
             if entered >= slots:
                 break
-            cost = c["price"] * 100
-            if cost > avail - min_cash:
-                print(f"  ⏭  {c['ticker']} ${cost:,.0f} would breach cash buffer — skip")
+            ticker = c["symbol"]
+            if ticker in held or ticker in live_syms:
                 continue
-            print(f"  🛒 Enter {c['ticker']}: buy 100 shares @ ${c['price']:.2f} "
-                  f"then sell {c['sym']} exp {c['expiry']} yield={c['yield']:.1%}/yr")
+            sector = c.get("sector") or _sector_of(ticker)
+            if sector_counts[sector] >= CC_MAX_PER_SECTOR:
+                print(f"  ⏭  {ticker}: {sector} already at {CC_MAX_PER_SECTOR}-underlying cap — skip")
+                continue
 
-            # If account cash is tight, release core SPY to fund the lot
+            max_strike = min(c["price"], CC_MAX_POSITION_USD / 100)
+            # Pre-earnings cutoff from the screener's earnings date; fetch down to
+            # the 14-DTE floor so _pick_put can duck under earnings if needed.
+            earn_dt = date.fromisoformat(c["earnings_date"]) if c.get("earnings_date") else None
+            max_exp = earnings_max_expiry(earn_dt)
+            snaps = _get_option_snapshots(ticker, opt_type="put", dte_min=SCR_DTE_FLOOR)
+            best = _pick_put(snaps, max_strike, used_expiries=used_expiries, max_expiry=max_exp)
+            if not best:
+                print(f"  ⚠️  {ticker}: no acceptable CSP clears the delta band/DTE window"
+                      f"{f'/earnings {earn_dt}' if earn_dt else ''} — skip")
+                continue
+            cost = best["strike"] * 100
+            if cost > avail - min_cash:
+                print(f"  ⏭  {ticker} CSP ${cost:,.0f} secured would breach cash buffer — skip")
+                continue
+            yld = _annualized_yield(best["premium"], best["strike"], best["dte"])
+            if yld < CC_MIN_ANNUAL_YIELD:
+                print(f"  ⏭  {ticker}: CSP yield {yld:.1%}/yr below {CC_MIN_ANNUAL_YIELD:.0%} floor — skip")
+                continue
+
+            print(f"  🛒 CSP entry {ticker}: sell {best['symbol']} exp {best['expiry']} "
+                  f"DTE={best['dte']} strike=${best['strike']:.2f} "
+                  f"premium=${best['premium']*100:,.0f} yield={yld:.1%}/yr [{sector}]")
+
+            # Cash-secured put reserves strike*100; release core SPY if account cash is tight
             try:
                 from scripts.trading_data import get_account as _get_acct
                 acct_cash = _get_acct().get("cash", 0)
-                slack = CC_BOOK_USD * CC_CASH_BUFFER  # always keep 10% buffer
+                slack = CC_BOOK_USD * CC_CASH_BUFFER
                 shortfall = cost - (acct_cash - slack)
                 if shortfall > 0 and not dry_run:
                     from scripts.trading_core import release_core
-                    print(f"  [core] releasing ${shortfall:,.0f} to fund {c['ticker']} lot")
+                    print(f"  [core] releasing ${shortfall:,.0f} to secure the {ticker} CSP")
                     release_core(shortfall)
             except Exception as _ce:
                 print(f"  ⚠️  [core] release check failed ({_ce}) — proceeding anyway")
 
-            oid = _submit_market(client, c["ticker"], 100, OrderSide.BUY,
-                                 dry_run=dry_run, label="buy 100 shares")
-            if not oid:
-                continue
+            bid, ask, mid = _option_quote(best["symbol"])
+            if mid <= 0:
+                mid = best["premium"]
+            fill = _two_stage_sell(client, best["symbol"], bid, ask, mid,
+                                   best["strike"], best["dte"], dry_run=dry_run,
+                                   label="CSP entry")
             if dry_run:
-                _submit_limit(client, c["sym"], 1, OrderSide.SELL, c["premium"],
-                              dry_run=True, label="sell call after entry")
+                sector_counts[sector] += 1
+                used_expiries.append(best["expiry"])
                 avail -= cost
                 entered += 1
                 continue
-
-            fill = _fill_or_cancel(client, oid, timeout=30)
             if fill is None:
-                # No confirmed fill → record NOTHING. If a fill raced the cancel, the
-                # live-position guard above blocks a re-buy next cycle.
-                print(f"  ⚠️  {c['ticker']} buy not confirmed — recording nothing, reconcile next cycle")
+                print(f"  ⏳ {ticker}: CSP unfilled — retries next cycle")
                 continue
 
-            # Write the lot row on the STOCK fill, before the option leg — a crash
-            # between legs must not orphan 100 shares (each leg individually recoverable).
             row = TradingCCPosition(
-                underlying=c["ticker"], shares_qty=100, avg_cost=fill,
-                option_symbol=None, option_type=None, strike=0, expiry=None,
-                premium_received=0,
+                underlying=ticker, shares_qty=0, avg_cost=0,
+                option_symbol=best["symbol"], option_type="put",
+                strike=best["strike"], expiry=best["expiry"],
+                premium_received=fill * 100,
                 status="open", opened_at=datetime.now(timezone.utc).isoformat(),
             )
             s.add(row)
             s.commit()
-
-            # Sell the call; on non-fill keep the shares — next COVER step fixes it
-            call_bid, call_ask, call_mid = _option_quote(c["sym"])
-            if call_mid <= 0:
-                call_bid, call_ask, call_mid = 0.0, 0.0, c["premium"]
-            call_fill = _two_stage_sell(client, c["sym"], call_bid, call_ask, call_mid,
-                                        c["strike"], c["dte"], dry_run=False,
-                                        label="sell call after entry")
-            if call_fill:
-                row.option_symbol    = c["sym"]
-                row.option_type      = "call"
-                row.strike           = c["strike"]
-                row.expiry           = c["expiry"]
-                row.premium_received = call_fill * 100
-                s.commit()
-                send_alert("CC Desk — Entry",
-                           f"🧾 CC: bought 100 {c['ticker']} @ ${fill:.2f}, sold {c['expiry']} "
-                           f"${c['strike']:g} call for ${call_fill*100:,.0f} ({c['yield']:.1%} annualized)")
-            else:
-                print(f"  ⏳ {c['ticker']}: call sell unfilled — lot recorded naked, COVER retries next cycle")
-                send_alert("CC Desk — Entry (naked)",
-                           f"🧾 CC: bought 100 {c['ticker']} @ ${fill:.2f} — call sell pending next cycle")
+            send_alert("CC Desk — CSP Entry",
+                       f"🧾 CC: sold {ticker} {best['expiry']} ${best['strike']:g} CSP "
+                       f"for ${fill*100:,.0f} ({yld:.1%} annualized) [{sector}]")
+            sector_counts[sector] += 1
+            used_expiries.append(best["expiry"])
             avail -= cost
             entered += 1
         s.commit()
@@ -794,43 +893,37 @@ def _wheel(client, dry_run: bool = False):
     s = Session()
     try:
         assigned = s.query(TradingCCPosition).filter_by(status="assigned").all()
-        from scripts.trading_data import get_quote
+        from scripts.trading_data import get_quote, get_account
+        used_expiries = []  # ladder across multiple same-cycle assignments
+        try:
+            free_cash = get_account().get("cash", 0) - CC_BOOK_USD * CC_CASH_BUFFER
+        except Exception as e:
+            print(f"  ⚠️  Wheel: account cash fetch failed ({e}) — skipping wheel this cycle")
+            assigned = []
+            free_cash = 0.0
         for row in assigned:
-            q = get_quote(row.underlying)
-            price = q.get("last") or q.get("ask") or 0
+            try:
+                q = get_quote(row.underlying)
+                price = q.get("last") or q.get("ask") or 0
+            except Exception as e:
+                print(f"  ⚠️  {row.underlying}: quote failed ({e}) — skipping wheel this cycle")
+                continue
             if not price:
                 continue
-            # Find ~0.25 delta put in DTE window
-            snaps = _get_option_snapshots(row.underlying, opt_type="put")
-            puts = []
-            for snap in snaps:
-                parsed = _parse_occ(snap.get("symbol", ""))
-                if not parsed:
-                    continue
-                opt_type, exp_str, strike = parsed
-                if opt_type != "put":
-                    continue
-                dte = _dte(exp_str)
-                if not (CC_DTE_MIN <= dte <= CC_DTE_MAX):
-                    continue
-                if strike <= 0 or strike > price or strike * 100 > CC_BOOK_USD * (1 - CC_CASH_BUFFER):
-                    continue  # OTM only, and the CSP must fit in available book cash
-                greeks = snap.get("greeks", {}) or {}
-                delta  = abs(greeks.get("delta", 0) or 0)  # puts have negative delta
-                quote  = snap.get("latestQuote", {}) or {}
-                mid    = ((float(quote.get("bp", 0) or 0)) + (float(quote.get("ap", 0) or 0))) / 2
-                if mid <= 0:
-                    continue
-                puts.append({"symbol": snap.get("symbol"), "strike": strike,
-                             "expiry": exp_str, "dte": dte, "delta": delta, "premium": mid})
-
-            if not puts:
+            # Find ~0.25Δ put in the 30–45 DTE window, strike fitting available cash
+            max_strike = min(price, CC_MAX_POSITION_USD / 100, CC_BOOK_USD * (1 - CC_CASH_BUFFER) / 100)
+            # ponytail: unknown earnings on a wheel re-entry → no cutoff (we already
+            # own the name's risk story); the screener's fail-safe skip is for NEW names.
+            max_exp = earnings_max_expiry(get_next_earnings(row.underlying))
+            snaps = _get_option_snapshots(row.underlying, opt_type="put", dte_min=SCR_DTE_FLOOR)
+            best = _pick_put(snaps, max_strike, used_expiries=used_expiries, max_expiry=max_exp)
+            if not best:
                 print(f"  ⚠️  {row.underlying}: no put contracts in DTE window for CSP")
                 continue
-
-            band = [p for p in puts if 0.20 <= p["delta"] <= 0.30]
-            best = (min(band, key=lambda p: abs(p["delta"] - 0.25)) if band
-                    else min(puts, key=lambda p: abs(p["strike"] - price * 0.96)))
+            if best["strike"] * 100 > free_cash:
+                print(f"  ⏭  {row.underlying}: CSP needs ${best['strike'] * 100:,.0f} secured "
+                      f"but only ${free_cash:,.0f} free above the cash buffer — skip")
+                continue
 
             print(f"  🎡 Wheel {row.underlying}: sell put {best['symbol']} "
                   f"exp {best['expiry']} strike=${best['strike']:.2f} prem=${best['premium']*100:,.0f}")
@@ -855,6 +948,8 @@ def _wheel(client, dry_run: bool = False):
                 send_alert("CC Desk — Wheel",
                            f"🎡 CC: sold {row.underlying} {best['expiry']} ${best['strike']:g} CSP "
                            f"for ${fill*100:,.0f} to re-enter")
+                used_expiries.append(best["expiry"])
+                free_cash -= best["strike"] * 100  # collateral now reserved
         s.commit()
     finally:
         s.close()
@@ -900,7 +995,7 @@ def cc_next_actions() -> list[str]:
                 f"{sym} ${row.strike:.2f} put exp {exp_str} — awaiting expiry/assignment"
             )
         elif row.option_symbol and row.option_type == "call":
-            # Covered call: profit-close trigger + weekly expiry action
+            # Covered call: profit-close trigger + 21-DTE manage action
             prem = row.premium_received or 0
             buyback_trigger = round(prem * (1 - CC_PROFIT_CLOSE), 2)  # buy back ≤ this → 60% captured
             dte = _dte(row.expiry or "")
@@ -908,12 +1003,12 @@ def cc_next_actions() -> list[str]:
             if row.expiry:
                 if dte <= CC_MANAGE_DTE:
                     expiry_note = (
-                        f"; expires {row.expiry} — if above ${row.strike:.2f} it rolls to next "
-                        f"week's ~0.25Δ strike for net credit only; otherwise premium banks and "
-                        f"a new call goes out next cycle"
+                        f"; expires {row.expiry} — at {CC_MANAGE_DTE} DTE it rolls (ITM out-and-up, "
+                        f"or OTM to the next monthly-ish expiry) for net credit only; a debit roll "
+                        f"is skipped and left to ride"
                     )
                 else:
-                    expiry_note = f"; expires Friday {row.expiry}"
+                    expiry_note = f"; expires {row.expiry}"
             lines.append(
                 f"{sym} ${row.strike:.2f} call exp {row.expiry} (DTE {dte}) — "
                 f"profit-close triggers if buyback ≤ ${buyback_trigger:.2f}/contract"
@@ -926,7 +1021,7 @@ def cc_next_actions() -> list[str]:
 
 
 def _print_status():
-    """Print CC book positions + MTD premium vs $500 target."""
+    """Print CC book positions + MTD premium vs the $1,250/mo target + annualized yield-on-book."""
     s = Session()
     try:
         today     = date.today().isoformat()
@@ -952,12 +1047,19 @@ def _print_status():
         print(f"  {row.underlying:6s}  {lot}  |  {opt_info}  "
               f"prem_rcvd=${row.premium_received or 0:,.0f}")
 
-    premium_mtd  = sum((r.premium_received or 0) for r in open_rows) + \
+    # ponytail: opened_at is an ISO string, so >= "YYYY-MM-01" compares correctly;
+    # a position rolled across a month boundary undercounts (its premium lives in
+    # realized_pnl) — acceptable until premium gets its own ledger table.
+    premium_mtd  = sum((r.premium_received or 0) for r in open_rows
+                       if (r.opened_at or "") >= mtd_start) + \
                    sum((r.premium_received or 0) for r in closed)
     realized_pnl = sum((r.realized_pnl or 0) for r in closed)
-    target = 500.0
+    target = CC_MONTHLY_TARGET_USD
     pct = premium_mtd / target if target else 0
+    days_elapsed = date.today().day  # mtd_start is always the 1st
+    annualized_yield = (premium_mtd / CC_BOOK_USD) * (365 / days_elapsed) if days_elapsed else 0
     print(f"\n  Premium MTD: ${premium_mtd:.2f} / ${target:.0f} target ({pct:.0%})")
+    print(f"  Annualized yield-on-book: {annualized_yield:.1%} (target ~30%)")
     print(f"  Realized P&L MTD: ${realized_pnl:+.2f}")
     from scripts.trading_data import get_quote
     book_value = 0.0
@@ -979,8 +1081,9 @@ def _print_status():
 
 # ── Self-check: CC decision logic ─────────────────────────────────────────────
 def _self_check():
-    """Stub-driven tests: profit-close / never-below-basis / delta-band / OCC parse /
-    bid-floor math / weekly DTE window / ≤1-DTE ITM-roll vs OTM-let-expire."""
+    """Stub-driven tests: profit-close / never-below-basis / call+CSP delta bands /
+    OCC parse / bid-floor math / 30-45 DTE window / 21-DTE management trigger /
+    CSP-first entry decision / expiry laddering."""
     print("── CC self-check ──────────────────────────────────────────────────\n")
 
     # 1. Profit-close: boundary at 60% captured (CC_PROFIT_CLOSE = 0.60)
@@ -998,65 +1101,102 @@ def _self_check():
     assert _parse_occ("garbage") is None
     print("  ✅ OCC parse: type/expiry/strike from symbol")
 
-    # 3. Weekly DTE window: CC_DTE_MIN=4, CC_DTE_MAX=10
-    assert CC_DTE_MIN == 4,  f"weekly DTE_MIN should be 4, got {CC_DTE_MIN}"
-    assert CC_DTE_MAX == 10, f"weekly DTE_MAX should be 10, got {CC_DTE_MAX}"
-    assert CC_MANAGE_DTE == 1, f"weekly manage DTE should be 1, got {CC_MANAGE_DTE}"
-    # _pick_call filters to CC_DTE_MIN <= dte <= CC_DTE_MAX
-    exp_weekly = (date.today() + timedelta(days=7)).strftime("%y%m%d")   # 7 DTE → IN window
-    exp_monthly = (date.today() + timedelta(days=35)).strftime("%y%m%d") # 35 DTE → OUT of window
-    def stub(strike: float, delta, exp_code=exp_weekly, bid=1.0, ask=1.2):
+    # 3. Monthly DTE window: CC_DTE_MIN=30, CC_DTE_MAX=45, manage at 21
+    assert CC_DTE_MIN == 30, f"DTE_MIN should be 30, got {CC_DTE_MIN}"
+    assert CC_DTE_MAX == 45, f"DTE_MAX should be 45, got {CC_DTE_MAX}"
+    assert CC_MANAGE_DTE == 21, f"manage DTE should be 21, got {CC_MANAGE_DTE}"
+    exp_monthly = (date.today() + timedelta(days=35)).strftime("%y%m%d")  # 35 DTE → IN window
+    exp_weekly  = (date.today() + timedelta(days=7)).strftime("%y%m%d")   # 7 DTE  → OUT of window
+    def stub_call(strike: float, delta, exp_code=exp_monthly, bid=1.0, ask=1.2):
         s = {"symbol": f"AAPL{exp_code}C{int(strike*1000):08d}",
              "latestQuote": {"bp": bid, "ap": ask}}
         if delta is not None:
             s["greeks"] = {"delta": delta}
         return s
-    # Monthly contract: rejected by DTE filter; weekly contract: accepted
-    best = _pick_call([stub(160, 0.25, exp_monthly), stub(160, 0.25, exp_weekly)], avg_cost=150.0)
-    assert best is not None, "weekly (7 DTE) contract should be accepted"
-    assert date.fromisoformat(best["expiry"]) <= date.today() + timedelta(days=CC_DTE_MAX), \
-        f"selected expiry {best['expiry']} is outside weekly DTE window"
-    print(f"  ✅ weekly DTE window: monthly (35d) rejected, weekly (7d) accepted")
+    def stub_put(strike: float, delta, exp_code=exp_monthly, bid=1.0, ask=1.2):
+        s = {"symbol": f"AAPL{exp_code}P{int(strike*1000):08d}",
+             "latestQuote": {"bp": bid, "ap": ask}}
+        if delta is not None:
+            s["greeks"] = {"delta": delta}  # puts carry negative delta on the wire
+        return s
+    # Weekly (7 DTE) contract rejected by the 30-45 window; monthly (35 DTE) accepted
+    best = _pick_call([stub_call(160, 0.30, exp_weekly), stub_call(160, 0.30, exp_monthly)], avg_cost=150.0)
+    assert best is not None, "35-DTE monthly contract should be accepted"
+    assert CC_DTE_MIN <= _dte(best["expiry"]) <= CC_DTE_MAX, \
+        f"selected expiry {best['expiry']} is outside the 30-45 DTE window"
+    print("  ✅ 30-45 DTE window: 7-DTE weekly rejected, 35-DTE monthly accepted")
 
-    # 4. Never-below-basis
-    best = _pick_call([stub(148, 0.25), stub(160, 0.28), stub(165, 0.35)], avg_cost=150.0)
+    # 4. Never-below-basis (calls)
+    best = _pick_call([stub_call(148, 0.30), stub_call(160, 0.32), stub_call(165, 0.40)], avg_cost=150.0)
     assert best and best["strike"] == 160, f"expected $160 (only in-band strike ≥ basis), got {best}"
-    print(f"  ✅ never-below-basis: $148 @ Δ0.25 rejected, picked ${best['strike']:g}")
+    print(f"  ✅ never-below-basis: $148 @ Δ0.30 rejected, picked ${best['strike']:g}")
 
-    # Delta closest to 0.25 wins; no-band → 4% OTM fallback; none ≥ basis → None
-    best = _pick_call([stub(155, 0.24), stub(160, 0.30), stub(165, 0.20)], avg_cost=150.0)
-    assert best and best["strike"] == 155
-    best = _pick_call([stub(150, 0.45), stub(156, 0.10), stub(170, None)], avg_cost=150.0)
+    # 5. Call delta band CC_DELTA_BAND = (0.25, 0.35), target 0.30
+    best = _pick_call([stub_call(155, 0.29), stub_call(160, 0.35), stub_call(165, 0.25)], avg_cost=150.0)
+    assert best and best["strike"] == 155, f"0.29 (closest to 0.30) should win, got {best}"
+    best = _pick_call([stub_call(150, 0.45), stub_call(156, 0.10), stub_call(170, None)], avg_cost=150.0)
     assert best and best["strike"] == 156 and best.get("_fallback"), f"4% OTM fallback broken: {best}"
-    assert _pick_call([stub(140, 0.25), stub(145, 0.25)], avg_cost=150.0) is None
-    print("  ✅ delta band: 0.24 beats 0.30/0.20; no-band → 4% OTM; none ≥ basis → None")
+    assert _pick_call([stub_call(140, 0.30), stub_call(145, 0.30)], avg_cost=150.0) is None
+    print("  ✅ call delta band (0.25-0.35, target 0.30): closest wins; no-band → 4% OTM; none ≥ basis → None")
 
-    # 5. Annualized yield gate (unchanged — 10% floor)
+    # 6. CSP delta band CSP_DELTA_BAND = (0.20, 0.30), target 0.25 — mirrors calls via _pick_put
+    best = _pick_put([stub_put(95, 0.24), stub_put(90, 0.30), stub_put(85, 0.20)], max_strike=100.0)
+    assert best and best["strike"] == 95, f"0.24 (closest to 0.25) should win, got {best}"
+    best = _pick_put([stub_put(105, 0.24)], max_strike=100.0)  # strike above cash cap
+    assert best is None, "strike over max_strike must be excluded from CSP selection"
+    print("  ✅ CSP delta band (0.20-0.30, target 0.25): closest wins; over-cash strikes excluded")
+
+    # 6b. max_expiry threading (pre-earnings cutoff) + 14-DTE floor fallback
+    exp_18d = (date.today() + timedelta(days=18)).strftime("%y%m%d")  # ducks under earnings
+    chain = [stub_put(95, 0.25, exp_18d), stub_put(95, 0.25, exp_monthly)]
+    # Earnings 25d out → cutoff 23d < 30-DTE floor → floor relaxes to 14, 18-DTE expiry chosen
+    cutoff = date.today() + timedelta(days=23)
+    best = _pick_put(chain, max_strike=100.0, max_expiry=cutoff)
+    assert best and _dte(best["expiry"]) == 18, f"should duck under earnings via 18-DTE expiry: {best}"
+    # No constraint → normal 30-45 window, 14-29 DTE contracts stay excluded
+    best = _pick_put(chain, max_strike=100.0)
+    assert best and _dte(best["expiry"]) == 35, f"unconstrained pick must stay in 30-45 DTE: {best}"
+    # Earnings 10d out → cutoff 8d < 14-DTE floor → nothing clears → None (skip name)
+    best = _pick_put(chain, max_strike=100.0, max_expiry=date.today() + timedelta(days=8))
+    assert best is None, "no expiry >= 14 DTE clears earnings → None"
+    print("  ✅ max_expiry threading: ducks under earnings to 14-DTE floor, skips when nothing clears")
+
+    # 7. Expiry laddering: prefer a non-colliding week over a slightly-better delta
+    exp_a = (date.today() + timedelta(days=32)).isoformat()
+    exp_b = (date.today() + timedelta(days=40)).isoformat()  # >7d from exp_a → non-colliding
+    band = [{"symbol": "A", "strike": 90, "expiry": exp_a, "dte": 32, "delta": 0.25, "premium": 1.0},
+           {"symbol": "B", "strike": 91, "expiry": exp_b, "dte": 40, "delta": 0.24, "premium": 1.0}]
+    picked = _ladder_pick(band, used_expiries=[exp_a], target_delta=0.25)
+    assert picked["symbol"] == "B", f"should avoid the used week even though A's delta is closer: {picked}"
+    # No non-colliding option → falls back to closest-delta
+    picked2 = _ladder_pick(band, used_expiries=[exp_a, exp_b], target_delta=0.25)
+    assert picked2["symbol"] == "A", f"all weeks collide → fall back to delta-closeness: {picked2}"
+    print("  ✅ expiry laddering: avoids already-used weeks, falls back to delta-closeness when boxed in")
+
+    # 8. Annualized yield gate (unchanged — 10% floor)
     yld = _annualized_yield(1.50, 150.00, 35)
     assert yld >= CC_MIN_ANNUAL_YIELD, f"10%+ yield should pass gate: {yld:.2%}"
     low_yld = _annualized_yield(0.50, 150.00, 35)
     assert low_yld < CC_MIN_ANNUAL_YIELD, f"3.5% should fail gate: {low_yld:.2%}"
     print(f"  ✅ yield gate: {yld:.1%} passes, {low_yld:.1%} fails")
 
-    # 6. Bid-floor math: premium_floor = strike × CC_MIN_ANNUAL_YIELD × (DTE/365)
-    #    $190 strike, 7 DTE, 10% yield → floor = 190 * 0.10 * (7/365) = $0.3644.../share
-    floor = _premium_floor(190.0, 7)
-    expected = 190.0 * 0.10 * (7 / 365)
+    # 9. Bid-floor math: premium_floor = strike × CC_MIN_ANNUAL_YIELD × (DTE/365)
+    #    $190 strike, 35 DTE, 10% yield → floor = 190 * 0.10 * (35/365) = $1.822.../share
+    floor = _premium_floor(190.0, 35)
+    expected = 190.0 * 0.10 * (35 / 365)
     assert abs(floor - expected) < 1e-9, f"floor math wrong: {floor:.6f} != {expected:.6f}"
-    # Assert the spec value: ≈$0.36/share (the brief says "≈$0.36")
-    assert 0.36 <= floor <= 0.37, f"floor out of expected $0.36-0.37 range: {floor:.4f}"
-    assert _premium_floor(0.0, 7)  == 0.0, "zero strike → zero floor"
+    assert _premium_floor(0.0, 35)  == 0.0, "zero strike → zero floor"
     assert _premium_floor(190.0, 0) == 0.0, "zero DTE → zero floor"
-    print(f"  ✅ bid-floor: $190 strike 7 DTE → floor=${floor:.4f}/share (≈$0.36, spec ✓)")
+    print(f"  ✅ bid-floor: $190 strike 35 DTE → floor=${floor:.4f}/share")
 
-    # 7. ≤1-DTE logic: ITM-roll vs OTM-let-expire
-    # These are state decisions — verify the DTE gate constant, not the live-market path
-    assert CC_MANAGE_DTE == 1, "manage gate must be 1 DTE for weeklys"
-    # Confirm profit-close is the FIRST check (higher priority than manage-DTE)
-    # A position with dte=1 AND 60% captured → profit-close wins over ITM-roll
-    assert _should_profit_close(100.0, 40.0),  "dte=1, 60% captured → profit-close should trigger"
-    assert not _should_profit_close(100.0, 50.0), "dte=1, 50% captured → no profit-close (roll path)"
-    print("  ✅ ≤1-DTE: manage gate=1, profit-close checked first; roll only when OTM flag = False")
+    # 10. 21-DTE management trigger + CSP-first sizing constants
+    assert CC_MANAGE_DTE == 21, "manage gate must be 21 DTE"
+    # Profit-close is checked FIRST in _manage — a position at dte<=21 with 60%
+    # captured takes the profit-close branch, not the roll branch.
+    assert _should_profit_close(100.0, 40.0),  "dte<=21, 60% captured → profit-close should trigger"
+    assert not _should_profit_close(100.0, 50.0), "dte<=21, 50% captured → falls through to roll-for-credit"
+    assert CC_MAX_POSITION_USD == 10_000 and CC_MAX_UNDERLYINGS == 8 and CC_MAX_PER_SECTOR == 2
+    print("  ✅ 21-DTE trigger: profit-close checked first, roll-for-credit otherwise; sizing constants set")
 
     print("\n  All CC self-checks passed. ✅")
 

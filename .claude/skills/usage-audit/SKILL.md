@@ -1,6 +1,6 @@
 ---
 name: usage-audit
-description: Monthly retro on how Brian actually uses the AIOS — session mining (what's right/wrong vs the quarter's goals) plus a scan of Claude's latest releases for features worth adopting. Trigger on "/usage-audit", "usage audit", "monthly audit", "how am I using this", "what am I not using". Replaces the retired /audit skill; runs automatically on the 1st of each month.
+description: Monthly retro on how Brian actually uses the AIOS — session mining (what's right/wrong vs the quarter's goals), a first-principles pass on the system itself (question the plan, not just execution against it), a scan of Claude's latest releases for features worth adopting, and a scope check on any new automation it recommends. Trigger on "/usage-audit", "usage audit", "monthly audit", "how am I using this", "what am I not using", "what should I automate next". Replaces the retired /audit and /level-up skills; runs automatically on the 1st of each month.
 ---
 
 ## What this skill does
@@ -33,6 +33,47 @@ Read the current quarter's goals in `CLAUDE.md`. Answer plainly:
 - Which skills got zero use this month? Candidates to archive (move to
   `archives/skills/`, never delete).
 - What manual pattern appeared 3+ times that deserves a new skill/automation?
+
+### Step 2.5 — first-principles pass on the system itself
+
+Step 2 measures the system against its own plan. This step questions the plan.
+Reason from fundamentals, not by analogy ("we've always run it this way" /
+"other operators do X" are not reasons):
+
+1. **Name the fundamentals.** What is actually true and non-negotiable this
+   quarter? (The goals in `CLAUDE.md`, Brian's hours, dollars, and the binding
+   constraint — currently deal sourcing + underwriting.) Everything else is
+   an inherited decision, not a truth.
+2. **Surface the assumption under each system.** Every skill, cadence, launchd
+   job, subscription, and channel exists because of a past decision. For the
+   3–5 biggest time/money consumers this month, state the assumption they rest
+   on (e.g. "weekly broker digest → assumes broker flow is the bottleneck").
+   Ask: is that still true, or did the constraint move?
+3. **Zero-base rebuild.** If the AIOS were rebuilt from nothing today, knowing
+   only the fundamentals from (1), what would get built first — and what that
+   exists now wouldn't make the cut? Anything that wouldn't be rebuilt is a
+   candidate to archive; anything the rebuild wants that doesn't exist is a
+   candidate for TOP 3 CHANGES.
+4. **Cost from raw parts.** For the priciest workflow, estimate what the
+   outcome fundamentally requires (API calls, minutes, $) vs. what it
+   currently costs. A big gap = redesign candidate, not a tuning candidate.
+
+Cap the output: max 2 findings from this step feed the report. If nothing
+fails the pass, say so in one line — don't invent churn.
+
+### Step 2.6 — scope check any new automation
+
+Before a new automation makes TOP 3 CHANGES, it must pass all four filters:
+
+1. **Eliminate first.** *"What happens if Brian just stops doing this?"*
+   If nothing breaks, recommend killing the task, not automating it — don't
+   automate waste. Delegate to a person only if it's judgment-heavy.
+2. **Lowest autonomy that works.** Suggest → draft → supervised → autonomous.
+   Default the lowest; push back on autonomous until lower levels ran clean.
+3. **Ship boring.** Prompt template → deterministic script → AI-assisted
+   skill → sub-agent, in that order. Default the highest non-AI option.
+4. **Must move a number.** One bucket (more customers / more value per
+   customer / less cost) plus a metric. Can't name both → drop the rec.
 
 ### Step 3 — scan Claude updates (past month)
 - `claude --version` vs latest; WebFetch

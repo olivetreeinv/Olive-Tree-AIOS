@@ -31,11 +31,11 @@ from db.schema import TradingEquityCurve, TradingPosition, TradingSignal
 
 _NOTIFY_TO = os.getenv("NOTIFY_IMESSAGE_TO", "")
 _NOTIFY_SH = str(Path(__file__).parent / "notify.sh")
-_START_EQUITY = 100_000.0   # paper starting equity
+_START_EQUITY = 50_000.0    # Premium Desk v2 paper account (PA3TCU0QOGVS) starting equity
 # Soft daily profit goal — tracking/visibility only. Does NOT force or block trades
 # (the -2% daily halt is the only hard daily rule). Override via env.
 _DAILY_TARGET = float(os.getenv("DAILY_TARGET_USD", "1000"))
-_DESK_START = "2026-06-26"  # first equity-curve row — same-window SPY comparisons anchor here
+_DESK_START = "2026-07-07"  # first equity-curve row of the v2 account — SPY comparisons anchor here
 
 
 def _spy_same_window(rows) -> float:
@@ -62,25 +62,34 @@ def _bottom_line(equity: float = None) -> list[str]:
     today_pnl = equity - prev_eq
 
     spy_ret = _spy_same_window(rows)
-    spy_dollars = _START_EQUITY * spy_ret          # what $100k in SPY would have made
+    spy_dollars = _START_EQUITY * spy_ret          # what the same start in SPY would have made
     gap = total - spy_dollars
 
+    # Local import — trading_covered_calls imports send_alert from this module,
+    # so a top-of-file import here would be circular.
+    from scripts.trading_covered_calls import CC_MONTHLY_TARGET_USD, CC_BOOK_USD
+
     cc = _cc_book_summary()
-    prem = cc.get("premium_mtd", 0) if cc else 0
+    prem     = cc.get("premium_mtd", 0)  if cc else 0
+    realized = cc.get("realized_pnl", 0) if cc else 0
     t = date.today()
-    pace = 500.0 * t.day / calendar.monthrange(t.year, t.month)[1]
+    pace = CC_MONTHLY_TARGET_USD * t.day / calendar.monthrange(t.year, t.month)[1]
+    days_elapsed = t.day  # MTD always starts the 1st
+    annualized_yield = (prem / CC_BOOK_USD) * (365 / days_elapsed) if days_elapsed else 0
 
     age = (t - date.fromisoformat(_DESK_START)).days
     max_dd = max((r.max_drawdown or 0) for r in rows) if rows else 0.0
 
     lines = [
-        f"{'Up' if total >= 0 else 'Down'} ${abs(total):,.0f} since the $100k start "
+        f"{'Up' if total >= 0 else 'Down'} ${abs(total):,.0f} since the ${_START_EQUITY:,.0f} start "
         f"(${today_pnl:+,.0f} today).",
         f"If you'd just bought the S&P 500 instead, you'd be "
         f"{'up' if spy_dollars >= 0 else 'down'} ${abs(spy_dollars):,.0f} — "
         f"the desk is {'ahead' if gap >= 0 else 'behind'} by ${abs(gap):,.0f}.",
-        f"${prem:,.0f} of covered-call premium banked this month — "
-        f"{'on' if prem >= pace else 'behind'} pace for the $500 target.",
+        f"${prem:,.0f} of covered-call/wheel premium banked this month — "
+        f"{'on' if prem >= pace else 'behind'} pace for the ${CC_MONTHLY_TARGET_USD:,.0f} target "
+        f"({annualized_yield:.0%} annualized yield-on-book vs the 30-40% goal). "
+        f"Wheel realized P&L: ${realized:+,.0f}.",
     ]
     if age < 30:
         lines.append(f"Too early to call — {age} days of data, need ~30.")
@@ -408,7 +417,8 @@ def _build_scorecard_html(prev: str, new: str, is_friday: bool = False) -> tuple
     premium_mtd  = sum((r.premium_received or 0) for r in open_cc) + \
                    sum((r.premium_received or 0) for r in closed_cc)
     cc_realized  = sum((r.realized_pnl or 0) for r in closed_cc)
-    cc_target    = 500.0
+    from scripts.trading_covered_calls import CC_MONTHLY_TARGET_USD, CC_BOOK_USD
+    cc_target    = CC_MONTHLY_TARGET_USD
     cc_rows_html = ""
     for r in open_cc:
         lot_type = "CSP" if (r.option_type == "put" and not r.shares_qty) else "covered"
@@ -489,9 +499,9 @@ def _build_scorecard_html(prev: str, new: str, is_friday: bool = False) -> tuple
 <hr>
 <h3>Week in Review ({week_start} – {today})</h3>
 <p>
-  <b>Momentum P&amp;L this week:</b> ${week_pnl:+,.0f} across {len(closed_week)} trade{'s' if len(closed_week) != 1 else ''}<br>
-  <b>CC premium banked this month:</b> ${premium_mtd:,.0f} / ${cc_target:.0f} target ({premium_mtd/cc_target:.0%})<br>
-  <b>Open positions:</b> {len(open_pos)} momentum, {len(open_cc)} CC
+  <b>Momentum P&amp;L this week (retired, --momentum only):</b> ${week_pnl:+,.0f} across {len(closed_week)} trade{'s' if len(closed_week) != 1 else ''}<br>
+  <b>CC/wheel premium banked this month:</b> ${premium_mtd:,.0f} / ${cc_target:.0f} target ({premium_mtd/cc_target:.0%})<br>
+  <b>Open positions:</b> {len(open_pos)} momentum (retired), {len(open_cc)} CC/wheel
 </p>
 <table border="1" cellpadding="4" style="border-collapse:collapse">
   <tr><th>Metric</th><th>Backtest (OOS)</th><th>Realized (live)</th><th>What it means</th></tr>
@@ -532,7 +542,7 @@ def _build_scorecard_html(prev: str, new: str, is_friday: bool = False) -> tuple
   {core_html}
 </p>
 
-<h3>Momentum Book</h3>
+<h3>Momentum Book <small>(retired by default — only runs with --momentum)</small></h3>
 <p>
   <b>Day realized P&amp;L:</b> ${day_realized:+,.0f} &nbsp;|&nbsp;
   <b>Trades:</b> {len(closed_today)} ({day_wins} win{'s' if day_wins != 1 else ''}) &nbsp;|&nbsp;
@@ -543,9 +553,10 @@ def _build_scorecard_html(prev: str, new: str, is_friday: bool = False) -> tuple
   {pos_rows_html}
 </table>
 
-<h3>Covered-Call (CC) Book</h3>
+<h3>Covered-Call / Wheel Book (Premium Desk v2 — primary)</h3>
 <p>
   <b>Premium collected Month-To-Date (MTD):</b> ${premium_mtd:,.0f} / ${cc_target:.0f} target ({premium_mtd/cc_target:.0%}) &nbsp;|&nbsp;
+  <b>Annualized yield-on-book:</b> {(premium_mtd/CC_BOOK_USD)*(365/date.today().day):.0%} (goal 30-40%) &nbsp;|&nbsp;
   <b>Realized P&amp;L MTD:</b> ${cc_realized:+,.0f}
 </p>
 <table border="1" cellpadding="4" style="border-collapse:collapse">

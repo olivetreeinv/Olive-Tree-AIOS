@@ -140,16 +140,30 @@ def compute_offer(acres, price_per_acre, spread):
     return round(offer / 100) * 100      # round to nearest $100
 
 
-def build_list(county, zip_code, band, price_per_acre, spread, cap=4000):
-    cfg = lp.COUNTIES[county]
+def build_list(county, zip_code, band, price_per_acre, spread, cap=4000,
+               source="arcgis", state=None):
     lo, hi = band
-    bbox = lp.resolve_bbox(county, zip_code)
-    recs = lp.query_parcels(county, bbox=bbox, zip_code=zip_code,
-                            vacant_only=True, max_records=cap)
+    if source == "reportall":
+        home = (state or "GA").upper()
+        # MapServer WHERE path: pulls only vacant+OOS sellers server-side (~12x cheaper
+        # than the Standard API which returns all parcels including houses then filters).
+        if county in lp.REPORTALL_FIPS:
+            recs = lp.query_sellers_mapserver(county, zip_code, home, lo, hi, max_records=cap)
+        else:
+            # ponytail: Standard API fallback for counties not yet in REPORTALL_FIPS
+            recs = lp.query_parcels_reportall(
+                zip_code=zip_code, vacant_only=True, min_acres=lo, max_acres=hi,
+                max_records=cap)
+    else:
+        cfg = lp.COUNTIES[county]
+        home = cfg["state"]
+        bbox = lp.resolve_bbox(county, zip_code)
+        recs = lp.query_parcels(county, bbox=bbox, zip_code=zip_code,
+                                vacant_only=True, max_records=cap)
 
     sellers, owner_counts = [], {}
     for r in recs:
-        if not lp.is_vacant(r) or not lp.is_out_of_state(r, cfg["state"]):
+        if not lp.is_vacant(r) or not lp.is_out_of_state(r, home):
             continue
         a = r["acres"]
         if a is None or not (lo <= a <= hi):
@@ -246,13 +260,21 @@ def _db_upsert(sellers):
 def main():
     ap = argparse.ArgumentParser(description="Auto-build a land seller list with offers.")
     ap.add_argument("--zip", dest="zip_code", required=True)
-    ap.add_argument("--county", default="bartow-ga", choices=sorted(lp.COUNTIES))
+    ap.add_argument("--county", default="bartow-ga")
+    ap.add_argument("--source", default="arcgis", choices=["arcgis", "reportall"],
+                    help="arcgis: county must be wired; reportall: any zip (key required)")
+    ap.add_argument("--state", help="Home state abbr for out-of-state filter (reportall)")
     ap.add_argument("--builder-price", type=float, help="$/acre (else from Land Builders)")
     ap.add_argument("--spread", type=float, default=DEFAULT_SPREAD, help="0.10–0.20")
     ap.add_argument("--min-acres", type=float)
     ap.add_argument("--max-acres", type=float)
+    ap.add_argument("--cap", type=int, default=4000, help="Max parcels to pull (billing guard)")
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
+
+    if args.source == "arcgis" and args.county not in lp.COUNTIES:
+        sys.exit(f"County '{args.county}' not wired for ArcGIS. "
+                 f"Use --source reportall or choose: {', '.join(sorted(lp.COUNTIES))}")
 
     band = DEFAULT_BAND.get(args.county, (0.1, 10.0))
     if args.min_acres is not None and args.max_acres is not None:
@@ -263,10 +285,12 @@ def main():
         sys.exit(f"No builder $/acre for {args.zip_code}. Add one via /land-builders "
                  f"or pass --builder-price.")
 
-    sellers = build_list(args.county, args.zip_code, band, price, args.spread)
+    sellers = build_list(args.county, args.zip_code, band, price, args.spread,
+                         cap=args.cap, source=args.source, state=args.state)
     pkgs = sum(1 for s in sellers if s["package"])
     indiv = sum(1 for s in sellers if not s["entity"])
-    print(f"\n  {lp.COUNTIES[args.county]['name']} — zip {args.zip_code}")
+    county_label = lp.COUNTIES[args.county]["name"] if args.county in lp.COUNTIES else args.county
+    print(f"\n  {county_label} — zip {args.zip_code}")
     print(f"  Builder ${price:g}/ac · spread {args.spread:.0%} · band {band[0]}–{band[1]} ac")
     print(f"  {len(sellers)} sellers · {indiv} individuals (prime) · {pkgs} package lots\n")
     for s in sellers[:25]:

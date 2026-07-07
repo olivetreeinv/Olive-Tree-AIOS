@@ -27,3 +27,14 @@ output/
 # Transient SQLite WAL/SHM files (churn on every DB write)
 data/*.db-wal
 data/*.db-shm
+.qb_tokens
+
+# GHL contact export — 804 contacts w/ addresses+phones (PII, never push)
+archives/ghl-export-2026-07-06/
+
+# Trading-desk runtime state (churns every cycle)
+data/cc_last_run.txt
+data/trading_halt.json
+
+# Root scratch files
+scratchpad_*

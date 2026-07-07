@@ -17,7 +17,7 @@ All other fields are typed columns with UNIQUE / FK constraints for dedup + join
 """
 
 from sqlalchemy import (
-    Boolean, Column, Float, ForeignKey, Integer, String, Text
+    Boolean, Column, Float, ForeignKey, Integer, String, Text, UniqueConstraint
 )
 from sqlalchemy.orm import DeclarativeBase, relationship
 
@@ -381,6 +381,20 @@ class TradingCCPosition(Base):
     realized_pnl    = Column(Float)
 
 
+class TradingIVHistory(Base):
+    """Daily ATM implied-vol snapshot per symbol — builds the IV-rank history the
+    screener needs. Bootstrap mode (screener falls back to IV/RV ratio) runs until
+    a symbol has >=60 stored days, then the screener switches to true IV rank."""
+    __tablename__ = "trading_iv_history"
+    __table_args__ = (UniqueConstraint("symbol", "date", name="uq_iv_history_symbol_date"),)
+
+    id         = Column(Integer, primary_key=True, autoincrement=True)
+    symbol     = Column(String(20), nullable=False, index=True)
+    date       = Column(String(12), nullable=False)   # YYYY-MM-DD
+    atm_iv     = Column(Float)                         # annualized decimal, e.g. 0.32
+    created_at = Column(String(30))
+
+
 class Document(Base):
     """Index of wiki/markdown files. Path is the unique key; body stays on disk."""
     __tablename__ = "documents"
@@ -417,3 +431,108 @@ class Chunk(Base):
     content      = Column(Text, nullable=False)
     content_hash = Column(String(64), nullable=False)   # SHA-256 of content for incremental re-index
     last_indexed = Column(String(30), nullable=False)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# GHL CRM tables (Phase 1 export + future capital-raise / drip phases)
+# ─────────────────────────────────────────────────────────────────────────────
+
+from sqlalchemy import UniqueConstraint  # noqa: E402 — grouped with its tables
+
+
+class Contact(Base):
+    """GHL contact — master record keyed on ghl_id."""
+    __tablename__ = "contacts"
+
+    id             = Column(Integer, primary_key=True, autoincrement=True)
+    ghl_id         = Column(String(60), unique=True, nullable=False)
+    first_name     = Column(String(200))
+    last_name      = Column(String(200))
+    email          = Column(String(200))
+    phone          = Column(String(50))
+    company        = Column(String(200))
+    address        = Column(String(300))
+    city           = Column(String(100))
+    state          = Column(String(50))
+    postal_code    = Column(String(20))
+    custom_fields  = Column(Text)               # JSON string
+    source         = Column(String(100))
+    dnd            = Column(Boolean)
+    unsubscribed   = Column(Boolean, default=False)
+    date_added     = Column(String(30))
+    created_at     = Column(String(30))
+
+    tags  = relationship("ContactTag",  back_populates="contact", cascade="all, delete-orphan")
+    notes = relationship("ContactNote", back_populates="contact", cascade="all, delete-orphan")
+    email_logs = relationship("EmailLog", back_populates="contact")
+    drip_enrollments = relationship("DripEnrollment", back_populates="contact")
+
+
+class ContactTag(Base):
+    """One tag per row; (contact_id, tag) is unique."""
+    __tablename__ = "contact_tags"
+    __table_args__ = (UniqueConstraint("contact_id", "tag", name="uq_contact_tag"),)
+
+    id         = Column(Integer, primary_key=True, autoincrement=True)
+    contact_id = Column(Integer, ForeignKey("contacts.id"), nullable=False)
+    tag        = Column(String(200), nullable=False)
+
+    contact = relationship("Contact", back_populates="tags")
+
+
+class ContactNote(Base):
+    """GHL notes attached to a contact."""
+    __tablename__ = "contact_notes"
+
+    id          = Column(Integer, primary_key=True, autoincrement=True)
+    contact_id  = Column(Integer, ForeignKey("contacts.id"), nullable=False)
+    body        = Column(Text)
+    ghl_note_id = Column(String(60), unique=True)
+    created_at  = Column(String(30))
+
+    contact = relationship("Contact", back_populates="notes")
+
+
+class Campaign(Base):
+    """GHL email campaign schedule record."""
+    __tablename__ = "campaigns"
+
+    id         = Column(Integer, primary_key=True, autoincrement=True)
+    name       = Column(String(300))
+    subject    = Column(String(300))
+    html_path  = Column(String(500))
+    status     = Column(String(20))     # draft / sent
+    sent_count = Column(Integer)
+    created_at = Column(String(30))
+
+    email_logs = relationship("EmailLog", back_populates="campaign")
+
+
+class EmailLog(Base):
+    """Outbound email audit trail — one row per send."""
+    __tablename__ = "email_log"
+
+    id          = Column(Integer, primary_key=True, autoincrement=True)
+    contact_id  = Column(Integer, ForeignKey("contacts.id"), nullable=False)
+    campaign_id = Column(Integer, ForeignKey("campaigns.id"))
+    drip_step   = Column(String(100))
+    subject     = Column(String(300))
+    sent_at     = Column(String(30))
+    status      = Column(String(50))
+
+    contact  = relationship("Contact",  back_populates="email_logs")
+    campaign = relationship("Campaign", back_populates="email_logs")
+
+
+class DripEnrollment(Base):
+    """Tracks where each contact sits in a named drip sequence."""
+    __tablename__ = "drip_enrollments"
+
+    id          = Column(Integer, primary_key=True, autoincrement=True)
+    contact_id  = Column(Integer, ForeignKey("contacts.id"), nullable=False)
+    drip_name   = Column(String(200))
+    step        = Column(Integer)
+    next_due    = Column(String(30))
+    status      = Column(String(20))    # active / done / stopped
+
+    contact = relationship("Contact", back_populates="drip_enrollments")

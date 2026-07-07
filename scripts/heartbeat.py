@@ -131,6 +131,15 @@ def check_morning_brief() -> tuple[bool, str]:
         return False, f"morning brief: check failed ({e})"
 
 
+def unreviewed_scripts() -> list[str]:
+    """scripts/*.py modified since the newest Codex review report."""
+    reviews = list((REPO / ".codex-review").glob("*.md"))
+    last = max((p.stat().st_mtime for p in reviews), default=0)
+    return sorted(
+        p.name for p in (REPO / "scripts").glob("*.py") if p.stat().st_mtime > last
+    )
+
+
 def check_db() -> tuple[bool, str]:
     try:
         con = sqlite3.connect(DB, timeout=5)
@@ -169,6 +178,14 @@ def main():
     except Exception as e:
         print(f"\n  DEALS: intake scan failed ({e})")
 
+    stale = []
+    try:
+        stale = unreviewed_scripts()
+        if stale:
+            print(f"\n  CODE REVIEW: {len(stale)} script(s) edited since last Codex review — run: scripts/codex_review.sh")
+    except Exception as e:
+        print(f"\n  CODE REVIEW: check failed ({e})")
+
     try:
         ends = harvest()[:3]
         if ends:
@@ -188,6 +205,8 @@ def main():
     summary = f"{n_ok}/{len(checks)} green" if not reds else f"{len(reds)} RED: " + "; ".join(r[:60] for r in reds)
     if new_deals:
         summary += f" · {len(new_deals)} new deal folder(s)"
+    if stale:
+        summary += f" · {len(stale)} unreviewed script(s)"
     print(f"\n  SUMMARY: {summary}")
 
     if args.notify:

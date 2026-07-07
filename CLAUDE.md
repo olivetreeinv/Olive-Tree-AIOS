@@ -21,17 +21,10 @@ Brian Norton is the founder and CEO of Olive Tree Investments — a Georgia-base
 
 **Biggest constraint:** Finding and underwriting deals. That's where the most time goes and where AI leverage is highest.
 
-## Your operator brain — the [removed framework]
-
-Read `references/removed-framework.md` once. It's how Brian thinks about AI work. Mindset (how to think), Method (how to decide), Machine (how to build). Reference it when running `/level-up`.
-
-> *The [removed framework] is a trademark of [removed]. © 2026 [removed].*
-
 ## Your skills
 
 - `/onboard` — already run. Re-run any time after editing `aios-intake.md` to refresh.
-- `/usage-audit` — Monthly retro: session mining (time mix vs quarter goals, cadence check, unused skills) + scan of Claude's latest releases for features worth adopting. Runs automatically 1st of each month 9:05am via launchd (`com.olivetree.usage-audit`), emails the report. Replaces the retired `/audit`. Uses `scripts/usage_audit.py`.
-- `/level-up` — Weekly [removed framework] interview. Find one automation, scope it, ship it. One per week.
+- `/usage-audit` — Monthly retro: session mining (time mix vs quarter goals, cadence check, unused skills) + scan of Claude's latest releases for features worth adopting. Runs automatically 1st of each month 9:05am via launchd (`com.olivetree.usage-audit`), emails the report. Replaces the retired `/audit` and `/level-up` (automation scope check now runs inside the audit). Uses `scripts/usage_audit.py`.
 - `/daily-brief` — Morning intelligence pull. Calendar + inbox + Q3 pulse + one ready-to-send draft. Run every weekday morning.
 - `/market-research [city]` — Deal-triggered market scorecard. 7-criteria go/no-go on a market. Phase 1 of the deal evaluation pipeline. Always checks `references/buy-box.md` first.
 - `/deal-search` — Scans Crexi + LoopNet email alerts and FMLS API for buy-box listings. Strictly filtered. Logs matches to Deal Sourcing tab. Uses `scripts/deal_search.py`.
@@ -46,6 +39,7 @@ Read `references/removed-framework.md` once. It's how Brian thinks about AI work
 - `/loose-ends` — Harvest every pending/blocked/deferred item from decisions log + memory into one actionable list. Top 3 appear in each heartbeat. Uses `scripts/loose_ends.py`.
 - `/q3-scoreboard` — Friday scorecard vs. the three Q3 goals (deal under contract, $400K commits, broker flow), with a #1 action for next week. Run every Friday.
 - `/deal-intake` — Scan ~/Downloads for new OM/T-12/Rent-Roll drops and print the ready-to-paste workup command. New drops surface in heartbeat. Uses `scripts/deal_intake.py`.
+- `/jarvis` — Voice-driven 3D knowledge galaxy over the whole AIOS corpus (wiki + references + context + decisions + memory). Ask by voice, get a spoken answer plus a camera dive to the source note. Retrieval via `aios_recall.py`, answers via `claude -p` (free, no API key). First run builds `jarvis/`; after that it serves port 4700. Chrome only.
 - `/asset-mgmt` — *(DRAFT)* Post-close asset management: the 4 weekly ops reports, PM accountability ("manage the manager"), renewal watch, quarterly investor updates. Activates once a deal closes.
 - `/govcon` — Government contracting pipeline coach. Checks the live bid pipeline at localhost:8000, surfaces next actions per bid, drafts subcontractor outreach scripts and emails, and updates bid status. Run any time you want to know what to do next on a bid. App must be running first.
 
@@ -60,6 +54,7 @@ Read `references/removed-framework.md` once. It's how Brian thinks about AI work
 - `/land-deal` — Deal cockpit: tracks status from contract through close, runs the deal-killer checklist (wetlands/slope/flood/title), fires post-close actions ($1K referral letter + neighbor first-look script). Uses `scripts/land_deal.py`. Logs to Land Deals tab.
 - `/bpo [address]` — Single-family Broker Price Opinion. Pulls 3 active + 3 sold comps from FMLS (same zip, ±1 bed, ±25% sqft, ±15 yr age). Creates Google Doc + PDF in `Olive Tree Investments - BPOs / [address]`. Works on listed and unlisted properties. Uses `scripts/bpo.py`.
 - `/crm` — Local contact database (804 contacts imported from GHL). Search, tag, note, unsub, and import contacts. Source of truth now that GoHighLevel is being decommissioned. Uses `scripts/crm.py`.
+- `/cinematic-website` — One-prompt cinematic website builder: interviews to pick one of 10 templates (product, journey, portfolio, e-commerce, restaurant, listing, vehicle, SaaS, studio, gym), generates Seedance 2.0 clips via KIE, builds a scroll-driven site, verifies on localhost. ⚠️ ~816 credits (~$4)/clip at 1080p — always confirms spend first. Uses `scripts/kie_video.py` + `scripts/serve_range.py`. Reference build: `site-cinematic/`.
 
 ## Where things live
 
@@ -148,8 +143,8 @@ It returns a web-grounded answer plus numbered sources. Fold it into your own re
 - Lead with what needs action, not status updates.
 - When he asks a question, answer it. Don't pad with restating the question.
 - When he makes a decision, suggest logging it in `decisions/log.md`.
-- When you spot a manual task he's doing 3+ times, surface it next time `/level-up` runs.
-- [removed]: when he brings a new task, ask "to what extent could AI be leveraged here?" before assuming he'll do it the old way.
+- When you spot a manual task he's doing 3+ times, surface it next time `/usage-audit` runs.
+- When he brings a new task, ask "to what extent could AI be leveraged here?" before assuming he'll do it the old way.
 - His top pain is deal sourcing + underwriting. Always be looking for ways to reduce that drag.
 
 ### Think before doing

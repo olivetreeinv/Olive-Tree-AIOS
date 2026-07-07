@@ -310,6 +310,27 @@ def send_email(token, draft):
     return r.json()
 
 
+def create_gmail_draft(token, draft):
+    import base64
+    from email.header import Header
+    from email.mime.text import MIMEText
+
+    msg = MIMEText(_to_html(draft["body"]), "html", "utf-8")
+    msg["to"]      = draft["to_email"]
+    msg["from"]    = "brian@olivetreeinv.io"
+    msg["subject"] = str(Header(draft["subject"], "utf-8"))
+    raw = base64.urlsafe_b64encode(msg.as_bytes()).decode()
+
+    r = requests.post(
+        f"{GMAIL_BASE}/drafts",
+        headers=auth_headers(token),
+        json={"message": {"raw": raw}},
+        timeout=30,
+    )
+    r.raise_for_status()
+    return r.json()
+
+
 def build_after_send_data(row_num, current_sent=0):
     """Build the batchUpdate range entries for one broker after a send."""
     next_fup = (TODAY + timedelta(days=FOLLOW_UP_INTERVAL_DAYS)).strftime("%m/%d/%Y")
@@ -351,12 +372,13 @@ def main():
     parser.add_argument("--draft",      action="store_true", help="Generate email drafts for overdue brokers")
     parser.add_argument("--send",       type=int, metavar="INDEX", help="Send draft at given index (0-based)")
     parser.add_argument("--send-all",   action="store_true", help="Send all overdue brokers with valid emails")
+    parser.add_argument("--gmail-drafts", action="store_true", help="Save all overdue follow-ups as Gmail drafts (no send, no sheet update)")
     parser.add_argument("--dry-run",    action="store_true", help="Sandbox: show what would be sent without sending or updating sheet")
     parser.add_argument("--exclude",    type=str, metavar="ROWS", help="Comma-separated sheet row numbers to skip (e.g. 16,23)")
     parser.add_argument("--mark-sent",  type=int, metavar="ROW",   help="Mark sheet row as sent (sheet row number)")
     args = parser.parse_args()
 
-    if not any([args.check, args.draft, args.send is not None, args.send_all, args.mark_sent is not None]):
+    if not any([args.check, args.draft, args.send is not None, args.send_all, args.gmail_drafts, args.mark_sent is not None]):
         parser.print_help()
         sys.exit(0)
 
@@ -386,6 +408,23 @@ def main():
             sent     = d[COL["deals_sent"]] or "0"
             print(f"  Row {b['row']}: {name} ({brokerage}) | {markets} | Last: {last} | Sent: {sent}")
         print()
+        return
+
+    if args.gmail_drafts:
+        drafts = [draft_followup_email(b["data"]) for b in overdue]
+        if not drafts:
+            print("✅ No overdue follow-ups.")
+            return
+        saved, skipped = 0, 0
+        for d in drafts:
+            if not d["to_email"]:
+                print(f"⚠️  Skipped {d['to_name']} — no email on file.")
+                skipped += 1
+                continue
+            create_gmail_draft(token, d)
+            print(f"📝 Draft saved: {d['to_name']} <{d['to_email']}> — {d['subject']}")
+            saved += 1
+        print(f"\n✅ {saved} draft(s) saved to Gmail · {skipped} skipped")
         return
 
     if args.draft or args.send is not None or args.send_all:

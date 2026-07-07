@@ -105,7 +105,7 @@ def _build_symbol_block(symbol: str, is_crypto: bool = False) -> str:
     except Exception:
         pass
 
-    # News headlines (equities only; crypto news via Polygon is sparse)
+    # News headlines (equities only; crypto news via Alpaca is sparse)
     if not is_crypto:
         news = get_news(symbol, limit=4)
         if news:

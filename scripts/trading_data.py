@@ -4,15 +4,19 @@ trading_data.py — shared data layer for the Olive Tree Trading Desk.
 
 Provides:
   - UNIVERSE: ~25 liquid US large-caps/ETFs + BTC/ETH for overnight
-  - get_bars()          : historical OHLCV from Polygon (equities) or Alpaca (crypto)
+  - get_bars()          : historical OHLCV, all from Alpaca (equities: SIP feed, crypto: crypto/us)
   - get_quote()         : latest bid/ask/last from Alpaca
   - get_account()       : Alpaca paper account summary
-  - get_snapshot()      : intraday change%, VWAP, volume from Polygon
-  - get_news()          : recent headlines from Polygon news API
-  - get_technicals()    : RSI + MACD from Polygon indicators
+  - get_snapshot()      : intraday change%, VWAP, volume from Alpaca snapshot
+  - get_news()          : recent headlines from Alpaca news API
+  - get_technicals()    : RSI + MACD computed locally from Alpaca daily bars
   - get_fear_greed()    : Crypto Fear & Greed index (alternative.me, free)
   - get_top_movers()    : filter universe to top N by absolute 5d move
   - is_market_open()    : NYSE market hours check (no API call)
+
+Equities use ALPACA_DATA_FEED (default "sip") — set to "iex" if the account
+lacks the SIP add-on. Alpaca is the sole market-data source (see
+archives/data-compare-2026-07/ for the retired-vendor comparison writeup).
 
 Usage:
   python3 scripts/trading_data.py               # smoke test all data paths
@@ -70,7 +74,10 @@ UNIVERSE = EQUITY_UNIVERSE + CRYPTO_UNIVERSE
 #    import this module without the full SDK installed in restricted envs) ────
 _ALPACA_BASE  = "https://paper-api.alpaca.markets"
 _ALPACA_DATA  = "https://data.alpaca.markets"
-_POLY_BASE    = "https://api.polygon.io"
+
+
+def _data_feed() -> str:
+    return os.getenv("ALPACA_DATA_FEED", "sip")
 
 _SSL = ssl.create_default_context()
 try:
@@ -89,7 +96,7 @@ def _alpaca_headers() -> dict:
 
 
 def _get(url: str, headers: dict) -> dict:
-    # ponytail: same retry pattern as _poly() — 3 attempts, 2s/4s backoff
+    # ponytail: 3 attempts, 2s/4s backoff — one slow response shouldn't kill a trade cycle
     req = urllib.request.Request(url, headers=headers)
     for attempt in range(3):
         try:
@@ -107,6 +114,7 @@ def get_account() -> dict:
     return {
         "status":        data.get("status"),
         "equity":        float(data.get("equity", 0)),
+        "last_equity":   float(data.get("last_equity", data.get("equity", 0))),
         "cash":          float(data.get("cash", 0)),
         "buying_power":  float(data.get("buying_power", 0)),
         "portfolio_value": float(data.get("portfolio_value", data.get("equity", 0))),
@@ -140,63 +148,55 @@ def get_quote(symbol: str) -> dict:
 
 def get_bars(symbol: str, days: int = 60, timeframe: str = "1Day") -> list[dict]:
     """
-    Return OHLCV bars as list of dicts with keys: t, o, h, l, c, v.
-    Uses Polygon for equities (more history on free tier), Alpaca for crypto.
+    Return OHLCV bars as list of dicts with keys: t (ISO string), o, h, l, c, v.
+    All from Alpaca — equities via the SIP feed (ALPACA_DATA_FEED), crypto via crypto/us.
     """
     end   = datetime.now(timezone.utc).date()
     start = end - timedelta(days=days + 10)   # buffer for weekends/holidays
 
     if "/" in symbol:
-        # Crypto via Alpaca — paginate; one page caps at 1000 bars (hourly over weeks exceeds that)
+        # Crypto — paginate; one page caps at 1000 bars (hourly over weeks exceeds that)
         sym_enc = symbol.replace("/", "%2F")
         base = (
             f"{_ALPACA_DATA}/v1beta3/crypto/us/bars"
             f"?symbols={sym_enc}&timeframe={timeframe}"
             f"&start={start}&end={end}&limit=1000"
         )
-        raw, page_token, page = [], None, 0
-        while page < 20:  # ponytail: 20 pages × 1000 bars = 20K bars max guard
-            url = base + (f"&page_token={page_token}" if page_token else "")
-            data = _get(url, _alpaca_headers())
-            raw.extend(data.get("bars", {}).get(symbol, []))
-            page_token = data.get("next_page_token")
-            page += 1
-            if not page_token:
-                break
-        return [{"t": b["t"], "o": b["o"], "h": b["h"], "l": b["l"], "c": b["c"], "v": b["v"]} for b in raw]
     else:
-        # Equities via Polygon — key passed via params dict, never embedded in URL
-        data = _poly(f"/v2/aggs/ticker/{symbol}/range/1/day/{start}/{end}",
-                     {"adjusted": "true", "sort": "asc", "limit": 500})
-        raw = data.get("results", [])
-        return [{"t": r["t"], "o": r["o"], "h": r["h"], "l": r["l"], "c": r["c"], "v": r["v"]} for r in raw]
+        base = (
+            f"{_ALPACA_DATA}/v2/stocks/bars"
+            f"?symbols={symbol}&timeframe={timeframe}"
+            f"&start={start}&end={end}&limit=10000&feed={_data_feed()}&adjustment=raw"
+        )
+
+    raw, page_token, page = [], None, 0
+    while page < 20:  # ponytail: 20 pages guard against a runaway loop
+        url = base + (f"&page_token={page_token}" if page_token else "")
+        data = _get(url, _alpaca_headers())
+        raw.extend(data.get("bars", {}).get(symbol, []))
+        page_token = data.get("next_page_token")
+        page += 1
+        if not page_token:
+            break
+    return [{"t": b["t"], "o": b["o"], "h": b["h"], "l": b["l"], "c": b["c"], "v": b["v"]} for b in raw]
 
 
-def _poly(path: str, params: dict | None = None) -> dict:
-    """GET a Polygon endpoint with API key injected. Stocks Advanced = ~9 req/s, no delay needed.
-
-    Retries transient network failures (timeout / connection reset) up to 3 times
-    with 2s, 4s backoff so one slow response doesn't kill a whole trade cycle.
-    """
-    poly_key = os.getenv("POLYGON_API_KEY", "")
-    p = dict(params or {})
-    p["apiKey"] = poly_key
-    url = f"{_POLY_BASE}{path}"
-    for attempt in range(3):
-        try:
-            resp = requests.get(url, params=p, timeout=15)
-            resp.raise_for_status()
-            return resp.json()
-        except (requests.Timeout, requests.ConnectionError) as e:
-            if attempt == 2:
-                raise
-            time.sleep(2 * (attempt + 1))  # 2s, then 4s
+def _alpaca_snapshots(symbols: list[str]) -> dict:
+    """Bulk stock snapshots from Alpaca, chunked to stay well under URL length limits."""
+    out = {}
+    syms = sorted(symbols)
+    for i in range(0, len(syms), 100):
+        chunk = syms[i:i + 100]
+        url = f"{_ALPACA_DATA}/v2/stocks/snapshots?symbols={','.join(chunk)}&feed={_data_feed()}"
+        data = _get(url, _alpaca_headers()) or {}
+        out.update(data)
+    return out
 
 
 def get_intraday_bars(symbol: str, minutes: int = 5, limit: int = 20) -> list[dict]:
     """
-    Fetch intraday OHLCV bars for current/last session from Polygon.
-    Returns list of dicts: {t (epoch-ms), o, h, l, c, v}.
+    Fetch intraday OHLCV bars for current/last session from Alpaca.
+    Returns list of dicts: {t (ISO string), o, h, l, c, v}, most recent first.
     minutes: candle size (1 or 5 recommended).
     Only for equities — use get_bars() with a short window for crypto.
     """
@@ -204,11 +204,12 @@ def get_intraday_bars(symbol: str, minutes: int = 5, limit: int = 20) -> list[di
     today = date.today().isoformat()
     since = (date.today() - timedelta(days=1)).isoformat()
     try:
-        data = _poly(
-            f"/v2/aggs/ticker/{symbol}/range/{minutes}/minute/{since}/{today}",
-            {"adjusted": "true", "sort": "desc", "limit": limit},
+        url = (
+            f"{_ALPACA_DATA}/v2/stocks/bars?symbols={symbol}&timeframe={minutes}Min"
+            f"&start={since}&end={today}&limit={limit}&feed={_data_feed()}&sort=desc"
         )
-        results = data.get("results") or []
+        data = _get(url, _alpaca_headers())
+        results = data.get("bars", {}).get(symbol, []) or []
         return [{"t": b["t"], "o": b["o"], "h": b["h"], "l": b["l"], "c": b["c"], "v": b["v"]}
                 for b in results]
     except Exception:
@@ -223,11 +224,10 @@ def get_vwap_context(symbol: str) -> dict:
     {vwap, last_price, price_vs_vwap_pct, trend_5m, above_vwap, session}
     """
     try:
-        raw  = _poly(f"/v2/snapshot/locale/us/markets/stocks/tickers/{symbol}")
-        t    = raw.get("ticker", {})
-        day  = t.get("day", {})
-        prev = t.get("prevDay", {})
-        lt   = t.get("lastTrade", {})
+        raw  = _get(f"{_ALPACA_DATA}/v2/stocks/{symbol}/snapshot?feed={_data_feed()}", _alpaca_headers())
+        day  = raw.get("dailyBar") or {}
+        prev = raw.get("prevDailyBar") or {}
+        lt   = raw.get("latestTrade") or {}
     except Exception:
         return {}
 
@@ -272,19 +272,20 @@ def get_snapshot(symbol: str) -> dict:
     Returns {} on error (market closed / no data yet).
     """
     try:
-        data = _poly(f"/v2/snapshot/locale/us/markets/stocks/tickers/{symbol}")
-        t    = data.get("ticker", {})
-        day  = t.get("day", {})
+        data = _get(f"{_ALPACA_DATA}/v2/stocks/{symbol}/snapshot?feed={_data_feed()}", _alpaca_headers())
+        day  = data.get("dailyBar") or {}
+        prev = data.get("prevDailyBar") or {}
+        c, pc = day.get("c"), prev.get("c")
         return {
             "symbol":     symbol,
-            "change_pct": round(t.get("todaysChangePerc", 0), 2),
+            "change_pct": round((c - pc) / pc * 100, 2) if c and pc else 0,
             "vwap":       day.get("vw"),
             "volume":     day.get("v"),
             "open":       day.get("o"),
             "high":       day.get("h"),
             "low":        day.get("l"),
-            "close":      day.get("c"),
-            "prev_close": t.get("prevDay", {}).get("c"),
+            "close":      c,
+            "prev_close": pc,
         }
     except Exception:
         return {"symbol": symbol}
@@ -292,17 +293,18 @@ def get_snapshot(symbol: str) -> dict:
 
 def get_news(symbol: str, limit: int = 5) -> list[dict]:
     """
-    Recent news headlines for a symbol from Polygon.
-    Returns list of {title, published_utc, description} dicts.
+    Recent news headlines for a symbol from Alpaca's news API.
+    Returns list of {title, published, desc} dicts.
     """
     try:
-        data    = _poly("/v2/reference/news", {"ticker": symbol, "limit": limit, "order": "desc"})
-        results = data.get("results", [])
+        url = f"{_ALPACA_DATA}/v1beta1/news?symbols={symbol}&limit={limit}&sort=desc"
+        data    = _get(url, _alpaca_headers())
+        results = data.get("news", [])
         return [
             {
-                "title":     a.get("title", ""),
-                "published": a.get("published_utc", "")[:16],
-                "desc":      (a.get("description") or "")[:200],
+                "title":     a.get("headline", ""),
+                "published": (a.get("created_at") or "")[:16],
+                "desc":      (a.get("summary") or "")[:200],
             }
             for a in results
         ]
@@ -310,27 +312,43 @@ def get_news(symbol: str, limit: int = 5) -> list[dict]:
         return []
 
 
+def _ema_series(values: list[float], period: int) -> list[float]:
+    k = 2 / (period + 1)
+    ema = [values[0]]
+    for v in values[1:]:
+        ema.append(v * k + ema[-1] * (1 - k))
+    return ema
+
+
 def get_technicals(symbol: str) -> dict:
     """
-    RSI(14) and MACD(12,26,9) from Polygon indicators — most recent daily value.
-    Returns {} on error.
+    RSI(14) and MACD(12,26,9), computed locally from Alpaca daily closes
+    (Alpaca has no indicators endpoint). Returns {} on error / thin history.
     """
     out = {}
     try:
-        r   = _poly(f"/v1/indicators/rsi/{symbol}", {"timespan": "day", "window": 14, "limit": 1})
-        vals = r.get("results", {}).get("values", [])
-        if vals:
-            out["rsi"] = round(vals[0]["value"], 1)
-    except Exception:
-        pass
-    try:
-        r    = _poly(f"/v1/indicators/macd/{symbol}", {"timespan": "day", "limit": 1})
-        vals = r.get("results", {}).get("values", [])
-        if vals:
-            v = vals[0]
-            out["macd"]      = round(v.get("value", 0), 3)
-            out["macd_sig"]  = round(v.get("signal", 0), 3)
-            out["macd_hist"] = round(v.get("histogram", 0), 3)
+        closes = [b["c"] for b in get_bars(symbol, days=90)]
+        if len(closes) < 27:
+            return {}
+
+        # RSI(14), Wilder smoothing
+        deltas   = [closes[i] - closes[i - 1] for i in range(1, len(closes))]
+        gains    = [max(d, 0) for d in deltas]
+        losses   = [max(-d, 0) for d in deltas]
+        avg_gain = sum(gains[:14]) / 14
+        avg_loss = sum(losses[:14]) / 14
+        for g, l in zip(gains[14:], losses[14:]):
+            avg_gain = (avg_gain * 13 + g) / 14
+            avg_loss = (avg_loss * 13 + l) / 14
+        rs = avg_gain / avg_loss if avg_loss else float("inf")
+        out["rsi"] = round(100 - (100 / (1 + rs)), 1)
+
+        # MACD(12,26,9)
+        macd_line   = [a - b for a, b in zip(_ema_series(closes, 12), _ema_series(closes, 26))]
+        signal_line = _ema_series(macd_line, 9)
+        out["macd"]      = round(macd_line[-1], 3)
+        out["macd_sig"]  = round(signal_line[-1], 3)
+        out["macd_hist"] = round(macd_line[-1] - signal_line[-1], 3)
     except Exception:
         pass
     return out
@@ -351,21 +369,22 @@ def get_fear_greed() -> dict:
 
 def get_top_movers(symbols: list[str], n: int = 15, days: int = 5) -> list[str]:
     """
-    Return the top N symbols by absolute 5d price move using ONE Polygon snapshot
-    call instead of one call per symbol — O(1) vs O(N) regardless of universe size.
-    Always includes SPY and QQQ as macro anchors.
+    Return the top N symbols by absolute 1d price move using Alpaca's bulk
+    snapshot endpoint (chunked at 100 symbols/call) instead of one call per
+    symbol. Always includes SPY and QQQ as macro anchors.
     """
     anchors = [s for s in ["SPY", "QQQ"] if s in symbols]
     sym_set = set(symbols) - set(anchors)
 
     try:
-        tickers = _poly("/v2/snapshot/locale/us/markets/stocks/tickers").get("tickers", [])
-        # todaysChangePerc = 1-day move; use as a proxy for momentum / activity
-        moves = {
-            t["ticker"]: abs(t.get("todaysChangePerc", 0))
-            for t in tickers
-            if t["ticker"] in sym_set
-        }
+        snaps = _alpaca_snapshots(list(sym_set))
+        moves = {}
+        for sym, snap in snaps.items():
+            day  = (snap or {}).get("dailyBar") or {}
+            prev = (snap or {}).get("prevDailyBar") or {}
+            c, pc = day.get("c"), prev.get("c")
+            if c and pc:
+                moves[sym] = abs(c / pc - 1)
     except Exception:
         # ponytail: fallback to legacy per-symbol scan if snapshot call fails
         moves = {}
@@ -417,21 +436,20 @@ def is_extended_hours() -> bool:
 
 def get_afterhours_movers(symbols: list[str], n: int = 15) -> list[str]:
     """
-    Return top N S&P 500 stocks by absolute after-hours price move in ONE snapshot call.
-    Compares lastTrade.price vs day.close — the gap is the after-hours move.
+    Return top N S&P 500 stocks by absolute after-hours price move via Alpaca's
+    bulk snapshot endpoint. Compares latestTrade.price vs dailyBar.close — the
+    gap is the after-hours move.
     """
     anchors = [s for s in ["SPY", "QQQ"] if s in symbols]
     sym_set = set(symbols) - set(anchors)
     try:
-        tickers = _poly("/v2/snapshot/locale/us/markets/stocks/tickers").get("tickers", [])
+        snaps = _alpaca_snapshots(list(sym_set))
         moves = {}
-        for t in tickers:
-            if t["ticker"] not in sym_set:
-                continue
-            day_close = t.get("day", {}).get("c", 0)
-            ah_price  = t.get("lastTrade", {}).get("p", 0)
+        for sym, snap in snaps.items():
+            day_close = ((snap or {}).get("dailyBar") or {}).get("c", 0)
+            ah_price  = ((snap or {}).get("latestTrade") or {}).get("p", 0)
             if day_close and ah_price:
-                moves[t["ticker"]] = abs(ah_price / day_close - 1)
+                moves[sym] = abs(ah_price / day_close - 1)
         top = sorted(moves, key=moves.get, reverse=True)[: max(0, n - len(anchors))]
         return anchors + top
     except Exception:
