@@ -451,6 +451,23 @@ Closed the three follow-ups from the stop-loss fix:
 
 **Verified:** risk tests 7/7, CC self-checks 5/5, dry-run cycles clean, `_PAPER=True` everywhere. launchd job restarted 2026-07-06 12:33 ET on the new code — first cycle logged the book split + RISK-ON regime.
 
+## 2026-07-06 — underwriting-reviewer first run: CHALLENGE on 641 Powder Springs narrative (price stands)
+
+**Trigger:** First live run of the new `underwriting-reviewer` subagent, on the 641 Powder Springs GO (LOI out at $910K; 633 investors enrolled today).
+
+**Verdict: CHALLENGE — the $910K offer is defensible; the internal numbers used to sell it don't reproduce.**
+1. **Cap rate mislabeled:** "7.85% on offer" is actually the cap on the $1.5M ASK. Real going-in on the $910K offer = 12.95%.
+2. **Stabilized NOI overstated ~8%:** stated $117,850; recomputes to $108,108 from its own inputs (14u × $1,300 × 12, 10% vacancy, 45% expenses); ~$104K at the KB's 12–15% economic-loss floor.
+3. **Exit cap never stressed:** single-point 6.5% exit vs 12.95% going-in — ~645bps of unstressed compression; KB requires +50bps minimum stress.
+4. **Tax proforma used the banned scale-to-price method** ($16,000); correct = $12,554 × 1.03 ≈ $12,930 (violation was conservative in direction, still a process miss).
+5. **Buy-box misfit:** 43% vacant, 1965, bridge-only, $65K/unit — hits Smyrna's own "stabilized" red flags; profile is distressed value-add, not the bucket it was screened in.
+
+**Funnel exposure checked:** live drip first-touch quotes fund-level targets (6% pref, ~18.21% ROI, 2.09x), NOT the challenged 23.3%/3.21x — no misrepresentation in flight. Pitch deck + Loom in the funnel still need a spot-check for deal-specific return claims.
+
+**Open (Brian to green-light):** rebuild the Analyzer at $104–108K NOI, rerun returns off $910K, stress exit 7.0–7.5%, reclassify the deal value-add, spot-check the deck/Loom.
+
+**Owner:** Brian Norton
+
 ## 2026-07-06 — Platform upgrades: Sonnet 5 everywhere, /usage-audit monthly, /audit retired
 
 **Decision:** Adopted the June 2026 Claude releases across the AIOS, retired `/audit` (moved to `archives/skills/audit/`), and replaced it with `/usage-audit` — a monthly retro that mines the past month's sessions AND scans Claude's latest releases, modeled on the 2026-07-06 91-session review.
@@ -503,3 +520,96 @@ Closed the three follow-ups from the stop-loss fix:
 **Decision:** (1) Weekly options: DTE window 30–45 → 4–10 (next-Friday weeklys), profit-close 70% → 60%, roll rule 21-DTE → manage at ≤1 DTE (ITM → roll next week for net credit; OTM → let expire, premium banks, re-sell). ~4x more premium events per month = faster proof + higher gross yield, at the cost of more assignment churn and gamma risk near expiry. (2) Two-stage fill pricing: mid for 45s, then bid — floored at the price where annualized yield stays ≥10% (skip if bid is below floor). Mirrored for buy-to-close (mid → ask). (3) CC cycle throttle 4h → 1h.
 
 **Known ceiling:** no earnings-date filter — weeklys will occasionally straddle an earnings print (INTC/QCOM late July). Acceptable in paper; wire an earnings calendar before real money.
+
+## 2026-07-07 — Carousel hero art: Higgsfield → kie.ai (GPT Image 2 + Veo 3 Fast)
+
+**Trigger:** Optimizing the marketing/social-media skills for non-slop carousels + quote posts. Higgsfield was the paid hero-image path (and Brian is out of Higgsfield credits). Evaluated Luma, Higgsfield, and kie.ai.
+
+**Decision:** Replace Higgsfield with kie.ai (`scripts/kie_hero.py`, `KIE_API_KEY` in `.env`) — one pay-per-generation API for both steps. Image = GPT Image 2 (`gpt-image-2-text-to-image`, `/api/v1/jobs/createTask`, ~6 credits ≈ $0.03/image, default aspect `4:3` to match the cover band). Motion = Veo 3 Fast (`veo3_fast`, its own `/api/v1/veo/generate` endpoint, ~$0.40/8s) — chosen over Sora 2 on price, per Brian.
+
+**Why kie over Luma/Higgsfield:** at ~2 posts/week, pay-per-use (~$3–5/mo) beats a flat subscription (Luma Plus $30, Higgsfield $15–39). kie is ~30–70% under official API rates and matches the existing scripted CLI workflow.
+
+**Honest constraints:** (1) kie does NOT carry Luma — so "Luma for movement" is off the table; Veo 3 Fast is the substitute. (2) Video is the cost driver: ~$0.005/credit, so images are pennies but one Veo clip ≈ 80 credits — a funded balance is required (Brian topping up). (3) CapCut has no official automation API — stays a manual final-polish step. (4) Metricool needs a public MP4 URL for motion covers; hosting not yet wired, so motion is download-and-post-manually until confirmed.
+
+**Verified:** image path tested live end-to-end (auth → GPT Image 2 hero → rendered as branded cover slide). Motion path coded + endpoint confirmed live on the key, but untested pending credit top-up (balance ~$0.34 < ~$0.40/clip).
+
+**Also shipped:** local brand fonts (Outfit + Fraunces) embedded in `carousel_render_html.py` (Google Fonts @import was silently failing → every prior carousel rendered in Helvetica); new `quote` slide type for typography-only inspirational-quote posts.
+
+## 2026-07-07 — Replace GoHighLevel with local CRM stack (cancel sub after cutover)
+
+**Trigger:** Brian asked to "clone GHL locally." Live-API audit showed the paid sub was used for only a slice: 804 contacts + tags, the monthly newsletter, 4 workflows, SMS blasts, calendar booking, and website hosting (www.olivetreeinv.io → sites.ludicrous.cloud). Opportunities/pipelines empty; Social Planner unused (Metricool owns it).
+
+**Decision:** Rebuild the used slice locally — SQLite (`data/olive.db`) + Gmail API + launchd (moving to the Mac mini M4) — then cancel GHL (~$97–297/mo saved). Email via Gmail Workspace (SES is the fallback if deliverability degrades). SMS dropped in v1 (no Twilio wiring; revisit if a raise needs blasts). Website rebuilt static → Cloudflare Pages; only Olive Tree site + 641 landing survive; Find My House + Investment funnels archived as PDFs and retired.
+
+**Shipped:** `ghl_export.py` (full export → archives/ghl-export-2026-07-06/ + db import, 804/804), `crm.py` + /crm skill, `newsletter.py` (build/test-send/send/scan-unsubs, resume-safe, CAN-SPAM unsub), `drip.py` + 3 drips + `drip_worker.py` (launchd com.olivetree.drip, daily 9am), `capital_raise.py` rewired off GHL, `ghl_workflow_export.py` (Playwright, pending Brian session), `site/` static rebuild (5 pages, footer typo fixed), full page archive (10 pages PDF+HTML+assets). Code-reviewed; 3 criticals fixed (token in argv, double-send race, tag-strip on interrupted import).
+
+**Open before cancel:** newsletter smart-list audience → `newsletter` tag (GHL tag had 0 contacts — sends went to a smart list); Playwright workflow-copy pull; Web3Forms access key; Cloudflare Pages deploy + apex/www DNS repoint; GCal appointment-schedule link (replaces booking widget — note: only 394/804 contacts have email).
+
+## 2026-07-07 — Code-review stack: keep two-model setup, fix enforcement, adopt free upgrades
+
+**Trigger:** Brian asked whether the Codex-as-second-reviewer setup could be improved. Research finding: the tooling was fine but the routine wasn't running — last Codex review was June 8 with ~25 scripts landed since, and the CI review only fires on PRs to main (rare in this workflow).
+
+**Decision:** Keep the two-subscription stack (Codex + Claude), skip paid third-party bots (CodeRabbit $24/mo, Greptile $30/mo — PR-centric team tools, wrong shape for a solo local-script workflow). Reserve `/code-review ultra` ($5–20/run) for merges touching money paths (capital raise, drips, financial calcs). Fix the compliance gap with automation, not memory.
+
+**Shipped:** (1) heartbeat now flags scripts modified after the newest `.codex-review` report — daily 7:45am enforcement; (2) `AGENTS.md` at repo root so every Codex review (CLI/plugin/GitHub) gets repo context: financial-calc rules, send/delete always-flags, tax-reassessment + expense-sourcing domain rules; (3) full backlog sweep — 83 scripts, 67 clean, 2 HIGH fixed (qb_auth refresh token printed to stdout → 0600 file + masked; wiki_clientclub `verify=False` → TLS re-enabled), broker_search Gmail fetch parallelized (Monday interactive path). Deliberately skipped 13 "parallelize" MEDs in background launchd/cloud jobs — regression risk in working automation, zero felt latency benefit.
+
+**Pending Brian:** install OpenAI's official Claude Code plugin (`/plugin marketplace add openai/codex-plugin-cc` → `/plugin install codex@openai-codex` → `/codex:setup`) — adds `/codex:review` + `/codex:adversarial-review` in-session, $0 (existing ChatGPT auth). Optional: enable Codex automatic GitHub PR reviews (also $0) for a second lens on PRs to main.
+
+## 2026-07-07 — Retire /level-up; fold the scope check into /usage-audit
+
+**Trigger:** Brian asked to delete /level-up and keep what's useful inside /usage-audit. The weekly interview never became a ritual, and its one recurring output (find + scope one automation) overlapped with the monthly audit's "TOP 3 CHANGES".
+
+**Decision:** One recurring thinking skill instead of two. /usage-audit gains Step 2.5 — before any new automation makes TOP 3 CHANGES it must pass the [removed framework] filters: EAD (eliminate first, don't automate waste), lowest autonomy level that works, ship-boring build order (prompt → deterministic → AI-assisted → agent), and a KPI bucket + metric. 
+
+**Shipped:** skill moved to `archives/skills/level-up/` (house rule — never delete); usage-audit SKILL.md updated; CLAUDE.md, README, EXPANSIONS, onboard skill, and removed-framework reference all repointed; wiki notes for level-up AND audit marked retired (audit's wiki note was never updated when it retired in June — fixed).
+
+## 2026-07-07 — Strip all third-party framework content; add first-principles pass to /usage-audit
+
+**Trigger:** Brian: "Don't want anything from the kit author preserved — remove it." Then: add first-principles thinking to how the audit evaluates the system.
+
+**Decision:** All third-party framework branding, attribution, and trademark notices removed from live files (CLAUDE.md, usage-audit + onboard skills, wiki notes). The kit README and framework reference moved to `archives/` (never-delete rule; git history keeps copies regardless — Brian can order a hard purge). The four scope-check filters survive in usage-audit Step 2.6 as plain unbranded principles. New Step 2.5: a first-principles pass on the system itself — name the quarter's fundamentals, surface the assumption under each big time/money consumer, zero-base rebuild ("would this get rebuilt from scratch today?"), and compare workflow cost to what the outcome fundamentally requires. Max 2 findings feed the report; no manufactured churn.
+
+**Hard purge executed (same day):** Brian ordered the full purge. All third-party framework files (kit README, framework reference, level-up + audit skills) stripped from every commit in git history via git-filter-repo (--invert-paths on 8 paths + string redaction in remaining blobs); all 7 branches force-pushed to GitHub. Verified: zero matching blobs in any reachable commit, working tree clean, uncommitted work preserved via snapshot-commit-then-reset. Note: GitHub may retain orphaned pre-rewrite objects server-side until its GC runs — a support ticket or repo delete/recreate is the only way to force that. Any other clone of this repo (Mac mini) must be re-cloned, not pulled.
+
+## 2026-07-07 — Trading desk redesign: Premium Desk v2 (CC/wheel-primary, momentum retired), Alpaca-only data, new paper account + equity anomaly breaker
+
+**Trigger:** Polygon vs Alpaca A/B (started 2026-06-26, tracked in the `data-feed-comparison-experiment` memory) finished: 0.4bps average price diff, 100% quant-gate pass/fail agreement across the comparison window. Separately, the momentum book's walk-forward gate kept passing on small OOS sample sizes — noise, not edge. Separately again: the paper account's equity dropped from ~$100k to ~$3.5k overnight with zero entries in Alpaca's account activities log — an account/data glitch, not a trading loss.
+
+**Decisions:**
+1. **Data:** Polygon canceled. Alpaca (Algo Trader Plus — SIP equities + OPRA options) is now the sole market-data source everywhere in the desk; `trading_data.py` migrated, `POLYGON_API_KEY` no longer read anywhere.
+2. **Strategy:** Redesigned "Premium Desk v2" — the covered-call/wheel book (`trading_covered_calls.py`, rewritten CSP-first, 30–45 DTE entries, 21-DTE management, new `trading_screener.py` for IV-rank/richness + earnings filter + optional Claude event-screen) is now the PRIMARY book. The momentum pipeline (research → quant → risk → execution) and the SPY core sweep are retired as the default path — not deleted, gated behind `--momentum` in `trading_orchestrator.py`. Goal restated: $1,250/mo premium on the $50k book (30% annualized yield-on-book), with an honest 15–25% base case once management drag is netted in — replaces the old $500/mo momentum-era target.
+3. **Account:** the glitched paper account is abandoned (reported to Alpaca, no explanation found on their side or ours). A new Alpaca paper account was created; Brian needs to paste the new key/secret into `.env` before running live cycles.
+4. **New safeguard:** `scripts/trading_guard.py` — an equity anomaly circuit breaker. Every cycle, before any trading: compares Alpaca's `equity` vs `last_equity`; if the gap exceeds 5% and the account activities log can't explain at least 95% of it, the desk HALTS (writes `data/trading_halt.json`, pushes an ntfy/iMessage alert) and stays halted until the flag is manually cleared. Fails open (doesn't halt) on an Alpaca fetch error, so an outage in the breaker itself can't take the desk down. This is the safeguard that would have caught the incident above before it ever reached a sizing decision.
+
+**Shipped:** `trading_orchestrator.py` rewired (CC/wheel-primary default cycle, `--momentum` flag, `--clear-halt`, guard wired in first, both `--once` and `--loop` fail soft on an Alpaca error mid-cycle); `trading_report.py` bottom-line + scorecard updated to the $1,250 target and yield-on-book framing, momentum sections labeled retired; `trading-desk` SKILL.md rewritten for the v2 architecture and risk table; `trading_guard.py --test` self-check passing (6 cases incl. the actual incident's numbers).
+
+## 2026-07-07 — Pass on pxpipe (token-compression proxy)
+
+**Trigger:** Brian asked for a benefit + security review of https://github.com/teamchong/pxpipe — a local proxy that renders bulky Claude Code context (system prompt, tool docs, old history, large tool outputs) as dense PNGs, cutting input tokens ~59–70% on Fable 5.
+
+**Decision:** Pass. Security came back clean (no phone-home, no secret logging, no install scripts; caveats: unauthenticated dashboard — loopback only — and 4xx request bodies persisted to `~/.pxpipe/4xx-bodies/`). Rejected on fit, not safety:
+1. **Silent number confabulation** — its own benchmarks show 13/15 exact-string recall from imaged content on Fable 5, misses are confident wrong values. Deal sessions image exactly the blocks (T-12/rent-roll/OM tool outputs) whose digits flow into offer prices. Worst possible workload for a lossy compressor.
+2. **Savings aren't dollars here** — interactive use is subscription-billed (token cuts = limit headroom only); API-billed scripts run models off its allowlist; cloud routines can't use a local proxy.
+3. **New always-on daemon in the critical path** + PNG-encode latency, against the speed-first priority.
+
+**Revisit trigger:** regularly hitting Max usage limits AND pxpipe ships its verbatim-risk guard (planned, not built) — or Anthropic ships native optical context compression, which supersedes it entirely.
+
+## 2026-07-07 — GHL deep reproduction: full account footprint captured, workflow copy recovered
+
+**Decision:** Ran a live API audit of the entire GoHighLevel account (not assumptions) and recreated every critical piece locally. Probed all endpoint families → 15 in use. Deep-exported everything to `archives/ghl-export-deep-2026-07-07/` (804 contacts, 20 email campaigns w/ rendered HTML + builder JSON, 4 workflows, 25 funnel pages, 4 forms/3 submissions, 2 surveys, 169 media files, 705 conversations/5883 messages, 2 pipelines, 5 users). Media mirrored to `archives/ghl-media-2026-07-07/` (65MB). Cracked the undocumented internal workflow endpoint to recover the actual email/SMS step copy (the public API only returns workflow names).
+
+**What this closed:**
+- Newsletter audience (open cutover item #1): recovered the real recipient list from conversation history (392 ids across 14 monthly sends) and tagged 341 contacts `newsletter` in olive.db (51 skipped DND, 0 no-email). Audience is no longer 0.
+- Drip copy (open item #2): replaced all placeholder drip templates with GHL-exact copy — `welcome/` (2 emails, from "Contact added" workflow), `agent-wholesaler/` (1 email, the buy-box outreach), `pitch-deck/` (1 email, deck delivery; removed 2 locally-invented follow-ups to match GHL). SMS bodies preserved as comments (email-only in v1).
+- Contacts refreshed: 804 upserted, Josh Germon's email backfilled from today's 641 Powder form submission, local-only tags preserved (union-only merge).
+
+**Findings needing Brian:**
+1. `tag-agent-wholesaler` email is Brian's SINGLE-FAMILY/land buy box (3/2, 1500sqft, $350-450k, ARV+200k, metro-Atlanta counties) — not the multifamily buy box. Kept verbatim; confirm it's still the intended outreach.
+2. 18 of 25 funnel pages ("Find My House - Website" + "Investment" funnels) have no domain attached — exist only inside the GHL editor, not publicly exportable. Recoverable via the same internal endpoint if wanted.
+3. site/ fidelity gaps: 641 Powder live page has conflicting return blocks (18%/140% vs 30%/60%); Partner-with-us live page is a bare calendar widget (rebuild added copy). Confirm intended numbers.
+4. Campaign-level email stats (opens/clicks) need a scope the Private Integration wasn't granted (`/emails/schedule/{id}/stats` → 401).
+5. Workflow TRIGGER configs live in a separate Firebase file not yet pulled (step content is complete; triggers inferred from workflow names).
+
+**Why:** Brian's first migration attempt was built off a shallow export and guessed drip copy. This pass verified against the live API end-to-end so the local stack mirrors what GHL actually does before the sub is canceled.
+
+**Reproducibility:** `scripts/ghl_workflow_export.py` fixed (real internal endpoint + full SPA header set) — re-runnable while logged into GHL in Chrome. Endpoint map appended to `references/gohighlevel-api.md`.

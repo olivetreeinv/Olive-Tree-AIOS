@@ -1,0 +1,342 @@
+{
+  "conversation": {
+    "id": "FYvQTq8WieH48wt0sUiD",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249880568,
+    "dateUpdated": 1783364282941,
+    "lastMessageDate": 1783364282934,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Susan, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "nzMYcvswoqk21bRb66mo",
+    "fullName": "Susan Mueller",
+    "contactName": "Susan Mueller",
+    "companyName": "Caldwell Banker Realty",
+    "email": "susan.mueller@cbrealty.com",
+    "phone": "+17708279678",
+    "tags": [
+      "agent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      3,
+      2
+    ],
+    "sort": [
+      1783364282934
+    ]
+  },
+  "messages": [
+    {
+      "id": "flyAoNgBHx3VDm9zhiRz",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Susan, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "nzMYcvswoqk21bRb66mo",
+      "contentType": "text/plain",
+      "conversationId": "FYvQTq8WieH48wt0sUiD",
+      "dateAdded": "2026-07-06T18:58:02.204Z",
+      "dateUpdated": "2026-07-06T18:58:06.023Z",
+      "source": "workflow",
+      "altId": "SM309ab66978c56e4952364d698f806d79",
+      "from": "+16789712411",
+      "to": "+17708279678",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "vcGkHZO1wUEqmM4tH8qn",
+      "direction": "outbound",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "Hello Susan, Here's your copy of the pitch deck you requested. We will reach out and discuss shortly\n\nBrian Norton\n\nOlive Tree Investments\n\n\nIf you no longer wish to receive these emails you may unsubscribe\n[https://services.msgsndr.com/emails/builder/unsubscribe-view/SLq7B2pldVzfQLKjGpvw/nzMYcvswoqk21bRb66mo?email=susan.mueller%40cbrealty.com&message_id=1ORSZaFhgbCMNOdNERoW&time_stamp=1783364281154]",
+      "contactId": "nzMYcvswoqk21bRb66mo",
+      "contentType": "text/html",
+      "conversationId": "FYvQTq8WieH48wt0sUiD",
+      "dateAdded": "2026-07-06T18:58:01.202Z",
+      "dateUpdated": "2026-07-06T18:58:01.467Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "1ORSZaFhgbCMNOdNERoW"
+          ],
+          "direction": "outbound",
+          "subject": "Here Is Your Pitch Deck"
+        }
+      },
+      "source": "workflow",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "fNvY79bSN4T1rZfbMkI9",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "nzMYcvswoqk21bRb66mo",
+      "conversationId": "FYvQTq8WieH48wt0sUiD",
+      "dateAdded": "2026-06-17T14:01:15.499Z",
+      "dateUpdated": "2026-06-17T14:01:15.499Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "PwW3eUpVCCZesk9PXkyN"
+          ],
+          "direction": "outbound",
+          "subject": "Smart Money Left Miami. Here's Where It Went"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "QRb47Urs0WEkqmLIpxXK",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "nzMYcvswoqk21bRb66mo",
+      "conversationId": "FYvQTq8WieH48wt0sUiD",
+      "dateAdded": "2026-05-16T12:00:06.423Z",
+      "dateUpdated": "2026-05-16T12:00:06.423Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "W0aOrcAZGKnITazJUrVT"
+          ],
+          "direction": "outbound",
+          "subject": "Southeast Took 40% of All Returns. Capital Followed. Here's Why"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "cQ2MoNDYwyUEhq5evEqf",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "nzMYcvswoqk21bRb66mo",
+      "conversationId": "FYvQTq8WieH48wt0sUiD",
+      "dateAdded": "2026-04-14T14:02:13.405Z",
+      "dateUpdated": "2026-04-14T14:02:13.405Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "o6Lf1SzsYsFA9Bx9oFeR"
+          ],
+          "direction": "outbound",
+          "subject": "BREAKING: Inflation 3.3%. Migration Patterns Reshape Markets"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "8682H8ff6jJ9GWUCRZ5o",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "nzMYcvswoqk21bRb66mo",
+      "conversationId": "FYvQTq8WieH48wt0sUiD",
+      "dateAdded": "2026-03-24T14:42:43.040Z",
+      "dateUpdated": "2026-03-24T14:42:43.040Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "yectM4mr0RSPOu5mDQsn"
+          ],
+          "direction": "outbound",
+          "subject": "Spring Sellers Get 20% More Offers. Rates Just Rose."
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "DfJ57PKBPpaJSM7Tidec",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "nzMYcvswoqk21bRb66mo",
+      "conversationId": "FYvQTq8WieH48wt0sUiD",
+      "dateAdded": "2026-02-20T15:31:02.170Z",
+      "dateUpdated": "2026-02-20T15:31:02.170Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "Xj4VUAcsmVd3QD5hY5HU"
+          ],
+          "direction": "outbound",
+          "subject": "Rates Just Hit 5.87%. Spring Will Be Chaos."
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "LD8IhROiAB23TMmKgAiP",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "nzMYcvswoqk21bRb66mo",
+      "conversationId": "FYvQTq8WieH48wt0sUiD",
+      "dateAdded": "2026-01-21T14:08:54.068Z",
+      "dateUpdated": "2026-01-21T14:08:54.068Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "yREQcYTq6EYUgvea1fuk"
+          ],
+          "direction": "outbound",
+          "subject": "17% of Americans Are Buying in 2026. Are You?"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "aafgPV6oeJ6eFSWJm3VB",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "nzMYcvswoqk21bRb66mo",
+      "conversationId": "FYvQTq8WieH48wt0sUiD",
+      "dateAdded": "2025-12-11T15:46:13.118Z",
+      "dateUpdated": "2025-12-11T15:46:13.118Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "aQM0WkeIXgRTlhQXMOYK"
+          ],
+          "direction": "outbound",
+          "subject": "December Opportunity: Rates + Deal Flow Align"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "blSi4T1hdq4yjxtfIFIa",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "nzMYcvswoqk21bRb66mo",
+      "conversationId": "FYvQTq8WieH48wt0sUiD",
+      "dateAdded": "2025-11-14T14:03:09.661Z",
+      "dateUpdated": "2025-11-14T14:03:09.661Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "fM6cLuuWqv5iiDtR2hv2"
+          ],
+          "direction": "outbound",
+          "subject": "2026 Will Separate Buyers From Watchers. Here's Why."
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "NhIMgiHc9iMZIsgu1wXi",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "nzMYcvswoqk21bRb66mo",
+      "conversationId": "FYvQTq8WieH48wt0sUiD",
+      "dateAdded": "2025-10-21T14:05:02.963Z",
+      "dateUpdated": "2025-10-21T14:06:20.830Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "BH2vAcQHycVe0gXtdlUj"
+          ],
+          "direction": "outbound",
+          "subject": "Why Mid-October Could Be the Best Time to Buy"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "Ln2K5qJJX12ANcxprLs3",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "nzMYcvswoqk21bRb66mo",
+      "conversationId": "FYvQTq8WieH48wt0sUiD",
+      "dateAdded": "2025-09-23T14:10:10.638Z",
+      "dateUpdated": "2025-09-23T14:10:24.420Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "lP0m8NlFoO6zjPv35KJA"
+          ],
+          "direction": "outbound",
+          "subject": "While Others Wait, Smart Money Moves"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "Zg6TSf1nIXxTv1SwMjWp",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "nzMYcvswoqk21bRb66mo",
+      "conversationId": "FYvQTq8WieH48wt0sUiD",
+      "dateAdded": "2025-08-19T14:08:48.045Z",
+      "dateUpdated": "2025-08-19T14:08:48.045Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "YQrp7hL7nwI21XrvaJkB"
+          ],
+          "direction": "outbound",
+          "subject": "Why 6.6% rates aren't stopping smart buyers"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "hPWqKQi8mInSLiurea3n",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "nzMYcvswoqk21bRb66mo",
+      "conversationId": "FYvQTq8WieH48wt0sUiD",
+      "dateAdded": "2025-07-22T14:10:31.435Z",
+      "dateUpdated": "2025-07-22T14:11:27.296Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "dxpWFKBQXemMEfeBVlsF"
+          ],
+          "direction": "outbound",
+          "subject": "Real Estate Tax & Rate Shifts You Can\u2019t Ignore"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "Tea68YX7r9wDLdEheNtF",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "nzMYcvswoqk21bRb66mo",
+      "conversationId": "FYvQTq8WieH48wt0sUiD",
+      "dateAdded": "2025-06-18T12:31:05.350Z",
+      "dateUpdated": "2025-06-18T12:32:45.674Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "OHbawDqV1c4lzx8zR814"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

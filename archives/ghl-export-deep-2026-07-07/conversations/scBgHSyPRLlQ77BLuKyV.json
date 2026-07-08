@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "scBgHSyPRLlQ77BLuKyV",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781905929502,
+    "dateUpdated": 1783364417036,
+    "lastMessageDate": 1783364417032,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Jeff & Paula, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781905930411,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "opCh6uPhpHgR2pViFaei",
+    "fullName": "Jeff & Paula",
+    "contactName": "Jeff & Paula",
+    "companyName": null,
+    "phone": "+51943314230",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364417032
+    ]
+  },
+  "messages": [
+    {
+      "id": "enH6al5tLjRsnEWwiEDx",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Jeff & Paula, a copy of the pitch deck has been sent to your email.",
+      "contactId": "opCh6uPhpHgR2pViFaei",
+      "contentType": "text/plain",
+      "conversationId": "scBgHSyPRLlQ77BLuKyV",
+      "dateAdded": "2026-07-06T19:00:16.506Z",
+      "dateUpdated": "2026-07-06T19:00:16.506Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+51943314230",
+      "error": "Error 21408 - Your account is not allowed to send SMS to this country or region.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "PloKVxdGsFiC7w4tny5x",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Jeff & Paula, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "opCh6uPhpHgR2pViFaei",
+      "contentType": "text/plain",
+      "conversationId": "scBgHSyPRLlQ77BLuKyV",
+      "dateAdded": "2026-06-19T21:52:09.743Z",
+      "dateUpdated": "2026-06-19T21:52:11.624Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+51943314230",
+      "error": "Error 21408 - Your account is not allowed to send SMS to this country or region.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

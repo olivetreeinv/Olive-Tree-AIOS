@@ -1,13 +1,18 @@
 #!/usr/bin/env python3
 """
-trading_orchestrator.py — Main loop for the Olive Tree Trading Desk.
+trading_orchestrator.py — Main loop for the Olive Tree Trading Desk (Premium Desk v2).
 
-Agent pipeline per cycle:
-  1. Research agent  — Claude theses (JSON)
-  2. Quant agent     — walk-forward backtest gate
-  3. Risk agent      — sizing + veto
-  4. Execution agent — Alpaca paper orders
-  5. Report          — equity snapshot + iMessage alerts
+Default cycle (CC/wheel-primary):
+  0. Equity anomaly guard — halts the whole cycle on an unexplained equity jump
+  1. CC/wheel cycle  — scripts/trading_covered_calls.py (screener → CSP-first entries,
+     21-DTE management, cover, wheel)
+  2. Report          — equity snapshot + alerts
+
+The original momentum pipeline (Claude research → quant walk-forward gate →
+risk veto → Alpaca paper execution) and the SPY core sweep are RETIRED as the
+default path — the walk-forward gate was passing small-sample noise. Both are
+still fully wired and opt back in behind --momentum for anyone who wants to
+resume/compare them; they are not deleted.
 
 Usage:
   # Single cycle (test before scheduling):
@@ -16,7 +21,10 @@ Usage:
   # Dry run — no orders, no API costs beyond data:
   python3 scripts/trading_orchestrator.py --once --dry-run
 
-  # Backtest only — no orders, just print quant gate results:
+  # Also run the retired momentum pipeline + SPY core sweep this cycle:
+  python3 scripts/trading_orchestrator.py --once --momentum
+
+  # Backtest only — no orders, just print quant gate results (momentum pipeline):
   python3 scripts/trading_orchestrator.py --backtest-only
 
   # Continuous loop (wrap with caffeinate to keep Mac awake):
@@ -24,6 +32,9 @@ Usage:
 
   # Show today's P&L:
   python3 scripts/trading_orchestrator.py --report
+
+  # Clear a tripped equity-anomaly halt:
+  python3 scripts/trading_orchestrator.py --clear-halt
 """
 
 import argparse
@@ -45,6 +56,7 @@ from scripts.trading_core  import sweep_to_core, release_core, CORE_BUFFER_USD
 from scripts.trading_execution import submit_order, sync_fills, get_open_positions, check_stops
 from scripts.trading_options   import find_contract, size_contracts, submit_option_order
 from scripts.trading_report import snapshot_equity, print_performance, send_alert, send_session_report
+from scripts.trading_guard  import check_and_guard, clear_halt
 from db.connection import Session
 from db.schema import TradingSignal
 
@@ -120,11 +132,21 @@ def _save_signal(thesis_id: int | None, result: dict) -> int | None:
 
 def run_cycle(dry_run: bool = False, market_session: str = "equities",
               with_insiders: bool = False, with_options: bool = False,
-              no_cc: bool = False):
+              no_cc: bool = False, momentum: bool = False):
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     print(f"\n{'='*60}")
-    print(f"  Trading Desk Cycle — {now}  [{market_session}]")
+    print(f"  Trading Desk Cycle — {now}  [{market_session}]"
+          f"{'  [+momentum]' if momentum else ''}")
     print(f"{'='*60}")
+
+    # ── Equity anomaly guard — before ANY trading this cycle ──────────────────
+    # Read-only check (writes only a halt-flag file + alert if it trips); safe
+    # to run under --dry-run too, so a smoke test still exercises it.
+    halted, halt_reason = check_and_guard()
+    if halted:
+        print(f"  🛑 EQUITY ANOMALY HALT — {halt_reason}")
+        print(f"       Clear with: python3 scripts/trading_orchestrator.py --clear-halt")
+        return
 
     # ── Account check + day-open snapshot ─────────────────────────
     acct = get_account()
@@ -140,6 +162,25 @@ def run_cycle(dry_run: bool = False, market_session: str = "equities",
         msg = f"Daily halt active — portfolio down ≥2% today. No new trades."
         print(f"  🛑 {msg}")
         send_alert("Trading Desk — HALT", msg)
+        return
+
+    # ── CC/wheel cycle — the primary book (equities + extended sessions) ──────
+    if market_session in ("equities", "extended") and not no_cc:
+        _maybe_run_cc(dry_run=dry_run)
+
+    if not momentum:
+        # Momentum pipeline + SPY core sweep are retired as the default path —
+        # the walk-forward gate was passing small-sample noise. Re-enable with --momentum.
+        print(f"\n  [momentum] retired — pass --momentum to run research/quant/risk/execution + core sweep")
+        if not dry_run:
+            check_stops(session=market_session)  # still enforces stops on any legacy open momentum positions
+            sync_fills()
+        print(f"\n  [report] Equity snapshot...")
+        if not dry_run:
+            snapshot_equity()
+        else:
+            print(f"        [DRY RUN] Skipped snapshot.")
+        print(f"\n  Cycle complete.")
         return
 
     # ── Momentum book — all sizing runs off $50k sub-book ─────────────────────
@@ -186,9 +227,6 @@ def run_cycle(dry_run: bool = False, market_session: str = "equities",
 
     if not theses:
         print("  No theses returned. Nothing to trade.")
-        # Still run CC cycle — it's independent of momentum theses
-        if market_session in ("equities", "extended") and not no_cc:
-            _maybe_run_cc(dry_run=dry_run)
         return
 
     # ── Steps 2–4: Quant → Risk → Execute per thesis ──────────────
@@ -355,11 +393,10 @@ def run_cycle(dry_run: bool = False, market_session: str = "equities",
                     f"qty={decision.qty:.4f}  notional=${decision.position_usd:,.2f}  stop=${decision.stop_price:.2f}",
                 )
 
-    # ── CC cycle (equities + extended sessions only, throttled to 4h) ─────────
-    if market_session in ("equities", "extended") and not no_cc:
-        _maybe_run_cc(dry_run=dry_run)
+    # (CC/wheel cycle already ran at the top of run_cycle, ahead of the momentum pipeline)
 
-    # ── Core SPY sweep — idle cash → SPY after all other entries ──────────────
+    # ── Core SPY sweep — idle cash → SPY after all other entries (--momentum only) ────
+
     # Only equities session (market hours); skipped for crypto/extended/idle.
     if market_session == "equities":
         sweep_to_core(dry_run=dry_run)
@@ -396,7 +433,14 @@ def main():
     ap.add_argument("--market-session", default="auto", choices=["auto", "equities", "extended", "crypto", "idle"],
                     help="Force session type (default auto-detects by time)")
     ap.add_argument("--no-cc", action="store_true", help="Disable covered-call cycle this run")
+    ap.add_argument("--momentum", action="store_true",
+                    help="Also run the retired momentum pipeline (research→quant→risk→execution) + SPY core sweep")
+    ap.add_argument("--clear-halt", action="store_true", help="Clear a tripped equity-anomaly halt and exit")
     args = ap.parse_args()
+
+    if args.clear_halt:
+        clear_halt()
+        return
 
     if args.report:
         print_performance()
@@ -419,9 +463,17 @@ def main():
         return "idle"  # 8pm–4am ET: no active session
 
     if args.once:
-        run_cycle(dry_run=args.dry_run, market_session=_session(),
-                  with_insiders=args.insiders, with_options=args.options,
-                  no_cc=args.no_cc)
+        # Same fail-safe as --loop below: an Alpaca outage mid-cycle shouldn't crash
+        # the process (matters once this runs unattended via launchd/cron).
+        try:
+            run_cycle(dry_run=args.dry_run, market_session=_session(),
+                      with_insiders=args.insiders, with_options=args.options,
+                      no_cc=args.no_cc, momentum=args.momentum)
+        except Exception as e:
+            msg = f"Cycle error: {e}"
+            print(f"  ⚠️  {msg}")
+            traceback.print_exc()
+            send_alert("Trading Desk — ERROR", msg)
         return
 
     if args.loop:
@@ -444,7 +496,7 @@ def main():
                 else:
                     run_cycle(dry_run=args.dry_run, market_session=sess,
                               with_insiders=args.insiders, with_options=args.options,
-                              no_cc=args.no_cc)
+                              no_cc=args.no_cc, momentum=args.momentum)
             except KeyboardInterrupt:
                 print("\n  Loop stopped by user.")
                 break

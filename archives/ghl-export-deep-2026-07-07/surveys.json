@@ -1,0 +1,16 @@
+{
+  "surveys": [
+    {
+      "id": "4MCXRtctxmzGRgPCrwpt",
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "name": "Findmyhouse survey"
+    },
+    {
+      "id": "g8HTghYuhrjpNGJ9RzSI",
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "name": "Find a Home survey"
+    }
+  ],
+  "total": 2,
+  "traceId": "a09a5059-0099-43ab-b4e9-30d4049e32e2"
+}

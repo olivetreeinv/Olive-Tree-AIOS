@@ -1,0 +1,56 @@
+{
+  "conversation": {
+    "id": "ZyF6oBY87B2HNQ5oXHHO",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364238324,
+    "dateUpdated": 1783364239056,
+    "lastMessageDate": 1783364239053,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Tim, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "PRTMPXXMMwQazG20B0Jm",
+    "fullName": "Tim Riley",
+    "contactName": "Tim Riley",
+    "companyName": "Mr Able Septic",
+    "phone": "+17062520113",
+    "tags": [
+      "contractor",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364239053
+    ]
+  },
+  "messages": [
+    {
+      "id": "SBNIx9OTzmFKpNFp0DOe",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Tim, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "PRTMPXXMMwQazG20B0Jm",
+      "contentType": "text/plain",
+      "conversationId": "ZyF6oBY87B2HNQ5oXHHO",
+      "dateAdded": "2026-07-06T18:57:18.370Z",
+      "dateUpdated": "2026-07-06T18:57:23.989Z",
+      "source": "workflow",
+      "altId": "SM695f2e18dba1e6c543f887713c7dd3cf",
+      "from": "+16789712411",
+      "to": "+17062520113",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "conversation": {
+    "id": "EX4Nt9R6AUj69cCi33D8",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364512970,
+    "dateUpdated": 1783364513774,
+    "lastMessageDate": 1783364513770,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Hunter, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "rPs6rTWSDblGM2KSts0l",
+    "fullName": "Hunter",
+    "contactName": "Hunter",
+    "companyName": "Supreme Lending",
+    "phone": "+12055681256",
+    "tags": [
+      "lender",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "profilePhoto": null,
+    "attributed": null,
+    "email": null,
+    "sort": [
+      1783364513770
+    ]
+  },
+  "messages": [
+    {
+      "id": "ekRr7PCOyIwkmggpPL6p",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hunter, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "rPs6rTWSDblGM2KSts0l",
+      "contentType": "text/plain",
+      "conversationId": "EX4Nt9R6AUj69cCi33D8",
+      "dateAdded": "2026-07-06T19:01:53.020Z",
+      "dateUpdated": "2026-07-06T19:01:59.060Z",
+      "source": "workflow",
+      "altId": "SMb1daf8f4ffa53ba2236c1df8181b3eb9",
+      "from": "+16789712411",
+      "to": "+12055681256",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

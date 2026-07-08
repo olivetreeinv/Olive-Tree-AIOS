@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "9FsAB9SLlWsjONIs2Fh6",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906215551,
+    "dateUpdated": 1783364911664,
+    "lastMessageDate": 1783364911661,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Chad, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906216494,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "tEPfIs7EAHnm977BUdwy",
+    "fullName": "Chad Fellabaum",
+    "contactName": "Chad Fellabaum",
+    "companyName": null,
+    "phone": "+17706172000",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364911661
+    ]
+  },
+  "messages": [
+    {
+      "id": "wDXxn4BGI0bcPXjmXzA4",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Chad, a copy of the pitch deck has been sent to your email.",
+      "contactId": "tEPfIs7EAHnm977BUdwy",
+      "contentType": "text/plain",
+      "conversationId": "9FsAB9SLlWsjONIs2Fh6",
+      "dateAdded": "2026-07-06T19:08:30.983Z",
+      "dateUpdated": "2026-07-06T19:08:30.984Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+17706172000",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "vxUNKGwadbpxpKgF5Y61",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Chad, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "tEPfIs7EAHnm977BUdwy",
+      "contentType": "text/plain",
+      "conversationId": "9FsAB9SLlWsjONIs2Fh6",
+      "dateAdded": "2026-06-19T21:56:55.813Z",
+      "dateUpdated": "2026-06-19T21:56:57.176Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+17706172000",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

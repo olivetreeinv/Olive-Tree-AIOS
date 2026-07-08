@@ -1,0 +1,146 @@
+{
+  "conversation": {
+    "id": "b2KsGUT5CQGLLld5l5Lk",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781905820452,
+    "dateUpdated": 1783436800761,
+    "lastMessageDate": 1783436800757,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Joshua, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 1,
+    "lastManualMessageDate": 1783372993368,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "PQPb8HTgpLiDh0AMkP2G",
+    "fullName": "Joshua Germon",
+    "contactName": "Joshua Germon",
+    "companyName": null,
+    "email": "jgermon55@aol.com",
+    "phone": "+16783824883",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": true,
+    "messageTypes": [
+      2,
+      3
+    ],
+    "sort": [
+      1783436800757
+    ]
+  },
+  "messages": [
+    {
+      "id": "uUnxu6yHaFRDumuEPmHT",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Joshua, a copy of the pitch deck has been sent to your email.",
+      "contactId": "PQPb8HTgpLiDh0AMkP2G",
+      "contentType": "text/plain",
+      "conversationId": "b2KsGUT5CQGLLld5l5Lk",
+      "dateAdded": "2026-07-07T15:06:40.036Z",
+      "dateUpdated": "2026-07-07T15:06:40.036Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+16783824883",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "5UQA5GKW7DlJg9b0zKBX",
+      "direction": "outbound",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "Hello Joshua, Here's your copy of the pitch deck you requested. We will reach out and discuss shortly\n\nBrian Norton\n\nOlive Tree Investments\n\n\nIf you no longer wish to receive these emails you may unsubscribe\n[https://services.msgsndr.com/emails/builder/unsubscribe-view/SLq7B2pldVzfQLKjGpvw/PQPb8HTgpLiDh0AMkP2G?email=jgermon55%40aol.com&message_id=u8WstLythTDorov1nmXt&time_stamp=1783436799096]",
+      "contactId": "PQPb8HTgpLiDh0AMkP2G",
+      "contentType": "text/html",
+      "conversationId": "b2KsGUT5CQGLLld5l5Lk",
+      "dateAdded": "2026-07-07T15:06:39.169Z",
+      "dateUpdated": "2026-07-07T15:06:39.430Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "u8WstLythTDorov1nmXt"
+          ],
+          "direction": "outbound",
+          "subject": "Here Is Your Pitch Deck"
+        }
+      },
+      "source": "workflow",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "j31b6H39mMH47TMl4FT3",
+      "direction": "inbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Awesome! I'm gonna take a look at it.!",
+      "contactId": "PQPb8HTgpLiDh0AMkP2G",
+      "contentType": "text/plain",
+      "conversationId": "b2KsGUT5CQGLLld5l5Lk",
+      "dateAdded": "2026-07-06T21:23:13.448Z",
+      "dateUpdated": "2026-07-06T21:23:13.448Z",
+      "altId": "SMe0da262f49bc83508e160ec05c276620",
+      "from": "+16783824883",
+      "to": "+16789712411",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "DbRZ6lRjoq2QUAVTV0bm",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Josh, a copy of the pitch deck has been sent to your email.",
+      "contactId": "PQPb8HTgpLiDh0AMkP2G",
+      "contentType": "text/plain",
+      "conversationId": "b2KsGUT5CQGLLld5l5Lk",
+      "dateAdded": "2026-07-06T18:56:43.398Z",
+      "dateUpdated": "2026-07-06T18:56:47.136Z",
+      "source": "workflow",
+      "altId": "SM2cc922e91f2cc5374e272f5e6b2c8eae",
+      "from": "+16789712411",
+      "to": "+16783824883",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "UvVtydBtApTEgZVMSLJ3",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Josh, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "PQPb8HTgpLiDh0AMkP2G",
+      "contentType": "text/plain",
+      "conversationId": "b2KsGUT5CQGLLld5l5Lk",
+      "dateAdded": "2026-06-19T21:50:20.766Z",
+      "dateUpdated": "2026-06-19T21:50:25.596Z",
+      "source": "app",
+      "altId": "SM5618cf3f00d8b3ce4d0f8d2e15129ab4",
+      "from": "+16789712411",
+      "to": "+16783824883",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

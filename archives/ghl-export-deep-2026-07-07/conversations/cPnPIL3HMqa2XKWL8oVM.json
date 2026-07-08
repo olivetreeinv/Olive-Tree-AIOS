@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "cPnPIL3HMqa2XKWL8oVM",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906470650,
+    "dateUpdated": 1783365078382,
+    "lastMessageDate": 1783365078377,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Kenny, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906471641,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "OWkhLMDAtJM04tc1StZi",
+    "fullName": "Kenny Peavey",
+    "contactName": "Kenny Peavey",
+    "companyName": null,
+    "phone": "+18188006379",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783365078377
+    ]
+  },
+  "messages": [
+    {
+      "id": "5ELA7DB6BQKLjsB9a6VY",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Kenny, a copy of the pitch deck has been sent to your email.",
+      "contactId": "OWkhLMDAtJM04tc1StZi",
+      "contentType": "text/plain",
+      "conversationId": "cPnPIL3HMqa2XKWL8oVM",
+      "dateAdded": "2026-07-06T19:11:17.850Z",
+      "dateUpdated": "2026-07-06T19:11:17.851Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+18188006379",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "LxMFpQICvDFtuSbHXNAD",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Kenny, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "OWkhLMDAtJM04tc1StZi",
+      "contentType": "text/plain",
+      "conversationId": "cPnPIL3HMqa2XKWL8oVM",
+      "dateAdded": "2026-06-19T22:01:10.981Z",
+      "dateUpdated": "2026-06-19T22:01:12.290Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+18188006379",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

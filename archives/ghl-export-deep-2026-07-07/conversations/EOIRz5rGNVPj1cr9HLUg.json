@@ -1,0 +1,49 @@
+{
+  "conversation": {
+    "id": "EOIRz5rGNVPj1cr9HLUg",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249889596,
+    "dateUpdated": 1750249889596,
+    "lastMessageDate": 1750249889596,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "XhOTfCvtvJtVAH1kxpSS",
+    "fullName": "Lucy Walker",
+    "contactName": "Lucy Walker",
+    "companyName": null,
+    "email": "walkerlucy96@yahoo.com",
+    "tags": [],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "phone": null,
+    "attributed": null,
+    "sort": [
+      1750249889596
+    ]
+  },
+  "messages": [
+    {
+      "id": "ihdC9f8Im92xYrtQ5vws",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "XhOTfCvtvJtVAH1kxpSS",
+      "conversationId": "EOIRz5rGNVPj1cr9HLUg",
+      "dateAdded": "2025-06-18T12:31:12.903Z",
+      "dateUpdated": "2025-06-18T12:33:37.903Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "gUZGZoLpC60swBxwKVsc"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

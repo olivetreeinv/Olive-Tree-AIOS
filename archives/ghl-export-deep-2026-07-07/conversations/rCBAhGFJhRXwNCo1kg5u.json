@@ -1,0 +1,56 @@
+{
+  "conversation": {
+    "id": "rCBAhGFJhRXwNCo1kg5u",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364094246,
+    "dateUpdated": 1783364094914,
+    "lastMessageDate": 1783364094911,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Zaine, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "erBLKrSIyqfSdbcIf22c",
+    "fullName": "Zaine",
+    "contactName": "Zaine",
+    "companyName": "Decino Plumbing",
+    "phone": "+17708802026",
+    "tags": [
+      "contractor",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364094911
+    ]
+  },
+  "messages": [
+    {
+      "id": "cvFKFAy7k7l7NseWIhE6",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Zaine, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "erBLKrSIyqfSdbcIf22c",
+      "contentType": "text/plain",
+      "conversationId": "rCBAhGFJhRXwNCo1kg5u",
+      "dateAdded": "2026-07-06T18:54:54.299Z",
+      "dateUpdated": "2026-07-06T18:54:57.452Z",
+      "source": "workflow",
+      "altId": "SMe3fcece2f35de70d02890c4656d9193d",
+      "from": "+16789712411",
+      "to": "+17708802026",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

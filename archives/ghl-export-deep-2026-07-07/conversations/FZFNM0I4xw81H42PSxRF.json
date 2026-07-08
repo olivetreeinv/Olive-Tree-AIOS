@@ -1,0 +1,106 @@
+{
+  "conversation": {
+    "id": "FZFNM0I4xw81H42PSxRF",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781905879632,
+    "dateUpdated": 1781913311851,
+    "lastMessageDate": 1781913311831,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "STOP",
+    "lastOutboundMessageAction": "manual",
+    "lastMessageDirection": "inbound",
+    "inbox": true,
+    "unreadCount": 1,
+    "lastManualMessageDate": 1781913311831,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "JHuAPAqG6WWteAtNfmwM",
+    "fullName": "Jessica Misty Landlord",
+    "contactName": "Jessica Misty Landlord",
+    "companyName": "Misty McFarland Properties",
+    "phone": "+18652232130",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "profilePhoto": null,
+    "email": null,
+    "sort": [
+      1781913311831
+    ]
+  },
+  "messages": [
+    {
+      "id": "0d3wSlZctiFrzEV6CS03",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "JHuAPAqG6WWteAtNfmwM",
+      "conversationId": "FZFNM0I4xw81H42PSxRF",
+      "dateAdded": "2026-06-19T23:55:12.594Z",
+      "dateUpdated": "2026-06-19T23:55:12.594Z",
+      "from": "+18652232130",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "RCS",
+            "SMS"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "i5Oab0Umc2AcnJr4wydj",
+      "direction": "inbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "STOP",
+      "contactId": "JHuAPAqG6WWteAtNfmwM",
+      "contentType": "text/plain",
+      "conversationId": "FZFNM0I4xw81H42PSxRF",
+      "dateAdded": "2026-06-19T23:55:11.906Z",
+      "dateUpdated": "2026-06-19T23:55:11.906Z",
+      "altId": "SM938f949a527ab7acfc88c3c2e5740add",
+      "from": "+18652232130",
+      "to": "+16789712411",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "4YhRPUuVL5JissBhJGFU",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Jessica, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "JHuAPAqG6WWteAtNfmwM",
+      "contentType": "text/plain",
+      "conversationId": "FZFNM0I4xw81H42PSxRF",
+      "dateAdded": "2026-06-19T21:51:19.877Z",
+      "dateUpdated": "2026-06-19T21:51:25.802Z",
+      "source": "app",
+      "altId": "SM08d7d99ae79eb96abb7700815055557e",
+      "from": "+16789712411",
+      "to": "+18652232130",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

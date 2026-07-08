@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "ScD84V1WPzsMyuL9b6r5",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906413581,
+    "dateUpdated": 1783364994942,
+    "lastMessageDate": 1783364994938,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Leah, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906415066,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "NSkRc34QzLtvq0Mxj0H1",
+    "fullName": "Leah",
+    "contactName": "Leah",
+    "companyName": "Wholesaler",
+    "phone": "+14705237744",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364994938
+    ]
+  },
+  "messages": [
+    {
+      "id": "Htt6c1fH6W0ltYt1HgfO",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Leah, a copy of the pitch deck has been sent to your email.",
+      "contactId": "NSkRc34QzLtvq0Mxj0H1",
+      "contentType": "text/plain",
+      "conversationId": "ScD84V1WPzsMyuL9b6r5",
+      "dateAdded": "2026-07-06T19:09:54.137Z",
+      "dateUpdated": "2026-07-06T19:09:54.137Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+14705237744",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "rXVvHjkjc4vrxkZh6Vct",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Leah, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "NSkRc34QzLtvq0Mxj0H1",
+      "contentType": "text/plain",
+      "conversationId": "ScD84V1WPzsMyuL9b6r5",
+      "dateAdded": "2026-06-19T22:00:13.972Z",
+      "dateUpdated": "2026-06-19T22:00:15.827Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+14705237744",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

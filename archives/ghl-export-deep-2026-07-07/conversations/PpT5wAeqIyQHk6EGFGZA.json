@@ -1,0 +1,105 @@
+{
+  "conversation": {
+    "id": "PpT5wAeqIyQHk6EGFGZA",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249934444,
+    "dateUpdated": 1783364883658,
+    "lastMessageDate": 1783364883654,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Christian, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781961425889,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "aDFmQdPzRvi2LJNaNPcw",
+    "fullName": "Christian Smith",
+    "contactName": "Christian Smith",
+    "companyName": null,
+    "email": "christian.smith@cornerstoneprep.org",
+    "phone": "+16788489499",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364883654
+    ]
+  },
+  "messages": [
+    {
+      "id": "iwgDAfEQIXMfPV0lD4XW",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Christian, a copy of the pitch deck has been sent to your email.",
+      "contactId": "aDFmQdPzRvi2LJNaNPcw",
+      "contentType": "text/plain",
+      "conversationId": "PpT5wAeqIyQHk6EGFGZA",
+      "dateAdded": "2026-07-06T19:08:02.903Z",
+      "dateUpdated": "2026-07-06T19:08:02.904Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+16788489499",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "X0u0zlew1ZnqCN5DvVDj",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Christian, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "aDFmQdPzRvi2LJNaNPcw",
+      "contentType": "text/plain",
+      "conversationId": "PpT5wAeqIyQHk6EGFGZA",
+      "dateAdded": "2026-06-20T13:17:05.252Z",
+      "dateUpdated": "2026-06-20T13:17:06.563Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+16788489499",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "hn75myzdux1SzNGRjt8D",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "aDFmQdPzRvi2LJNaNPcw",
+      "conversationId": "PpT5wAeqIyQHk6EGFGZA",
+      "dateAdded": "2025-06-18T12:31:21.898Z",
+      "dateUpdated": "2025-06-18T12:33:55.019Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "WvbMi2IMUDxIh5M8Xht1"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

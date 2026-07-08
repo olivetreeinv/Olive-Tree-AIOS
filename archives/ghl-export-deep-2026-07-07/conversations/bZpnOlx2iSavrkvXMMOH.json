@@ -1,0 +1,128 @@
+{
+  "conversation": {
+    "id": "bZpnOlx2iSavrkvXMMOH",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249895891,
+    "dateUpdated": 1783364180128,
+    "lastMessageDate": 1783364180124,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Tom, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781961055166,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "cYQK5IwHX6Qrrm3raKNT",
+    "fullName": "Tom Miller",
+    "contactName": "Tom Miller",
+    "companyName": null,
+    "email": "Tommiller21758@gmail.com",
+    "phone": "+12397777193",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364180124
+    ]
+  },
+  "messages": [
+    {
+      "id": "7LR5PQVUVE1asZ8vIWRn",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Tom, a copy of the pitch deck has been sent to your email.",
+      "contactId": "cYQK5IwHX6Qrrm3raKNT",
+      "contentType": "text/plain",
+      "conversationId": "bZpnOlx2iSavrkvXMMOH",
+      "dateAdded": "2026-07-06T18:56:19.522Z",
+      "dateUpdated": "2026-07-06T18:56:22.724Z",
+      "source": "workflow",
+      "altId": "SMaf71e95fa82bacfc50429e1201a2efee",
+      "from": "+16789712411",
+      "to": "+12397777193",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "D1vX7ntIbfdisoEUtEKF",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Tom, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "cYQK5IwHX6Qrrm3raKNT",
+      "contentType": "text/plain",
+      "conversationId": "bZpnOlx2iSavrkvXMMOH",
+      "dateAdded": "2026-06-20T13:10:54.459Z",
+      "dateUpdated": "2026-06-20T13:10:55.835Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+12397777193",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "B7O1skImWKSDOzULdG80",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "cYQK5IwHX6Qrrm3raKNT",
+      "conversationId": "bZpnOlx2iSavrkvXMMOH",
+      "dateAdded": "2025-06-18T13:19:05.254Z",
+      "dateUpdated": "2025-06-18T13:19:05.272Z",
+      "from": "+12397777193",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "Email"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "gkRsN0ALrRgd1ZpC8Ai3",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "cYQK5IwHX6Qrrm3raKNT",
+      "conversationId": "bZpnOlx2iSavrkvXMMOH",
+      "dateAdded": "2025-06-18T12:30:57.462Z",
+      "dateUpdated": "2025-06-18T12:31:36.425Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "SGiepBR4V1NrTh8gtlJA"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

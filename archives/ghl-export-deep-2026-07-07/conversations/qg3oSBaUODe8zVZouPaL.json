@@ -1,0 +1,208 @@
+{
+  "conversation": {
+    "id": "qg3oSBaUODe8zVZouPaL",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249979528,
+    "dateUpdated": 1783364766896,
+    "lastMessageDate": 1783364766892,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Montana, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781961362263,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "NKKhVtP4W9BcZclQ542S",
+    "fullName": "Montana Amot",
+    "contactName": "Montana Amot",
+    "companyName": null,
+    "email": "montana.amat@gmail.com",
+    "phone": "+16785165023",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364766892
+    ]
+  },
+  "messages": [
+    {
+      "id": "RduCKQ07Kb4xAGUHj3Ka",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Montana, a copy of the pitch deck has been sent to your email.",
+      "contactId": "NKKhVtP4W9BcZclQ542S",
+      "contentType": "text/plain",
+      "conversationId": "qg3oSBaUODe8zVZouPaL",
+      "dateAdded": "2026-07-06T19:06:05.544Z",
+      "dateUpdated": "2026-07-06T19:06:05.545Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+16785165023",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "uE6zphuMe7iHtMODtz63",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Montana, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "NKKhVtP4W9BcZclQ542S",
+      "contentType": "text/plain",
+      "conversationId": "qg3oSBaUODe8zVZouPaL",
+      "dateAdded": "2026-06-20T13:16:01.640Z",
+      "dateUpdated": "2026-06-20T13:16:02.939Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+16785165023",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "xE6YSou6znJdGkTzNKbE",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "NKKhVtP4W9BcZclQ542S",
+      "conversationId": "qg3oSBaUODe8zVZouPaL",
+      "dateAdded": "2025-10-21T14:59:04.432Z",
+      "dateUpdated": "2025-10-21T14:59:04.432Z",
+      "from": "+16785165023",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "Email"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "uU0OTVu3gGaJz6mD0YMb",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "NKKhVtP4W9BcZclQ542S",
+      "conversationId": "qg3oSBaUODe8zVZouPaL",
+      "dateAdded": "2025-10-21T14:01:37.330Z",
+      "dateUpdated": "2025-10-21T14:01:37.330Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "fqjrIX4tv1equFKBD6yC"
+          ],
+          "direction": "outbound",
+          "subject": "Why Mid-October Could Be the Best Time to Buy"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "0ze29Nx5NEbzWU02OOFW",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "NKKhVtP4W9BcZclQ542S",
+      "conversationId": "qg3oSBaUODe8zVZouPaL",
+      "dateAdded": "2025-09-23T14:08:37.587Z",
+      "dateUpdated": "2025-09-23T14:08:37.587Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "bnYnx7LDpSdQjQUrrLrZ"
+          ],
+          "direction": "outbound",
+          "subject": "While Others Wait, Smart Money Moves"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "Zpq65ZvHJLM0GkG1HI5l",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "NKKhVtP4W9BcZclQ542S",
+      "conversationId": "qg3oSBaUODe8zVZouPaL",
+      "dateAdded": "2025-08-19T14:07:31.296Z",
+      "dateUpdated": "2025-08-19T14:07:31.296Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "ahUMesnjoFSR7jLBo5qt"
+          ],
+          "direction": "outbound",
+          "subject": "Why 6.6% rates aren't stopping smart buyers"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "CQL8P09Jpt41Iep5oDxf",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "NKKhVtP4W9BcZclQ542S",
+      "conversationId": "qg3oSBaUODe8zVZouPaL",
+      "dateAdded": "2025-07-22T14:11:32.523Z",
+      "dateUpdated": "2025-07-22T14:12:24.981Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "euV0LDaeAlntRANOlmfG"
+          ],
+          "direction": "outbound",
+          "subject": "Real Estate Tax & Rate Shifts You Can\u2019t Ignore"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "CaSFqmqZtsmqkiv8davK",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "NKKhVtP4W9BcZclQ542S",
+      "conversationId": "qg3oSBaUODe8zVZouPaL",
+      "dateAdded": "2025-06-18T12:31:21.321Z",
+      "dateUpdated": "2025-06-18T12:33:00.019Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "FZhnPJbKgghkbNbfWaWS"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

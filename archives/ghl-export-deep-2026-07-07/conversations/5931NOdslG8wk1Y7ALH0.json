@@ -1,0 +1,56 @@
+{
+  "conversation": {
+    "id": "5931NOdslG8wk1Y7ALH0",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364396893,
+    "dateUpdated": 1783364397590,
+    "lastMessageDate": 1783364397586,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Jeffrey, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "PIqDDDsEMPit8fKNmKPy",
+    "fullName": "Jeffrey Melvins",
+    "contactName": "Jeffrey Melvins",
+    "companyName": "Keller Williams NW - Coaching",
+    "phone": "+16783864889",
+    "tags": [
+      "agent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364397586
+    ]
+  },
+  "messages": [
+    {
+      "id": "I7LXNThmPW2STP7dijUI",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Jeffrey, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "PIqDDDsEMPit8fKNmKPy",
+      "contentType": "text/plain",
+      "conversationId": "5931NOdslG8wk1Y7ALH0",
+      "dateAdded": "2026-07-06T18:59:56.939Z",
+      "dateUpdated": "2026-07-06T18:59:59.911Z",
+      "source": "workflow",
+      "altId": "SM722e8722b0616545868e4513517a9da6",
+      "from": "+16789712411",
+      "to": "+16783864889",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

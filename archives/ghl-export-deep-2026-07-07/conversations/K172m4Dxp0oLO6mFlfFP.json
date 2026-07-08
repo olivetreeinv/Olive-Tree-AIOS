@@ -1,0 +1,295 @@
+{
+  "conversation": {
+    "id": "K172m4Dxp0oLO6mFlfFP",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1771944684003,
+    "dateUpdated": 1783364083733,
+    "lastMessageDate": 1783364083730,
+    "lastMessageType": "TYPE_EMAIL",
+    "lastMessageBody": "Hello Rebecca, Here's your copy of the pitch deck you requested. We will reach out and discuss shortly\n\nBrian Norton\n\nOlive Tree Investments\n\n\nIf y...",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781961022864,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "FOiKLlW7Y5CSwqDCCnON",
+    "fullName": "Rebecca Treanor",
+    "contactName": "Rebecca Treanor",
+    "companyName": null,
+    "email": "r.treanor@multifamilypathfinder.com",
+    "phone": "+16198221960",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": true,
+    "messageTypes": [
+      2,
+      3
+    ],
+    "sort": [
+      1783364083730
+    ]
+  },
+  "messages": [
+    {
+      "id": "wubTlktENTBgQFtpCG3S",
+      "direction": "outbound",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "Hello Rebecca, Here's your copy of the pitch deck you requested. We will reach out and discuss shortly\n\nBrian Norton\n\nOlive Tree Investments\n\n\nIf you no longer wish to receive these emails you may unsubscribe\n[https://services.msgsndr.com/emails/builder/unsubscribe-view/SLq7B2pldVzfQLKjGpvw/FOiKLlW7Y5CSwqDCCnON?email=r.treanor%40multifamilypathfinder.com&message_id=ooQoMhB2QXybZxAqem3T&time_stamp=1783364082706]",
+      "contactId": "FOiKLlW7Y5CSwqDCCnON",
+      "contentType": "text/html",
+      "conversationId": "K172m4Dxp0oLO6mFlfFP",
+      "dateAdded": "2026-07-06T18:54:43.006Z",
+      "dateUpdated": "2026-07-06T18:54:43.243Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "ooQoMhB2QXybZxAqem3T"
+          ],
+          "direction": "outbound",
+          "subject": "Here Is Your Pitch Deck"
+        }
+      },
+      "source": "workflow",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "P4WwEiFOaFVX1YMKsf65",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "FOiKLlW7Y5CSwqDCCnON",
+      "conversationId": "K172m4Dxp0oLO6mFlfFP",
+      "dateAdded": "2026-06-20T13:10:24.393Z",
+      "dateUpdated": "2026-06-20T13:10:24.393Z",
+      "from": "+16198221960",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "SMS"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "z97AM6rMMo9nzIO2GoBL",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Rebecca, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.",
+      "contactId": "FOiKLlW7Y5CSwqDCCnON",
+      "contentType": "text/plain",
+      "conversationId": "K172m4Dxp0oLO6mFlfFP",
+      "dateAdded": "2026-06-20T13:10:22.268Z",
+      "dateUpdated": "2026-06-20T13:10:22.268Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+16198221960",
+      "error": "Error 30006 - Landline or non-mobile number. Cannot receive SMS.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "6CmTkE80Yd0bh9W0gx5a",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "FOiKLlW7Y5CSwqDCCnON",
+      "conversationId": "K172m4Dxp0oLO6mFlfFP",
+      "dateAdded": "2026-06-19T13:08:45.794Z",
+      "dateUpdated": "2026-06-19T13:08:45.794Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "6L3rf3gFWDKsCWcA1j9U"
+          ],
+          "direction": "outbound",
+          "subject": "New multifamily deal - quick 2-min look?"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "g730szNe4Ex6c19CKHOr",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "FOiKLlW7Y5CSwqDCCnON",
+      "conversationId": "K172m4Dxp0oLO6mFlfFP",
+      "dateAdded": "2026-06-17T14:04:06.663Z",
+      "dateUpdated": "2026-06-17T14:04:06.663Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "lBz6bU0Nf998NPmVVryK"
+          ],
+          "direction": "outbound",
+          "subject": "Smart Money Left Miami. Here's Where It Went"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "05oVnqj8rTIfwU5FGMc1",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "FOiKLlW7Y5CSwqDCCnON",
+      "conversationId": "K172m4Dxp0oLO6mFlfFP",
+      "dateAdded": "2026-05-16T12:00:06.176Z",
+      "dateUpdated": "2026-05-16T12:00:06.176Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "nMKyeOJ1Exekbxmm3nBQ"
+          ],
+          "direction": "outbound",
+          "subject": "Southeast Took 40% of All Returns. Capital Followed. Here's Why"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "NTWKgxfls1CQs8ne8SyO",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "FOiKLlW7Y5CSwqDCCnON",
+      "conversationId": "K172m4Dxp0oLO6mFlfFP",
+      "dateAdded": "2026-04-14T14:02:11.793Z",
+      "dateUpdated": "2026-04-14T14:02:11.793Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "zhPpvqlXxqJBttCs4oLf"
+          ],
+          "direction": "outbound",
+          "subject": "BREAKING: Inflation 3.3%. Migration Patterns Reshape Markets"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "jzSfE6ByEVTspYyInYpH",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "FOiKLlW7Y5CSwqDCCnON",
+      "conversationId": "K172m4Dxp0oLO6mFlfFP",
+      "dateAdded": "2026-03-24T14:42:42.097Z",
+      "dateUpdated": "2026-03-24T14:42:42.097Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "1wWy4GYvdHHiMZVWIRIj"
+          ],
+          "direction": "outbound",
+          "subject": "Spring Sellers Get 20% More Offers. Rates Just Rose."
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "xk1pAc7PjNornc9JRARH",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "750+ investors trust Olive Tree for smart multifamily investments. Join our newsletter to stay ahead of the curve \ud83d\udcc8 \u27a1\ufe0f [Your Link]",
+      "contactId": "FOiKLlW7Y5CSwqDCCnON",
+      "contentType": "text/plain",
+      "conversationId": "K172m4Dxp0oLO6mFlfFP",
+      "dateAdded": "2026-02-25T02:51:31.000Z",
+      "dateUpdated": "2026-02-25T02:51:31.105Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+16198221960",
+      "error": "Error 30034 - Number not A2P compliant. Please register for A2P.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "P80qRpujDXQntsy4lbEi",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "Hi Rebecca,\n\n\nOver 750 investors have partnered with us on a shared mission: to unlock long-term wealth through intelligent real estate\ninvesting.\n\nWhen you join our newsletter, you're not just getting emails.\n\n\nYou're gaining access to:\n\n\u2022\u2060 \u2060Real-time market insights\n\n\u2022\u2060 \u2060New deal alerts before the public\n\n\u2022\u2060 \u2060A network of forward-thinking investors\n\nWhether you\u2019re curious, cautious, or ready to scale your portfolio, our newsletter helps you stay informed, confident, and\nconnected.\n\n\n\ud83d\udc49 Don\u2019t miss out. [Join our investor community today]\n\nTo your success,\n\nThe Olive Tree Investments Team\n\n\nIf you no longer wish to receive these emails you may unsubscribe\n[https://services.msgsndr.com/emails/builder/unsubscribe-view/SLq7B2pldVzfQLKjGpvw/FOiKLlW7Y5CSwqDCCnON?email=r.treanor%40multifamilypathfinder.com&message_id=SQXTke6mho2jvyu5k4P1&time_stamp=1771987889611]",
+      "contactId": "FOiKLlW7Y5CSwqDCCnON",
+      "contentType": "text/html",
+      "conversationId": "K172m4Dxp0oLO6mFlfFP",
+      "dateAdded": "2026-02-25T02:51:29.659Z",
+      "dateUpdated": "2026-02-25T02:51:29.853Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "SQXTke6mho2jvyu5k4P1"
+          ],
+          "direction": "outbound",
+          "subject": "Rebecca, Why 750+ Investors Trust Olive Tree (And You Can Too)"
+        }
+      },
+      "source": "workflow",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "Ee6s3fpzQoAC7JGOpONS",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "\u2060Hi Rebecca, welcome to Olive Tree Investments! Want early access to top real estate insights & investment deals? Tap here to subscribe \u27a1\ufe0f [Your Link]\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "FOiKLlW7Y5CSwqDCCnON",
+      "contentType": "text/plain",
+      "conversationId": "K172m4Dxp0oLO6mFlfFP",
+      "dateAdded": "2026-02-24T14:51:25.000Z",
+      "dateUpdated": "2026-02-24T14:51:25.021Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+16198221960",
+      "error": "Error 30034 - Number not A2P compliant. Please register for A2P.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "M8bC1PXEzU0J4yL0pPaj",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "Hi Rebecca,\n\n\nAt Olive Tree Investments, we believe that building wealth through real estate should be accessible, strategic, and\ncommunity-driven.\n\n\nThat\u2019s why we invite you to subscribe to our exclusive newsletter\u2014your front-row seat to real estate intelligence, expert\nstrategies, and curated opportunities in multifamily investing.\n\n\nHere\u2019s what you\u2019ll get:\n\n\u2022\u2060 \u2060\ud83c\udfe2 Early access to new investment opportunities\n\n\u2022\u2060 \u2060\ud83d\udcc8 Market trends & performance insights\n\n\u2022\u2060 \u2060\ud83d\udca1 Wealth-building strategies from seasoned pros\n\n\u2022\u2060 \u2060\ud83e\udd1d Real-time project updates & partnership news\n\n\n\ud83d\udc49 Subscribe Now and take your investment game to the next level. Subscribe by responding with \"Yes\".\n\n\nWe\u2019re not just growing properties\u2014we\u2019re growing people.\n\n\nWarm regards,\n\nThe Olive Tree Team\n\n\nIf you no longer wish to receive these emails you may unsubscribe\n[https://services.msgsndr.com/emails/builder/unsubscribe-view/SLq7B2pldVzfQLKjGpvw/FOiKLlW7Y5CSwqDCCnON?email=r.treanor%40multifamilypathfinder.com&message_id=yr7mSL92biyMiTnhnuHA&time_stamp=1771944683968]",
+      "contactId": "FOiKLlW7Y5CSwqDCCnON",
+      "contentType": "text/html",
+      "conversationId": "K172m4Dxp0oLO6mFlfFP",
+      "dateAdded": "2026-02-24T14:51:24.014Z",
+      "dateUpdated": "2026-02-24T14:51:24.244Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "yr7mSL92biyMiTnhnuHA"
+          ],
+          "direction": "outbound",
+          "subject": "Rebecca,"
+        }
+      },
+      "source": "workflow",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

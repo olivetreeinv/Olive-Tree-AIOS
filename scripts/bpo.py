@@ -21,6 +21,7 @@ Usage:
 import argparse
 import math
 import os
+import re
 import sys
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -273,207 +274,179 @@ def _prox(subject, comp):
         return f"{_haversine(slat, slon, clat, clon)} mi"
     return "same zip" if subject.get("PostalCode") == comp.get("PostalCode") else "adj zip"
 
+# ─── CMA cross-reference ──────────────────────────────────────────────────────
+# Adjusted-comp CMA from the same FMLS sold data (Bridge has no CMA endpoint).
+# ponytail: flat rule-of-thumb adjustments; move to a per-market table if BPOs diverge
+ADJ_SQFT_FACTOR = 0.5     # sqft gap credited at 50% of the comp's $/sqft
+ADJ_PER_BED     = 5000
+ADJ_PER_BATH    = 5000
+ADJ_PER_GARAGE  = 5000
+
+
+def cma_estimate(subject, sold):
+    """Weighted adjusted-sale CMA. Returns {value, low, high, n} or None."""
+    s_sqft = float(subject.get("BuildingAreaTotal") or 0)
+    if not s_sqft or not sold:
+        return None
+    s_beds = int(subject.get("BedroomsTotal") or 0)
+    s_bath = (subject.get("BathroomsFull") or 0) + 0.5 * (subject.get("BathroomsHalf") or 0)
+    s_gar  = float(subject.get("GarageSpaces") or 0)
+
+    adjusted, weights = [], []
+    for c in sold:
+        cp, csf = c.get("ClosePrice"), c.get("BuildingAreaTotal")
+        if not cp or not csf:
+            continue
+        cp, csf = float(cp), float(csf)
+        adj = cp + (s_sqft - csf) * (cp / csf) * ADJ_SQFT_FACTOR
+        if s_beds and c.get("BedroomsTotal"):
+            adj += (s_beds - int(c["BedroomsTotal"])) * ADJ_PER_BED
+        c_bath = (c.get("BathroomsFull") or 0) + 0.5 * (c.get("BathroomsHalf") or 0)
+        if s_bath and c_bath:
+            adj += (s_bath - c_bath) * ADJ_PER_BATH
+        if c.get("GarageSpaces") is not None:
+            adj += (s_gar - float(c["GarageSpaces"])) * ADJ_PER_GARAGE
+
+        months = 6.0
+        try:
+            months = max(0.5, (TODAY - datetime.fromisoformat(str(c.get("CloseDate"))[:10]).date()).days / 30)
+        except (ValueError, TypeError):
+            pass
+        miles = 1.0
+        slat, slon = subject.get("Latitude"), subject.get("Longitude")
+        clat, clon = c.get("Latitude"), c.get("Longitude")
+        if all(v is not None for v in (slat, slon, clat, clon)):
+            miles = max(0.1, _haversine(slat, slon, clat, clon))
+        adjusted.append(adj)
+        weights.append(1.0 / ((1 + months) * (1 + miles)))  # fresher + closer counts more
+
+    if not adjusted:
+        return None
+    value = sum(a * w for a, w in zip(adjusted, weights)) / sum(weights)
+    return {"value": int(round(value, -3)), "low": int(round(min(adjusted), -3)),
+            "high": int(round(max(adjusted), -3)), "n": len(adjusted)}
+
 # ─── HTML template ─────────────────────────────────────────────────────────────
+# Layout source of truth: templates/bpo-template.html ($-placeholders, string.Template)
 
-_CSS = """
-body{font-family:Arial,sans-serif;font-size:10pt;margin:.6in .75in;}
-h1{font-size:15pt;text-align:center;font-weight:bold;border-bottom:2px solid #000;padding-bottom:5px;margin-bottom:4px;}
-h2{font-size:10.5pt;font-weight:bold;background:#d4d4d4;padding:3px 7px;margin:14px 0 3px 0;}
-table{width:100%;border-collapse:collapse;font-size:9pt;margin:2px 0;}
-th{background:#ebebeb;border:1px solid #777;padding:3px 4px;text-align:center;font-weight:bold;white-space:nowrap;}
-td{border:1px solid #aaa;padding:3px 5px;vertical-align:top;}
-.nb td,.nb th{border:none;}
-.lbl{font-weight:bold;width:140px;}
-.cmmt{background:#fafafa;font-style:italic;color:#333;}
-.check{font-family:monospace;}
-.right{text-align:right;}
-"""
+TEMPLATE_PATH = Path(__file__).resolve().parent.parent / "templates" / "bpo-template.html"
 
-def _tr(*cells, hdr=False):
-    tag = "th" if hdr else "td"
-    return "<tr>" + "".join(f"<{tag}>{c}</{tag}>" for c in cells) + "</tr>\n"
+def _esc(v):
+    from html import escape
+    return escape(str(v)) if v not in (None, "") else ""
 
 
-def _empty_comp_row(n, cols):
-    return _tr(*([f"#{n}"] + ["—"] * (cols - 1)))
+def _cell(v, first=False):
+    v = "&nbsp;" if v in (None, "") else v
+    h = " height:14px;" if first else ""
+    return f'<td style="border:1px solid #000;{h}">{v}</td>'
 
 
-def build_html(subject, sold, active, address, as_is="", repaired=""):
-    beds   = subject.get("BedroomsTotal") or "—"
-    bths   = _baths(subject)
-    sqft   = subject.get("BuildingAreaTotal") or "—"
-    style  = subject.get("PropertySubType") or "—"
+def _comp_label(i, addr=""):
+    return (
+        '<td style="border:1px solid #000; text-align:left; padding:2px 3px; '
+        f'font-weight:700; font-size:8px;">COMP #{i}: '
+        f'<span style="font-weight:400;">{_esc(addr) or "&nbsp;"}</span></td>'
+    )
+
+
+def _comp_meta(c):
+    sub = c.get("PropertySubType") or ""
+    yr = c.get("YearBuilt") or ""
+    _, note = _analyze_condition(c)
+    return " | ".join(filter(None, [sub, f"built {yr}" if yr else "", note]))
+
+
+def build_html(subject, sold, active, address, as_is="", repaired="", cma_note=""):
     cond, cond_detail = _analyze_condition(subject)
-    gar    = _gar(subject)
-    lot    = _lot(subject)
-    age    = _age(subject)
-    dom    = subject.get("DaysOnMarket") if subject.get("DaysOnMarket") is not None else "—"
-    orig   = _money(subject.get("OriginalListPrice"))
-    price  = _money(subject.get("ListPrice"))
-    agent  = subject.get("ListAgentFullName") or "—"
-    phone  = subject.get("ListAgentDirectPhone") or "—"
-    office = subject.get("ListOfficeName") or "—"
-    listed = "Yes" if subject.get("ListPrice") else "No"
-    subj_remarks = (subject.get("PublicRemarks") or "").strip()
+    subj_remarks = _esc((subject.get("PublicRemarks") or "").strip())
 
-    # ── Build sold comps rows ──
+    subject_row = "<tr>" + "".join([
+        _cell(subject.get("PropertySubType") or "—", first=True),
+        _cell(cond),
+        _cell(subject.get("BuildingAreaTotal") or "—"),
+        _cell("—"),  # living rooms — not in FMLS feed
+        _cell(subject.get("BedroomsTotal") or "—"),
+        _cell(_baths(subject)),
+        _cell(_gar(subject)),
+        _cell(_lot(subject)),
+        _cell(_age(subject)),
+        _cell(subject.get("DaysOnMarket") if subject.get("DaysOnMarket") is not None else "—"),
+        _cell(_money(subject.get("OriginalListPrice"))),
+        _cell(_money(subject.get("ListPrice"))),
+    ]) + "</tr>"
+
     sold_rows = ""
     for i, c in enumerate(sold, 1):
-        sold_rows += _tr(
-            f"<b>#{i}</b>", c.get("UnparsedAddress","—"),
-            c.get("BuildingAreaTotal","—"), "—", c.get("BedroomsTotal","—"), _baths(c),
-            _gar(c), _lot(c), _age(c), c.get("DaysOnMarket","—"),
-            _money(c.get("ListPrice")), f"<b>{_money(c.get('ClosePrice'))}</b>",
-            _date(c.get("CloseDate")), _prox(subject, c),
-        )
-    for i in range(len(sold)+1, 4):
-        sold_rows += _empty_comp_row(i, 14)
+        sold_rows += "<tr>" + _comp_label(i, c.get("UnparsedAddress", "")) + "".join([
+            _cell(c.get("BuildingAreaTotal", "—"), first=True),
+            _cell("—"), _cell(c.get("BedroomsTotal", "—")), _cell(_baths(c)),
+            _cell(_gar(c)), _cell(_lot(c)), _cell(_age(c)), _cell(c.get("DaysOnMarket", "—")),
+            _cell(_money(c.get("ListPrice"))),
+            _cell(f"<b>{_money(c.get('ClosePrice'))}</b>"),
+            _cell(_date(c.get("CloseDate"))), _cell(_prox(subject, c)),
+        ]) + "</tr>\n"
+    for i in range(len(sold) + 1, 4):
+        sold_rows += "<tr>" + _comp_label(i) + _cell("", first=True) + _cell("") * 11 + "</tr>\n"
 
-    sold_comments = ""
-    for i, c in enumerate(sold, 1):
-        addr    = c.get("UnparsedAddress", f"Comp #{i}")
-        sub     = c.get("PropertySubType") or ""
-        yr      = c.get("YearBuilt") or ""
-        _, note = _analyze_condition(c)
-        meta    = " | ".join(filter(None, [sub, f"built {yr}" if yr else "", note]))
-        sold_comments += f"""
-<table class="nb" style="margin-top:3px;">
-  <tr><td class="lbl nb" style="width:130px;">Comp #{i} Comments:</td>
-      <td class="cmmt nb">{addr}{f" — {meta}" if meta else ""}</td></tr>
-</table>"""
-
-    # ── Build active comps rows ──
     active_rows = ""
     for i, c in enumerate(active, 1):
-        active_rows += _tr(
-            f"<b>#{i}</b>", c.get("UnparsedAddress","—"),
-            c.get("BuildingAreaTotal","—"), "—", c.get("BedroomsTotal","—"), _baths(c),
-            _gar(c), _lot(c), _age(c), c.get("DaysOnMarket","—"),
-            f"<b>{_money(c.get('ListPrice'))}</b>", _prox(subject, c),
-        )
-    for i in range(len(active)+1, 4):
-        active_rows += _empty_comp_row(i, 12)
+        active_rows += "<tr>" + _comp_label(i, c.get("UnparsedAddress", "")) + "".join([
+            _cell(c.get("BuildingAreaTotal", "—"), first=True),
+            _cell("—"), _cell(c.get("BedroomsTotal", "—")), _cell(_baths(c)),
+            _cell(_gar(c)), _cell(_lot(c)), _cell(_age(c)), _cell(c.get("DaysOnMarket", "—")),
+            _cell(f"<b>{_money(c.get('ListPrice'))}</b>"), _cell(_prox(subject, c)),
+        ]) + "</tr>\n"
+    for i in range(len(active) + 1, 4):
+        active_rows += "<tr>" + _comp_label(i) + _cell("", first=True) + _cell("") * 9 + "</tr>\n"
 
-    active_comments = ""
-    for i, c in enumerate(active, 1):
-        addr    = c.get("UnparsedAddress", f"Comp #{i}")
-        sub     = c.get("PropertySubType") or ""
-        yr      = c.get("YearBuilt") or ""
-        _, note = _analyze_condition(c)
-        meta    = " | ".join(filter(None, [sub, f"built {yr}" if yr else "", note]))
-        active_comments += f"""
-<table class="nb" style="margin-top:3px;">
-  <tr><td class="lbl nb" style="width:130px;">Comp #{i} Comments:</td>
-      <td class="cmmt nb">{addr}{f" — {meta}" if meta else ""}</td></tr>
-</table>"""
+    # avg $/sqft of sold comps for the sold-comments line
+    psf = [round(int(c["ClosePrice"]) / int(c["BuildingAreaTotal"]))
+           for c in sold
+           if c.get("ClosePrice") and c.get("BuildingAreaTotal") and int(c["BuildingAreaTotal"]) > 0]
+    sold_notes = "; ".join(f"#{i} {_comp_meta(c)}" for i, c in enumerate(sold, 1) if _comp_meta(c))
+    if psf:
+        avg = round(sum(psf) / len(psf))
+        sold_notes = f"Avg ${avg}/sqft over {len(psf)} sale(s). " + sold_notes
+    if cma_note:
+        sold_notes = cma_note + " " + sold_notes
+    active_notes = "; ".join(f"#{i} {_comp_meta(c)}" for i, c in enumerate(active, 1) if _comp_meta(c))
 
-    # ── Sold $/sqft summary ──
-    sold_psf = []
-    for c in sold:
-        cp = c.get("ClosePrice")
-        sf = c.get("BuildingAreaTotal")
-        if cp and sf and int(sf) > 0:
-            sold_psf.append(round(int(cp) / int(sf)))
-    psf_str = ""
-    if sold_psf:
-        avg_psf = round(sum(sold_psf) / len(sold_psf))
-        psf_str = f"<p style='font-size:9pt;'><strong>Sold comps avg $/sqft:</strong> ${avg_psf}/sqft (based on {len(sold_psf)} sale{'s' if len(sold_psf)>1 else ''})</p>"
+    subj_comments = (cond_detail + " " if cond_detail else "") + (
+        subj_remarks[:300] + ("…" if len(subj_remarks) > 300 else "") if subj_remarks else "")
 
-    return f"""<!DOCTYPE html><html><head><meta charset="utf-8"><style>{_CSS}</style></head><body>
-<h1>BROKER PRICE OPINION</h1>
-<table class="nb" style="margin-bottom:6px;">
-<tr>
-  <td class="nb"><strong>Property Address:</strong> {address}</td>
-  <td class="nb right"><strong>Date:</strong> {TODAY.strftime("%m/%d/%Y")}</td>
-</tr>
-<tr>
-  <td class="nb"><strong>Prepared by:</strong> Olive Tree Investments &nbsp;|&nbsp; brian@olivetreeinv.io</td>
-  <td class="nb right"><strong>BPO Type:</strong> Drive-by / Interior</td>
-</tr>
-</table>
+    lbl = 'style="border:1px solid #000; padding:2px 6px; text-align:left; font-weight:700;"'
+    value_rows = (
+        f'<tr><td {lbl}>As Is Value</td>{_cell("", first=True)}{_cell(as_is)}{_cell("")}</tr>\n'
+        f'<tr><td {lbl}>Repaired Value</td>{_cell("", first=True)}{_cell(repaired)}{_cell("")}</tr>'
+    )
 
-<h2>SUBJECT PROPERTY</h2>
-<table>
-{_tr("Style/Type","Condition","Sq Ft Living","Rooms","Bdrms","Baths","Gar","Lot Sz (ac)","Age Yrs","DOM","Orig List $","List $", hdr=True)}
-{_tr(style, cond, sqft, "—", beds, bths, gar, lot, age, dom, orig, price)}
-</table>
-<table class="nb" style="margin-top:4px;">
-<tr><td class="lbl nb">Listed?</td>
-    <td class="nb">{listed} &nbsp;&nbsp; <strong>Listing Company:</strong> {office} &nbsp;&nbsp; <strong>Phone:</strong> {phone}</td></tr>
-<tr><td class="lbl nb">Listing Agent:</td><td class="nb">{agent}</td></tr>
-<tr><td class="lbl nb">Subject Comments:</td>
-    <td class="cmmt nb" style="min-height:32px;">{(cond_detail + " " if cond_detail else "") + (subj_remarks[:300] + ("…" if len(subj_remarks) > 300 else "") if subj_remarks else "&nbsp;")}</td></tr>
-</table>
+    city = subject.get("City")
+    city_st_zip = (f'{city}, {subject.get("StateOrProvince", "")} {subject.get("PostalCode", "")}'
+                   if city else subject.get("PostalCode") or "&nbsp;")
 
-<h2>COMPARABLE SALES — Last 3 to 12 Months</h2>
-<p style="font-size:8pt;font-style:italic;">Must be the most recent &amp; closest to subject. Comps over 6 months old require explanation.</p>
-<table>
-{_tr("#","Address","Sq Ft","Rooms","Bdrms","Baths","Gar","Lot Sz (ac)","Age Yrs","DOM","List Price","Sale Price","Sale Date","Prox", hdr=True)}
-{sold_rows}
-</table>
-{sold_comments}
-{psf_str}
-
-<h2>COMPETITIVE PROPERTIES — Active Listings</h2>
-<p style="font-size:8pt;font-style:italic;">All comps must be closest to subject.</p>
-<table>
-{_tr("#","Address","Sq Ft","Rooms","Bdrms","Baths","Gar","Lot Sz (ac)","Age Yrs","DOM","List Price","Prox", hdr=True)}
-{active_rows}
-</table>
-{active_comments}
-
-<h2>VALUE INFORMATION</h2>
-<table>
-<tr><td class="lbl" style="width:180px;">Estimated Marketing Time:</td>
-    <td>&#9744; Quick Sale &nbsp;&nbsp; &#9744; 30–60 days &nbsp;&nbsp; &#9744; 60–100 days</td></tr>
-<tr><td class="lbl">As-Is Value:</td>
-    <td><strong>{as_is if as_is else "$ ___________"}</strong></td></tr>
-<tr><td class="lbl">Repaired / ARV:</td>
-    <td><strong>{repaired if repaired else "$ ___________"}</strong></td></tr>
-</table>
-
-<h2>MARKETABILITY OF SUBJECT</h2>
-<table>
-<tr><td class="lbl" style="width:260px;">1. Functional or economic obsolescence:</td>
-    <td class="cmmt">&nbsp;</td></tr>
-<tr><td class="lbl">2. Problem for resale?</td>
-    <td>&#9744; No &nbsp;&nbsp; &#9744; Yes — reason: ___________________________________</td></tr>
-</table>
-
-<h2>NEIGHBORHOOD TREND</h2>
-<table>
-<tr>
-  <td><strong>Market Direction:</strong> &#9744; Improving &nbsp; &#9744; Stable &nbsp; &#9744; Declining</td>
-  <td><strong>Pride of Ownership:</strong> &#9744; Good &nbsp; &#9744; Fair &nbsp; &#9744; Poor</td>
-</tr>
-<tr>
-  <td colspan="2">
-    <strong># Listings in Immediate Area:</strong> ______ &nbsp;|&nbsp;
-    <strong>Price Range:</strong> $________ – $________ &nbsp;|&nbsp;
-    <strong>Avg Marketing Time:</strong> ______ days &nbsp;|&nbsp;
-    <strong>Sales (last 90 days):</strong> ______
-  </td>
-</tr>
-<tr><td class="lbl">Negative neighborhood factors:</td>
-    <td class="cmmt">&nbsp;</td></tr>
-</table>
-
-<h2>REPAIRS &amp; RECOMMENDATIONS</h2>
-<table>
-<tr><td class="lbl" style="width:220px;">Repairs needed to maximize ROI:</td>
-    <td class="cmmt">&nbsp;<br>&nbsp;</td></tr>
-<tr><td class="lbl">Estimate for Repairs:</td>
-    <td><strong>$ ___________</strong></td></tr>
-</table>
-
-<h2>OTHER REMARKS</h2>
-<table><tr><td class="cmmt" style="min-height:55px;">&nbsp;<br>&nbsp;<br>&nbsp;</td></tr></table>
-
-<br>
-<p style="font-size:8pt;border-top:1px solid #bbb;padding-top:5px;color:#555;">
-Olive Tree Investments &nbsp;|&nbsp; brian@olivetreeinv.io &nbsp;|&nbsp; olivetreeinv.io &nbsp;|&nbsp; Georgia
-</p>
-</body></html>"""
+    listed = bool(subject.get("ListPrice"))
+    from string import Template
+    html = Template(TEMPLATE_PATH.read_text(encoding="utf-8")).safe_substitute(
+        address=_esc(address),
+        agent=_esc(subject.get("ListAgentFullName")) or "&nbsp;",
+        city_st_zip=city_st_zip,
+        subject_row=subject_row,
+        cb_listed_yes="☑" if listed else "☐",
+        cb_listed_no="☐" if listed else "☑",
+        office=_esc(subject.get("ListOfficeName")) or "&nbsp;",
+        phone=_esc(subject.get("ListAgentDirectPhone")) or "&nbsp;",
+        subject_comments=subj_comments or "&nbsp;",
+        sold_rows=sold_rows,
+        sold_comments=sold_notes or "&nbsp;",
+        active_rows=active_rows,
+        active_comments=active_notes or "&nbsp;",
+        value_rows=value_rows,
+    )
+    missing = [t for t in ("$subject_row", "$sold_rows", "$active_rows", "$value_rows") if t in html]
+    if missing:
+        raise RuntimeError(f"bpo-template.html placeholders not filled: {missing}")
+    return html
 
 # ─── Drive: create Google Doc from HTML ───────────────────────────────────────
 
@@ -559,17 +532,30 @@ def main():
     print(f"  {len(active)} active comp(s)")
 
     print("Fetching sold comps (last 12 months)...")
-    sold = fetch_sold_comps(zip_code, beds, sqft, year)
-    if len(sold) < 3:
-        # Widen to adjacent zips by removing the zip filter on a retry
-        print(f"  Only {len(sold)} found in zip — attempting wider search...")
-        wider = fetch_sold_comps(zip_code, beds, sqft, year, months=12)
-        if len(wider) > len(sold):
-            sold = wider
-    print(f"  {len(sold)} sold comp(s)")
+    sold_all = fetch_sold_comps(zip_code, beds, sqft, year, n=8)  # extra depth for the CMA
+    sold = sold_all[:3]
+    print(f"  {len(sold_all)} sold comp(s) — top 3 shown on BPO")
 
-    # 3. Build HTML
-    html = build_html(subject, sold, active, a.address, a.as_is, a.repaired)
+    # 3. CMA cross-reference (computed from the full sold pool)
+    as_is, cma_note = a.as_is, ""
+    cma = cma_estimate(subject, sold_all)
+    if cma:
+        print(f"CMA estimate: ${cma['value']:,} (range ${cma['low']:,}–${cma['high']:,}, {cma['n']} adjusted sales)")
+        cma_note = (f"CMA cross-ref: adjusted-sale value ${cma['value']:,} "
+                    f"(range ${cma['low']:,}–${cma['high']:,}, n={cma['n']}).")
+        stated = int(re.sub(r"[^\d]", "", as_is) or 0) if as_is else 0
+        if stated:
+            pct = (stated - cma["value"]) / cma["value"] * 100
+            if abs(pct) > 10:
+                print(f"  ⚠ Stated as-is ${stated:,} is {pct:+.0f}% vs CMA — double-check before sending")
+                cma_note += f" Stated as-is diverges {pct:+.0f}% from CMA."
+        else:
+            as_is = f"${cma['value']:,} (CMA est.)"
+    else:
+        print("CMA estimate: skipped (no usable sold comps or subject sqft)")
+
+    # 4. Build HTML
+    html = build_html(subject, sold, active, a.address, as_is, a.repaired, cma_note)
 
     if a.dry_run:
         out = Path("/tmp/bpo_preview.html")
@@ -578,20 +564,20 @@ def main():
         print(f"  {len(sold)} sold comps, {len(active)} active comps")
         return
 
-    # 4. Drive folder
+    # 5. Drive folder
     token = get_token()
     print("\nCreating Drive folder...")
     parent_id = find_or_create_folder(token, BPO_PARENT)
     folder_id = find_or_create_folder(token, a.address, parent_id)
     print(f"  https://drive.google.com/drive/folders/{folder_id}")
 
-    # 5. Google Doc
+    # 6. Google Doc
     title = f"BPO - {a.address}"
     print("Creating BPO Google Doc...")
     doc_id, doc_link = create_gdoc_from_html(token, title, html, folder_id)
     print(f"  {doc_link}")
 
-    # 6. PDF
+    # 7. PDF
     print("Exporting PDF...")
     pdf_bytes = export_doc_pdf(token, doc_id)
     slug      = a.address.replace(",", "").replace(" ", "_")[:60]

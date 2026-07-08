@@ -1,0 +1,56 @@
+{
+  "conversation": {
+    "id": "6FvhCjJBWM9RzuDVYSgq",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364134333,
+    "dateUpdated": 1783364136504,
+    "lastMessageDate": 1783364136502,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Valery, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "oJAxkMOzw4QWiFfIMOIX",
+    "fullName": "Valery Sandoval",
+    "contactName": "Valery Sandoval",
+    "companyName": "Avatar Group - Flipping",
+    "phone": "+14703643694",
+    "tags": [
+      "flipper",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364136502
+    ]
+  },
+  "messages": [
+    {
+      "id": "C1xCcvkaadY3qZ5jXPIA",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Valery, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "oJAxkMOzw4QWiFfIMOIX",
+      "contentType": "text/plain",
+      "conversationId": "6FvhCjJBWM9RzuDVYSgq",
+      "dateAdded": "2026-07-06T18:55:34.377Z",
+      "dateUpdated": "2026-07-06T18:55:41.384Z",
+      "source": "workflow",
+      "altId": "SM6151f9fda1675c41e6f5e08d8f7c8a4b",
+      "from": "+16789712411",
+      "to": "+14703643694",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

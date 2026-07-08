@@ -63,7 +63,7 @@ def _bars_to_series(bars: list[dict]) -> pd.Series:
     if not bars:
         return pd.Series(dtype=float)
     df = pd.DataFrame(bars)
-    # Polygon timestamps are epoch-ms; Alpaca are ISO strings
+    # Alpaca bar timestamps are ISO strings; int/float branch kept as a defensive fallback
     if isinstance(df["t"].iloc[0], (int, float)):
         df["dt"] = pd.to_datetime(df["t"], unit="ms", utc=True)
     else:

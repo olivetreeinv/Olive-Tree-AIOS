@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "CKvBLdw5YL23L7zGufQl",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906402155,
+    "dateUpdated": 1783365033904,
+    "lastMessageDate": 1783365033898,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Leland, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906403212,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "d7T2E8zaEEzbFwb9Ce6U",
+    "fullName": "Leland Haugh",
+    "contactName": "Leland Haugh",
+    "companyName": null,
+    "phone": "+12702174100",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783365033898
+    ]
+  },
+  "messages": [
+    {
+      "id": "FKprm5g4Xq8mqgyloVnk",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Leland, a copy of the pitch deck has been sent to your email.",
+      "contactId": "d7T2E8zaEEzbFwb9Ce6U",
+      "contentType": "text/plain",
+      "conversationId": "CKvBLdw5YL23L7zGufQl",
+      "dateAdded": "2026-07-06T19:09:37.478Z",
+      "dateUpdated": "2026-07-06T19:09:37.478Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+12702174100",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "bliECDW1P180y3LcxHeM",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Leland, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "d7T2E8zaEEzbFwb9Ce6U",
+      "contentType": "text/plain",
+      "conversationId": "CKvBLdw5YL23L7zGufQl",
+      "dateAdded": "2026-06-19T22:00:02.431Z",
+      "dateUpdated": "2026-06-19T22:00:04.981Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+12702174100",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

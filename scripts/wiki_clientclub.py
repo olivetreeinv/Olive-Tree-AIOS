@@ -210,7 +210,7 @@ def enumerate_posts(product_id: str = PRODUCT_ID, token_id: str = "") -> list[di
     hdrs = _api_headers(token_id, extra_hdrs)
 
     def get(url: str) -> dict:
-        resp = httpx.get(url, headers=hdrs, timeout=20, verify=False)
+        resp = httpx.get(url, headers=hdrs, timeout=20)
         resp.raise_for_status()
         return resp.json()
 

@@ -1,0 +1,79 @@
+{
+  "conversation": {
+    "id": "3lsatwsZH3v2wQQa2Ak4",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364355442,
+    "dateUpdated": 1783364356142,
+    "lastMessageDate": 1783364356138,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Stacy, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "QenhtqbbcYpf7BzuMI2t",
+    "fullName": "Stacy Vaughn",
+    "contactName": "Stacy Vaughn",
+    "companyName": null,
+    "phone": "+17704564800",
+    "tags": [
+      "lawyer",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364356138
+    ]
+  },
+  "messages": [
+    {
+      "id": "yFlzWCiogJdkDuAYxIpn",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "QenhtqbbcYpf7BzuMI2t",
+      "conversationId": "3lsatwsZH3v2wQQa2Ak4",
+      "dateAdded": "2026-07-06T18:59:17.032Z",
+      "dateUpdated": "2026-07-06T18:59:17.032Z",
+      "from": "+17704564800",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "SMS"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "Hs9inD8ey2ayTYTOU7Tv",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Stacy, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "QenhtqbbcYpf7BzuMI2t",
+      "contentType": "text/plain",
+      "conversationId": "3lsatwsZH3v2wQQa2Ak4",
+      "dateAdded": "2026-07-06T18:59:15.500Z",
+      "dateUpdated": "2026-07-06T18:59:15.500Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+17704564800",
+      "error": "Error 30006 - Landline or non-mobile number. Cannot receive SMS.",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

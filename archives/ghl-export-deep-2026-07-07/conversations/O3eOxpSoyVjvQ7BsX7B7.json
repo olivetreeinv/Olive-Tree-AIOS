@@ -1,0 +1,56 @@
+{
+  "conversation": {
+    "id": "O3eOxpSoyVjvQ7BsX7B7",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364122073,
+    "dateUpdated": 1783364122663,
+    "lastMessageDate": 1783364122659,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Watson & Associates CPA, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "4vPdxyl7fWJS4k2ArCSt",
+    "fullName": "Watson & Associates Cpa",
+    "contactName": "Watson & Associates CPA",
+    "companyName": null,
+    "phone": "+16785346205",
+    "tags": [
+      "cpa",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364122659
+    ]
+  },
+  "messages": [
+    {
+      "id": "ASlvGPM1spar7coSbvYZ",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Watson & Associates CPA, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "4vPdxyl7fWJS4k2ArCSt",
+      "contentType": "text/plain",
+      "conversationId": "O3eOxpSoyVjvQ7BsX7B7",
+      "dateAdded": "2026-07-06T18:55:22.124Z",
+      "dateUpdated": "2026-07-06T18:55:24.819Z",
+      "source": "workflow",
+      "altId": "SMf5692bc95e2dd457cee858debac04ed6",
+      "from": "+16789712411",
+      "to": "+16785346205",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

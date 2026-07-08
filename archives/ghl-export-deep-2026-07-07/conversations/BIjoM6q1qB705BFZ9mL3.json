@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "BIjoM6q1qB705BFZ9mL3",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906152560,
+    "dateUpdated": 1783364805547,
+    "lastMessageDate": 1783364805543,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "David, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906153745,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "iz81duN3D5tCTNqbOwyS",
+    "fullName": "David Phelps",
+    "contactName": "David Phelps",
+    "companyName": "Wildlife Exterminators",
+    "phone": "+17708289622",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364805543
+    ]
+  },
+  "messages": [
+    {
+      "id": "FKHwtNDbjdSffqn4oOF2",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "David, a copy of the pitch deck has been sent to your email.",
+      "contactId": "iz81duN3D5tCTNqbOwyS",
+      "contentType": "text/plain",
+      "conversationId": "BIjoM6q1qB705BFZ9mL3",
+      "dateAdded": "2026-07-06T19:06:44.964Z",
+      "dateUpdated": "2026-07-06T19:06:44.964Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+17708289622",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "93MGA4pYr6WN3KCl1aNr",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey David, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "iz81duN3D5tCTNqbOwyS",
+      "contentType": "text/plain",
+      "conversationId": "BIjoM6q1qB705BFZ9mL3",
+      "dateAdded": "2026-06-19T21:55:53.017Z",
+      "dateUpdated": "2026-06-19T21:55:54.447Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+17708289622",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

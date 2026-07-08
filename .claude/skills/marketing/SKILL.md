@@ -5,13 +5,13 @@
 
 ## What this skill does
 
-Weekly content engine — one run produces the **newsletter campaign** (MF story + SF story → GHL draft) and the **Instagram posts** (carousels derived from that same newsletter, not re-scanned). One signal scan. One source of truth. Everything cohesive.
+Weekly content engine — one run produces the **newsletter campaign** (MF story + SF story → local Gmail send via `scripts/newsletter.py`) and the **Instagram posts** (carousels derived from that same newsletter, not re-scanned). One signal scan. One source of truth. Everything cohesive.
 
 Two modes:
-- **Full run** (default): Signal scan → newsletter draft → GHL campaign → IG posts rendered + scheduled
-- **Newsletter only** (`--newsletter-only`): Stops after GHL draft
+- **Full run** (default): Signal scan → newsletter draft → build + test-send + send via `scripts/newsletter.py` → IG posts rendered + scheduled
+- **Newsletter only** (`--newsletter-only`): Stops after the newsletter send
 
-Nothing sends automatically. GHL draft = Brian reviews + clicks Send in GHL. IG posts = `draft: true` in Metricool until Brian approves.
+Nothing sends without approval. Newsletter: Brian approves the draft in chat → test-send lands in his inbox → he eyeballs it → only then the real send runs. IG posts = `draft: true` in Metricool until Brian approves.
 
 ---
 
@@ -137,53 +137,49 @@ Translation: [plain English implication for the reader]
 [full draft — 250–350 words]
 ```
 
-Show draft. Ask: "Approve to create the GHL draft campaign, or any edits first?"
+Show draft. Ask: "Approve to build the campaign, or any edits first?"
 
 **Wait for Brian's approval before Step 4.**
 
 ---
 
-### Step 4: Create GHL draft campaign
+### Step 4: Build + send via local Gmail engine
 
-**Endpoint:**
-```
-POST https://services.leadconnectorhq.com/emails/public/v2/locations/{locationId}/campaigns/email-campaign
-```
+Send IS available locally now — `scripts/newsletter.py` replaces the GHL campaign flow entirely.
 
-**Headers:**
+**1. Build** (once the draft is approved in chat — save the approved body as markdown first):
+```bash
+python3 scripts/newsletter.py build \
+    --name "[Month YYYY] Newsletter" \
+    --subject "[chosen subject line]" \
+    --markdown /path/to/approved-body.md
+# → writes output/newsletters/<slug>.html + campaigns row (status: draft)
 ```
-Authorization: Bearer $GHL_API_KEY
-Version: 2021-07-28
-Content-Type: application/json
-```
+Show Brian the generated HTML path (open it if he wants to see the render).
 
-**Payload:**
-```json
-{
-  "name": "[Month YYYY] Newsletter",
-  "editorType": "builder",
-  "timeZone": "America/New_York",
-  "userId": "MUh3VFRYXFNyRGYpj38n",
-  "subject": "[chosen subject line]",
-  "templateId": "683b400fcba7be06e0d38c5d",
-  "editorContent": {
-    "editorData": {
-      "content": "[newsletter HTML body]"
-    }
-  }
-}
+**2. Test-send** (on approval):
+```bash
+python3 scripts/newsletter.py test-send --campaign "[Month YYYY] Newsletter"
+# → sends ONE copy to brian@olivetreeinv.io, subject prefixed [TEST]
+```
+Brian eyeballs it in his inbox.
+
+**3. Send** (only after Brian confirms the test looks right):
+```bash
+python3 scripts/newsletter.py send --campaign "[Month YYYY] Newsletter" --dry-run
+# → prints audience size, sends nothing — show Brian the count first
+python3 scripts/newsletter.py send --campaign "[Month YYYY] Newsletter"
+# → real send
 ```
 
-Creates as `status: draft` — does NOT send to any contacts.
+**Audience rule:** contacts tagged `newsletter` in `data/olive.db`, with an email, minus anyone `unsubscribed`. Override with `--tag X` if Brian wants a different segment. Sends go out individually (2–4s apart), each logged to `email_log` — the send is resume-safe if interrupted (already-sent contacts are skipped on re-run).
 
-> ⚠️ **Send is NOT available via API.** Brian must send manually: GHL → Marketing → Email Campaigns → Drafts → Send.
-> ⚠️ **Delete is NOT available via API** for v2-created campaigns. Cleanup is manual in GHL.
+**Unsubscribes:** run `python3 scripts/newsletter.py scan-unsubs --days 30` after each campaign to flag UNSUBSCRIBE replies in the DB.
 
-Confirm once created:
+Confirm once sent:
 ```
-✅ GHL draft campaign created: "[Month YYYY] Newsletter"
-GHL → Marketing → Email Campaigns → Drafts
-Nothing has been sent.
+✅ Newsletter sent: "[Month YYYY] Newsletter"
+[N] delivered, [N] failed — logged in email_log
 ```
 
 If `--newsletter-only` flag: stop here.
@@ -236,11 +232,19 @@ Show briefs. Ask: "Approve to render and schedule?"
 
 **Cover art — source in this order (anti-slop ladder):**
 
-1. **Brian's own art (best)** — Luma Dream Machine board (`app.lumalabs.ai/boards`), Midjourney, or ChatGPT images. Brian downloads the image; pass its path as `"cover_image"` in the slide spec JSON. Manual by design — no Luma API integration (usage-billed, not worth automating at current volume).
-2. **Higgsfield** — `python3 scripts/higgsfield_hero.py --prompt "[subject]" --out output/carousel/[slug]/hero.png` (2 credits/image; checks balance first, falls back automatically). Then pass as `cover_image`.
+1. **kie.ai — GPT Image 2 (default)** — `python3 scripts/kie_hero.py --prompt "[subject]" --out output/carousel/[slug]/hero.png` (~6 credits ≈ $0.03/image; checks balance first, falls back automatically). Pass the returned path as `"cover_image"` in the slide spec JSON. Uses `KIE_API_KEY` in `.env`.
+2. **Brian's own art** — Luma board (`app.lumalabs.ai/boards`), Midjourney, or ChatGPT — for posts he wants to art-direct by hand. He downloads it; pass its path as `"cover_image"`.
 3. **Pexels via `cover_query` (last resort)** — query must name a real, specific place or scene from the story ("Atlanta Midtown skyline dusk", not "city buildings" or "business meeting"). Generic stock is the #1 slop tell.
 
-Prompt recipe for 1 & 2: real place from the story + light/airy editorial photo language, vertical 4:5. Never text-in-image, never people's faces (AI hands/faces = instant slop flag).
+Prompt recipe for 1 & 2: real place from the story + light/airy editorial photo language. The `kie_hero.py` light-airy wrapper + `4:3` default already suit the cover band; override with `--aspect`. Never text-in-image, never people's faces (AI hands/faces = instant slop flag). `higgsfield_hero.py` is retired — kie is cheaper and one API for image + motion.
+
+**Motion cover (optional, for Reels/video posts):** animate a still into a short MP4 (Veo 3 Fast, ~$0.33/8s; kie doesn't carry Luma). The still must be a *public* URL — use the one kie returns, or upload the PNG first.
+```bash
+python3 scripts/kie_hero.py --prompt "<public image URL>" --out output/carousel/[slug]/hero.mp4 --motion
+python3 scripts/social_drive_upload.py --video output/carousel/[slug]/hero.mp4 --date YYYY-MM-DD --title "..."
+# → prints a drive.usercontent.google.com/download URL; pass it in Metricool `media` as an IG REEL
+```
+Metricool re-hosts the MP4 to its own CDN (verified 2026-07-07). Schedule with `instagramData: {"type": "REEL"}` and `draft: true`. The image-CDN `lh3` URL does NOT work for video — `social_drive_upload.py --video` returns the correct download URL.
 
 **Render** (HTML renderer — primary):
 ```bash
@@ -302,15 +306,13 @@ python3 scripts/social_sheet.py \
 ✅ Weekly content pipeline complete — [Date]
 
 NEWSLETTER
-GHL draft: "[Month YYYY] Newsletter"
-GHL → Marketing → Email Campaigns → Drafts — nothing sent
+"[Month YYYY] Newsletter" — [sent: N delivered | or: built + test-sent, awaiting Brian's go]
 
 INSTAGRAM
 Post 1 (MF) — [time] ET | [N] slides | draft in Metricool
 Post 2 (SF) — [time] ET | [N] slides | draft in Metricool
 
-Nothing has been sent or published.
-Approve each in GHL and Metricool when ready.
+IG posts are drafts in Metricool — approve when ready.
 ```
 
 ---
@@ -337,9 +339,10 @@ Approve each in GHL and Metricool when ready.
 
 | Item | Value |
 |---|---|
-| GHL Location ID | `$GHL_LOCATION_ID` (SLq7B2pldVzfQLKjGpvw) |
-| Newsletter template | `683b400fcba7be06e0d38c5d` |
-| Campaign userId | `MUh3VFRYXFNyRGYpj38n` |
+| Newsletter engine | `scripts/newsletter.py` (build / test-send / send / scan-unsubs) |
+| Newsletter template | `templates/newsletter.html` |
+| Audience | tag `newsletter` in `data/olive.db`, minus unsubscribed |
+| GHL Location ID (legacy, social fallback only) | `$GHL_LOCATION_ID` (SLq7B2pldVzfQLKjGpvw) |
 | Metricool brandId/blogId | `6192268` |
 | IG Posts sheet | `1wSdYytgnEZrLGiwVarA-OIN2OfJ1WOlB7MOYBMdRKrQ` |
 | Social Drive folder | `1a46dKGTj8ggEWbTaRN-TuZv_EL__a6AY` |
@@ -351,7 +354,7 @@ Approve each in GHL and Metricool when ready.
 - **Rate tables age fast.** Flag if `references/news-research.md` is >7 days old before any rate-angle content.
 - **Never fabricate data.** If a source isn't returning live results, note it and ask Brian to verify.
 - **Faith + Mission posts:** powerful but max 1/month. Flag when suggesting one.
-- **GHL send + delete not available via API.** Brian does both manually in GHL.
+- **Newsletter send is local now** — `scripts/newsletter.py` via Gmail API. GHL email campaigns are retired; the only remaining GHL use here is the social-posting fallback in Step 6.
 - **Metricool free tier:** 20 posts/month cap. Always `draft: true` on first run.
 - **IG posts always derived from newsletter** — never run a second signal scan. One source of truth.
 - **`carousel_render_html.py` is the primary renderer.** Pillow (`carousel_render.py`) kept only for `source_cover`/`palette_from_image` helpers.

@@ -86,5 +86,25 @@ Run `segments` to see the live list. At import: 18 tags across 804 contacts (exa
 
 - This CLI is what to run when Brian asks about a contact, wants to tag a list, or logs a call outcome.
 - For bulk tagging after a campaign or event, use `import-csv` with a tags column.
-- Email sends are not yet wired — the email_log and drip tables are here for when `/capital-raise` launches campaigns. For now, send via Gmail MCP and log with `note`.
 - `ghl_id` is preserved from import. If GHL ever needs a re-sync, match on that field.
+
+## Drips (replaces GHL workflows, 2026-07-06)
+
+Templates live in `templates/drips/<drip>/step-NN.md` — frontmatter (`delay_days`, `subject`) + body in Brian's voice, `{{first_name}}` supported. Three drips:
+
+- `pitch-deck` — 3 steps (day 0/3/7). Replaces GHL "Deal Funnel Pitch Deck".
+- `welcome` — 1 step. Replaces GHL "Contact added >> send text/email".
+- `agent-wholesaler` — 1 step. Replaces GHL 'Tag "Agent/Wholesaler" >> send text/email'.
+
+GHL's 4th workflow (calendar-booking notifier) needs no code — Google Calendar native notifications cover it.
+
+```bash
+python3 scripts/drip.py list                                        # drips + step counts
+python3 scripts/drip.py enroll --contact jane@foo.com --drip welcome
+python3 scripts/drip.py enroll --tag pitchdeck --drip pitch-deck --dry-run
+python3 scripts/drip.py run [--dry-run]                             # send everything due
+python3 scripts/drip.py stop --contact 42 [--drip welcome]
+python3 scripts/drip.py status                                      # counts per drip
+```
+
+Sends go through Gmail API as brian@, log to `email_log` (drip_step=`drip:NAME:NN`). Unsubscribed contacts are skipped at enroll AND send time. Daily 9:00 launchd job `com.olivetree.drip` runs `drip_worker.py` (drip run + newsletter scan-unsubs) → `output/drip-runner.log`.

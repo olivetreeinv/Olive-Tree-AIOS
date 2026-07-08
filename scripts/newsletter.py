@@ -177,17 +177,23 @@ def cmd_build(args):
     out_path = OUTPUT_DIR / f"{slug}.html"
     out_path.write_text(full_html)
 
-    # db row
+    # db row — upsert by name so rebuilding after edits doesn't create duplicates
     session = get_session()
-    camp = Campaign(
-        name=args.name,
-        subject=subject,
-        html_path=str(out_path),
-        status="draft",
-        sent_count=0,
-        created_at=_now(),
-    )
-    session.add(camp)
+    camp = session.query(Campaign).filter_by(name=args.name).first()
+    if camp:
+        camp.subject   = subject
+        camp.html_path = str(out_path)
+        camp.status    = "draft"
+    else:
+        camp = Campaign(
+            name=args.name,
+            subject=subject,
+            html_path=str(out_path),
+            status="draft",
+            sent_count=0,
+            created_at=_now(),
+        )
+        session.add(camp)
     session.commit()
     print(f"Built: {out_path}")
     print(f"Campaign row id={camp.id}  status=draft")
@@ -250,28 +256,45 @@ def cmd_send(args):
     sent = failed = 0
 
     for c in to_send:
+        # Re-fetch unsubscribe flag fresh — could have changed since we built the list
+        session.expire(c)
+        if c.unsubscribed:
+            print(f"  SKIP (now unsubscribed): {c.email}")
+            continue
+
         first = c.first_name or "there"
         body = template_html.replace("Hey there,", f"Hey {html.escape(first)},")
-        status = "sent"
+
         try:
             _send_raw(token, c.email, camp.subject, body)
+            # Residual race: if killed after send but before commit, one contact
+            # gets a duplicate on resume — acceptable (worst case: one extra email).
+            session.add(EmailLog(
+                contact_id=c.id,
+                campaign_id=camp.id,
+                subject=camp.subject,
+                sent_at=_now(),
+                status="sent",
+            ))
+            session.commit()
             sent += 1
         except Exception as e:
+            session.rollback()
             print(f"  FAIL {c.email}: {e}")
-            status = "failed"
+            try:
+                session.add(EmailLog(
+                    contact_id=c.id,
+                    campaign_id=camp.id,
+                    subject=camp.subject,
+                    sent_at=_now(),
+                    status="failed",
+                ))
+                session.commit()
+            except Exception:
+                session.rollback()
             failed += 1
 
-        session.add(EmailLog(
-            contact_id=c.id,
-            campaign_id=camp.id,
-            subject=camp.subject,
-            sent_at=_now(),
-            status=status,
-        ))
-        session.commit()
-
-        delay = random.uniform(2, 4)
-        time.sleep(delay)
+        time.sleep(random.uniform(2, 4))
 
     # update campaign
     camp.status = "sent"
@@ -284,10 +307,11 @@ def cmd_scan_unsubs(args):
     token = get_token()
     days = args.days
 
-    # search Gmail for UNSUBSCRIBE subjects
+    # Inbound-only: our own sends carry UNSUBSCRIBE in the footer, so a bare
+    # match flags every outbound newsletter (and Brian himself).
     queries = [
-        f"subject:UNSUBSCRIBE newer_than:{days}d",
-        f"to:brian@olivetreeinv.io UNSUBSCRIBE newer_than:{days}d",
+        f"in:inbox to:brian@olivetreeinv.io subject:UNSUBSCRIBE "
+        f"-from:brian@olivetreeinv.io newer_than:{days}d",
     ]
     found_emails = set()
     for q in queries:
@@ -309,7 +333,7 @@ def cmd_scan_unsubs(args):
             for h in detail.json().get("payload", {}).get("headers", []):
                 if h["name"] == "From":
                     m = re.search(r"[\w.+-]+@[\w.-]+\.\w+", h["value"])
-                    if m:
+                    if m and m.group(0).lower() != "brian@olivetreeinv.io":
                         found_emails.add(m.group(0).lower())
 
     if not found_emails:

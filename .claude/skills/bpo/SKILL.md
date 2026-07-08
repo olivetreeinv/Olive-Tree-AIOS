@@ -16,6 +16,8 @@ Generates a professional Broker Price Opinion (BPO) for a single-family property
 
 All data pulled from FMLS via Bridge Interactive API.
 
+**Layout:** the one-page BPO form at `templates/bpo-template.html` ($-placeholders, filled by `build_html()` in `scripts/bpo.py`). A blank fill-in copy lives as the "BPO Template" Google Doc in the `Olive Tree Investments - BPOs` Drive folder. Edit the template file to change the look — the script only injects data.
+
 ---
 
 ## Trigger
@@ -88,7 +90,16 @@ If fewer than 3 sold comps are found, note it explicitly: "Only X sold comps in 
 
 ## Value fields
 
-`--as-is` and `--repaired` are optional pre-fills for the Value section. If Brian gives estimates upfront, include them. Otherwise leave blank — he fills them in the Doc.
+`--as-is` and `--repaired` are optional pre-fills for the Value section. If Brian gives estimates upfront, include them. Otherwise the CMA estimate pre-fills As-Is (marked "(CMA est.)").
+
+## CMA cross-reference
+
+Bridge/FMLS has no CMA endpoint, so the script computes one from the sold-comp pool (8 sales, not just the 3 shown): each sale is adjusted for sqft / bed / bath / garage gaps vs the subject, then weighted by recency and proximity. Output:
+- Terminal: `CMA estimate: $X (range $low–$high, n adjusted sales)`
+- Doc: a "CMA cross-ref" line in the Comparable Sales COMMENTS row
+- If `--as-is` was given and diverges >10% from the CMA, both the terminal and the Doc flag it — always surface this to Brian before he sends the BPO.
+
+Adjustment constants live at the top of `scripts/bpo.py` (`ADJ_*`) — rule-of-thumb values; tune per market if BPOs start diverging from reality.
 
 ---
 

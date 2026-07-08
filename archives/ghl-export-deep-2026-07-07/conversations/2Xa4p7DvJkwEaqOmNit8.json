@@ -1,0 +1,54 @@
+{
+  "conversation": {
+    "id": "2Xa4p7DvJkwEaqOmNit8",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249912855,
+    "dateUpdated": 1750249912855,
+    "lastMessageDate": 1750249912855,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "maMHZMGHWC9mYfsqxHGz",
+    "fullName": "Gretchen Allen",
+    "contactName": "Gretchen Allen",
+    "companyName": null,
+    "email": "flintlock@mindspring.com",
+    "tags": [
+      "friend",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "phone": null,
+    "attributed": null,
+    "profilePhoto": null,
+    "sort": [
+      1750249912855
+    ]
+  },
+  "messages": [
+    {
+      "id": "1NdxWeodWCInA1HKEdUe",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "maMHZMGHWC9mYfsqxHGz",
+      "conversationId": "2Xa4p7DvJkwEaqOmNit8",
+      "dateAdded": "2025-06-18T12:31:22.643Z",
+      "dateUpdated": "2025-06-18T12:34:01.250Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "rv2SJh5MCTXzIzNnMo3r"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

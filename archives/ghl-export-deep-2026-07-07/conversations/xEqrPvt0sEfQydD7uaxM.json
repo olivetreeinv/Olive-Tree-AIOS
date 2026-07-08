@@ -1,0 +1,103 @@
+{
+  "conversation": {
+    "id": "xEqrPvt0sEfQydD7uaxM",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781905974658,
+    "dateUpdated": 1783380677240,
+    "lastMessageDate": 1783380677128,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Rxplumbing@yahoo.com",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "inbound",
+    "inbox": true,
+    "unreadCount": 1,
+    "lastManualMessageDate": 1783380677128,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "VPONwZVYeILtnH0OByqp",
+    "fullName": "Igor Bystrika",
+    "contactName": "IGOR Bystrika",
+    "companyName": "Plumber / Investor",
+    "email": "Rxplumbing@yahoo.com",
+    "phone": "+14049324456",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783380677128
+    ]
+  },
+  "messages": [
+    {
+      "id": "UnGR4f1MtRbWUpvnpq80",
+      "direction": "inbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Rxplumbing@yahoo.com",
+      "contactId": "VPONwZVYeILtnH0OByqp",
+      "contentType": "text/plain",
+      "conversationId": "xEqrPvt0sEfQydD7uaxM",
+      "dateAdded": "2026-07-06T23:31:17.338Z",
+      "dateUpdated": "2026-07-06T23:31:17.338Z",
+      "altId": "SM8943f1515b5629a50daaddf87b8e3c59",
+      "from": "+14049324456",
+      "to": "+16789712411",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "205H69u9yR6ZRkrC6RKr",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "IGOR, a copy of the pitch deck has been sent to your email.",
+      "contactId": "VPONwZVYeILtnH0OByqp",
+      "contentType": "text/plain",
+      "conversationId": "xEqrPvt0sEfQydD7uaxM",
+      "dateAdded": "2026-07-06T19:01:46.801Z",
+      "dateUpdated": "2026-07-06T19:01:51.281Z",
+      "source": "workflow",
+      "altId": "SMac9e33437fe43c01df45656cf5fe42cc",
+      "from": "+16789712411",
+      "to": "+14049324456",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "N7xcTFoCw3PXZh3sf9QD",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey IGOR, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "VPONwZVYeILtnH0OByqp",
+      "contentType": "text/plain",
+      "conversationId": "xEqrPvt0sEfQydD7uaxM",
+      "dateAdded": "2026-06-19T21:52:54.920Z",
+      "dateUpdated": "2026-06-19T21:52:56.452Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+14049324456",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "conversation": {
+    "id": "IOaZqWej8w18NkLwvxT1",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781905860757,
+    "dateUpdated": 1781905861643,
+    "lastMessageDate": 1781905861636,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Hey Tayana, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.",
+    "lastOutboundMessageAction": "manual",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781905861636,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "cFuZoX6UclM1S43YvKLU",
+    "fullName": "Tayana Jean",
+    "contactName": "Tayana Jean",
+    "companyName": null,
+    "phone": "+13472109237",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "profilePhoto": null,
+    "attributed": null,
+    "email": null,
+    "sort": [
+      1781905861636
+    ]
+  },
+  "messages": [
+    {
+      "id": "PM8aLP2muJFKUci1iBIf",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "cFuZoX6UclM1S43YvKLU",
+      "conversationId": "IOaZqWej8w18NkLwvxT1",
+      "dateAdded": "2026-06-19T21:51:04.294Z",
+      "dateUpdated": "2026-06-19T21:51:04.294Z",
+      "from": "+13472109237",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "SMS"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "2nGsgcuKD5F8pmeLyyX1",
+      "direction": "outbound",
+      "status": "undelivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Tayana, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "cFuZoX6UclM1S43YvKLU",
+      "contentType": "text/plain",
+      "conversationId": "IOaZqWej8w18NkLwvxT1",
+      "dateAdded": "2026-06-19T21:51:01.086Z",
+      "dateUpdated": "2026-06-19T21:51:03.918Z",
+      "source": "app",
+      "altId": "SMe8b3dbb072bd3654819f91ff2cef554c",
+      "from": "+16789712411",
+      "to": "+13472109237",
+      "error": "Error 30005 - The recipient's number is inactive or does not exist.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

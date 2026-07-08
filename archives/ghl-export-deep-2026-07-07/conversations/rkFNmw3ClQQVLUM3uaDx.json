@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "rkFNmw3ClQQVLUM3uaDx",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906201582,
+    "dateUpdated": 1783364897200,
+    "lastMessageDate": 1783364897196,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Chip, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906202477,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "I86fryfquSC6pdJ8oLYn",
+    "fullName": "Chip Buhler",
+    "contactName": "Chip Buhler",
+    "companyName": null,
+    "phone": "+17706529069",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364897196
+    ]
+  },
+  "messages": [
+    {
+      "id": "XvozCvZdXTCGjvxdj7Za",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Chip, a copy of the pitch deck has been sent to your email.",
+      "contactId": "I86fryfquSC6pdJ8oLYn",
+      "contentType": "text/plain",
+      "conversationId": "rkFNmw3ClQQVLUM3uaDx",
+      "dateAdded": "2026-07-06T19:08:16.555Z",
+      "dateUpdated": "2026-07-06T19:08:16.556Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+17706529069",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "kpiDND0d5KQ0U3YU54nG",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Chip, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "I86fryfquSC6pdJ8oLYn",
+      "contentType": "text/plain",
+      "conversationId": "rkFNmw3ClQQVLUM3uaDx",
+      "dateAdded": "2026-06-19T21:56:41.861Z",
+      "dateUpdated": "2026-06-19T21:56:43.155Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+17706529069",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

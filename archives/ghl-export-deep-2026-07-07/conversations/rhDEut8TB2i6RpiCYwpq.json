@@ -1,0 +1,54 @@
+{
+  "conversation": {
+    "id": "rhDEut8TB2i6RpiCYwpq",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249881579,
+    "dateUpdated": 1750249881579,
+    "lastMessageDate": 1750249881579,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "b7Dd8xQQNBYadUGOnFY2",
+    "fullName": "Jordan Jericho",
+    "contactName": "Jordan Jericho",
+    "companyName": null,
+    "email": "jordan@thejerichohouse.org",
+    "tags": [
+      "friend",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "phone": null,
+    "attributed": null,
+    "profilePhoto": null,
+    "sort": [
+      1750249881579
+    ]
+  },
+  "messages": [
+    {
+      "id": "wjbknIKY65HPqgWKZcpy",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "b7Dd8xQQNBYadUGOnFY2",
+      "conversationId": "rhDEut8TB2i6RpiCYwpq",
+      "dateAdded": "2025-06-18T12:31:05.397Z",
+      "dateUpdated": "2025-06-18T12:33:33.946Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "nn9n72yWJSER0aH2BRHE"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

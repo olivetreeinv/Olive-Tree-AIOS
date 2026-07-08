@@ -17,7 +17,7 @@ All other fields are typed columns with UNIQUE / FK constraints for dedup + join
 """
 
 from sqlalchemy import (
-    Boolean, Column, Float, ForeignKey, Integer, String, Text
+    Boolean, Column, Float, ForeignKey, Integer, String, Text, UniqueConstraint
 )
 from sqlalchemy.orm import DeclarativeBase, relationship
 
@@ -379,6 +379,20 @@ class TradingCCPosition(Base):
     opened_at       = Column(String(30))
     closed_at       = Column(String(30))
     realized_pnl    = Column(Float)
+
+
+class TradingIVHistory(Base):
+    """Daily ATM implied-vol snapshot per symbol — builds the IV-rank history the
+    screener needs. Bootstrap mode (screener falls back to IV/RV ratio) runs until
+    a symbol has >=60 stored days, then the screener switches to true IV rank."""
+    __tablename__ = "trading_iv_history"
+    __table_args__ = (UniqueConstraint("symbol", "date", name="uq_iv_history_symbol_date"),)
+
+    id         = Column(Integer, primary_key=True, autoincrement=True)
+    symbol     = Column(String(20), nullable=False, index=True)
+    date       = Column(String(12), nullable=False)   # YYYY-MM-DD
+    atm_iv     = Column(Float)                         # annualized decimal, e.g. 0.32
+    created_at = Column(String(30))
 
 
 class Document(Base):

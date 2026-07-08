@@ -1,0 +1,170 @@
+{
+  "conversation": {
+    "id": "rv9bGXSHpY6j50qNOIq9",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249887352,
+    "dateUpdated": 1781961152357,
+    "lastMessageDate": 1781961152353,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Hey Jacklyn Vazquez, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.",
+    "lastOutboundMessageAction": "manual",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781961152353,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "cl9bcG4IC81B5ea3CKUJ",
+    "fullName": "Jacklyn Vazquez",
+    "contactName": "Jacklyn Vazquez",
+    "companyName": "Tandy Group",
+    "email": "jacklyn.vazquez@tandymgroup.com",
+    "phone": "+19735882564",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "profilePhoto": null,
+    "sort": [
+      1781961152353
+    ]
+  },
+  "messages": [
+    {
+      "id": "myeuHVpLaXOjgowX9ddR",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "cl9bcG4IC81B5ea3CKUJ",
+      "conversationId": "rv9bGXSHpY6j50qNOIq9",
+      "dateAdded": "2026-06-20T13:12:33.132Z",
+      "dateUpdated": "2026-06-20T13:12:33.132Z",
+      "from": "+19735882564",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "SMS"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "uujt0TP3j78HkvFMEfrD",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Jacklyn Vazquez, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "cl9bcG4IC81B5ea3CKUJ",
+      "contentType": "text/plain",
+      "conversationId": "rv9bGXSHpY6j50qNOIq9",
+      "dateAdded": "2026-06-20T13:12:31.652Z",
+      "dateUpdated": "2026-06-20T13:12:31.652Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+19735882564",
+      "error": "Error 30006 - Landline or non-mobile number. Cannot receive SMS.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "5qUgh7DaxYEOUOnlMpTx",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "cl9bcG4IC81B5ea3CKUJ",
+      "conversationId": "rv9bGXSHpY6j50qNOIq9",
+      "dateAdded": "2025-08-19T14:13:56.472Z",
+      "dateUpdated": "2025-08-19T14:13:56.472Z",
+      "from": "+19735882564",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "Email"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "McDlitFbaZHxe93KkOgM",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "cl9bcG4IC81B5ea3CKUJ",
+      "conversationId": "rv9bGXSHpY6j50qNOIq9",
+      "dateAdded": "2025-08-19T14:08:57.308Z",
+      "dateUpdated": "2025-08-19T14:08:57.308Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "dfhfZysNHRc9fVJfccc4"
+          ],
+          "direction": "outbound",
+          "subject": "Why 6.6% rates aren't stopping smart buyers"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "U1BNEER04IP0ZRo01Z7A",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "cl9bcG4IC81B5ea3CKUJ",
+      "conversationId": "rv9bGXSHpY6j50qNOIq9",
+      "dateAdded": "2025-07-22T14:10:08.681Z",
+      "dateUpdated": "2025-07-22T14:10:22.713Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "Pw8P2X0nsiYcYECNhLju"
+          ],
+          "direction": "outbound",
+          "subject": "Real Estate Tax & Rate Shifts You Can\u2019t Ignore"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "ymUMmZXDCYsb48kn9bOg",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "cl9bcG4IC81B5ea3CKUJ",
+      "conversationId": "rv9bGXSHpY6j50qNOIq9",
+      "dateAdded": "2025-06-18T12:31:01.004Z",
+      "dateUpdated": "2025-06-18T12:31:27.769Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "cRd05ROtEZj4XQxT6bdL"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "conversation": {
+    "id": "0DJeuk02HUdrvak2ojCo",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364223295,
+    "dateUpdated": 1783364223973,
+    "lastMessageDate": 1783364223970,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Joseph, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "MYiJppvkMSI7uWirxDzq",
+    "fullName": "Joseph Harrison",
+    "contactName": "Joseph Harrison",
+    "companyName": "JH Gutters",
+    "phone": "+14048046559",
+    "tags": [
+      "contractor",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364223970
+    ]
+  },
+  "messages": [
+    {
+      "id": "6VTNSBMgm0fbv8i554CM",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Joseph, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "MYiJppvkMSI7uWirxDzq",
+      "contentType": "text/plain",
+      "conversationId": "0DJeuk02HUdrvak2ojCo",
+      "dateAdded": "2026-07-06T18:57:03.348Z",
+      "dateUpdated": "2026-07-06T18:57:07.773Z",
+      "source": "workflow",
+      "altId": "SMfa62ae0bfc54057e7f7cee9aeaeeebfd",
+      "from": "+16789712411",
+      "to": "+14048046559",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

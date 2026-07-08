@@ -2,18 +2,19 @@
 type: skill
 name: audit
 trigger: /audit
-status: active
+status: retired
 ---
 
 ## What it does
-Scores the AIOS against the [removed framework] framework (Context, Connections, Capabilities, Cadence) — 25 points each, 100 total. Surfaces the top 3 leverage-weighted gaps with concrete fix commands.
+**RETIRED 2026-06** — replaced by [[skills/usage-audit]]. Skill file archived at `archives/skills/audit/`.
+
+Scored the AIOS on four layers (context, connections, capabilities, cadence) — 25 points each, 100 total. Surfaces the top 3 leverage-weighted gaps with concrete fix commands.
 
 ## Trigger phrases
 - `/audit`
 - "is my AIOS working"
 - "audit my setup"
 - "find gaps in my AIOS"
-- "score my setup against the [removed framework]"
 
 ## What it reads
 - `CLAUDE.md` — operating manual
@@ -25,7 +26,7 @@ Scores the AIOS against the [removed framework] framework (Context, Connections,
 - `context/`, `references/`, `decisions/log.md`
 
 ## Output
-- [removed framework] scoreboard (0–100)
+- Layer scoreboard (0–100)
 - Strengths called out
 - Top 3 gaps ranked by leverage with exact fix commands
 

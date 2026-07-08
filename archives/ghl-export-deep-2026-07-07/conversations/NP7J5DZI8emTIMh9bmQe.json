@@ -1,0 +1,57 @@
+{
+  "conversation": {
+    "id": "NP7J5DZI8emTIMh9bmQe",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364340885,
+    "dateUpdated": 1783364341438,
+    "lastMessageDate": 1783364341430,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Stenisha, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "oEJYAUkIFb8OIZ1vhZmz",
+    "fullName": "Stenisha Reed",
+    "contactName": "Stenisha Reed",
+    "companyName": "860 Forest Path Agent",
+    "phone": "+14046685782",
+    "tags": [
+      "agent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "attributed": null,
+    "sort": [
+      1783364341430
+    ]
+  },
+  "messages": [
+    {
+      "id": "qIuaqnMFo7UfDkTB60Mj",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Stenisha, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "oEJYAUkIFb8OIZ1vhZmz",
+      "contentType": "text/plain",
+      "conversationId": "NP7J5DZI8emTIMh9bmQe",
+      "dateAdded": "2026-07-06T18:59:00.935Z",
+      "dateUpdated": "2026-07-06T18:59:04.310Z",
+      "source": "workflow",
+      "altId": "SM85a52fbdcab1273bfc45353352920352",
+      "from": "+16789712411",
+      "to": "+14046685782",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

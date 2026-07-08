@@ -1,0 +1,77 @@
+{
+  "conversation": {
+    "id": "gzuoJwMTbHgitCVZHRFU",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249893031,
+    "dateUpdated": 1750249893031,
+    "lastMessageDate": 1750249893031,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "tgsdFoWTDwKHDaV8KYsi",
+    "fullName": "Marissa Emory",
+    "contactName": "Marissa Emory",
+    "companyName": null,
+    "email": "marissakemory@gmail.com",
+    "tags": [
+      "friend",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "phone": null,
+    "attributed": null,
+    "profilePhoto": null,
+    "sort": [
+      1750249893031
+    ]
+  },
+  "messages": [
+    {
+      "id": "s9vMpBPTsxnY4kNigh4O",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "tgsdFoWTDwKHDaV8KYsi",
+      "conversationId": "gzuoJwMTbHgitCVZHRFU",
+      "dateAdded": "2025-06-18T12:44:00.475Z",
+      "dateUpdated": "2025-06-18T12:44:00.489Z",
+      "from": "Marissa Emory",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "Email"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "JFnsKxUgn4VjZ2IFSNPo",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "tgsdFoWTDwKHDaV8KYsi",
+      "conversationId": "gzuoJwMTbHgitCVZHRFU",
+      "dateAdded": "2025-06-18T12:31:13.601Z",
+      "dateUpdated": "2025-06-18T12:31:33.365Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "mw737RVrqwQxzzfd85Bo"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

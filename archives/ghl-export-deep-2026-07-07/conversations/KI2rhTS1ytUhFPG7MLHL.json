@@ -1,0 +1,105 @@
+{
+  "conversation": {
+    "id": "KI2rhTS1ytUhFPG7MLHL",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249880879,
+    "dateUpdated": 1783364249860,
+    "lastMessageDate": 1783364249855,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Terry, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781961080854,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "w7nthKXBJpxiiMZHOsnX",
+    "fullName": "Terry Snipes",
+    "contactName": "Terry Snipes",
+    "companyName": null,
+    "email": "terry@primesourceacq.com",
+    "phone": "+14042467071",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364249855
+    ]
+  },
+  "messages": [
+    {
+      "id": "Hf5FvjhKm9vkiZtQyGIE",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Terry, a copy of the pitch deck has been sent to your email.",
+      "contactId": "w7nthKXBJpxiiMZHOsnX",
+      "contentType": "text/plain",
+      "conversationId": "KI2rhTS1ytUhFPG7MLHL",
+      "dateAdded": "2026-07-06T18:57:29.130Z",
+      "dateUpdated": "2026-07-06T18:57:32.649Z",
+      "source": "workflow",
+      "altId": "SM1c0f88c805cb92fb138112a620b97211",
+      "from": "+16789712411",
+      "to": "+14042467071",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "DRNp7t9Yg5z3sxxDJvaV",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Terry, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "w7nthKXBJpxiiMZHOsnX",
+      "contentType": "text/plain",
+      "conversationId": "KI2rhTS1ytUhFPG7MLHL",
+      "dateAdded": "2026-06-20T13:11:20.146Z",
+      "dateUpdated": "2026-06-20T13:11:21.523Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+14042467071",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "zFB48M3ZrMf3ByVaVsXt",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "w7nthKXBJpxiiMZHOsnX",
+      "conversationId": "KI2rhTS1ytUhFPG7MLHL",
+      "dateAdded": "2025-06-18T12:31:04.463Z",
+      "dateUpdated": "2025-06-18T12:33:23.569Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "d3eTaHzrdAnJeLj96Sii"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

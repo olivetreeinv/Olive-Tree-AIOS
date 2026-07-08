@@ -38,13 +38,14 @@ ARCHIVES_DIR    = REPO_ROOT / "archives"
 
 # ── GHL HTTP helpers (curl; matches capital_raise.py convention) ─────────────
 
-def _headers(version: str = "2021-07-28") -> list[str]:
-    return [
-        "-H", f"Authorization: Bearer {GHL_API_KEY}",
-        "-H", f"Version: {version}",
-        "-H", "Content-Type: application/json",
-        "-H", "Accept: application/json",
-    ]
+def _curl_config(version: str = "2021-07-28") -> str:
+    """Return curl -K config lines with headers — never exposed in argv."""
+    return (
+        f'header = "Authorization: Bearer {GHL_API_KEY}"\n'
+        f'header = "Version: {version}"\n'
+        'header = "Content-Type: application/json"\n'
+        'header = "Accept: application/json"\n'
+    )
 
 
 def _parse(result: subprocess.CompletedProcess, label: str) -> dict:
@@ -63,14 +64,19 @@ def ghl_get(path: str, params: dict | None = None, version: str = "2021-07-28") 
     if params:
         qs = "&".join(f"{k}={v}" for k, v in params.items())
         url = f"{url}?{qs}"
-    r = subprocess.run(["curl", "-s", url] + _headers(version), capture_output=True, text=True)
+    # ponytail: headers via stdin config — keeps token out of argv/ps
+    r = subprocess.run(
+        ["curl", "-s", "-K", "-", url],
+        input=_curl_config(version), capture_output=True, text=True,
+    )
     return _parse(r, f"GET {path}")
 
 
 def ghl_post(path: str, body: dict) -> dict:
+    # ponytail: headers via stdin config — keeps token out of argv/ps
     r = subprocess.run(
-        ["curl", "-s", "-X", "POST", f"{GHL_BASE}{path}"] + _headers() + ["-d", json.dumps(body)],
-        capture_output=True, text=True,
+        ["curl", "-s", "-K", "-", "-X", "POST", f"{GHL_BASE}{path}", "-d", json.dumps(body)],
+        input=_curl_config(), capture_output=True, text=True,
     )
     return _parse(r, f"POST {path}")
 
@@ -79,7 +85,8 @@ def ghl_post(path: str, body: dict) -> dict:
 
 def fetch_all_contacts() -> list[dict]:
     contacts, after, page = [], None, 0
-    while page < 20:
+    MAX_PAGES = 200  # ponytail: runaway guard — 200 pages × 100 = 20k contacts
+    while page < MAX_PAGES:
         body: dict = {"locationId": GHL_LOCATION_ID, "pageLimit": 100}
         if after:
             body["searchAfter"] = after
@@ -92,8 +99,8 @@ def fetch_all_contacts() -> list[dict]:
         page += 1
         if len(batch) < 100:
             break
-    if page == 20:
-        print("WARNING: hit 20-page cap (2,000 contacts). Results may be incomplete.", file=sys.stderr)
+    if page == MAX_PAGES:
+        print("WARNING: hit 200-page runaway guard (20,000 contacts). Results may be incomplete.", file=sys.stderr)
     return contacts
 
 
@@ -213,38 +220,48 @@ def cmd_import(_args):
 
     contact_pk: dict[str, int] = {}  # ghl_id → db id
 
-    for raw in contacts_raw:
+    for i, raw in enumerate(contacts_raw, 1):
         ghl_id = raw.get("id", "")
-        row = session.query(Contact).filter_by(ghl_id=ghl_id).first()
-        if not row:
-            row = Contact(ghl_id=ghl_id)
-            session.add(row)
+        try:
+            row = session.query(Contact).filter_by(ghl_id=ghl_id).first()
+            if not row:
+                row = Contact(ghl_id=ghl_id)
+                session.add(row)
 
-        row.first_name    = raw.get("firstName")
-        row.last_name     = raw.get("lastName")
-        row.email         = raw.get("email")
-        row.phone         = raw.get("phone")
-        row.company       = raw.get("companyName")
-        row.address       = raw.get("address1")
-        row.city          = raw.get("city")
-        row.state         = raw.get("state")
-        row.postal_code   = raw.get("postalCode")
-        row.custom_fields = json.dumps(raw.get("customFields") or [])
-        row.source        = raw.get("source")
-        row.dnd           = bool(raw.get("dnd"))
-        row.unsubscribed  = bool(raw.get("unsubscribed") or False)
-        row.date_added    = str(raw.get("dateAdded") or "")
-        row.created_at    = str(raw.get("dateAdded") or "")
+            row.first_name    = raw.get("firstName")
+            row.last_name     = raw.get("lastName")
+            row.email         = raw.get("email")
+            row.phone         = raw.get("phone")
+            row.company       = raw.get("companyName")
+            row.address       = raw.get("address1")
+            row.city          = raw.get("city")
+            row.state         = raw.get("state")
+            row.postal_code   = raw.get("postalCode")
+            row.custom_fields = json.dumps(raw.get("customFields") or [])
+            row.source        = raw.get("source")
+            row.dnd           = bool(raw.get("dnd"))
+            row.unsubscribed  = bool(raw.get("unsubscribed") or False)
+            row.date_added    = str(raw.get("dateAdded") or "")
+            row.created_at    = str(raw.get("dateAdded") or "")
 
-        session.flush()
-        contact_pk[ghl_id] = row.id
+            session.flush()
+            contact_pk[ghl_id] = row.id
 
-        # tags: delete-and-replace is safe since uq_contact_tag guards dupes
-        session.query(ContactTag).filter_by(contact_id=row.id).delete()
-        for tag in (raw.get("tags") or []):
-            session.add(ContactTag(contact_id=row.id, tag=tag))
+            # tags: delete-and-replace per contact, committed immediately
+            # so a mid-run kill never leaves earlier contacts tag-less
+            session.query(ContactTag).filter_by(contact_id=row.id).delete()
+            for tag in (raw.get("tags") or []):
+                session.add(ContactTag(contact_id=row.id, tag=tag))
 
-    session.commit()
+            session.commit()
+        except Exception as e:
+            session.rollback()
+            print(f"  WARNING: skipped contact {ghl_id}: {e}", file=sys.stderr)
+            continue
+
+        if i % 100 == 0:
+            print(f"  … {i}/{len(contacts_raw)} contacts imported")
+
     print(f"  contacts: {session.query(Contact).count()} in DB")
 
     # ── notes ────────────────────────────────────────────────────────────────

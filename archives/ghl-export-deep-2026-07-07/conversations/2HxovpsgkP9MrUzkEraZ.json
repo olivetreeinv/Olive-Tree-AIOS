@@ -1,0 +1,57 @@
+{
+  "conversation": {
+    "id": "2HxovpsgkP9MrUzkEraZ",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364266820,
+    "dateUpdated": 1783364267506,
+    "lastMessageDate": 1783364267500,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Jon, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "pGDNuNhnZya8vRr1g4F1",
+    "fullName": "Jon Hayes",
+    "contactName": "Jon Hayes",
+    "companyName": "Private Lender",
+    "phone": "+15026587418",
+    "tags": [
+      "private lender",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "attributed": null,
+    "sort": [
+      1783364267500
+    ]
+  },
+  "messages": [
+    {
+      "id": "NDv3df18exMR5dlotlSU",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Jon, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "pGDNuNhnZya8vRr1g4F1",
+      "contentType": "text/plain",
+      "conversationId": "2HxovpsgkP9MrUzkEraZ",
+      "dateAdded": "2026-07-06T18:57:46.864Z",
+      "dateUpdated": "2026-07-06T18:57:50.041Z",
+      "source": "workflow",
+      "altId": "SMa3e4ba838805a13458082b6bee7c154f",
+      "from": "+16789712411",
+      "to": "+15026587418",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

@@ -1,0 +1,226 @@
+{
+  "conversation": {
+    "id": "U1IkeLxXIyD9UakRbpZX",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249894843,
+    "dateUpdated": 1783364090063,
+    "lastMessageDate": 1783364090059,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "James, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "HpTd0iUyINWHIPeIz0Xz",
+    "fullName": "James Bertolli",
+    "contactName": "James Bertolli",
+    "companyName": null,
+    "email": "james.bertolli@vinebrookhomes.com",
+    "phone": "+14143318020",
+    "tags": [
+      "agent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "profilePhoto": null,
+    "sort": [
+      1783364090059
+    ]
+  },
+  "messages": [
+    {
+      "id": "x6tUFb6775lW9FaWqI0m",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "HpTd0iUyINWHIPeIz0Xz",
+      "conversationId": "U1IkeLxXIyD9UakRbpZX",
+      "dateAdded": "2026-07-06T18:54:52.581Z",
+      "dateUpdated": "2026-07-06T18:54:52.581Z",
+      "from": "+14143318020",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "SMS"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "XkNm44dAsKGnWOvsryw8",
+      "direction": "outbound",
+      "status": "undelivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "James, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "HpTd0iUyINWHIPeIz0Xz",
+      "contentType": "text/plain",
+      "conversationId": "U1IkeLxXIyD9UakRbpZX",
+      "dateAdded": "2026-07-06T18:54:49.457Z",
+      "dateUpdated": "2026-07-06T18:54:52.435Z",
+      "source": "workflow",
+      "altId": "SM62c5b2bbf5e3a00409797ba2a794541a",
+      "from": "+16789712411",
+      "to": "+14143318020",
+      "error": "Error 30003 - Number unreachable or out of service.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "To71ixbqWS4ZzqPAhFK0",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "HpTd0iUyINWHIPeIz0Xz",
+      "conversationId": "U1IkeLxXIyD9UakRbpZX",
+      "dateAdded": "2025-11-14T14:16:18.617Z",
+      "dateUpdated": "2025-11-14T14:16:18.617Z",
+      "from": "+14143318020",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "Email"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "lFj0LXVqkwkJhPFbyf2e",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "HpTd0iUyINWHIPeIz0Xz",
+      "conversationId": "U1IkeLxXIyD9UakRbpZX",
+      "dateAdded": "2025-11-14T14:04:01.525Z",
+      "dateUpdated": "2025-11-14T14:04:01.525Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "E5X5pZgGkouE0CH7JplJ"
+          ],
+          "direction": "outbound",
+          "subject": "2026 Will Separate Buyers From Watchers. Here's Why."
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "w7uDrMc6b3aERuOehc02",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "HpTd0iUyINWHIPeIz0Xz",
+      "conversationId": "U1IkeLxXIyD9UakRbpZX",
+      "dateAdded": "2025-10-21T14:04:54.715Z",
+      "dateUpdated": "2025-10-21T14:04:54.715Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "8xefoWHAMZsQCifOyeeZ"
+          ],
+          "direction": "outbound",
+          "subject": "Why Mid-October Could Be the Best Time to Buy"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "wtWin3gV4VfJvdt2SvDD",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "HpTd0iUyINWHIPeIz0Xz",
+      "conversationId": "U1IkeLxXIyD9UakRbpZX",
+      "dateAdded": "2025-09-23T14:09:41.707Z",
+      "dateUpdated": "2025-09-23T14:09:41.707Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "4FRSaMnex8cHskFZ0s3s"
+          ],
+          "direction": "outbound",
+          "subject": "While Others Wait, Smart Money Moves"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "l4raSj32IusNKtolBBsM",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "HpTd0iUyINWHIPeIz0Xz",
+      "conversationId": "U1IkeLxXIyD9UakRbpZX",
+      "dateAdded": "2025-08-19T14:06:30.394Z",
+      "dateUpdated": "2025-08-19T14:06:30.394Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "WPbHZX5RhroGwY7jfwnr"
+          ],
+          "direction": "outbound",
+          "subject": "Why 6.6% rates aren't stopping smart buyers"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "RRHBtV7cgW9E8Te6QbrX",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "HpTd0iUyINWHIPeIz0Xz",
+      "conversationId": "U1IkeLxXIyD9UakRbpZX",
+      "dateAdded": "2025-07-22T14:11:20.685Z",
+      "dateUpdated": "2025-07-22T14:16:04.555Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "qkbqQ2lXwCvFuCD9FToK"
+          ],
+          "direction": "outbound",
+          "subject": "Real Estate Tax & Rate Shifts You Can\u2019t Ignore"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "repJPXkvAGqzei9S7TSw",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "HpTd0iUyINWHIPeIz0Xz",
+      "conversationId": "U1IkeLxXIyD9UakRbpZX",
+      "dateAdded": "2025-06-18T12:30:57.647Z",
+      "dateUpdated": "2025-06-18T12:31:35.404Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "Hios5vLvz9JL96tU8ln4"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}
