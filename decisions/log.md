@@ -613,3 +613,19 @@ Closed the three follow-ups from the stop-loss fix:
 **Why:** Brian's first migration attempt was built off a shallow export and guessed drip copy. This pass verified against the live API end-to-end so the local stack mirrors what GHL actually does before the sub is canceled.
 
 **Reproducibility:** `scripts/ghl_workflow_export.py` fixed (real internal endpoint + full SPA header set) — re-runnable while logged into GHL in Chrome. Endpoint map appended to `references/gohighlevel-api.md`.
+
+## 2026-07-08 — Brand identity locked (logo as-is, Ivory/Olive/Gold/Charcoal)
+
+**Decision:** Olive Tree Investments brand kit finalized around the existing square-framed tree logo — kept as-is as the primary mark, no redesign. Palette locked: Warm Ivory #F5F1E6, Deep Olive #3A4A2E, Muted Gold #C9A968, Charcoal #2B2B26 (dark-mode companion: Midnight Grove #16211A). Type: hybrid — existing bold sans wordmark (flat color, gradients retired) + Playfair Display for headlines/taglines. Tagline: "Rooted in community."
+
+**Assets built (all free/vector except two $0.03 board generations):**
+- Identity board: `output/brandkit/olive-tree-brandkit-v2.png` (draft 01 concept kept alongside)
+- Tiered SVG logo system in `output/brandkit/svg/`: full emblem / simplified / branch mark — companion redraws; original logo file remains primary
+- One-color transparent set (olive/ivory/gold/charcoal), 1080×1080 PNGs with alpha + SVG masters — for Instagram and photo overlays
+- IG tiles (ivory-on-olive, olive-on-ivory, gold-on-midnight) as ready-to-post PNGs
+- Parametric generator: `output/brandkit/svg/make_logos.py` (rendered transparent via headless Chrome; qlmanage flattens alpha)
+- Live kit page: https://claude.ai/code/artifact/c898a17d-1fb6-4d92-aa59-e2c22142ac05
+
+**Open:** if the original vector file (AI/EPS/SVG) of the logo surfaces, swap it into the mono set for exact geometry. Next step: lock palette/fonts/logos into a Canva Brand Kit so decks and drips inherit them.
+
+**Update (same day):** Original logo masters located at `assets/brand/` (2751px, true transparency: `olive-tree-logo.png`, `olive-tree-mark-dark.png`, `olive-tree-mark-white.png`). All mono/IG variants rebuilt pixel-exact from the real mark via `output/brandkit/logo/make_variants.py` (alpha channel = mask, recolored). The SVG approximation is retired to `output/brandkit/_retired-redraw/` — do not use it for brand assets.

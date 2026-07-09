@@ -5,55 +5,92 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{{subject}}</title>
 </head>
-<body style="margin:0;padding:0;background:#F9F9F6;font-family:Georgia,serif;">
+<body style="margin:0;padding:0;background:#edf6ff;font-family:arial,helvetica,sans-serif;">
+<div style="display:none;font-size:1px;color:#edf6ff;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;">{{preheader}}</div>
 
-<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F9F9F6;">
+<!--
+  Rebuilt 2026-07-08 to match the GHL "Monthly newsletter" design
+  (source: archives/ghl-export-deep-2026-07-07/emails/6a04b1e261ee9f509cf99d35.html).
+  Images are cid: references — newsletter.py attaches any file in
+  templates/newsletter-assets/ whose name appears as cid:<filename> in the HTML.
+  hero.png has the edition month baked in — swap it each issue.
+  Body contract: the greeting card is opened here; {{body_html}} (from
+  newsletter.py's markdown converter) may close it and open new cards per
+  "##" section; the last card is closed here.
+-->
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#edf6ff;">
   <tr>
-    <td align="center" style="padding:32px 16px;">
+    <td align="center" style="padding:24px 12px;">
+      <table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;">
 
-      <!-- Shell -->
-      <table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background:#FFFFFF;border-top:4px solid #5A6A1E;">
-
-        <!-- Header -->
+        <!-- Header band -->
         <tr>
-          <td style="padding:28px 40px 20px;border-bottom:1px solid #E8EAD8;">
-            <p style="margin:0;font-family:Georgia,serif;font-size:22px;font-weight:bold;color:#1C2110;letter-spacing:-0.5px;">
-              Olive Tree Investments
-            </p>
-            <p style="margin:4px 0 0;font-family:Arial,sans-serif;font-size:12px;color:#7A8A3A;letter-spacing:1px;text-transform:uppercase;">
-              Multifamily Real Estate Intelligence
-            </p>
+          <td style="background:#DCE3EB;border-radius:12px;padding:10px 20px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td width="56" valign="middle">
+                  <img src="cid:logo.png" width="40" alt="Olive Tree Investments" style="display:block;border:0;height:auto;">
+                </td>
+                <td align="center" valign="middle" style="font-family:arial,helvetica,sans-serif;font-size:13px;color:#7D7D7D;line-height:1.4;">
+                  404-643-2356<br>
+                  <a href="https://www.olivetreeinv.io" style="color:#7D7D7D;text-decoration:none;">olivetreeinv.io</a>
+                </td>
+                <td width="130" align="right" valign="middle">
+                  <a href="https://www.olivetreeinv.io" style="display:inline-block;background:#ffffff;color:#24446A;border:1px solid #24446A;border-radius:25px;padding:10px 22px;font-family:arial,helvetica,sans-serif;font-size:13px;text-decoration:none;">My&nbsp;Account</a>
+                </td>
+              </tr>
+            </table>
           </td>
         </tr>
+        <tr><td style="height:16px;line-height:16px;font-size:16px;">&nbsp;</td></tr>
 
-        <!-- Greeting -->
+        <!-- Hero -->
         <tr>
-          <td style="padding:28px 40px 0;font-family:Georgia,serif;font-size:15px;color:#1C2110;line-height:1.6;">
-            <p style="margin:0 0 20px;">Hey {{first_name}},</p>
+          <td style="background:#ffffff;border-radius:20px;padding:20px;">
+            <img src="cid:hero.png" width="560" alt="Olive Tree Insights" style="display:block;border:0;width:100%;height:auto;border-radius:8px;">
           </td>
         </tr>
+        <tr><td style="height:16px;line-height:16px;font-size:16px;">&nbsp;</td></tr>
 
-        <!-- Body -->
+        <!-- Greeting card + body (body may close/open cards per section) -->
         <tr>
-          <td style="padding:0 40px 32px;font-family:Georgia,serif;font-size:15px;color:#1C2110;line-height:1.7;">
-            {{body_html}}
+          <td>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;border-radius:20px;"><tr><td style="padding:24px;font-family:arial,helvetica,sans-serif;font-size:14px;line-height:1.5;color:#000000;">
+            <p style="margin:0 0 16px;">Hi {{first_name}},</p>
+{{body_html}}
+            </td></tr></table>
           </td>
         </tr>
+        <tr><td style="height:16px;line-height:16px;font-size:16px;">&nbsp;</td></tr>
 
-        <!-- Divider -->
+        <!-- Signature -->
         <tr>
-          <td style="padding:0 40px;">
-            <hr style="border:none;border-top:1px solid #E8EAD8;margin:0;">
+          <td style="background:#DCE3EB;border-radius:20px;padding:24px;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td width="150" valign="top">
+                  <img src="cid:brian.jpg" width="140" alt="Brian Norton" style="display:block;border:0;width:140px;height:auto;border-radius:8px;">
+                </td>
+                <td valign="top" style="padding-left:20px;font-family:arial,helvetica,sans-serif;line-height:2;">
+                  <span style="color:#24446A;font-size:20px;font-weight:bold;">Brian Norton</span><br>
+                  <span style="color:#767676;font-size:14px;">Agent | Investor | Syndicator</span><br>
+                  <a href="mailto:brian@olivetreeinv.io" style="color:#767676;font-size:14px;">brian@olivetreeinv.io</a><br>
+                  <span style="color:#5d5f64;font-size:14px;">269 Market Place Blvd Suite 126<br>Cartersville, GA 30121</span><br>
+                  <a href="https://www.instagram.com/olivetreeinv.io/" style="text-decoration:none;"><img src="cid:instagram.png" width="24" alt="Instagram" style="border:0;border-radius:3px;display:inline-block;margin-top:6px;"></a>
+                </td>
+              </tr>
+            </table>
           </td>
         </tr>
+        <tr><td style="height:16px;line-height:16px;font-size:16px;">&nbsp;</td></tr>
 
         <!-- Footer -->
         <tr>
-          <td style="padding:24px 40px 32px;font-family:Arial,sans-serif;font-size:12px;color:#8A9060;line-height:1.6;">
-            <p style="margin:0 0 6px;">
-              <strong style="color:#1C2110;">Olive Tree Investments</strong> — Faith-based multifamily investing in the Southeast.
-            </p>
-            <p style="margin:0;">{{unsubscribe_note}}</p>
+          <td style="padding:10px 20px 20px;font-family:arial,helvetica,sans-serif;font-size:14px;color:#000000;line-height:1.5;">
+            <p style="margin:0 0 12px;"><em>Copyright &copy; {{year}} Olive Tree Investments, All rights reserved.</em></p>
+            <p style="margin:0 0 12px;"><strong>Our e-mail address is:</strong><br>brian@olivetreeinv.io</p>
+            <p style="margin:0;">Want to change how you receive these emails?<br>{{unsubscribe_note}}</p>
           </td>
         </tr>
 

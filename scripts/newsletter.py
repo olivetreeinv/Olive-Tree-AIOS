@@ -21,6 +21,7 @@ import sys
 import time
 from datetime import datetime, timezone
 from email.header import Header
+from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from pathlib import Path
@@ -38,6 +39,7 @@ from db.connection import get_session
 from db.schema import Campaign, Contact, ContactTag, EmailLog
 
 TEMPLATE = REPO / "templates" / "newsletter.html"
+ASSETS_DIR = REPO / "templates" / "newsletter-assets"
 OUTPUT_DIR = REPO / "output" / "newsletters"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -52,8 +54,25 @@ UNSUB_NOTE = (
 
 
 # ── markdown → HTML ──────────────────────────────────────────────────────────
+# Card contract (matches templates/newsletter.html): the template opens the
+# greeting card before {{body_html}} and closes the last card after it.
+# "## " section titles close the current card, emit a centered blue title
+# card, and open a fresh content card — the GHL card-per-section look.
+CARD_OPEN = (
+    '<table width="100%" cellpadding="0" cellspacing="0" border="0" '
+    'style="background:#ffffff;border-radius:20px;"><tr>'
+    '<td style="padding:24px;font-family:arial,helvetica,sans-serif;'
+    'font-size:14px;line-height:1.5;color:#000000;">'
+)
+CARD_CLOSE = (
+    '</td></tr></table>'
+    '<div style="height:16px;line-height:16px;font-size:16px;">&nbsp;</div>'
+)
+
+
 def _md_to_html(text: str) -> str:
-    """Minimal markdown → HTML. Paragraphs, bold, italic, links, h2/h3."""
+    """Minimal markdown → card-based HTML. Paragraphs, bold, italic, links,
+    images, h2 (new section card) / h3 (bold subhead)."""
     # escape first, then we'll re-insert safe HTML tags
     lines = text.split("\n")
     out, para = [], []
@@ -76,14 +95,18 @@ def _md_to_html(text: str) -> str:
         if line.startswith("### "):
             flush_para()
             content = _inline(line[4:])
-            out.append(f"<h3 style='font-size:18px;color:#1C2110;margin:24px 0 8px;border-bottom:1px solid #D7D9C5;padding-bottom:6px;'>{content}</h3>")
+            out.append(f"<p style='margin:20px 0 8px;'><strong>{content}</strong></p>")
         elif line.startswith("## "):
             flush_para()
             content = _inline(line[3:])
-            out.append(f"<h2 style='font-size:22px;color:#1C2110;border-bottom:2px solid #5A6A1E;padding-bottom:10px;margin:32px 0 12px;'>{content}</h2>")
+            out.append(
+                CARD_CLOSE + CARD_OPEN
+                + f"<h2 style='margin:0;text-align:center;color:#455da5;font-size:22px;'>{content}</h2>"
+                + CARD_CLOSE + CARD_OPEN
+            )
         elif line.startswith("---"):
             flush_para()
-            out.append("<hr style='border:none;border-top:2px solid #D7D9C5;margin:32px 0;'>")
+            out.append("<hr style='border:none;border-top:1px solid #DCE3EB;margin:24px 0;'>")
         else:
             para.append(_inline(line))
 
@@ -98,6 +121,12 @@ def _inline(text: str) -> str:
     text = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", text)
     # italic
     text = re.sub(r"\*(.+?)\*", r"<em>\1</em>", text)
+    # images  ![alt](cid:file.png) or ![alt](https://...) — before links
+    text = re.sub(
+        r"!\[([^\]]*)\]\(((?:cid:|https?://)[^\)]+)\)",
+        r'<img src="\2" alt="\1" style="display:block;max-width:100%;margin:12px auto;border-radius:8px;">',
+        text,
+    )
     # links  [label](url)
     text = re.sub(
         r"\[([^\]]+)\]\((https?://[^\)]+)\)",
@@ -111,9 +140,11 @@ def _inline(text: str) -> str:
 def render_template(subject: str, body_html: str, first_name: str = "there") -> str:
     tmpl = TEMPLATE.read_text()
     tmpl = tmpl.replace("{{subject}}", html.escape(subject))
+    tmpl = tmpl.replace("{{preheader}}", html.escape(subject))
     tmpl = tmpl.replace("{{first_name}}", html.escape(first_name))
     tmpl = tmpl.replace("{{body_html}}", body_html)
     tmpl = tmpl.replace("{{unsubscribe_note}}", UNSUB_NOTE)
+    tmpl = tmpl.replace("{{year}}", str(datetime.now().year))
     return tmpl
 
 
@@ -124,12 +155,20 @@ def slugify(name: str) -> str:
 
 # ── Gmail send ───────────────────────────────────────────────────────────────
 def _send_raw(token: str, to: str, subject: str, html_body: str) -> dict:
-    msg = MIMEMultipart("alternative")
+    msg = MIMEMultipart("related")
     msg["to"]      = to
     msg["from"]    = FROM_ADDR
     msg["subject"] = str(Header(subject, "utf-8"))
     msg["List-Unsubscribe"] = f"<mailto:{FROM_ADDR}?subject=UNSUBSCRIBE>"
     msg.attach(MIMEText(html_body, "html", "utf-8"))
+
+    # inline images: attach any newsletter asset referenced as cid:<filename>
+    for f in sorted(ASSETS_DIR.glob("*.*")):
+        if f"cid:{f.name}" in html_body:
+            img = MIMEImage(f.read_bytes())
+            img.add_header("Content-ID", f"<{f.name}>")
+            img.add_header("Content-Disposition", "inline", filename=f.name)
+            msg.attach(img)
 
     raw = base64.urlsafe_b64encode(msg.as_bytes()).decode()
     r = requests.post(
@@ -204,7 +243,7 @@ def cmd_test_send(args):
     camp = _get_campaign(session, args.campaign)
     html_body = Path(camp.html_path).read_text()
     # personalize for test recipient
-    html_body = html_body.replace("Hey there,", "Hey Brian,")
+    html_body = html_body.replace("Hi there,", "Hi Brian,")
 
     token = get_token()
     result = _send_raw(token, TEST_ADDR, f"[TEST] {camp.subject}", html_body)
@@ -263,7 +302,7 @@ def cmd_send(args):
             continue
 
         first = c.first_name or "there"
-        body = template_html.replace("Hey there,", f"Hey {html.escape(first)},")
+        body = template_html.replace("Hi there,", f"Hi {html.escape(first)},")
 
         try:
             _send_raw(token, c.email, camp.subject, body)
