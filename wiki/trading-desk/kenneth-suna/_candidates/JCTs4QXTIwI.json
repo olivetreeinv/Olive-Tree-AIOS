@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth teaches a systematic method for finding stocks suitable for covered call selling by cherry-picking mid-cap growth ETF holdings, calculating premium-to-share-price ratios, and identifying stocks that are affordable yet generate meaningful premiums. The core principle is seeking volatile stocks with high premiums while avoiding mega-cap names like Apple and Google that are expensive and low-premium.",
+  "takeaways": [
+    "Target stocks with 1-3% weekly premium yield (divide premium by share price, multiply by 100)",
+    "Anything over 3% premium indicates high-risk/unusual activity (earnings, etc.)",
+    "Sell covered calls at out-of-the-money strike prices for highest premium possible",
+    "Require minimum 100 shares per contract to execute covered calls",
+    "Use mid-cap growth ETFs as sourcing tool, cherry-pick top 10 holdings for individual stock research",
+    "Avoid Magnificent Seven (Google, Nvidia, Apple, Meta) - too expensive per share, low premiums",
+    "Select stocks with lower share price (<$1,500 per 100 shares) for retail accessibility"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Add mid-cap growth ETF cherry-picking as systematic sourcing pipeline for covered call candidates to replace ad-hoc stock selection",
+      "evidence": "Kenneth demonstrates using Seeking Alpha to filter mid-cap growth ETFs, then researching their top 10 holdings to find affordable, high-premium stocks. This provides a repeatable screening process more efficient than intuition-based selection, directly applicable to Brian's $50k Premium Desk targeting $1,250/mo premium across multiple positions."
+    }
+  ],
+  "id": "JCTs4QXTIwI",
+  "title": "Find stocks for covered calls ",
+  "duration": 236
+}

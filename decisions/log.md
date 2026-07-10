@@ -582,3 +582,90 @@ Closed the three follow-ups from the stop-loss fix:
 4. **New safeguard:** `scripts/trading_guard.py` — an equity anomaly circuit breaker. Every cycle, before any trading: compares Alpaca's `equity` vs `last_equity`; if the gap exceeds 5% and the account activities log can't explain at least 95% of it, the desk HALTS (writes `data/trading_halt.json`, pushes an ntfy/iMessage alert) and stays halted until the flag is manually cleared. Fails open (doesn't halt) on an Alpaca fetch error, so an outage in the breaker itself can't take the desk down. This is the safeguard that would have caught the incident above before it ever reached a sizing decision.
 
 **Shipped:** `trading_orchestrator.py` rewired (CC/wheel-primary default cycle, `--momentum` flag, `--clear-halt`, guard wired in first, both `--once` and `--loop` fail soft on an Alpaca error mid-cycle); `trading_report.py` bottom-line + scorecard updated to the $1,250 target and yield-on-book framing, momentum sections labeled retired; `trading-desk` SKILL.md rewritten for the v2 architecture and risk table; `trading_guard.py --test` self-check passing (6 cases incl. the actual incident's numbers).
+
+## 2026-07-07 — Pass on pxpipe (token-compression proxy)
+
+**Trigger:** Brian asked for a benefit + security review of https://github.com/teamchong/pxpipe — a local proxy that renders bulky Claude Code context (system prompt, tool docs, old history, large tool outputs) as dense PNGs, cutting input tokens ~59–70% on Fable 5.
+
+**Decision:** Pass. Security came back clean (no phone-home, no secret logging, no install scripts; caveats: unauthenticated dashboard — loopback only — and 4xx request bodies persisted to `~/.pxpipe/4xx-bodies/`). Rejected on fit, not safety:
+1. **Silent number confabulation** — its own benchmarks show 13/15 exact-string recall from imaged content on Fable 5, misses are confident wrong values. Deal sessions image exactly the blocks (T-12/rent-roll/OM tool outputs) whose digits flow into offer prices. Worst possible workload for a lossy compressor.
+2. **Savings aren't dollars here** — interactive use is subscription-billed (token cuts = limit headroom only); API-billed scripts run models off its allowlist; cloud routines can't use a local proxy.
+3. **New always-on daemon in the critical path** + PNG-encode latency, against the speed-first priority.
+
+**Revisit trigger:** regularly hitting Max usage limits AND pxpipe ships its verbatim-risk guard (planned, not built) — or Anthropic ships native optical context compression, which supersedes it entirely.
+
+## 2026-07-07 — GHL deep reproduction: full account footprint captured, workflow copy recovered
+
+**Decision:** Ran a live API audit of the entire GoHighLevel account (not assumptions) and recreated every critical piece locally. Probed all endpoint families → 15 in use. Deep-exported everything to `archives/ghl-export-deep-2026-07-07/` (804 contacts, 20 email campaigns w/ rendered HTML + builder JSON, 4 workflows, 25 funnel pages, 4 forms/3 submissions, 2 surveys, 169 media files, 705 conversations/5883 messages, 2 pipelines, 5 users). Media mirrored to `archives/ghl-media-2026-07-07/` (65MB). Cracked the undocumented internal workflow endpoint to recover the actual email/SMS step copy (the public API only returns workflow names).
+
+**What this closed:**
+- Newsletter audience (open cutover item #1): recovered the real recipient list from conversation history (392 ids across 14 monthly sends) and tagged 341 contacts `newsletter` in olive.db (51 skipped DND, 0 no-email). Audience is no longer 0.
+- Drip copy (open item #2): replaced all placeholder drip templates with GHL-exact copy — `welcome/` (2 emails, from "Contact added" workflow), `agent-wholesaler/` (1 email, the buy-box outreach), `pitch-deck/` (1 email, deck delivery; removed 2 locally-invented follow-ups to match GHL). SMS bodies preserved as comments (email-only in v1).
+- Contacts refreshed: 804 upserted, Josh Germon's email backfilled from today's 641 Powder form submission, local-only tags preserved (union-only merge).
+
+**Findings needing Brian:**
+1. `tag-agent-wholesaler` email is Brian's SINGLE-FAMILY/land buy box (3/2, 1500sqft, $350-450k, ARV+200k, metro-Atlanta counties) — not the multifamily buy box. Kept verbatim; confirm it's still the intended outreach.
+2. 18 of 25 funnel pages ("Find My House - Website" + "Investment" funnels) have no domain attached — exist only inside the GHL editor, not publicly exportable. Recoverable via the same internal endpoint if wanted.
+3. site/ fidelity gaps: 641 Powder live page has conflicting return blocks (18%/140% vs 30%/60%); Partner-with-us live page is a bare calendar widget (rebuild added copy). Confirm intended numbers.
+4. Campaign-level email stats (opens/clicks) need a scope the Private Integration wasn't granted (`/emails/schedule/{id}/stats` → 401).
+5. Workflow TRIGGER configs live in a separate Firebase file not yet pulled (step content is complete; triggers inferred from workflow names).
+
+**Why:** Brian's first migration attempt was built off a shallow export and guessed drip copy. This pass verified against the live API end-to-end so the local stack mirrors what GHL actually does before the sub is canceled.
+
+**Reproducibility:** `scripts/ghl_workflow_export.py` fixed (real internal endpoint + full SPA header set) — re-runnable while logged into GHL in Chrome. Endpoint map appended to `references/gohighlevel-api.md`.
+
+## 2026-07-08 — Brand identity locked (logo as-is, Ivory/Olive/Gold/Charcoal)
+
+**Decision:** Olive Tree Investments brand kit finalized around the existing square-framed tree logo — kept as-is as the primary mark, no redesign. Palette locked: Warm Ivory #F5F1E6, Deep Olive #3A4A2E, Muted Gold #C9A968, Charcoal #2B2B26 (dark-mode companion: Midnight Grove #16211A). Type: hybrid — existing bold sans wordmark (flat color, gradients retired) + Playfair Display for headlines/taglines. Tagline: "Rooted in community."
+
+**Assets built (all free/vector except two $0.03 board generations):**
+- Identity board: `output/brandkit/olive-tree-brandkit-v2.png` (draft 01 concept kept alongside)
+- Tiered SVG logo system in `output/brandkit/svg/`: full emblem / simplified / branch mark — companion redraws; original logo file remains primary
+- One-color transparent set (olive/ivory/gold/charcoal), 1080×1080 PNGs with alpha + SVG masters — for Instagram and photo overlays
+- IG tiles (ivory-on-olive, olive-on-ivory, gold-on-midnight) as ready-to-post PNGs
+- Parametric generator: `output/brandkit/svg/make_logos.py` (rendered transparent via headless Chrome; qlmanage flattens alpha)
+- Live kit page: https://claude.ai/code/artifact/c898a17d-1fb6-4d92-aa59-e2c22142ac05
+
+**Open:** if the original vector file (AI/EPS/SVG) of the logo surfaces, swap it into the mono set for exact geometry. Next step: lock palette/fonts/logos into a Canva Brand Kit so decks and drips inherit them.
+
+**Update (same day):** Original logo masters located at `assets/brand/` (2751px, true transparency: `olive-tree-logo.png`, `olive-tree-mark-dark.png`, `olive-tree-mark-white.png`). All mono/IG variants rebuilt pixel-exact from the real mark via `output/brandkit/logo/make_variants.py` (alpha channel = mask, recolored). The SVG approximation is retired to `output/brandkit/_retired-redraw/` — do not use it for brand assets.
+
+---
+
+## 2026-07-10 — Premium Desk v3: Suna-method redesign approved
+
+Redesigning the paper trading desk to run Kenneth Suna's weekly income-wheel method (mined into `wiki/trading-desk/`). Full spec: `wiki/trading-desk/_suna-redesign-spec.md`.
+
+**Decisions locked (Brian):**
+- Goal changed to **$1,000/week** premium (≈$4,333/mo, ~104% annualized on $50k). Was $1,250/mo. Weekly is now the primary reporting unit. Applied in `trading_covered_calls.py` (`CC_WEEKLY_TARGET_USD`) + SKILL.md.
+- **Weekly cadence** (5–7 DTE), **income-first delta** (~0.45Δ, 1-strike-OTM, assignment welcome), **share-first** entry.
+- **Sell-fear vs anomaly breaker** resolved by definition: breaker halts only *unexplained* equity moves (data glitches); a *normal market selloff* is a green light for fear-CSPs.
+- **Stock discovery** switches from the fixed 38-name blue-chip list to a **weekly Alpaca movers scan** (most-actives + gainers/losers) + ~10 vetted core, with an options-liquidity floor and Haiku structural-vs-transient event-screen on droppers — mirroring Suna's CNBC-movers hunt.
+
+**Why:** the old blue-chip universe pays <1%/week and can't reach $1k/week; Suna's edge is high-vol movers bought on the dip. 
+
+**Status:** design approved, not yet built. New code: `trading_suna.py` driver + movers discovery + premium-band rank + entry-timing filter + repair ladder, wired behind `--suna`. Paper-locked; validate via `--test` + `--backtest` + 2wk paper before any real-money discussion.
+
+**Update (2026-07-10 PM — BUILT):** Premium Desk v3 shipped. New `scripts/trading_suna.py` (weekly share-first wheel: SYNC→MANAGE→COVER→ENTER→WHEEL, ~0.45Δ weekly calls, premium-band gate 0.8–2.5% / >3% pause, entry-timing filter, Wed ITM roll, repair ladder) + `scripts/trading_movers.py` (Alpaca most-actives + gainers/losers discovery). `--suna` wired through the orchestrator; launchd plist `com.olivetree.trading-desk` now runs `--loop --suna` (reloaded, PID confirmed). Reuses v2 guard/report/DB/execution untouched. Both `--test` self-checks pass; live `--once --suna` syncs + skips correctly (market closed); starts trading Mon 2026-07-13. Deferred to v3.1: Haiku structural-vs-transient screen on droppers (for now the >3% premium pause + $10–100 band + liquidity floor + earnings filter guard against junk movers). Recommend `/code-review` on the two new scripts before real-money talk.
+
+**Update (2026-07-10 PM — LLM drop-screen + code review):** Added `structural_drop_screen()` (Haiku) to trading_suna.py — meaningful droppers (movers 'losers' or ≤−8%/day) get a structural-vs-transient read before buying the dip; lazy, per-cycle-cached, fail-open. Live-verified (INTC→structural, PLUG→transient). Ran /code-review: APPROVED, 0 critical, 4 warnings. Fixed 3: (1) partial-roll now books the buyback + clears the option before the new sell, so a failed new-sell leaves a clean uncovered lot instead of a stranded marked-covered one; (2) per-sector cap now skips the "Unknown" bucket so off-universe movers aren't throttled to ~2 entries/cycle; (3) `_DROP_CACHE` cleared each cycle so verdicts don't go stale in the multi-day --loop. OPEN (warning #4, Brian's call): `_free_cash` likely double-counts deployed share cost vs Alpaca `cash` (safe-direction/under-trades) — reconcile against buying_power given the shared paper account. launchd restarted with fresh code.
+
+---
+
+## 2026-07-10 — 2026 Brand Kit adopted; old olive/ivory/gold palette retired
+
+Brian's Claude Design brand kit implemented as a local page at `site/brand/index.html` (13 sections: story, logo suite, clear space, misuse, color, type, voice, motif, social kit, applications) and applied across every branded surface.
+
+**The kit (authoritative):**
+- Palette: Forest Night `#1B1E08` (text/dark grounds) · Olive `#505A19` (links/fills) · Sage Leaf `#7D8B3C` (accent) · Brass `#B7965A` (emphasis) · Ink `#26281C` · Stone `#DAD4C5` · Bone `#F5F2E9` · Paper `#FBFAF5`
+- Fonts: Cormorant Garamond (display) + Archivo (text/UI) + Space Mono (labels). Playfair Display, Fraunces, Outfit retired. Georgia stands in for Cormorant inside email.
+- Tagline: "Rooted in patience, grown with purpose." (replaces "Rooted in community")
+- Logo rules: full-color mark on light grounds; Bone mark on Forest/Olive; Forest mark on Brass.
+
+**Applied to:** `templates/newsletter.html` + `scripts/newsletter.py` + `scripts/newsletter_rates.py` (email), `scripts/carousel_render.py` + `scripts/carousel_render_html.py` (social — photo-derived palettes still adapt per cover by design; only the no-photo fallback is brand-fixed), `site/style.css` + self-hosted Cormorant variable woff2s in `site/fonts/` (web), regenerated mark PNGs in `templates/newsletter-assets/` and `site/assets/`.
+
+**Why:** email, social, and web had drifted onto a cousin palette (`#3A4A2E`/`#F5F1E6`/`#C0A060`); one authoritative kit ends the drift. Design-project placeholders (fake NY address, "Eleanor Vance") were replaced with real Olive Tree details during implementation.
+
+**Note:** the Claude Design API caps file downloads at 256KiB, so brand PNGs are regenerated locally from `assets/brand/olive-tree-mark-dark.png` (alpha-mask recolor) rather than downloaded. Supersedes the 2026-07-08 brandkit board (`output/brandkit/`) as the palette source of truth.
+
+**Update (2026-07-10 PM — warning #4 fixed):** Reconciled the Suna cash math. Replaced `_free_cash` (which double-counted deployed share cost against Alpaca `cash`) with `_book_available(open_rows)` = notional $50k book − committed (DB-sourced) − buffer, capped by real Alpaca `buying_power` (shared paper account). Fail-closed on account-read error. Live check: deployed=$11.4k → available=$36.1k (was constrained tighter against `cash`), unblocking ~3–4 more full positions toward the $1k/week goal. Both `--test` pass; launchd restarted. All 4 review warnings now resolved.

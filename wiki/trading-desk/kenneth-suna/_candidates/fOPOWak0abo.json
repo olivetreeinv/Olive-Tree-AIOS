@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth Suna explains covered call mechanics using Skittles as a visual aid for a stock portfolio. He demonstrates selling OTM covered calls on Broadcom at $315 strike (vs $313 current price) expiring Friday April 10th, collecting $525/contract premium ($1,600 for 3 contracts), with the tradeoff of capped upside if stock rises above strike versus keeping shares and premium if it stays below.",
+  "takeaways": [
+    "Sell covered calls at the next strike price OTM (e.g., $315 strike when stock at $313) to maximize premium while accepting assignment risk",
+    "Adjust contract quantity down if unwilling to part with all shares (e.g., sell 3 contracts for 300 shares instead of maximum available)",
+    "Premium collected per contract example: $525/contract \u00d7 3 contracts = $1,600 per week on Broadcom trade",
+    "Accept tradeoff: keep both shares AND premium if stock closes below strike; lose shares but keep premium + profit if stock rises above strike",
+    "Can repeat covered call sales weekly on shares not assigned, building consistent premium income",
+    "Use options chain expiration dates close to current date (e.g., Friday expirations on Monday filming) for faster premium decay",
+    "OTM covered calls allow upside participation up to the strike price, balancing premium income with some growth potential"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Implement weekly covered call rolls on Broadcom and similar holdings to systematize the $1,600/week premium generation shown in example",
+      "evidence": "Kenneth demonstrates $525 \u00d7 3 contracts = $1,600 weekly collection on Broadcom alone; Brian's $50k desk targets $1,250/mo\u2014this weekly approach on 3-4 core positions could exceed that target and provide repeatable income structure"
+    }
+  ],
+  "id": "fOPOWak0abo",
+  "title": "Covered calls explained \u2026 with Skittles ",
+  "duration": 253
+}

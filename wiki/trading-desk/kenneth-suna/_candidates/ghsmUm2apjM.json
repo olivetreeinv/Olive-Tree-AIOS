@@ -1,0 +1,23 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth Suna demonstrates three covered call strategies: (1) letting assignments expire to collect premium and reset weekly with freed capital, (2) rolling or buying back contracts to retain shares when unrealized gains are substantial, and (3) selling deep out-of-the-money calls for income while reducing assignment risk. He emphasizes flexibility from assignment cycles and tactical adjustments based on market conditions.",
+  "takeaways": [
+    "Sell covered calls at-the-money (e.g., buy at $20, sell $21 strike) for maximum premium and profit with highest assignment probability",
+    "Use out-of-the-money strikes (e.g., $27 strike on $20 cost basis) to reduce assignment likelihood while still collecting reduced premium",
+    "Roll options to further-out expirations when future premiums are significantly higher to offset buyback losses",
+    "Allow assignment to recycle capital weekly, returning full investment amount for next week's deployment",
+    "Buy back or roll before expiration if underlying movement threatens to force assignment on depreciated cost basis (e.g., stock bought $10 now $72)",
+    "Target deep OTM strikes 35% above cost basis as threshold for long-term bullish retention while still generating premium income"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Implement assignment-driven weekly reset cycle with fixed $50k redeploy capital to stabilize premium collection across 4-week rolling period",
+      "evidence": "Kenneth emphasizes that assignment 'gives me flexibility for the following week' and allows him to reset position selection, directly applicable to Brian's $1,250/mo target ($312/wk) to smooth income volatility across the $50k portfolio"
+    }
+  ],
+  "id": "ghsmUm2apjM",
+  "title": "Covered call options ",
+  "duration": 339
+}

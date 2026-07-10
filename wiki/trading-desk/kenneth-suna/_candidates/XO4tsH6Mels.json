@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth Suna demonstrates his covered call income strategy targeting 2-4% weekly returns on volatile stocks. He explains the calculation method (premium divided by cost basis, multiplied by 100) and emphasizes consistency over maximum gains, showing real examples like Olo ($241 premium on $5,685 cost = 4.23% return).",
+  "takeaways": [
+    "Calculate covered call return percentage: (premium \u00f7 cost basis) \u00d7 100",
+    "Target 2-4% weekly return per covered call position",
+    "Sell covered calls on volatile stocks to generate weekly income",
+    "Accept assignment willingly - focus on premium, not share ownership",
+    "Do not chase 'what could have been' - avoid comparing to alternative stock trading outcomes",
+    "Use covered calls as retirement income stream even after stopping active trading",
+    "Volatility increases premium prices, making compensation better in volatile markets"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Establish clear volatility threshold for stock selection (e.g., IV Rank >60) to ensure consistent 2-4% weekly premiums",
+      "evidence": "Kenneth emphasizes 'slightly more volatile companies' and notes 'selling covered calls to make high premiums usually means that the stocks are volatile,' suggesting volatility screening could formalize Brian's stock selection process for the $50k portfolio targeting $1,250/month"
+    }
+  ],
+  "id": "XO4tsH6Mels",
+  "title": "How to Calculate Your Covered Call Income ",
+  "duration": 315
+}

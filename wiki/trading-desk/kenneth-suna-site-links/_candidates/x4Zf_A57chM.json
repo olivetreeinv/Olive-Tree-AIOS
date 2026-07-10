@@ -1,0 +1,16 @@
+{
+  "trading_relevant": "partial",
+  "strategy": "market-analysis",
+  "summary": "Kenneth Suna explains the Relative Strength Index (RSI) indicator, teaching that RSI values above 70 indicate overbought conditions (potential sell signal) and below 30 indicate oversold conditions (potential buy signal). While foundational technical analysis, this is tangential to Brian Norton's Premium Desk strategy of systematic covered calls and cash-secured puts rather than directional stock trading.",
+  "takeaways": [
+    "RSI above 70 indicates overbought; stock may reverse/sell",
+    "RSI below 30 indicates oversold; stock may rebound/buy",
+    "Confirm RSI signals with volume analysis before acting",
+    "Use 5-minute charts for day/swing trades to avoid false breakouts from single large orders",
+    "One-minute charts too volatile; five-minute charts show consistent momentum needed for entries"
+  ],
+  "strategy_candidates": [],
+  "id": "x4Zf_A57chM",
+  "title": "How to Use the Relative Strength Index",
+  "duration": 292
+}

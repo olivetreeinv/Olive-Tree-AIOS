@@ -1,0 +1,16 @@
+{
+  "trading_relevant": "no",
+  "strategy": "market-analysis",
+  "summary": "Kenneth Suna explains why VOO, SPY, and SPLG\u2014all tracking the same S&P 500 index\u2014have different share prices despite identical holdings. The difference stems from each fund's assets under management (AUM) divided by the number of shares issued, not from the underlying investments. The video is educational content about ETF mechanics rather than options trading strategy.",
+  "takeaways": [
+    "ETF price = AUM \u00f7 shares issued, not determined by holdings value",
+    "Expense ratios: SPY 0.09%, VOO 0.03%, SPLG 0.02%\u2014all under 1% is considered very low",
+    "SPY launched 1993, VOO 2010, SPLG 2017; older funds have more brand recognition and AUM",
+    "SPY has $601B AUM with 1B shares issued vs SPLG with $48.2B AUM with 710M shares",
+    "Share price affordability and expense ratio matter more than absolute holdings position size"
+  ],
+  "strategy_candidates": [],
+  "id": "EjVBre5l0IU",
+  "title": "Why do VOO, SPY and SPLG all have different prices??",
+  "duration": 381
+}

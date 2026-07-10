@@ -3,9 +3,31 @@ name: trading-desk
 description: "Paper-trading covered-call/wheel income desk: screener (IV rank + earnings filter + AI event-screen) → CSP-first wheel entries → 21-DTE management → equity anomaly circuit breaker → Alpaca paper execution. Run /trading-desk, 'start the trading desk', 'run a trade cycle', 'show my P&L'."
 ---
 
-# Trading Desk Skill — Olive Tree Investments — Premium Desk v2
+# Trading Desk Skill — Olive Tree Investments — Premium Desk v3 (Suna)
 
-Paper-trading income desk. Covered-call/wheel book is now PRIMARY. All paper money until Brian explicitly approves real capital.
+Paper-trading income desk. Covered-call/wheel book is PRIMARY. All paper money until Brian explicitly approves real capital.
+
+## Premium Desk v3 — Kenneth Suna weekly wheel (LIVE since 2026-07-10, trades from Mon 2026-07-13)
+
+The desk now runs **Suna's weekly share-first income wheel** by default (launchd plist runs `--loop --suna`). It supersedes the v2 monthly CSP-first wheel described below, which is still fully wired and runs if `--suna` is dropped. Full spec + rationale: `wiki/trading-desk/_suna-redesign-spec.md`; decision: `decisions/log.md` 2026-07-10. Source: `wiki/trading-desk/kenneth-suna*` (mined from his videos + paid guide).
+
+- **Goal:** $1,000/week premium (weekly is the primary unit; `--status` leads with premium WTD).
+- **New code:** `scripts/trading_suna.py` (weekly driver) + `scripts/trading_movers.py` (Alpaca movers discovery). Reuses v2's guard/report/DB/execution primitives.
+- **Cycle:** SYNC (reused) → MANAGE (profit-close / Wed >$1 ITM roll) → COVER (weekly ~0.45Δ call, repair-aware) → ENTER (share-first from the movers pool, premium-band 0.8–2.5%, >3% pause, entry-timing filter) → WHEEL (weekly CSP on assigned).
+- **Discovery:** rebuilt weekly from Alpaca most-actives + gainers/losers (`trading_movers.discover()`), not the fixed 38-name list. Options-liquidity floor + $10–100 price band + earnings filter cull junk movers.
+- **Structural-drop screen:** meaningful droppers get a Haiku "structural vs transient" read before buying the dip (`structural_drop_screen()`) — skips deteriorating businesses, buys overreactions. Lazy, cached per cycle, fail-open.
+
+```bash
+python3 scripts/trading_suna.py --test        # offline rules self-check
+python3 scripts/trading_suna.py --discover    # this week's movers pool
+python3 scripts/trading_suna.py --once --dry-run   # print intended actions, no orders
+python3 scripts/trading_movers.py --test      # discovery self-check
+python3 scripts/trading_orchestrator.py --once --suna   # one live Suna cycle
+```
+
+---
+
+## Premium Desk v2 (still available without --suna)
 
 ## Architecture (Premium Desk v2 — since 2026-07-07)
 
@@ -48,7 +70,7 @@ python3 scripts/trading_screener.py --json                # machine-readable
 python3 scripts/trading_screener.py --ai                  # + Claude event-screen pass
 python3 scripts/trading_screener.py --test                # self-check, no network
 
-python3 scripts/trading_covered_calls.py --status          # CC/wheel book + premium MTD vs $1,250 target
+python3 scripts/trading_covered_calls.py --status          # CC/wheel book + premium WTD vs $1,000/week target
 python3 scripts/trading_covered_calls.py --once --dry-run  # print intended actions
 python3 scripts/trading_covered_calls.py --test             # stub-driven rules self-check
 ```
@@ -130,7 +152,7 @@ To change ceilings, edit constants at the top of `scripts/trading_covered_calls.
 
 ## Goal
 
-**$1,250/month premium** on the $50k CC/wheel book — a 30% annualized yield-on-book target, with an honest 15–25% base case once management drag (rolls, assignment, occasional debit exits) is netted in. Tracked in `--report` and the daily scorecard email.
+**$1,000/week premium** (≈ $4,333/mo) on the $50k CC/wheel book — a ~104% annualized yield-on-book target (Suna-method weekly cadence). This is an aggressive stretch goal: it implies selling near-the-money weekly calls at ~2%/week gross, which in practice means frequent assignment and real capped-upside/drawdown drag. Weekly is the primary unit (`--status` leads with premium WTD vs $1,000); treat 15–35% annualized as the honest base case until paper results prove the pace. Tracked in `--report` and the daily scorecard email.
 
 ## Keys required (.env)
 
@@ -164,7 +186,7 @@ Momentum pipeline (--momentum only): Haiku research ~$0.01–0.03/cycle + local 
 ## Real money checklist (do NOT skip)
 
 Before switching off paper:
-- [ ] 2+ weeks sustained paper performance on the CC/wheel book (premium pace ≥ $1,250/mo, no unresolved anomaly halts)
+- [ ] 2+ weeks sustained paper performance on the CC/wheel book (premium pace ≥ $1,000/week, no unresolved anomaly halts)
 - [ ] Screener candidate quality reviewed — no low-liquidity or earnings-adjacent false negatives
 - [ ] Risk ceiling reviewed and explicitly re-approved by Brian
 - [ ] Alpaca live keys generated (separate from paper keys) and added to `.env`

@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth Suna explains covered calls as a weekly income strategy requiring 100+ shares per contract, where selling call options against owned stock generates premium but caps upside potential. He illustrates the mechanics through examples and warns that stock declines create losses that compress premium opportunities, while he personally generates ~$1,000/week using this method.",
+  "takeaways": [
+    "Minimum 100 shares required per covered call contract",
+    "Strike price selection: closer to purchase price = higher premium; further out = lower premium but less assignment risk",
+    "Kenneth trades weekly expirations personally for faster capital recycling",
+    "Assignment occurs if stock closes at or above strike price on expiration",
+    "Can repurchase options contract before expiration to prevent assignment, but costs premium paid plus spread slippage",
+    "High-volatility stocks like Tesla require $30k+ capital, limiting accessibility despite clickbait claims of $1,200/week",
+    "Stock decline below purchase price creates dual loss: unrealized stock loss + compressed option premiums at current price levels"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Implement minimum premium threshold per contract to ensure each covered call on the $50k Premium Desk meets micro-target allocation (e.g., $24/week per contract for 52 contracts to hit $1,250/mo)",
+      "evidence": "Kenneth generates $1,000/week selling weekly covered calls; Brian's $1,250/mo target = $288/week; establishing floor premium rules prevents low-yield assignments and optimizes capital deployment across wheel strategy"
+    }
+  ],
+  "id": "UqM-U1xP2_g",
+  "title": "Covered Calls Explained ",
+  "duration": 293
+}

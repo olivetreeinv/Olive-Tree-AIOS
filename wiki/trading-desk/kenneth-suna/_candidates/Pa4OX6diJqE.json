@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth Suna shares his journey from gym employee to content creator, explaining how he adopted covered calls as a consistent income strategy to fund his social media presence. He emphasizes that covered calls, while requiring significant capital ($5k-$30k+ per position), can generate reliable weekly income ($100-$600/week) without requiring active trading, providing the financial freedom to pursue content creation on his own terms.",
+  "takeaways": [
+    "Covered calls require substantial capital; Tesla example needs ~$30,000 for 100 shares but most retail traders use more affordable stocks requiring $5,000+",
+    "Realistic weekly income from covered calls ranges $100-$600/week depending on capital deployed, not the '$1,000/week' claims often made on social media",
+    "Covered calls are strictly income plays, not long-term investments; mental framework is 'I'm not here to make all the money, just some of it'",
+    "Accept assignment risk and upside cap; if stock skyrockets after selling calls, accept the miss\u2014'I don't care if it goes up a lot'",
+    "Covered calls require less active work than day trading; no need to scan technical analysis charts daily for next trade",
+    "Use covered calls to build passive income stream that reduces dependence on job/brand deals, creating financial optionality (Arnold Schwarzenegger principle)",
+    "Covered calls enable sustainable content creation without selling courses or chasing brand deals; provides 'enough' income, not maximum income"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Shift $50k premium desk allocation to focus on covered calls as primary income engine (vs. balanced wheel strategy), potentially targeting $400-600/month premium from fewer, more capital-efficient positions",
+      "evidence": "Kenneth demonstrates covered calls generate $600/week (~$2,400/month) with disciplined capital deployment and acceptance of assignment risk; he positions this as requiring less active management than wheels, freeing mental bandwidth for other priorities\u2014directly applicable to Brian's goal of passive $1,250/mo target with less operational complexity"
+    }
+  ],
+  "id": "Pa4OX6diJqE",
+  "title": "Covered Calls CAN BE an Infinite Money Hack",
+  "duration": 476
+}

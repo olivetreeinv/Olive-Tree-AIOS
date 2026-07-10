@@ -1,0 +1,22 @@
+{
+  "trading_relevant": "partial",
+  "strategy": "covered-calls",
+  "summary": "Kenneth reviews six covered call ETFs (QYLD, JEPI, XYLG, RYLD, JEPPY, and others) from GlobalX and JPMorgan that generate monthly income through systematic covered call selling. He explains that funds selling 100 covered calls may underperform in strong bull markets, while hybrid approaches selling 50 calls (like XYLG) offer balanced returns with reduced call selling.",
+  "takeaways": [
+    "Covered call ETFs pay monthly dividends but advertised yields (11-12%) are annualized, not monthly payouts",
+    "Funds selling 100 covered calls may cap upside in strong bull markets",
+    "Hybrid approach: selling 50 covered calls (like XYLG) reduces call pressure while maintaining dividend",
+    "Expense ratios under 1% are generally considered low for ETFs",
+    "QYLD tracks NASDAQ 100 (lower volatility), JEPI/JEPPY track S&P 500, RYLD tracks Russell 2000 (small cap)"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Evaluate adding covered call ETFs (XYLG, JEPPY) as core income positions for Premium Desk to diversify beyond individual stock wheels",
+      "evidence": "Kenneth highlights XYLG and JPMorgan funds' hybrid 50-call approach with lower expense ratios as efficient monthly income generators that could complement $50k portfolio's $1,250/mo target"
+    }
+  ],
+  "id": "CvZZ94gDI7c",
+  "title": "Make a Little Extra Money with Covered Call ETFs",
+  "duration": 103
+}

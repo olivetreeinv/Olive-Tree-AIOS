@@ -77,7 +77,8 @@ CC_LADDER_SPREAD_DAYS = 7          # spread new-position expiries across ~weekly
 CC_UNIVERSE = CANDIDATE_UNIVERSE
 
 # ── Config: reporting ──────────────────────────────────────────────────────────
-CC_MONTHLY_TARGET_USD = 1_250.0   # 30% annualized / 12 on the $50k book
+CC_WEEKLY_TARGET_USD  = 1_000.0                          # primary goal: $1k/week premium (Suna weekly cadence)
+CC_MONTHLY_TARGET_USD = CC_WEEKLY_TARGET_USD * 52 / 12   # ≈ $4,333/mo, ~104% annualized on the $50k book
 
 # ── Alpaca client ─────────────────────────────────────────────────────────────
 def _client() -> TradingClient:
@@ -1021,11 +1022,12 @@ def cc_next_actions() -> list[str]:
 
 
 def _print_status():
-    """Print CC book positions + MTD premium vs the $1,250/mo target + annualized yield-on-book."""
+    """Print CC book positions + premium vs the $1,000/week target + annualized yield-on-book."""
     s = Session()
     try:
         today     = date.today().isoformat()
         mtd_start = today[:7] + "-01"
+        wtd_start = (date.today() - timedelta(days=date.today().weekday())).isoformat()  # Monday
         open_rows = s.query(TradingCCPosition).filter_by(status="open").all()
         closed    = s.query(TradingCCPosition).filter(
             TradingCCPosition.status.in_(("closed", "assigned", "expired", "wheeled")),
@@ -1054,12 +1056,18 @@ def _print_status():
                        if (r.opened_at or "") >= mtd_start) + \
                    sum((r.premium_received or 0) for r in closed)
     realized_pnl = sum((r.realized_pnl or 0) for r in closed)
-    target = CC_MONTHLY_TARGET_USD
-    pct = premium_mtd / target if target else 0
+    # WTD ⊂ MTD, so re-filter the already-loaded rows by the Monday cutoff.
+    premium_wtd  = sum((r.premium_received or 0) for r in open_rows
+                       if (r.opened_at or "") >= wtd_start) + \
+                   sum((r.premium_received or 0) for r in closed
+                       if (r.closed_at or "") >= wtd_start)
+    wk_pct  = premium_wtd / CC_WEEKLY_TARGET_USD if CC_WEEKLY_TARGET_USD else 0
+    mo_pct  = premium_mtd / CC_MONTHLY_TARGET_USD if CC_MONTHLY_TARGET_USD else 0
     days_elapsed = date.today().day  # mtd_start is always the 1st
     annualized_yield = (premium_mtd / CC_BOOK_USD) * (365 / days_elapsed) if days_elapsed else 0
-    print(f"\n  Premium MTD: ${premium_mtd:.2f} / ${target:.0f} target ({pct:.0%})")
-    print(f"  Annualized yield-on-book: {annualized_yield:.1%} (target ~30%)")
+    print(f"\n  Premium WTD: ${premium_wtd:.2f} / ${CC_WEEKLY_TARGET_USD:.0f} weekly target ({wk_pct:.0%})")
+    print(f"  Premium MTD: ${premium_mtd:.2f} / ${CC_MONTHLY_TARGET_USD:.0f} ({mo_pct:.0%})")
+    print(f"  Annualized yield-on-book: {annualized_yield:.1%} (target ~104%)")
     print(f"  Realized P&L MTD: ${realized_pnl:+.2f}")
     from scripts.trading_data import get_quote
     book_value = 0.0

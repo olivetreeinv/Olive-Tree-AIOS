@@ -86,8 +86,9 @@ def _get_regime() -> str:
         return "UNKNOWN"
 
 
-def _maybe_run_cc(dry_run: bool = False):
-    """Run CC cycle at most once per hour. Uses a timestamp file as state."""
+def _maybe_run_cc(dry_run: bool = False, suna: bool = False):
+    """Run the CC/wheel cycle at most once per window. Uses a timestamp file as state.
+    suna=True runs the Premium Desk v3 weekly Suna wheel instead of the v2 monthly wheel."""
     try:
         import time as _time
         last = float(_CC_STATE_FILE.read_text().strip()) if _CC_STATE_FILE.exists() else 0
@@ -95,8 +96,12 @@ def _maybe_run_cc(dry_run: bool = False):
             secs_left = int(CC_CYCLE_SECONDS - (_time.time() - last))
             print(f"  [CC] Skipping — next run in {secs_left//60}m")
             return
-        from scripts.trading_covered_calls import run_cc_cycle
-        run_cc_cycle(dry_run=dry_run)
+        if suna:
+            from scripts.trading_suna import run_suna_cycle
+            run_suna_cycle(dry_run=dry_run)
+        else:
+            from scripts.trading_covered_calls import run_cc_cycle
+            run_cc_cycle(dry_run=dry_run)
         if not dry_run:  # a dry-run shouldn't consume the real desk's 4h window
             _CC_STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
             _CC_STATE_FILE.write_text(str(_time.time()))
@@ -132,7 +137,7 @@ def _save_signal(thesis_id: int | None, result: dict) -> int | None:
 
 def run_cycle(dry_run: bool = False, market_session: str = "equities",
               with_insiders: bool = False, with_options: bool = False,
-              no_cc: bool = False, momentum: bool = False):
+              no_cc: bool = False, momentum: bool = False, suna: bool = False):
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     print(f"\n{'='*60}")
     print(f"  Trading Desk Cycle — {now}  [{market_session}]"
@@ -166,7 +171,7 @@ def run_cycle(dry_run: bool = False, market_session: str = "equities",
 
     # ── CC/wheel cycle — the primary book (equities + extended sessions) ──────
     if market_session in ("equities", "extended") and not no_cc:
-        _maybe_run_cc(dry_run=dry_run)
+        _maybe_run_cc(dry_run=dry_run, suna=suna)
 
     if not momentum:
         # Momentum pipeline + SPY core sweep are retired as the default path —
@@ -435,6 +440,9 @@ def main():
     ap.add_argument("--no-cc", action="store_true", help="Disable covered-call cycle this run")
     ap.add_argument("--momentum", action="store_true",
                     help="Also run the retired momentum pipeline (research→quant→risk→execution) + SPY core sweep")
+    ap.add_argument("--suna", action="store_true",
+                    help="Run Premium Desk v3 — Kenneth Suna's weekly share-first wheel (trading_suna.py) "
+                         "instead of the v2 monthly CSP-first wheel")
     ap.add_argument("--clear-halt", action="store_true", help="Clear a tripped equity-anomaly halt and exit")
     args = ap.parse_args()
 
@@ -468,7 +476,7 @@ def main():
         try:
             run_cycle(dry_run=args.dry_run, market_session=_session(),
                       with_insiders=args.insiders, with_options=args.options,
-                      no_cc=args.no_cc, momentum=args.momentum)
+                      no_cc=args.no_cc, momentum=args.momentum, suna=args.suna)
         except Exception as e:
             msg = f"Cycle error: {e}"
             print(f"  ⚠️  {msg}")
@@ -496,7 +504,7 @@ def main():
                 else:
                     run_cycle(dry_run=args.dry_run, market_session=sess,
                               with_insiders=args.insiders, with_options=args.options,
-                              no_cc=args.no_cc, momentum=args.momentum)
+                              no_cc=args.no_cc, momentum=args.momentum, suna=args.suna)
             except KeyboardInterrupt:
                 print("\n  Loop stopped by user.")
                 break

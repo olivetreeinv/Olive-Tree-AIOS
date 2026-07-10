@@ -1,0 +1,25 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth Suna demonstrates using stock screeners (Charles Schwab) to identify volatile stocks suitable for covered call selling. He filters by sector (Information Technology), price range ($20-60), optionability, short interest (10-20%), and beta (1-2) to narrow candidates from 1,200 stocks to 9, then shows how to evaluate premium income on specific strikes.",
+  "takeaways": [
+    "Filter stocks by sector and price range to reduce screener results (1,200 \u2192 158)",
+    "Use beta of 1-2 to identify appropriate volatility for covered calls",
+    "Target short interest 10-20% to avoid excessive short squeeze risk",
+    "Sell weekly options expiring Friday for covered calls",
+    "Go slightly out-of-the-money (e.g., $0.26-0.76 above current price) to capture $120-140 premium per contract on $5,000 position",
+    "High volatility sectors (AI, cybersecurity, healthcare) offer better premiums than consumer staples",
+    "Kenneth generates ~$600/week from covered call premium selling",
+    "Verify optionability filter to ensure stocks support options trading"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Apply screener filters (beta 1-2, short interest 10-20%, tech sector, price $20-60) to identify covered call candidates weekly to systematically replace underperforming positions in the $50k portfolio",
+      "evidence": "Kenneth demonstrates precise screener methodology reducing 1,200 candidates to 9 qualified stocks; applying this systematically would support Brian's $1,250/month premium target by ensuring higher-quality entry points and consistent weekly income generation"
+    }
+  ],
+  "id": "l5J9v_Ykeks",
+  "title": "How to use Screeners for Covered Calls ",
+  "duration": 276
+}

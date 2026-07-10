@@ -1,0 +1,29 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth documents his weekly covered call selling performance across multiple stocks (HIMS, OLO, JOBY, Nphase), achieving $1,133 in premiums on a $27,455 deployed capital for a 4.13% weekly return. He emphasizes accepting 'good enough' returns rather than chasing maximum profits, using a diversified single-option approach across 4-5 positions rather than the $50k Premium Desk model.",
+  "takeaways": [
+    "Target strikes just above purchase price to ensure assignment (e.g., bought HIMS at $50.38, sold $50-51 calls)",
+    "Aim for 4-6.2% weekly premium returns on covered calls as acceptable performance",
+    "Accept assignment and redeploy capital weekly rather than holding for larger moves",
+    "Extend expiration to next week (7+ days) when premiums are exceptionally high (Nphase example at 6.2%)",
+    "Buying after strong rallies is high-risk but acceptable if premium income justifies the risk",
+    "Deploy capital across multiple positions simultaneously (4-5 stocks in one week) rather than concentrating on single stock",
+    "Philosophy: 'Your goal isn't to make all the money, just some of it' - recognize good enough returns to avoid regret"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Expand from single-stock HIMS focus to intentional 4-5 stock rotation weekly, maintaining $25-27k deployment across OLO, JOBY, Nphase, HIMS positions",
+      "evidence": "Kenneth successfully rotated into 4 different stocks this week, generating $1,133 in diversified premiums vs. struggling to hit $180 target on HIMS alone; demonstrated higher consistency with portfolio approach"
+    },
+    {
+      "strategy": "trading-desk",
+      "change": "Reserve capital for 7+ day expiration calls when IV is elevated and premiums exceed 5.5% weekly (vs. standard weekly cycle)",
+      "evidence": "Nphase position at 6.2% return with next-Friday expiration outperformed weekly calls; Kenneth explicitly noted 'premiums were really high' as reason to extend duration"
+    }
+  ],
+  "id": "mz3w2lJQ-hQ",
+  "title": "7/18 part 7.5 ",
+  "duration": 346
+}

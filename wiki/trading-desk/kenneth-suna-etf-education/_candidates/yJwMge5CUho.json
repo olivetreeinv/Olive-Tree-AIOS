@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth Suna demonstrates three methods to profit from investments without selling: dividend collection, selling covered calls on long-term holdings, and collateralized lending (pledged asset lines). The primary focus is on covered calls as an income strategy, using Palantir as an example where weekly call sales generate $370+ per contract.",
+  "takeaways": [
+    "Sell weekly expiring covered calls to generate consistent premium income without liquidating shares",
+    "Require 100 shares minimum per covered call contract to establish position-building as long-term strategy",
+    "Use delta as probability metric: 30% delta \u2248 30% probability of assignment (e.g., $99 strike on $93 stock)",
+    "Target out-of-the-money strikes (e.g., $94-$99 on $93 stock) to reduce assignment risk while collecting premium",
+    "Can buy back options before expiration to lock in gains and retain shares if underlying rallies",
+    "Weekly expirations provide more frequent premium collection opportunities than longer-dated contracts",
+    "Pledged asset lines (Charles Schwab) allow borrowing against portfolio without liquidation, avoiding capital gains taxes"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "covered-calls",
+      "change": "Implement tiered strike selection rule: sell 70% of weekly calls at 30-delta OTM strikes for higher probability of keeping shares, and 30% at 50+ delta strikes for higher premium capture",
+      "evidence": "Kenneth demonstrates both conservative ($99, 30-delta) and aggressive ($94, higher probability) strike selection on Palantir, noting the trade-off between premium size and assignment risk; Brian's $50k Premium Desk could systematize this mix to optimize $1,250/mo target"
+    }
+  ],
+  "id": "yJwMge5CUho",
+  "title": "Can you MAKE MONEY from your investments WITHOUT actually selling them?!?!",
+  "duration": 210
+}
