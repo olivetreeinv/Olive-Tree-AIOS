@@ -60,9 +60,9 @@ UNSUB_NOTE = (
 # card, and open a fresh content card — the GHL card-per-section look.
 CARD_OPEN = (
     '<table width="100%" cellpadding="0" cellspacing="0" border="0" '
-    'style="background:#ffffff;border-radius:20px;"><tr>'
-    '<td style="padding:24px;font-family:arial,helvetica,sans-serif;'
-    'font-size:14px;line-height:1.5;color:#000000;">'
+    'style="background:#FFFFFF;border-radius:16px;"><tr>'
+    '<td style="padding:26px 28px;font-family:arial,helvetica,sans-serif;'
+    'font-size:14px;line-height:1.6;color:#1A1A1A;">'
 )
 CARD_CLOSE = (
     '</td></tr></table>'
@@ -95,18 +95,21 @@ def _md_to_html(text: str) -> str:
         if line.startswith("### "):
             flush_para()
             content = _inline(line[4:])
-            out.append(f"<p style='margin:20px 0 8px;'><strong>{content}</strong></p>")
+            out.append(f"<p style='margin:20px 0 8px;color:#3A4A2E;'><strong>{content}</strong></p>")
         elif line.startswith("## "):
             flush_para()
             content = _inline(line[3:])
             out.append(
                 CARD_CLOSE + CARD_OPEN
-                + f"<h2 style='margin:0;text-align:center;color:#455da5;font-size:22px;'>{content}</h2>"
+                + "<h2 style='margin:0;text-align:center;color:#3A4A2E;font-size:24px;"
+                  "font-weight:normal;font-family:Georgia,\"Times New Roman\",serif;'>"
+                + content + "</h2>"
+                + "<div style='width:48px;height:2px;background:#C0A060;margin:14px auto 0;font-size:0;line-height:0;'>&nbsp;</div>"
                 + CARD_CLOSE + CARD_OPEN
             )
         elif line.startswith("---"):
             flush_para()
-            out.append("<hr style='border:none;border-top:1px solid #DCE3EB;margin:24px 0;'>")
+            out.append("<hr style='border:none;border-top:1px solid #E8E2D4;margin:24px 0;'>")
         else:
             para.append(_inline(line))
 
@@ -130,7 +133,7 @@ def _inline(text: str) -> str:
     # links  [label](url)
     text = re.sub(
         r"\[([^\]]+)\]\((https?://[^\)]+)\)",
-        r'<a href="\2" style="color:#5A6A1E;">\1</a>',
+        r'<a href="\2" style="color:#3A4A2E;">\1</a>',
         text,
     )
     return text
@@ -145,6 +148,7 @@ def render_template(subject: str, body_html: str, first_name: str = "there") -> 
     tmpl = tmpl.replace("{{body_html}}", body_html)
     tmpl = tmpl.replace("{{unsubscribe_note}}", UNSUB_NOTE)
     tmpl = tmpl.replace("{{year}}", str(datetime.now().year))
+    tmpl = tmpl.replace("{{edition}}", datetime.now().strftime("%B"))
     return tmpl
 
 
