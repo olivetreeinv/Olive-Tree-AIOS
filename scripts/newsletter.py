@@ -91,11 +91,12 @@ def _md_to_html(text: str) -> str:
             flush_para()
             continue
 
-        # {{rates}} → live residential + commercial rate table (newsletter_rates.py)
+        # {{rates}} → live residential + commercial rate table (newsletter_rates.py).
+        # Rendered outside the card so it spans the full newsletter width.
         if line.strip() == "{{rates}}":
             flush_para()
             from scripts.newsletter_rates import rates_html
-            out.append(rates_html())
+            out.append(CARD_CLOSE + rates_html() + CARD_OPEN)
             continue
 
         # headings (before escaping so we can detect #)
@@ -121,7 +122,8 @@ def _md_to_html(text: str) -> str:
             para.append(_inline(line))
 
     flush_para()
-    return "\n".join(out)
+    # drop empty cards left when a full-width block ({{rates}}) borders a section break
+    return "\n".join(out).replace(CARD_OPEN + "\n" + CARD_CLOSE, "")
 
 
 def _inline(text: str) -> str:

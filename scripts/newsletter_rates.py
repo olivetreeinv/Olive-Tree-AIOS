@@ -120,8 +120,8 @@ def _badge(delta) -> str:
         style, txt = ("#F6DDDD", "#A33333"), f"&#8593; {delta:+.2f}%"
     else:
         style, txt = ("#DDEEDD", "#2A6E2A"), f"&#8595; {delta:.2f}%"
-    return (f'<span style="display:inline-block;padding:4px 12px;border-radius:6px;'
-            f'background:{style[0]};color:{style[1]};font-weight:bold;font-size:13px;">{txt}</span>')
+    return (f'<span style="display:inline-block;padding:3px 10px;border-radius:6px;'
+            f'background:{style[0]};color:{style[1]};font-weight:bold;font-size:11px;">{txt}</span>')
 
 
 def rates_html() -> str:
@@ -136,15 +136,15 @@ def rates_html() -> str:
     cache[month] = mids
     CACHE.write_text(json.dumps(cache, indent=1))
 
-    cell = "padding:14px 16px;font-family:arial,helvetica,sans-serif;font-size:14px;color:#26281C;"
+    cell = "padding:10px 12px;font-family:arial,helvetica,sans-serif;font-size:12px;color:#26281C;"
     rows = []
 
     def row(label, rate, key, shade):
         rows.append(
             f'<tr style="background:{shade};">'
             f'<td style="{cell}">{label}</td>'
-            f'<td style="{cell}font-weight:bold;color:#1B1E08;">{rate}</td>'
-            f'<td style="{cell}">{_badge(changes.get(key))}</td></tr>'
+            f'<td style="{cell}font-weight:bold;color:#1B1E08;white-space:nowrap;">{rate}</td>'
+            f'<td style="{cell}white-space:nowrap;">{_badge(changes.get(key))}</td></tr>'
         )
 
     for i, (_, label) in enumerate(RESIDENTIAL):
@@ -153,20 +153,20 @@ def rates_html() -> str:
 
     rows.append(
         '<tr style="background:#F7F8FA;border-top:2px solid #505A19;">'
-        f'<td colspan="3" style="{cell}padding:12px 16px;color:#505A19;">Multifamily &amp; Commercial</td></tr>'
+        f'<td colspan="3" style="{cell}color:#505A19;">Multifamily &amp; Commercial</td></tr>'
     )
     for i, (_, label) in enumerate(COMMERCIAL):
         if label in com:
             lo, hi = com[label]
             row(label, f"{lo:.2f}% - {hi:.2f}%", label, "#FFFFFF" if i % 2 == 0 else "#F7F8FA")
 
-    head = "padding:16px;font-family:arial,helvetica,sans-serif;font-size:14px;color:#FFFFFF;text-align:left;letter-spacing:1px;"
+    head = "padding:12px;font-family:arial,helvetica,sans-serif;font-size:12px;color:#FFFFFF;text-align:left;letter-spacing:1px;"
     today = datetime.now().strftime("%B %-d, %Y")
     return (
         '<table width="100%" cellpadding="0" cellspacing="0" border="0" '
-        'style="border:1px solid #E4DFCF;border-radius:12px;border-collapse:separate;overflow:hidden;margin:12px 0;">'
+        'style="border:1px solid #E4DFCF;border-radius:16px;border-collapse:separate;overflow:hidden;margin:0 0 8px;">'
         '<tr style="background:#1B1E08;">'
-        f'<th style="{head}">LOAN TYPE</th><th style="{head}">CURRENT RATE</th><th style="{head}">MONTHLY CHANGE</th></tr>'
+        f'<th style="{head}">LOAN TYPE</th><th style="{head}">CURRENT RATE RANGE</th><th style="{head}">MONTHLY CHANGE</th></tr>'
         + "".join(rows)
         + "</table>"
         '<p style="margin:0 0 16px;font-size:11px;color:#8A8770;font-family:arial,helvetica,sans-serif;">'
