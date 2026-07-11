@@ -1,0 +1,56 @@
+{
+  "conversation": {
+    "id": "29FWrjKKeEk5ardHRrkH",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364101416,
+    "dateUpdated": 1783364102064,
+    "lastMessageDate": 1783364102057,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Yiri, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "LqN4bHeUisLEfQ4Bivyg",
+    "fullName": "Yiri",
+    "contactName": "Yiri",
+    "companyName": "Insulation / Garage Doors",
+    "phone": "+14043990699",
+    "tags": [
+      "contractor",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364102057
+    ]
+  },
+  "messages": [
+    {
+      "id": "NlzqxbpC0je9bj7IjKN9",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Yiri, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "LqN4bHeUisLEfQ4Bivyg",
+      "contentType": "text/plain",
+      "conversationId": "29FWrjKKeEk5ardHRrkH",
+      "dateAdded": "2026-07-06T18:55:01.459Z",
+      "dateUpdated": "2026-07-06T18:55:04.718Z",
+      "source": "workflow",
+      "altId": "SM84d6494bff05eeddb87cfa95b03da887",
+      "from": "+16789712411",
+      "to": "+14043990699",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

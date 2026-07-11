@@ -1,0 +1,56 @@
+{
+  "conversation": {
+    "id": "cr8vn8lUk5WkuQzZqv3P",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364131770,
+    "dateUpdated": 1783364132435,
+    "lastMessageDate": 1783364132423,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Victor, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "wZlWqvy95wWIHeKB5TQL",
+    "fullName": "Victor Osorio",
+    "contactName": "Victor Osorio",
+    "companyName": "Southern Triple Metal",
+    "phone": "+14048675836",
+    "tags": [
+      "contractor",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364132423
+    ]
+  },
+  "messages": [
+    {
+      "id": "0Xmfc0KYoWYlpYKiHPOg",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Victor, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "wZlWqvy95wWIHeKB5TQL",
+      "contentType": "text/plain",
+      "conversationId": "cr8vn8lUk5WkuQzZqv3P",
+      "dateAdded": "2026-07-06T18:55:31.822Z",
+      "dateUpdated": "2026-07-06T18:55:36.719Z",
+      "source": "workflow",
+      "altId": "SM4f691f59a1a331fa5b283d31795e5062",
+      "from": "+16789712411",
+      "to": "+14048675836",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

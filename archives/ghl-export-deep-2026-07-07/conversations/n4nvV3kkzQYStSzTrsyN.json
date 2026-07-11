@@ -1,0 +1,107 @@
+{
+  "conversation": {
+    "id": "n4nvV3kkzQYStSzTrsyN",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249897991,
+    "dateUpdated": 1781961536493,
+    "lastMessageDate": 1781961536490,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Hey AJ, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.",
+    "lastOutboundMessageAction": "manual",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781961536490,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "y06cpJNQzRkBanpOCfze",
+    "fullName": "Aj Desoto",
+    "contactName": "AJ DeSoto",
+    "companyName": null,
+    "email": "ajdesoto@yahoo.com",
+    "phone": "+14703350342",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "profilePhoto": null,
+    "sort": [
+      1781961536490
+    ]
+  },
+  "messages": [
+    {
+      "id": "ipW7HaE2IE7qNpdQaSVy",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "y06cpJNQzRkBanpOCfze",
+      "conversationId": "n4nvV3kkzQYStSzTrsyN",
+      "dateAdded": "2026-06-20T13:18:57.398Z",
+      "dateUpdated": "2026-06-20T13:18:57.398Z",
+      "from": "+14703350342",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "SMS"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "9UKG6HHmU0hoPvLOPp2L",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey AJ, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "y06cpJNQzRkBanpOCfze",
+      "contentType": "text/plain",
+      "conversationId": "n4nvV3kkzQYStSzTrsyN",
+      "dateAdded": "2026-06-20T13:18:55.860Z",
+      "dateUpdated": "2026-06-20T13:18:55.860Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+14703350342",
+      "error": "Error 30006 - Landline or non-mobile number. Cannot receive SMS.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "UzQME0aOwwocW0YmCEEj",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "y06cpJNQzRkBanpOCfze",
+      "conversationId": "n4nvV3kkzQYStSzTrsyN",
+      "dateAdded": "2025-06-18T12:31:23.515Z",
+      "dateUpdated": "2025-06-18T12:34:39.598Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "zXQUPiHu0qqvId9VwGm2"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

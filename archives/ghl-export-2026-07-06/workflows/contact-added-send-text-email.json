@@ -1,0 +1,228 @@
+{
+  "_id": "73b9a479-c833-4cb4-ac6e-26cbe4bacced",
+  "locationId": "SLq7B2pldVzfQLKjGpvw",
+  "companyId": "etFEpuKKLwVQ4AMNOaLs",
+  "companyAge": 30,
+  "name": "Contact added>> send text/email",
+  "status": "published",
+  "version": 7,
+  "dataVersion": 7,
+  "allowMultiple": true,
+  "timezone": "account",
+  "removeContactFromLastStep": true,
+  "filePath": "location/SLq7B2pldVzfQLKjGpvw/workflows/73b9a479-c833-4cb4-ac6e-26cbe4bacced/7",
+  "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FSLq7B2pldVzfQLKjGpvw%2Fworkflows%2F73b9a479-c833-4cb4-ac6e-26cbe4bacced%2F7?alt=media&token=02a992ba-de3e-4259-9eef-1fb8ff21805a",
+  "stopOnResponse": false,
+  "autoMarkAsRead": false,
+  "permission": 380,
+  "type": "workflow",
+  "parentId": "1e3a4816-61df-4e49-9468-e01c5e6586b6",
+  "updatedBy": "xlOp6UHTGoJyjxEqqESb",
+  "createdAt": "2025-05-13T17:12:30.350Z",
+  "updatedAt": "2026-02-17T18:59:59.930Z",
+  "deleted": false,
+  "allowMultipleOpportunity": true,
+  "originType": "user",
+  "__v": 0,
+  "eventStartDate": null,
+  "triggersFilePath": "location/SLq7B2pldVzfQLKjGpvw/workflow-triggers/73b9a479-c833-4cb4-ac6e-26cbe4bacced/6",
+  "window": null,
+  "workflowNote": null,
+  "creationSource": "builder",
+  "isTriggerBucketMigrated": true,
+  "id": "73b9a479-c833-4cb4-ac6e-26cbe4bacced",
+  "workflowData": {
+    "templates": [
+      {
+        "id": "92f0d648-627d-48f3-92d3-2b64d278a3f4",
+        "order": 0,
+        "attributes": {
+          "html": "<p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">Hi {{contact.first_name}},</p><br/><p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">At Olive Tree Investments, we believe that building wealth through real estate should be accessible, strategic, and community-driven.</p><br/><p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">That\u2019s why we invite you to subscribe to our exclusive newsletter\u2014your front-row seat to real estate intelligence, expert strategies, and curated opportunities in multifamily investing.</p><br/><p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">Here\u2019s what you\u2019ll get:</p><p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">\u2022\u2060  \u2060\ud83c\udfe2 Early access to new investment opportunities  </p><p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">\u2022\u2060  \u2060\ud83d\udcc8 Market trends &amp; performance insights  </p><p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">\u2022\u2060  \u2060\ud83d\udca1 Wealth-building strategies from seasoned pros  </p><p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">\u2022\u2060  \u2060\ud83e\udd1d Real-time project updates &amp; partnership news  </p><br/><p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">\ud83d\udc49 Subscribe Now and take your investment game to the next level. Subscribe by responding with \"Yes\".</p><br/><p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">We\u2019re not just growing properties\u2014we\u2019re growing people.</p><br/><p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">Warm regards,  </p><p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">The Olive Tree Team</p>",
+          "from_name": "{{location.name}}",
+          "from_email": "{{location.email}}",
+          "subject": "{{contact.first_name}},",
+          "attachments": [],
+          "trackingOptions": {
+            "hasTrackingLinks": false,
+            "hasUtmTracking": false,
+            "hasTags": false,
+            "sourceId": "73b9a479-c833-4cb4-ac6e-26cbe4bacced:92f0d648-627d-48f3-92d3-2b64d278a3f4"
+          },
+          "conditions": []
+        },
+        "name": "Email",
+        "type": "email",
+        "next": "181c3077-e64d-42ca-b136-494a0b6c8e78"
+      },
+      {
+        "id": "181c3077-e64d-42ca-b136-494a0b6c8e78",
+        "order": 1,
+        "attributes": {
+          "body": "\u2060Hi {{contact.first_name}}, welcome to Olive Tree Investments! Want early access to top real estate insights & investment deals? Tap here to subscribe \u27a1\ufe0f [Your Link]",
+          "attachments": []
+        },
+        "name": "SMS",
+        "type": "sms",
+        "next": "c45a3812-9df4-4f0c-9ded-845f78618552",
+        "parentKey": "92f0d648-627d-48f3-92d3-2b64d278a3f4"
+      },
+      {
+        "id": "c45a3812-9df4-4f0c-9ded-845f78618552",
+        "parentKey": "181c3077-e64d-42ca-b136-494a0b6c8e78",
+        "type": "wait",
+        "name": "Wait 12 hrs",
+        "attributes": {
+          "type": "time",
+          "startAfter": {
+            "type": "hour",
+            "value": 12,
+            "when": "after"
+          },
+          "name": "Wait 12 hrs",
+          "cat": "",
+          "isHybridAction": true,
+          "hybridActionType": "wait",
+          "convertToMultipath": false,
+          "transitions": []
+        },
+        "order": 2,
+        "cat": "",
+        "next": "23c66793-aba2-44e5-847c-253b9cc17554"
+      },
+      {
+        "id": "23c66793-aba2-44e5-847c-253b9cc17554",
+        "order": 3,
+        "attributes": {
+          "html": "<p style=\"margin:0px; margin: 0px;\">Hi {{contact.first_name}},</p><br/><p style=\"margin:0px; margin: 0px;\">Over 750 investors have partnered with us on a shared mission: to unlock long-term wealth through intelligent real estate investing.</p><p style=\"margin:0px; margin: 0px;\">When you join our newsletter, you're not just getting emails.</p><br/><p style=\"margin:0px\">You're gaining access to:</p><p style=\"margin:0px\">\u2022\u2060  \u2060Real-time market insights  </p><p style=\"margin:0px\">\u2022\u2060  \u2060New deal alerts before the public  </p><p style=\"margin:0px\">\u2022\u2060  \u2060A network of forward-thinking investors  </p><p style=\"margin:0px\">Whether you\u2019re curious, cautious, or ready to scale your portfolio, our newsletter helps you stay informed, confident, and connected.</p><br/><p style=\"margin:0px\">\ud83d\udc49 Don\u2019t miss out. [Join our investor community today]</p><p style=\"margin:0px\">To your success,  </p><p style=\"margin:0px\">The Olive Tree Investments Team</p>",
+          "from_name": "{{location.name}}",
+          "from_email": "{{location.email}}",
+          "subject": "{{contact.first_name}}, Why 750+ Investors Trust Olive Tree (And You Can Too)",
+          "attachments": []
+        },
+        "name": "Email",
+        "type": "email",
+        "next": "ac0d5993-93c6-4995-9df8-0450715479a6",
+        "parentKey": "c45a3812-9df4-4f0c-9ded-845f78618552"
+      },
+      {
+        "id": "ac0d5993-93c6-4995-9df8-0450715479a6",
+        "order": 4,
+        "attributes": {
+          "body": "750+ investors trust Olive Tree for smart multifamily investments. Join our newsletter to stay ahead of the curve \ud83d\udcc8 \u27a1\ufe0f [Your Link]",
+          "attachments": []
+        },
+        "name": "SMS- social proof",
+        "type": "sms",
+        "next": "e539fc40-d1ff-49f4-b5f7-2cd4588f85da",
+        "parentKey": "23c66793-aba2-44e5-847c-253b9cc17554"
+      },
+      {
+        "id": "e539fc40-d1ff-49f4-b5f7-2cd4588f85da",
+        "parentKey": "ac0d5993-93c6-4995-9df8-0450715479a6",
+        "type": "wait",
+        "name": "wait",
+        "attributes": {
+          "type": "reply",
+          "startAfter": {
+            "type": "minutes",
+            "value": 15,
+            "when": "after"
+          },
+          "name": "Wait",
+          "cat": "multi-path",
+          "isHybridAction": true,
+          "hybridActionType": "wait",
+          "convertToMultipath": true,
+          "transitions": [
+            {
+              "id": "6a7b65c9-cafb-4ada-bb2b-b150d41546f7",
+              "name": "wait",
+              "condition": "primary",
+              "conditionType": "user-defined",
+              "isPrimaryBranch": true,
+              "description": "",
+              "attributes": {
+                "type": "wait_reply",
+                "description": "What will happen when a contact replies on Email or Email or SMS or SMS- social proof"
+              }
+            },
+            {
+              "id": "8e6e6901-89d5-47c0-80f9-50e2b491ff27",
+              "name": "timeout",
+              "condition": "timeout",
+              "conditionType": "user-defined",
+              "isPrimaryBranch": false,
+              "description": "",
+              "attributes": {
+                "type": "wait_timeout",
+                "description": "What will happen after 15 minutes"
+              }
+            }
+          ],
+          "reply": [
+            "92f0d648-627d-48f3-92d3-2b64d278a3f4",
+            "23c66793-aba2-44e5-847c-253b9cc17554",
+            "181c3077-e64d-42ca-b136-494a0b6c8e78",
+            "ac0d5993-93c6-4995-9df8-0450715479a6"
+          ],
+          "replyLabel": [
+            "Email",
+            "Email",
+            "SMS",
+            "SMS- social proof"
+          ]
+        },
+        "order": 5,
+        "cat": "multi-path",
+        "next": [
+          "6a7b65c9-cafb-4ada-bb2b-b150d41546f7",
+          "8e6e6901-89d5-47c0-80f9-50e2b491ff27"
+        ]
+      },
+      {
+        "id": "6a7b65c9-cafb-4ada-bb2b-b150d41546f7",
+        "parentKey": "e539fc40-d1ff-49f4-b5f7-2cd4588f85da",
+        "parent": "e539fc40-d1ff-49f4-b5f7-2cd4588f85da",
+        "type": "transition",
+        "name": "wait",
+        "attributes": {
+          "type": "wait_reply",
+          "description": "What will happen when a contact replies on Email or Email or SMS or SMS- social proof"
+        },
+        "order": 6,
+        "cat": "transition",
+        "next": "4a2c603a-be34-4027-969c-5b1925057f13"
+      },
+      {
+        "id": "4a2c603a-be34-4027-969c-5b1925057f13",
+        "parent": "6a7b65c9-cafb-4ada-bb2b-b150d41546f7",
+        "order": 0,
+        "attributes": {
+          "tags": [
+            "newsletter"
+          ]
+        },
+        "name": "Add Tag",
+        "type": "add_contact_tag",
+        "parentKey": "6a7b65c9-cafb-4ada-bb2b-b150d41546f7"
+      },
+      {
+        "id": "8e6e6901-89d5-47c0-80f9-50e2b491ff27",
+        "parentKey": "e539fc40-d1ff-49f4-b5f7-2cd4588f85da",
+        "parent": "e539fc40-d1ff-49f4-b5f7-2cd4588f85da",
+        "type": "transition",
+        "name": "timeout",
+        "attributes": {
+          "type": "wait_timeout",
+          "description": "What will happen after 15 minutes"
+        },
+        "order": 6,
+        "cat": "transition"
+      }
+    ]
+  },
+  "permissionMeta": {
+    "canRead": true,
+    "canWrite": true
+  }
+}

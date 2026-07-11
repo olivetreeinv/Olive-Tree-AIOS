@@ -1,0 +1,105 @@
+{
+  "conversation": {
+    "id": "HIdt94KSkDcETSGWSggi",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249911506,
+    "dateUpdated": 1783365038857,
+    "lastMessageDate": 1783365038852,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Ben, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781961493051,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "jVfAlsjUFW2oW07o2Emr",
+    "fullName": "Ben Reed",
+    "contactName": "Ben Reed",
+    "companyName": null,
+    "email": "ben@westreed.com",
+    "phone": "+16787870708",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783365038852
+    ]
+  },
+  "messages": [
+    {
+      "id": "VJrxbDQ2GXt2kNmswDcU",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Ben, a copy of the pitch deck has been sent to your email.",
+      "contactId": "jVfAlsjUFW2oW07o2Emr",
+      "contentType": "text/plain",
+      "conversationId": "HIdt94KSkDcETSGWSggi",
+      "dateAdded": "2026-07-06T19:10:35.672Z",
+      "dateUpdated": "2026-07-06T19:10:35.672Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+16787870708",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "VB5rIrlp9rcT44h9ljXf",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Ben, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "jVfAlsjUFW2oW07o2Emr",
+      "contentType": "text/plain",
+      "conversationId": "HIdt94KSkDcETSGWSggi",
+      "dateAdded": "2026-06-20T13:18:12.368Z",
+      "dateUpdated": "2026-06-20T13:18:13.667Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+16787870708",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "llRlLYiU6gCIuuccl54F",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "jVfAlsjUFW2oW07o2Emr",
+      "conversationId": "HIdt94KSkDcETSGWSggi",
+      "dateAdded": "2025-06-18T12:31:18.494Z",
+      "dateUpdated": "2025-06-18T12:33:23.643Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "RWWuYRXX7ymIphFLrQbq"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

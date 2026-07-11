@@ -1,0 +1,56 @@
+{
+  "conversation": {
+    "id": "SJtY1Qy2j24EEJK2TZ0e",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364479119,
+    "dateUpdated": 1783364479851,
+    "lastMessageDate": 1783364479848,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Jakob, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "xX5ZJocZtAmGlxY6pExs",
+    "fullName": "Jakob Fuhriman",
+    "contactName": "Jakob Fuhriman",
+    "companyName": "Capital Fund 1",
+    "phone": "+14805428692",
+    "tags": [
+      "hard money",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364479848
+    ]
+  },
+  "messages": [
+    {
+      "id": "g9iGZq5JVm2ziSb2DBA7",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Jakob, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "xX5ZJocZtAmGlxY6pExs",
+      "contentType": "text/plain",
+      "conversationId": "SJtY1Qy2j24EEJK2TZ0e",
+      "dateAdded": "2026-07-06T19:01:19.167Z",
+      "dateUpdated": "2026-07-06T19:01:23.389Z",
+      "source": "workflow",
+      "altId": "SMf2894e26894714ed00df11d71dc4ce3c",
+      "from": "+16789712411",
+      "to": "+14805428692",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

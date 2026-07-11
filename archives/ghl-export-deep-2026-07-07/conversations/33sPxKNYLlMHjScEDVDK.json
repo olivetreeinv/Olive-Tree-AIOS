@@ -1,0 +1,140 @@
+{
+  "conversation": {
+    "id": "33sPxKNYLlMHjScEDVDK",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781905768489,
+    "dateUpdated": 1783365973430,
+    "lastMessageDate": 1783365973413,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Which email?",
+    "lastOutboundMessageAction": "manual",
+    "lastMessageDirection": "inbound",
+    "inbox": true,
+    "unreadCount": 1,
+    "lastManualMessageDate": 1783365973413,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "gTp9witjx9wyaRbuDNXp",
+    "fullName": "Will Howe",
+    "contactName": "Will Howe",
+    "companyName": null,
+    "phone": "+16783324573",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783365973413
+    ]
+  },
+  "messages": [
+    {
+      "id": "8y0inMMV9CpyxYgvXej6",
+      "direction": "inbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Which email?",
+      "contactId": "gTp9witjx9wyaRbuDNXp",
+      "contentType": "text/plain",
+      "conversationId": "33sPxKNYLlMHjScEDVDK",
+      "dateAdded": "2026-07-06T19:26:13.489Z",
+      "dateUpdated": "2026-07-06T19:26:13.489Z",
+      "altId": "SM186f069c6a68708e952bb7aa8e676218",
+      "from": "+16783324573",
+      "to": "+16789712411",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "Z1Y5232TGSsbFn0pGb6X",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Will, the new number is required to be able to send texts with deals embedded. Its definitely me lol.",
+      "contactId": "gTp9witjx9wyaRbuDNXp",
+      "contentType": "text/plain",
+      "conversationId": "33sPxKNYLlMHjScEDVDK",
+      "dateAdded": "2026-07-06T19:05:55.169Z",
+      "dateUpdated": "2026-07-06T19:05:56.819Z",
+      "userId": "2DmTJ7IvCjSM8ql83oiZ",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+16783324573",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "MIWXh5By4ehPBxnYFMAz",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Will, a copy of the pitch deck has been sent to your email.",
+      "contactId": "gTp9witjx9wyaRbuDNXp",
+      "contentType": "text/plain",
+      "conversationId": "33sPxKNYLlMHjScEDVDK",
+      "dateAdded": "2026-07-06T18:55:06.504Z",
+      "dateUpdated": "2026-07-06T18:55:09.810Z",
+      "source": "workflow",
+      "altId": "SM5a674baefe1efd33ab2c0a6f703d5791",
+      "from": "+16789712411",
+      "to": "+16783324573",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "ofOsV2lFsAT7OKVyhtm5",
+      "direction": "inbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Not going to lie this does seem a bit like a scam. Why did you change numbers?",
+      "contactId": "gTp9witjx9wyaRbuDNXp",
+      "contentType": "text/plain",
+      "conversationId": "33sPxKNYLlMHjScEDVDK",
+      "dateAdded": "2026-06-19T21:55:55.867Z",
+      "dateUpdated": "2026-06-19T21:55:55.867Z",
+      "altId": "SMf490c2737a5958219e2edf0855a84ab1",
+      "from": "+16783324573",
+      "to": "+16789712411",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "ksLQCpYZRKPcbqdYnJFd",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Will, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "gTp9witjx9wyaRbuDNXp",
+      "contentType": "text/plain",
+      "conversationId": "33sPxKNYLlMHjScEDVDK",
+      "dateAdded": "2026-06-19T21:49:28.766Z",
+      "dateUpdated": "2026-06-19T21:49:35.588Z",
+      "source": "app",
+      "altId": "SMe5f4be8c0c91184f26fdc786f79d5e0a",
+      "from": "+16789712411",
+      "to": "+16783324573",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

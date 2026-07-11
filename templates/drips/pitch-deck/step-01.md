@@ -1,25 +1,13 @@
-<!-- placeholder: replace with GHL workflow copy after ghl_workflow_export.py run -->
+<!-- Exact copy from GHL workflow "Deal Funnel Pitch Deck" (v11), step 0. Recovered 2026-07-07 via ghl_workflow_export.py.
+     GHL fired this on the pitch-deck funnel opt-in: 1 delivery email + SMS + adds `pitchdeck` tag + internal notification to Brian.
+     GHL step 1 was an SMS (dropped in local v1, email-only): "{{first_name}}, a copy of the pitch deck has been sent to your email."
+     GHL step 2 added tag `pitchdeck`; step 3 sent Brian an internal notification (not reproduced — no internal-notify channel in v1; tag applied at enroll).
+     The prior local 3-step cadence (steps 02/03) was invented, not from GHL — removed to match GHL exactly (recoverable from git history). -->
 ---
 delay_days: 0
-subject: New multifamily deal — quick 2-min look?
+subject: Here Is Your Pitch Deck
 ---
-Hi {{first_name}},
+Hello {{first_name}}, Here's your copy of the pitch deck you requested. We will reach out and discuss shortly
 
-I've got a new deal I'm sharing with a small group before it goes wide.
-
-641 Powder Springs St in Smyrna, GA — 14-unit apartment building.
-The play: buy below market, renovate, raise rents, improve operations.
-
-LP investors get:
-- 6% preferred return (you get paid first)
-- 70/30 split after that (70% LP, 30% GP)
-- ~18.21% annual ROI target
-- 2.09x equity multiple over a 4–6 year hold
-- $25K minimum investment
-
-The full deck and a 2-minute Loom walkthrough are here:
-https://olivetreeinv.io/641_powder
-
-Let me know if you have questions — and feel free to pass this along to anyone you think would be interested.
-
--Brian
+Brian Norton
+Olive Tree Investments

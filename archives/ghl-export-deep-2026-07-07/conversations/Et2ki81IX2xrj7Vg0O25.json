@@ -1,0 +1,56 @@
+{
+  "conversation": {
+    "id": "Et2ki81IX2xrj7Vg0O25",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364143476,
+    "dateUpdated": 1783364144181,
+    "lastMessageDate": 1783364144177,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Ulises, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "gdmvlJHaLspr33MGc82M",
+    "fullName": "Ulises Pinon",
+    "contactName": "Ulises Pinon",
+    "companyName": "Florentino Properties - Handyman",
+    "phone": "+14704230377",
+    "tags": [
+      "contractor",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364144177
+    ]
+  },
+  "messages": [
+    {
+      "id": "diElEnL7AJAg9fpK34Py",
+      "direction": "outbound",
+      "status": "sent",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Ulises, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "gdmvlJHaLspr33MGc82M",
+      "contentType": "text/plain",
+      "conversationId": "Et2ki81IX2xrj7Vg0O25",
+      "dateAdded": "2026-07-06T18:55:43.521Z",
+      "dateUpdated": "2026-07-06T18:55:45.783Z",
+      "source": "workflow",
+      "altId": "SM0a056dfa5cf26c020c0f781b2130abb9",
+      "from": "+16789712411",
+      "to": "+14704230377",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

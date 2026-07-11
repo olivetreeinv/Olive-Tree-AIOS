@@ -1,0 +1,105 @@
+{
+  "conversation": {
+    "id": "JzQa1YMjL9Eai7EJYrPc",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249902056,
+    "dateUpdated": 1783364710249,
+    "lastMessageDate": 1783364710245,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Nina, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781961335812,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "SaVZHlUSxFg9Lu7yk27g",
+    "fullName": "Nina Peveler",
+    "contactName": "Nina Peveler",
+    "companyName": null,
+    "email": "p.k.peveler@yahoo.com",
+    "phone": "+15026096506",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364710245
+    ]
+  },
+  "messages": [
+    {
+      "id": "ZO4BCnZ2gysHDxgjsGLQ",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Nina, a copy of the pitch deck has been sent to your email.",
+      "contactId": "SaVZHlUSxFg9Lu7yk27g",
+      "contentType": "text/plain",
+      "conversationId": "JzQa1YMjL9Eai7EJYrPc",
+      "dateAdded": "2026-07-06T19:05:09.495Z",
+      "dateUpdated": "2026-07-06T19:05:09.495Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+15026096506",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "cvDD3BUzdlQhBpDqILQu",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Nina, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "SaVZHlUSxFg9Lu7yk27g",
+      "contentType": "text/plain",
+      "conversationId": "JzQa1YMjL9Eai7EJYrPc",
+      "dateAdded": "2026-06-20T13:15:34.827Z",
+      "dateUpdated": "2026-06-20T13:15:36.591Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+15026096506",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "hFDXPHMPjm0hwpnSUQDb",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "SaVZHlUSxFg9Lu7yk27g",
+      "conversationId": "JzQa1YMjL9Eai7EJYrPc",
+      "dateAdded": "2025-06-18T12:31:21.822Z",
+      "dateUpdated": "2025-06-18T12:34:40.918Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "BySb19mUumU8fF085Cch"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

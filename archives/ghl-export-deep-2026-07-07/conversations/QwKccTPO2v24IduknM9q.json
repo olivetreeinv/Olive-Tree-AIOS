@@ -1,0 +1,56 @@
+{
+  "conversation": {
+    "id": "QwKccTPO2v24IduknM9q",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364191016,
+    "dateUpdated": 1783364191750,
+    "lastMessageDate": 1783364191742,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Tom, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "XHvAoSC0HbOWBN1Ujooo",
+    "fullName": "Tom Greene",
+    "contactName": "Tom Greene",
+    "companyName": "Company Lawyer",
+    "phone": "+17062070401",
+    "tags": [
+      "lawyer",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364191742
+    ]
+  },
+  "messages": [
+    {
+      "id": "k78LUGbLIxIf8ZcSo9Tm",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Tom, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "XHvAoSC0HbOWBN1Ujooo",
+      "contentType": "text/plain",
+      "conversationId": "QwKccTPO2v24IduknM9q",
+      "dateAdded": "2026-07-06T18:56:31.062Z",
+      "dateUpdated": "2026-07-06T18:56:35.201Z",
+      "source": "workflow",
+      "altId": "SM387e52f5e7422b033a7412bf18de4a64",
+      "from": "+16789712411",
+      "to": "+17062070401",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

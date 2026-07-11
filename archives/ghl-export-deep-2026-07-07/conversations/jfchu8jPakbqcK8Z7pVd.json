@@ -1,0 +1,56 @@
+{
+  "conversation": {
+    "id": "jfchu8jPakbqcK8Z7pVd",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364283283,
+    "dateUpdated": 1783364283982,
+    "lastMessageDate": 1783364283978,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "John, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "wHedkgiKbjZxHbcoGnnH",
+    "fullName": "John Baker",
+    "contactName": "John Baker",
+    "companyName": "Metro Brokers",
+    "phone": "+14046804888",
+    "tags": [
+      "agent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364283978
+    ]
+  },
+  "messages": [
+    {
+      "id": "Cj9p234ypYB6RP64Ruii",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "John, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "wHedkgiKbjZxHbcoGnnH",
+      "contentType": "text/plain",
+      "conversationId": "jfchu8jPakbqcK8Z7pVd",
+      "dateAdded": "2026-07-06T18:58:03.325Z",
+      "dateUpdated": "2026-07-06T18:58:06.340Z",
+      "source": "workflow",
+      "altId": "SM78e69722d2bab3b2a225b9d20e472e59",
+      "from": "+16789712411",
+      "to": "+14046804888",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

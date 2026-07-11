@@ -1,0 +1,56 @@
+{
+  "conversation": {
+    "id": "itpCuj9A2l2hRKIkgKWm",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364315578,
+    "dateUpdated": 1783364316204,
+    "lastMessageDate": 1783364316197,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Jessie, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "kp8tbNoBULHCknxuvy3Q",
+    "fullName": "Jessie Ereddia",
+    "contactName": "Jessie Ereddia",
+    "companyName": null,
+    "phone": "+14043101686",
+    "tags": [
+      "retail buyer",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364316197
+    ]
+  },
+  "messages": [
+    {
+      "id": "ifONhwIYI8FjxJR1Yrt2",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Jessie, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "kp8tbNoBULHCknxuvy3Q",
+      "contentType": "text/plain",
+      "conversationId": "itpCuj9A2l2hRKIkgKWm",
+      "dateAdded": "2026-07-06T18:58:35.621Z",
+      "dateUpdated": "2026-07-06T18:58:39.714Z",
+      "source": "workflow",
+      "altId": "SM57d2208c7b0d2f9b1b965945c7bfdd8c",
+      "from": "+16789712411",
+      "to": "+14043101686",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

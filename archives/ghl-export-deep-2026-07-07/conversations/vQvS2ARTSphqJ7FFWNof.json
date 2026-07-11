@@ -1,0 +1,56 @@
+{
+  "conversation": {
+    "id": "vQvS2ARTSphqJ7FFWNof",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364365642,
+    "dateUpdated": 1783364366389,
+    "lastMessageDate": 1783364366385,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Jennifer, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "ySqWTdOLvoLsc02KTdQf",
+    "fullName": "Jennifer Pruitt",
+    "contactName": "Jennifer Pruitt",
+    "companyName": "Real Estate Agent",
+    "phone": "+14046945298",
+    "tags": [
+      "agent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364366385
+    ]
+  },
+  "messages": [
+    {
+      "id": "bNzlBfkz1kVE9cFFltY9",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Jennifer, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "ySqWTdOLvoLsc02KTdQf",
+      "contentType": "text/plain",
+      "conversationId": "vQvS2ARTSphqJ7FFWNof",
+      "dateAdded": "2026-07-06T18:59:25.690Z",
+      "dateUpdated": "2026-07-06T18:59:29.979Z",
+      "source": "workflow",
+      "altId": "SM7239ad7db174b5b22488e2a4ee8da7c1",
+      "from": "+16789712411",
+      "to": "+14046945298",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "conversation": {
+    "id": "bOmEHBVkyl5FhTk13tob",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249886666,
+    "dateUpdated": 1750249886666,
+    "lastMessageDate": 1750249886667,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "BNlYMljRvQ0V9LCEbhTd",
+    "fullName": "Janelle Robinson",
+    "contactName": "Janelle Robinson",
+    "companyName": null,
+    "email": "janellerobinson46@yahoo.com",
+    "tags": [
+      "friend",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "phone": null,
+    "attributed": null,
+    "profilePhoto": null,
+    "sort": [
+      1750249886667
+    ]
+  },
+  "messages": [
+    {
+      "id": "W8lSb3sPeUj5sDzTsGPI",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "BNlYMljRvQ0V9LCEbhTd",
+      "conversationId": "bOmEHBVkyl5FhTk13tob",
+      "dateAdded": "2025-06-18T12:31:01.070Z",
+      "dateUpdated": "2025-06-18T12:34:38.599Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "hnFisbgpaEwF7F3wBhhK"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

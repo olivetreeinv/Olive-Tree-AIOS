@@ -1,0 +1,105 @@
+{
+  "conversation": {
+    "id": "oLShJATK23kv8Uc7GLXw",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249897366,
+    "dateUpdated": 1783364852088,
+    "lastMessageDate": 1783364852078,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Dan, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781961414960,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "V7zCvNpPgPAfEmBZfX5l",
+    "fullName": "Dan Palmer",
+    "contactName": "Dan Palmer",
+    "companyName": null,
+    "email": "danp@atldcmc.org",
+    "phone": "+14043535123",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364852078
+    ]
+  },
+  "messages": [
+    {
+      "id": "hCVZqPaLA6IIh1KjYXE4",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Dan, a copy of the pitch deck has been sent to your email.",
+      "contactId": "V7zCvNpPgPAfEmBZfX5l",
+      "contentType": "text/plain",
+      "conversationId": "oLShJATK23kv8Uc7GLXw",
+      "dateAdded": "2026-07-06T19:07:31.365Z",
+      "dateUpdated": "2026-07-06T19:07:31.365Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+14043535123",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "90SuKsYvGqC24zwHSl3r",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Dan, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "V7zCvNpPgPAfEmBZfX5l",
+      "contentType": "text/plain",
+      "conversationId": "oLShJATK23kv8Uc7GLXw",
+      "dateAdded": "2026-06-20T13:16:54.249Z",
+      "dateUpdated": "2026-06-20T13:16:55.593Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+14043535123",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "4VsK7KzEJOmBQofc12xv",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "V7zCvNpPgPAfEmBZfX5l",
+      "conversationId": "oLShJATK23kv8Uc7GLXw",
+      "dateAdded": "2025-06-18T12:31:21.717Z",
+      "dateUpdated": "2025-06-18T12:33:33.943Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "7UwowPq8vYMMwtpc9D3u"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

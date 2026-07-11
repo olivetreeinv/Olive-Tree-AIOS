@@ -1,0 +1,189 @@
+{
+  "conversation": {
+    "id": "nZqs7cF51wJnIasEdZx8",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249979160,
+    "dateUpdated": 1783365039824,
+    "lastMessageDate": 1783365039816,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Lakenya, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781961497285,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "FJRzAU95CnQYkOcP5zA9",
+    "fullName": "Lakenya Hunt",
+    "contactName": "Lakenya Hunt",
+    "companyName": null,
+    "email": "Lakenya.hunt@aonhewitt.com",
+    "phone": "+17703317102",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783365039816
+    ]
+  },
+  "messages": [
+    {
+      "id": "QbkZN6fFf2Gn88oHOwru",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Lakenya, a copy of the pitch deck has been sent to your email.",
+      "contactId": "FJRzAU95CnQYkOcP5zA9",
+      "contentType": "text/plain",
+      "conversationId": "nZqs7cF51wJnIasEdZx8",
+      "dateAdded": "2026-07-06T19:10:39.199Z",
+      "dateUpdated": "2026-07-06T19:10:39.199Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+17703317102",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "FgpoHJSEsby1xJhe3Egj",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Lakenya, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "FJRzAU95CnQYkOcP5zA9",
+      "contentType": "text/plain",
+      "conversationId": "nZqs7cF51wJnIasEdZx8",
+      "dateAdded": "2026-06-20T13:18:16.550Z",
+      "dateUpdated": "2026-06-20T13:18:18.035Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+17703317102",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "UYkJgrX8oaZCke9DRm9e",
+      "direction": "outbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by user",
+      "contactId": "FJRzAU95CnQYkOcP5zA9",
+      "conversationId": "nZqs7cF51wJnIasEdZx8",
+      "dateAdded": "2025-09-23T14:15:53.180Z",
+      "dateUpdated": "2025-09-23T14:15:53.180Z",
+      "source": "app",
+      "from": "Brian Norton",
+      "to": "+17703317102",
+      "activity": {
+        "data": {
+          "channel": [
+            "Email"
+          ]
+        },
+        "title": "DND enabled by user",
+        "type": "user_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "2DsyKsKlS0PtD0i5ElFl",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "FJRzAU95CnQYkOcP5zA9",
+      "conversationId": "nZqs7cF51wJnIasEdZx8",
+      "dateAdded": "2025-09-23T14:13:16.787Z",
+      "dateUpdated": "2025-09-23T14:15:49.129Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "bN2H25XRczcNbPfgh8NF"
+          ],
+          "direction": "outbound",
+          "subject": "While Others Wait, Smart Money Moves"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "maWMzZc9CE2puqz8iBQR",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "FJRzAU95CnQYkOcP5zA9",
+      "conversationId": "nZqs7cF51wJnIasEdZx8",
+      "dateAdded": "2025-08-19T14:07:56.638Z",
+      "dateUpdated": "2025-08-19T14:09:26.809Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "r0x6vos8yVY92i45Gk0Q"
+          ],
+          "direction": "outbound",
+          "subject": "Why 6.6% rates aren't stopping smart buyers"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "Azmh69ua9ZNFoUIgUavx",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "FJRzAU95CnQYkOcP5zA9",
+      "conversationId": "nZqs7cF51wJnIasEdZx8",
+      "dateAdded": "2025-07-22T14:12:08.329Z",
+      "dateUpdated": "2025-07-22T14:12:46.699Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "I8mPfmRLDXTpMcDhnZAH"
+          ],
+          "direction": "outbound",
+          "subject": "Real Estate Tax & Rate Shifts You Can\u2019t Ignore"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "7HQsT6IkckNR1QJ0FFjW",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "FJRzAU95CnQYkOcP5zA9",
+      "conversationId": "nZqs7cF51wJnIasEdZx8",
+      "dateAdded": "2025-06-18T12:31:19.303Z",
+      "dateUpdated": "2025-06-18T12:33:16.480Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "EcX8zwxzgwD3o1tyJOuS"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

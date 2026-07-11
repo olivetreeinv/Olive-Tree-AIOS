@@ -1,0 +1,56 @@
+{
+  "conversation": {
+    "id": "a2ApfyaTI5Wu010ZWzrW",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364351018,
+    "dateUpdated": 1783364351798,
+    "lastMessageDate": 1783364351789,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Jeremy, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "7zCD5of6ZdCRckr6VNPn",
+    "fullName": "Jeremy Watruba",
+    "contactName": "Jeremy Watruba",
+    "companyName": "Lochlin Capital",
+    "phone": "+14783207656",
+    "tags": [
+      "hard money",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364351789
+    ]
+  },
+  "messages": [
+    {
+      "id": "Dlj669cG3w80tODLzC19",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Jeremy, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "7zCD5of6ZdCRckr6VNPn",
+      "contentType": "text/plain",
+      "conversationId": "a2ApfyaTI5Wu010ZWzrW",
+      "dateAdded": "2026-07-06T18:59:11.075Z",
+      "dateUpdated": "2026-07-06T18:59:14.007Z",
+      "source": "workflow",
+      "altId": "SM44855f96167a6c9d1d796f9d1831d27f",
+      "from": "+16789712411",
+      "to": "+14783207656",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

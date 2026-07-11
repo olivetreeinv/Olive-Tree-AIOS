@@ -42,14 +42,12 @@ WORKFLOWS_JSON = EXPORT_DIR / "workflows.json"
 GHL_APP = "https://app.gohighlevel.com"
 LOCATION_ID = "SLq7B2pldVzfQLKjGpvw"
 
-# ponytail: endpoint guesses — internal backend is undocumented; adjust at runtime
+# CONFIRMED 2026-07-07: this is the real workflow-detail endpoint. Returns the
+# full definition incl. workflowData.templates (every email/SMS/wait/tag step).
+# It only works with the SPA's COMPLETE header set (token-id alone → 401) — see
+# _headers() below, which now forwards every captured header.
 ENDPOINT_TEMPLATES = [
-    "https://backend.leadconnectorhq.com/workflow/{wid}",
-    "https://backend.leadconnectorhq.com/workflows/{wid}",
-    "https://backend.leadconnectorhq.com/workflow/{wid}?locationId={loc}",
-    "https://backend.leadconnectorhq.com/workflows/{wid}/actions?locationId={loc}",
-    "https://services.leadconnectorhq.com/workflows/{wid}",
-    "https://services.leadconnectorhq.com/workflows/{wid}?locationId={loc}",
+    "https://backend.leadconnectorhq.com/workflow/{loc}/{wid}",
 ]
 
 
@@ -93,6 +91,9 @@ def _get_token_via_playwright() -> tuple[str, dict]:
         )
 
     captured: dict = {}
+    # ponytail: dump every sniffed backend URL so real workflow endpoints can be
+    # read off the log instead of guessed — see sniffed_urls.txt after a run
+    sniffed: list[str] = []
     with sync_playwright() as pw:
         browser = pw.chromium.launch(headless=False)  # visible: Brian may need to finish login/2FA
         ctx = browser.new_context()
@@ -100,6 +101,8 @@ def _get_token_via_playwright() -> tuple[str, dict]:
         page = ctx.new_page()
 
         def on_request(req):
+            if "leadconnectorhq.com" in req.url:
+                sniffed.append(f"{req.method} {req.url}")
             if (("leadconnectorhq.com" in req.url)
                     and not captured and "token-id" in req.headers):
                 captured.update(req.headers)
@@ -122,7 +125,30 @@ def _get_token_via_playwright() -> tuple[str, dict]:
                 page.wait_for_timeout(500)
             if captured:
                 break
+        # After token capture, sit on the workflows list page a bit longer so the
+        # real list/detail endpoint(s) show up in the sniffed log even if they
+        # don't carry token-id on the first hit.
+        try:
+            page.goto(f"{GHL_APP}/v2/location/{LOCATION_ID}/automation/workflows",
+                       wait_until="domcontentloaded", timeout=30000)
+            page.wait_for_timeout(8000)
+        except PWTimeout:
+            pass
+        # ponytail: open one workflow's editor directly — the list page never
+        # fires the detail/step-content fetch, only the editor route does.
+        first_wid = json.loads(WORKFLOWS_JSON.read_text())["workflows"][0]["id"]
+        try:
+            page.goto(f"{GHL_APP}/v2/location/{LOCATION_ID}/automation/workflows/{first_wid}",
+                       wait_until="domcontentloaded", timeout=30000)
+            page.wait_for_timeout(10000)
+        except PWTimeout:
+            pass
         browser.close()
+
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    sniff_file = OUT_DIR / "sniffed_urls.txt"
+    sniff_file.write_text("\n".join(sniffed))
+    print(f"[auth] wrote {len(sniffed)} sniffed backend requests -> {sniff_file}")
 
     if not captured or "token-id" not in captured:
         raise RuntimeError(
@@ -137,17 +163,17 @@ def _get_token_via_playwright() -> tuple[str, dict]:
 
 
 def _headers(token_id: str, extra: dict) -> dict:
-    base = {
-        "token-id": token_id,
-        "channel": "APP",
-        "source": "WEB_USER",
-        "version": "2021-07-28",
-        "content-type": "application/json",
-    }
-    for k in ("x-cp-build-version", "x-middleware", "x-platform-details", "x-request-source"):
-        if k in extra:
-            base[k] = extra[k]
-    return base
+    # The detail endpoint 401s on token-id alone — it needs the SPA's full header
+    # set (authorization, channel, source, version, route-path, baggage, …).
+    # Forward everything we captured, minus hop-by-hop headers requests sets itself.
+    drop = {"content-length", "host", "accept-encoding", "connection"}
+    hdrs = {k: v for k, v in extra.items() if k.lower() not in drop}
+    hdrs["token-id"] = token_id
+    if "channel" not in hdrs:
+        hdrs["channel"] = "APP"
+    if "source" not in hdrs:
+        hdrs["source"] = "WEB_USER"
+    return hdrs
 
 
 # ─────────────────────────────────────────────

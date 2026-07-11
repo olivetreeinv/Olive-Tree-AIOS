@@ -1,0 +1,122 @@
+{
+  "conversation": {
+    "id": "ntFVHvbOlafTv2lmf48T",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906022839,
+    "dateUpdated": 1783365130669,
+    "lastMessageDate": 1783365130666,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Hi Preston, These days, I'm in the apartment syndication game. I buy apartments with investors, and they get a return. --I use this number to send out the deals. If you know someone who might be interested. Let them know! --Take a look and let me know what you think about the presentation... I worked hard on that bad boy :D",
+    "lastOutboundMessageAction": "manual",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1783365130666,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "DSewhVhNf2CvHq6aCP61",
+    "fullName": "Preston Carter",
+    "contactName": "Preston Carter",
+    "companyName": null,
+    "phone": "+16787398628",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "attributed": null,
+    "sort": [
+      1783365130666
+    ]
+  },
+  "messages": [
+    {
+      "id": "1Fdut9fKa70P7eN9s4jL",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hi Preston, These days, I'm in the apartment syndication game. I buy apartments with investors, and they get a return. --I use this number to send out the deals. If you know someone who might be interested. Let them know! --Take a look and let me know what you think about the presentation... I worked hard on that bad boy :D",
+      "contactId": "DSewhVhNf2CvHq6aCP61",
+      "contentType": "text/plain",
+      "conversationId": "ntFVHvbOlafTv2lmf48T",
+      "dateAdded": "2026-07-06T19:12:10.092Z",
+      "dateUpdated": "2026-07-06T19:12:11.089Z",
+      "userId": "2DmTJ7IvCjSM8ql83oiZ",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+16787398628",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "X35wYTXBVL8aIcb4TWym",
+      "direction": "inbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "?",
+      "contactId": "DSewhVhNf2CvHq6aCP61",
+      "contentType": "text/plain",
+      "conversationId": "ntFVHvbOlafTv2lmf48T",
+      "dateAdded": "2026-07-06T19:10:56.921Z",
+      "dateUpdated": "2026-07-06T19:10:56.921Z",
+      "altId": "SM7bd8979f14087de59b2d1b0350def15c",
+      "from": "+16787398628",
+      "to": "+16789712411",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "oIyrbwniAXcDz2qPML3P",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Preston, a copy of the pitch deck has been sent to your email.",
+      "contactId": "DSewhVhNf2CvHq6aCP61",
+      "contentType": "text/plain",
+      "conversationId": "ntFVHvbOlafTv2lmf48T",
+      "dateAdded": "2026-07-06T19:03:02.079Z",
+      "dateUpdated": "2026-07-06T19:03:05.850Z",
+      "source": "workflow",
+      "altId": "SM940d6819e379a66ea4f18e19236fb75f",
+      "from": "+16789712411",
+      "to": "+16787398628",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "NWqJk5rF64yDkY9ihEk3",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Preston, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "DSewhVhNf2CvHq6aCP61",
+      "contentType": "text/plain",
+      "conversationId": "ntFVHvbOlafTv2lmf48T",
+      "dateAdded": "2026-06-19T21:53:43.063Z",
+      "dateUpdated": "2026-06-19T21:53:44.275Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+16787398628",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

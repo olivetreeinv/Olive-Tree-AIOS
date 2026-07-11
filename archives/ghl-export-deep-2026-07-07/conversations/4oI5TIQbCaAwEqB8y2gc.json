@@ -1,0 +1,122 @@
+{
+  "conversation": {
+    "id": "4oI5TIQbCaAwEqB8y2gc",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906032858,
+    "dateUpdated": 1783365099266,
+    "lastMessageDate": 1783365099262,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Hi Gean, These days, I'm in the apartment syndication game. I buy apartments with investors, and they get a return. --I use this number to send out the deals. If you know someone who might be interested. Let them know! --Take a look and let me know what you think about the presentation... I worked hard on that bad boy :D",
+    "lastOutboundMessageAction": "manual",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1783365099262,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "nRc6taY30GXkvSxmbUBZ",
+    "fullName": "Gean Lowe",
+    "contactName": "Gean Lowe",
+    "companyName": null,
+    "phone": "+14046255302",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "attributed": null,
+    "sort": [
+      1783365099262
+    ]
+  },
+  "messages": [
+    {
+      "id": "Xr4KFvan9mE2dgcr6E0M",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hi Gean, These days, I'm in the apartment syndication game. I buy apartments with investors, and they get a return. --I use this number to send out the deals. If you know someone who might be interested. Let them know! --Take a look and let me know what you think about the presentation... I worked hard on that bad boy :D",
+      "contactId": "nRc6taY30GXkvSxmbUBZ",
+      "contentType": "text/plain",
+      "conversationId": "4oI5TIQbCaAwEqB8y2gc",
+      "dateAdded": "2026-07-06T19:11:38.594Z",
+      "dateUpdated": "2026-07-06T19:11:39.693Z",
+      "userId": "2DmTJ7IvCjSM8ql83oiZ",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+14046255302",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "TMeKg5SaWYraO1hB8R8H",
+      "direction": "inbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "No idea what you're talking about",
+      "contactId": "nRc6taY30GXkvSxmbUBZ",
+      "contentType": "text/plain",
+      "conversationId": "4oI5TIQbCaAwEqB8y2gc",
+      "dateAdded": "2026-07-06T19:08:37.472Z",
+      "dateUpdated": "2026-07-06T19:08:37.472Z",
+      "altId": "SMb156cad3ebea4adaa11b4ff881a20594",
+      "from": "+14046255302",
+      "to": "+16789712411",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "4BfC7GcszdVq7bUgYQ7i",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Gean, a copy of the pitch deck has been sent to your email.",
+      "contactId": "nRc6taY30GXkvSxmbUBZ",
+      "contentType": "text/plain",
+      "conversationId": "4oI5TIQbCaAwEqB8y2gc",
+      "dateAdded": "2026-07-06T19:03:18.654Z",
+      "dateUpdated": "2026-07-06T19:03:24.215Z",
+      "source": "workflow",
+      "altId": "SMa41a4a2a57172505d0f6ee4fc3c4de16",
+      "from": "+16789712411",
+      "to": "+14046255302",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "SiZ5w4IEHAQOCIVlVjUT",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Gean, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "nRc6taY30GXkvSxmbUBZ",
+      "contentType": "text/plain",
+      "conversationId": "4oI5TIQbCaAwEqB8y2gc",
+      "dateAdded": "2026-06-19T21:53:53.114Z",
+      "dateUpdated": "2026-06-19T21:53:54.437Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+14046255302",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

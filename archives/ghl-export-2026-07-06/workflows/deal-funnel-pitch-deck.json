@@ -1,0 +1,123 @@
+{
+  "_id": "0f93b671-d649-4836-9cd4-39ce0985c4c1",
+  "locationId": "SLq7B2pldVzfQLKjGpvw",
+  "name": "Deal Funnel Pitch Deck",
+  "status": "published",
+  "version": 11,
+  "allowMultiple": true,
+  "timezone": "account",
+  "removeContactFromLastStep": true,
+  "filePath": "location/SLq7B2pldVzfQLKjGpvw/workflows/0f93b671-d649-4836-9cd4-39ce0985c4c1/11",
+  "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FSLq7B2pldVzfQLKjGpvw%2Fworkflows%2F0f93b671-d649-4836-9cd4-39ce0985c4c1%2F11?alt=media&token=69ab2db4-4825-4376-a803-09f9c06de8f5",
+  "stopOnResponse": false,
+  "autoMarkAsRead": false,
+  "originId": "c17d153f-dc0a-4bd4-9949-8a398d12dc78",
+  "permission": 380,
+  "type": "workflow",
+  "updatedBy": "Zpt2b9qyW5vmhUet0yOc",
+  "createdAt": "2025-02-05T22:22:17.657Z",
+  "updatedAt": "2026-05-21T17:32:07.590Z",
+  "deleted": false,
+  "__v": 0,
+  "allowMultipleOpportunity": true,
+  "dataVersion": 7,
+  "eventStartDate": null,
+  "senderAddress": {
+    "from_email": "{{location.email}}",
+    "from_name": "{{location.name}}"
+  },
+  "triggersFilePath": "location/SLq7B2pldVzfQLKjGpvw/workflow-triggers/0f93b671-d649-4836-9cd4-39ce0985c4c1/2",
+  "window": null,
+  "workflowNote": {
+    "content": "",
+    "createdBy": "snapshot",
+    "createdByName": "snapshot",
+    "createdAt": "2025-02-05T22:22:18.825Z",
+    "updatedBy": "snapshot",
+    "updatedByName": "snapshot",
+    "updatedAt": "2025-02-05T22:22:18.825Z"
+  },
+  "creationSource": "builder",
+  "isTriggerBucketMigrated": false,
+  "id": "0f93b671-d649-4836-9cd4-39ce0985c4c1",
+  "workflowData": {
+    "templates": [
+      {
+        "id": "58033cc4-78bd-444b-b05a-fa5b9be36a2f",
+        "order": 0,
+        "attributes": {
+          "html": "<p style=\"margin:0px; margin: 0px;\">Hello {{contact.first_name}}, Here's your copy of the pitch deck you requested. We will reach out and discuss shortly<br><br>Brian Norton</p><p style=\"margin:0px; margin: 0px;\">Olive Tree Investments</p>",
+          "subject": "Here Is Your Pitch Deck",
+          "attachments": [
+            {
+              "url": "https://storage.googleapis.com/automation-workflows-production/location/SLq7B2pldVzfQLKjGpvw/workflow/0f93b671-d649-4836-9cd4-39ce0985c4c1/b123fefe-d827-4fe8-a5d0-e4d22b18702b.pdf?alt=media&token=7c2b9f14-2b72-4efe-abf1-7d71ac93858d",
+              "name": "641 Powder Springs St Pitch Deck.pdf",
+              "size": 9368274
+            }
+          ],
+          "fieldDefaults": {},
+          "htmlDefaults": {},
+          "trackingOptions": {
+            "hasTrackingLinks": true,
+            "hasUtmTracking": true,
+            "hasTags": false,
+            "sourceId": "0f93b671-d649-4836-9cd4-39ce0985c4c1:58033cc4-78bd-444b-b05a-fa5b9be36a2f"
+          },
+          "conditions": [],
+          "from_name": "Brian Norton",
+          "from_email": "{{user.email}}"
+        },
+        "name": "Email",
+        "type": "email",
+        "next": "05916804-8103-4f71-9b3b-cf19a0806395"
+      },
+      {
+        "id": "05916804-8103-4f71-9b3b-cf19a0806395",
+        "order": 1,
+        "attributes": {
+          "body": "{{contact.first_name}}, a copy of the pitch deck has been sent to your email.",
+          "attachments": []
+        },
+        "name": "SMS",
+        "type": "sms",
+        "parentKey": "58033cc4-78bd-444b-b05a-fa5b9be36a2f",
+        "next": "472703c5-0862-4243-a291-b88338d5e3f0"
+      },
+      {
+        "id": "472703c5-0862-4243-a291-b88338d5e3f0",
+        "order": 2,
+        "attributes": {
+          "tags": [
+            "pitchdeck"
+          ]
+        },
+        "name": "Add Tag",
+        "type": "add_contact_tag",
+        "parentKey": "05916804-8103-4f71-9b3b-cf19a0806395",
+        "next": "82848a7d-79a4-4c0b-af3a-1e70b21c5f7f"
+      },
+      {
+        "id": "82848a7d-79a4-4c0b-af3a-1e70b21c5f7f",
+        "order": 3,
+        "attributes": {
+          "type": "sms",
+          "sms": {
+            "body": "Hey Brian, {{contact.name}}, just downloaded your pitch deck.",
+            "selectedUser": [
+              "2DmTJ7IvCjSM8ql83oiZ"
+            ],
+            "userType": "user",
+            "attachments": []
+          }
+        },
+        "name": "Internal Notification",
+        "type": "internal_notification",
+        "parentKey": "472703c5-0862-4243-a291-b88338d5e3f0"
+      }
+    ]
+  },
+  "permissionMeta": {
+    "canRead": true,
+    "canWrite": true
+  }
+}

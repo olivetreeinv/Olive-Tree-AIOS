@@ -1,0 +1,49 @@
+{
+  "conversation": {
+    "id": "B1IzaZ8epCGUEdwV68F1",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249889786,
+    "dateUpdated": 1750249889786,
+    "lastMessageDate": 1750249889786,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "e169pvQbZagGKNneBe8V",
+    "fullName": "Malik Mcneil",
+    "contactName": "Malik McNeil",
+    "companyName": "Atlanta (SFDC) Building Mamgent",
+    "email": "mmcneip@banyanstreet.com",
+    "phone": "+14704569898",
+    "tags": [],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "sort": [
+      1750249889786
+    ]
+  },
+  "messages": [
+    {
+      "id": "aizqLiP8xnWTpExnFTBK",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "e169pvQbZagGKNneBe8V",
+      "conversationId": "B1IzaZ8epCGUEdwV68F1",
+      "dateAdded": "2025-06-18T12:31:14.785Z",
+      "dateUpdated": "2025-06-18T12:33:23.638Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "WqsYazslMQWiINyzoDez"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

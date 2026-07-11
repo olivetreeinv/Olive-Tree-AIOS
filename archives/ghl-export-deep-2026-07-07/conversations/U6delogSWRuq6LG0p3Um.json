@@ -1,0 +1,86 @@
+{
+  "conversation": {
+    "id": "U6delogSWRuq6LG0p3Um",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906031057,
+    "dateUpdated": 1783364597596,
+    "lastMessageDate": 1783364597593,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Peter, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906031941,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "BjYeBLW2lfceZGd7hIkd",
+    "fullName": "Peter Wilcox",
+    "contactName": "Peter Wilcox",
+    "companyName": "Iris Global",
+    "phone": "+258823900035",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "profilePhoto": null,
+    "attributed": null,
+    "email": null,
+    "sort": [
+      1783364597593
+    ]
+  },
+  "messages": [
+    {
+      "id": "m9ZsXmOfQlKzT9uUskMq",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Peter, a copy of the pitch deck has been sent to your email.",
+      "contactId": "BjYeBLW2lfceZGd7hIkd",
+      "contentType": "text/plain",
+      "conversationId": "U6delogSWRuq6LG0p3Um",
+      "dateAdded": "2026-07-06T19:03:16.903Z",
+      "dateUpdated": "2026-07-06T19:03:16.903Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+258823900035",
+      "error": "Error 21408 - Your account is not allowed to send SMS to this country or region.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "SNdLb2qcA20GhhESFN2a",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Peter, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "BjYeBLW2lfceZGd7hIkd",
+      "contentType": "text/plain",
+      "conversationId": "U6delogSWRuq6LG0p3Um",
+      "dateAdded": "2026-06-19T21:53:51.293Z",
+      "dateUpdated": "2026-06-19T21:53:52.671Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+258823900035",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "conversation": {
+    "id": "w6LwxjbkndHT4zVhB3VM",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364368410,
+    "dateUpdated": 1783364369019,
+    "lastMessageDate": 1783364369015,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Jennifer, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "aJwpA1iMZbJUkQXI1PHb",
+    "fullName": "Jennifer Kholbacher",
+    "contactName": "Jennifer Kholbacher",
+    "companyName": null,
+    "phone": "+19186309833",
+    "tags": [
+      "cpa",
+      "family",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "attributed": null,
+    "sort": [
+      1783364369015
+    ]
+  },
+  "messages": [
+    {
+      "id": "HyJhOOXil56IZR2phxZo",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Jennifer, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "aJwpA1iMZbJUkQXI1PHb",
+      "contentType": "text/plain",
+      "conversationId": "w6LwxjbkndHT4zVhB3VM",
+      "dateAdded": "2026-07-06T18:59:28.463Z",
+      "dateUpdated": "2026-07-06T18:59:32.566Z",
+      "source": "workflow",
+      "altId": "SMb9804ea473916d154d03724534507fd1",
+      "from": "+16789712411",
+      "to": "+19186309833",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

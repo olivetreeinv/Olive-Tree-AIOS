@@ -1,0 +1,56 @@
+{
+  "conversation": {
+    "id": "VKOmdsN4HkSK1Kgbz4Jv",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364216209,
+    "dateUpdated": 1783364216832,
+    "lastMessageDate": 1783364216827,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Josh, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "sZzg8AsWhWLU4lAPoJA1",
+    "fullName": "Josh",
+    "contactName": "Josh",
+    "companyName": "Mr Able Septic",
+    "phone": "+17062663567",
+    "tags": [
+      "contractor",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364216827
+    ]
+  },
+  "messages": [
+    {
+      "id": "MnMFaiiKTEjSiKlrmX4R",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Josh, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "sZzg8AsWhWLU4lAPoJA1",
+      "contentType": "text/plain",
+      "conversationId": "VKOmdsN4HkSK1Kgbz4Jv",
+      "dateAdded": "2026-07-06T18:56:56.257Z",
+      "dateUpdated": "2026-07-06T18:56:59.554Z",
+      "source": "workflow",
+      "altId": "SM02672244e7a9b5cc03b74259ffb365b7",
+      "from": "+16789712411",
+      "to": "+17062663567",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

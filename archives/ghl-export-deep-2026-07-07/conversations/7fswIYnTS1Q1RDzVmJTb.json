@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "7fswIYnTS1Q1RDzVmJTb",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906437536,
+    "dateUpdated": 1783365034729,
+    "lastMessageDate": 1783365034724,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Benny, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906438342,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "dGj9djlAWg9KaVnwnA8S",
+    "fullName": "Benny Marchuk",
+    "contactName": "Benny Marchuk",
+    "companyName": null,
+    "phone": "+17703657734",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783365034724
+    ]
+  },
+  "messages": [
+    {
+      "id": "fTKLazBxMSwD6ztThrjb",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Benny, a copy of the pitch deck has been sent to your email.",
+      "contactId": "dGj9djlAWg9KaVnwnA8S",
+      "contentType": "text/plain",
+      "conversationId": "7fswIYnTS1Q1RDzVmJTb",
+      "dateAdded": "2026-07-06T19:10:29.083Z",
+      "dateUpdated": "2026-07-06T19:10:29.083Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+17703657734",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "phKW2HmBSJZ5XA9tL1mI",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Benny, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "dGj9djlAWg9KaVnwnA8S",
+      "contentType": "text/plain",
+      "conversationId": "7fswIYnTS1Q1RDzVmJTb",
+      "dateAdded": "2026-06-19T22:00:37.782Z",
+      "dateUpdated": "2026-06-19T22:00:38.989Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+17703657734",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

@@ -1,0 +1,189 @@
+{
+  "conversation": {
+    "id": "imSitiNIr1I3TvNTKwNN",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249904274,
+    "dateUpdated": 1783364842915,
+    "lastMessageDate": 1783364842910,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Daniel, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781961407939,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "OnQU9gs6aqSw4mJWzDRn",
+    "fullName": "Daniel Server",
+    "contactName": "Daniel Server",
+    "companyName": "Cognizant - Ex Aon",
+    "email": "Daniel.server@aonhewitt.com",
+    "phone": "+14703098673",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364842910
+    ]
+  },
+  "messages": [
+    {
+      "id": "aGm3eyycFpkXBhMr8NDv",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Daniel, a copy of the pitch deck has been sent to your email.",
+      "contactId": "OnQU9gs6aqSw4mJWzDRn",
+      "contentType": "text/plain",
+      "conversationId": "imSitiNIr1I3TvNTKwNN",
+      "dateAdded": "2026-07-06T19:07:21.555Z",
+      "dateUpdated": "2026-07-06T19:07:21.555Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+14703098673",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "dxjX6qm7BmHQRp0snV3s",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Daniel, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "OnQU9gs6aqSw4mJWzDRn",
+      "contentType": "text/plain",
+      "conversationId": "imSitiNIr1I3TvNTKwNN",
+      "dateAdded": "2026-06-20T13:16:47.260Z",
+      "dateUpdated": "2026-06-20T13:16:48.787Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+14703098673",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "G77ThdG2WKwoqZ78Ugtq",
+      "direction": "outbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by user",
+      "contactId": "OnQU9gs6aqSw4mJWzDRn",
+      "conversationId": "imSitiNIr1I3TvNTKwNN",
+      "dateAdded": "2025-09-23T14:13:21.752Z",
+      "dateUpdated": "2025-09-23T14:13:21.752Z",
+      "source": "app",
+      "from": "Brian Norton",
+      "to": "+14703098673",
+      "activity": {
+        "data": {
+          "channel": [
+            "Email"
+          ]
+        },
+        "title": "DND enabled by user",
+        "type": "user_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "WIQrumWOUi7KgGSJ3IoR",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "OnQU9gs6aqSw4mJWzDRn",
+      "conversationId": "imSitiNIr1I3TvNTKwNN",
+      "dateAdded": "2025-09-23T14:13:05.486Z",
+      "dateUpdated": "2025-09-23T14:13:21.298Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "0mXtxh7OCLkzsewGrPcY"
+          ],
+          "direction": "outbound",
+          "subject": "While Others Wait, Smart Money Moves"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "vtbF5nZfhcpteewR7Jmh",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "OnQU9gs6aqSw4mJWzDRn",
+      "conversationId": "imSitiNIr1I3TvNTKwNN",
+      "dateAdded": "2025-08-19T14:09:20.348Z",
+      "dateUpdated": "2025-08-19T14:10:52.307Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "NmprFlXF5YLt4Sv8gWur"
+          ],
+          "direction": "outbound",
+          "subject": "Why 6.6% rates aren't stopping smart buyers"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "Kaegilahbqt8mAkna99v",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "OnQU9gs6aqSw4mJWzDRn",
+      "conversationId": "imSitiNIr1I3TvNTKwNN",
+      "dateAdded": "2025-07-22T14:09:58.096Z",
+      "dateUpdated": "2025-07-22T14:10:56.692Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "z2j9zplZruBUmqwnRjMy"
+          ],
+          "direction": "outbound",
+          "subject": "Real Estate Tax & Rate Shifts You Can\u2019t Ignore"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "Qub6KM8v6RJfnKzsUbYg",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "OnQU9gs6aqSw4mJWzDRn",
+      "conversationId": "imSitiNIr1I3TvNTKwNN",
+      "dateAdded": "2025-06-18T12:31:24.706Z",
+      "dateUpdated": "2025-06-18T12:33:37.897Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "bw9EyEfQhrXCEYUUvSnP"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

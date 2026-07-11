@@ -1,0 +1,148 @@
+{
+  "conversation": {
+    "id": "olo4PVCX0y88hnpWAPGO",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249913237,
+    "dateUpdated": 1783364730835,
+    "lastMessageDate": 1783364730830,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Nick, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781961348576,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "DHcvIPW6sR8hra9Ch3eV",
+    "fullName": "Nick Kieffer",
+    "contactName": "Nick Kieffer",
+    "companyName": null,
+    "email": "nick.kieffer@gmail.com",
+    "phone": "+16789404107",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364730830
+    ]
+  },
+  "messages": [
+    {
+      "id": "E4s6exu5FmDnMEVUe3QI",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Nick, a copy of the pitch deck has been sent to your email.",
+      "contactId": "DHcvIPW6sR8hra9Ch3eV",
+      "contentType": "text/plain",
+      "conversationId": "olo4PVCX0y88hnpWAPGO",
+      "dateAdded": "2026-07-06T19:05:30.190Z",
+      "dateUpdated": "2026-07-06T19:05:30.190Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+16789404107",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "8crqNXPsfDZb1OwdxqCV",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Nick, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "DHcvIPW6sR8hra9Ch3eV",
+      "contentType": "text/plain",
+      "conversationId": "olo4PVCX0y88hnpWAPGO",
+      "dateAdded": "2026-06-20T13:15:47.928Z",
+      "dateUpdated": "2026-06-20T13:15:49.315Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+16789404107",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "q2wxiYyQ0kVgokoliT1Y",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "DHcvIPW6sR8hra9Ch3eV",
+      "conversationId": "olo4PVCX0y88hnpWAPGO",
+      "dateAdded": "2025-07-22T17:38:34.359Z",
+      "dateUpdated": "2025-07-22T17:38:34.370Z",
+      "from": "+16789404107",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "Email"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "pEhflDej4Wy1WpchQNW5",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "DHcvIPW6sR8hra9Ch3eV",
+      "conversationId": "olo4PVCX0y88hnpWAPGO",
+      "dateAdded": "2025-07-22T14:11:30.631Z",
+      "dateUpdated": "2025-07-22T14:11:43.693Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "rTa9IEzSQ5bzsuZJQJbf"
+          ],
+          "direction": "outbound",
+          "subject": "Real Estate Tax & Rate Shifts You Can\u2019t Ignore"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "bcSjYcjqFdDZ7teowwQX",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "DHcvIPW6sR8hra9Ch3eV",
+      "conversationId": "olo4PVCX0y88hnpWAPGO",
+      "dateAdded": "2025-06-18T12:31:20.220Z",
+      "dateUpdated": "2025-06-18T12:31:53.770Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "9PZAgmSRHMqUqJqM7JQV"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

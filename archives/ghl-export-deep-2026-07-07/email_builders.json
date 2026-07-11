@@ -1,0 +1,20 @@
+{
+  "builders": [
+    {
+      "name": "Monthly newsletter",
+      "updatedBy": "Laura Olmos",
+      "isPlainText": false,
+      "lastUpdated": "2025-05-31T18:31:11.173Z",
+      "dateAdded": "2025-05-31T17:44:47.936Z",
+      "previewUrl": "https://firebasestorage.googleapis.com/v0/b/highlevel-backend.appspot.com/o/location%2FSLq7B2pldVzfQLKjGpvw%2Femails%2F683b400fcba7be06e0d38c5d%2Findex.html?alt=media&token=baf8620a-ea4c-4010-9123-95a72d287e4b",
+      "id": "683b400fcba7be06e0d38c5d",
+      "version": "2",
+      "templateType": "builder"
+    }
+  ],
+  "total": [
+    {
+      "total": 1
+    }
+  ]
+}

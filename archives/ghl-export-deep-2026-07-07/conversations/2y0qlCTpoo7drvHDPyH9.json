@@ -1,0 +1,86 @@
+{
+  "conversation": {
+    "id": "2y0qlCTpoo7drvHDPyH9",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906050311,
+    "dateUpdated": 1783364629423,
+    "lastMessageDate": 1783364629418,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Flavio, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906051116,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "qHBJDohxmOIetOGuaO89",
+    "fullName": "Flavio Valiente",
+    "contactName": "Flavio Valiente",
+    "companyName": null,
+    "phone": "+14049531251",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "profilePhoto": null,
+    "attributed": null,
+    "email": null,
+    "sort": [
+      1783364629418
+    ]
+  },
+  "messages": [
+    {
+      "id": "9PP82lUnRPF4Tdhi0Ujs",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Flavio, a copy of the pitch deck has been sent to your email.",
+      "contactId": "qHBJDohxmOIetOGuaO89",
+      "contentType": "text/plain",
+      "conversationId": "2y0qlCTpoo7drvHDPyH9",
+      "dateAdded": "2026-07-06T19:03:48.785Z",
+      "dateUpdated": "2026-07-06T19:03:48.785Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+14049531251",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "zeOZ00u8XfLa2QWR5NJv",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Flavio, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "qHBJDohxmOIetOGuaO89",
+      "contentType": "text/plain",
+      "conversationId": "2y0qlCTpoo7drvHDPyH9",
+      "dateAdded": "2026-06-19T21:54:10.539Z",
+      "dateUpdated": "2026-06-19T21:54:11.763Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+14049531251",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

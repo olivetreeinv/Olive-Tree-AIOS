@@ -1,0 +1,49 @@
+{
+  "conversation": {
+    "id": "GiwZRpCf0rkY22JqY7K5",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249976852,
+    "dateUpdated": 1750249976852,
+    "lastMessageDate": 1750249976852,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "n9UK98ZLm4l9Io5thrjP",
+    "fullName": "Brice Leach",
+    "contactName": "Brice Leach",
+    "companyName": null,
+    "email": "briceleach@ymail.com",
+    "phone": "+17703755501",
+    "tags": [],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "sort": [
+      1750249976852
+    ]
+  },
+  "messages": [
+    {
+      "id": "qq2KlQI7wK5ndjr4p0Q2",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "n9UK98ZLm4l9Io5thrjP",
+      "conversationId": "GiwZRpCf0rkY22JqY7K5",
+      "dateAdded": "2025-06-18T12:31:16.148Z",
+      "dateUpdated": "2025-06-18T12:35:40.591Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "v3yVYAUtUSvLzPiCmPYT"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

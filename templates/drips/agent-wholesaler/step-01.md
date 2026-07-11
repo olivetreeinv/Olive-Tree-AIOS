@@ -1,16 +1,16 @@
-<!-- placeholder: replace with GHL workflow copy after ghl_workflow_export.py run -->
+<!-- Exact copy from GHL workflow 'Tag "Agent/Wholesaler">> send text/email' (v4), step 0. Recovered 2026-07-07 via ghl_workflow_export.py.
+     NOTE: this is Brian's single-family/land buy box (3/2, 1500sqft+, $350-450k, ARV +200k), NOT the 15-50 unit multifamily buy box. Kept verbatim to match what GHL actually sent; update if the outreach target has changed.
+     GHL step 1 was an SMS (dropped in local v1, email-only) with the same body as one paragraph. -->
 ---
 delay_days: 0
-subject: What we buy — Olive Tree Investments
+subject: Do you have anything in my buy box?
 ---
-Hi {{first_name}},
+Hi {{first_name}}, this is Brian Norton. How's your day going? Do you have anything cooking? My buy box is 3/2+, 1500sqft+, with a price range of 350-450k.
 
-Thanks for connecting. Here's exactly what we're buying so you can send me the right deals:
+The ARV needs to be 200k above purchase price or more. Here are the counties I'm interested in: Cobb, Cherokee, Bartow, Fulton (Alpharetta, Roswell, John's Creek).
 
-- 15–50 unit multifamily
-- Value-add or operational upside — no fully stabilized, retail-priced assets
-- Markets: metro Atlanta, Nashville, Chattanooga, Huntsville, Birmingham, Knoxville
+Looking forward to hearing from you.
+Thank you!
 
-If you've got something that fits — on-market or off — send it to brian@olivetreeinv.io. We underwrite fast and move quickly on the right deal.
-
--Brian
+Regards,
+Brian Norton

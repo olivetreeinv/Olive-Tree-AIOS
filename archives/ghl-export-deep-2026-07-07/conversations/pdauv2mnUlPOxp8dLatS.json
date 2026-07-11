@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "pdauv2mnUlPOxp8dLatS",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781905964923,
+    "dateUpdated": 1783364486683,
+    "lastMessageDate": 1783364486679,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Ryan, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781905965882,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "jsFE8pHpON3Yjsx4lRuU",
+    "fullName": "Ryan Donahue",
+    "contactName": "Ryan Donahue",
+    "companyName": "Renovo - AVP Production Supervisor",
+    "phone": "+16308630304",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364486679
+    ]
+  },
+  "messages": [
+    {
+      "id": "eZSB4GQjXSFWRBsfjfh1",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Ryan, a copy of the pitch deck has been sent to your email.",
+      "contactId": "jsFE8pHpON3Yjsx4lRuU",
+      "contentType": "text/plain",
+      "conversationId": "pdauv2mnUlPOxp8dLatS",
+      "dateAdded": "2026-07-06T19:01:25.990Z",
+      "dateUpdated": "2026-07-06T19:01:31.016Z",
+      "source": "workflow",
+      "altId": "SMe0c3f1bd8b1e91bfe17215f99b3bb314",
+      "from": "+16789712411",
+      "to": "+16308630304",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "LVtZcC2lVOCowunSa5Lp",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Ryan, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "jsFE8pHpON3Yjsx4lRuU",
+      "contentType": "text/plain",
+      "conversationId": "pdauv2mnUlPOxp8dLatS",
+      "dateAdded": "2026-06-19T21:52:45.161Z",
+      "dateUpdated": "2026-06-19T21:52:48.985Z",
+      "source": "app",
+      "altId": "SM14b9e5de6f6ae75ccdc5923bbe73637b",
+      "from": "+16789712411",
+      "to": "+16308630304",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

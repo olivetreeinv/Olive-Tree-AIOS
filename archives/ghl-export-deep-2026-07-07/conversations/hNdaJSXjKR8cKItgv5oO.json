@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "hNdaJSXjKR8cKItgv5oO",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781905776842,
+    "dateUpdated": 1783364128888,
+    "lastMessageDate": 1783364128881,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Victoria, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781905777832,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "23IR30W7ObRyGeSe1WyV",
+    "fullName": "Victoria Dalesandro",
+    "contactName": "Victoria Dalesandro",
+    "companyName": "Old Castle",
+    "phone": "+15145181531",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364128881
+    ]
+  },
+  "messages": [
+    {
+      "id": "SyFle3uqS2xi4lGaeIfI",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Victoria, a copy of the pitch deck has been sent to your email.",
+      "contactId": "23IR30W7ObRyGeSe1WyV",
+      "contentType": "text/plain",
+      "conversationId": "hNdaJSXjKR8cKItgv5oO",
+      "dateAdded": "2026-07-06T18:55:28.283Z",
+      "dateUpdated": "2026-07-06T18:55:33.855Z",
+      "source": "workflow",
+      "altId": "SM5fcefb302ad9b6ded83a4707fc624f6c",
+      "from": "+16789712411",
+      "to": "+15145181531",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "7eaJVmEV359DugMtlUBa",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Victoria, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "23IR30W7ObRyGeSe1WyV",
+      "contentType": "text/plain",
+      "conversationId": "hNdaJSXjKR8cKItgv5oO",
+      "dateAdded": "2026-06-19T21:49:37.121Z",
+      "dateUpdated": "2026-06-19T21:49:46.887Z",
+      "source": "app",
+      "altId": "SM1315ebae5e2b3f478dfdfd60b2973071",
+      "from": "+16789712411",
+      "to": "+15145181531",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

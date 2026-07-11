@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "nfmORHyOgNu8E0K2M5WH",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906392763,
+    "dateUpdated": 1783365049220,
+    "lastMessageDate": 1783365049217,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Bro Bill, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906393622,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "RjajeqKAn0Ca0zqLfjkm",
+    "fullName": "Bro Bill Murchison",
+    "contactName": "Bro Bill Murchison",
+    "companyName": null,
+    "phone": "+14045023150",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783365049217
+    ]
+  },
+  "messages": [
+    {
+      "id": "JR7ZK37AvBgJFjg5gfGr",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Bro Bill, a copy of the pitch deck has been sent to your email.",
+      "contactId": "RjajeqKAn0Ca0zqLfjkm",
+      "contentType": "text/plain",
+      "conversationId": "nfmORHyOgNu8E0K2M5WH",
+      "dateAdded": "2026-07-06T19:09:23.859Z",
+      "dateUpdated": "2026-07-06T19:09:23.860Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+14045023150",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "0w750kN8SsFNJvioja3j",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Bro Bill, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "RjajeqKAn0Ca0zqLfjkm",
+      "contentType": "text/plain",
+      "conversationId": "nfmORHyOgNu8E0K2M5WH",
+      "dateAdded": "2026-06-19T21:59:52.996Z",
+      "dateUpdated": "2026-06-19T21:59:54.300Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+14045023150",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

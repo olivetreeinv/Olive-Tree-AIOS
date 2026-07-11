@@ -1,0 +1,122 @@
+{
+  "conversation": {
+    "id": "U1ScyH44pZT5GvAjY6He",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781905807739,
+    "dateUpdated": 1783364869549,
+    "lastMessageDate": 1783364869546,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Hey Tom, Im sorry I missed this text. Call me when you're free!",
+    "lastOutboundMessageAction": "manual",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1783364869546,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "NZ7iEOac7paM4IdlhRfD",
+    "fullName": "Tom Mccabe",
+    "contactName": "Tom McCabe",
+    "companyName": "Atlanta Capital Lending",
+    "phone": "+16789101526",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364869546
+    ]
+  },
+  "messages": [
+    {
+      "id": "dlsTflq5TGSczjNb6KIC",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Tom, Im sorry I missed this text. Call me when you're free!",
+      "contactId": "NZ7iEOac7paM4IdlhRfD",
+      "contentType": "text/plain",
+      "conversationId": "U1ScyH44pZT5GvAjY6He",
+      "dateAdded": "2026-07-06T19:07:48.853Z",
+      "dateUpdated": "2026-07-06T19:07:49.931Z",
+      "userId": "2DmTJ7IvCjSM8ql83oiZ",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+16789101526",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "PMhS4OJzlCR2MOxmCzBG",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Tom, a copy of the pitch deck has been sent to your email.",
+      "contactId": "NZ7iEOac7paM4IdlhRfD",
+      "contentType": "text/plain",
+      "conversationId": "U1ScyH44pZT5GvAjY6He",
+      "dateAdded": "2026-07-06T18:56:23.442Z",
+      "dateUpdated": "2026-07-06T18:56:26.776Z",
+      "source": "workflow",
+      "altId": "SM0b5cdc97dbc8f6e3a00b479b0ed655e1",
+      "from": "+16789712411",
+      "to": "+16789101526",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "UIktZDZgvRri03Fo6xVO",
+      "direction": "inbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "We are certainly interested.  I will call today.",
+      "contactId": "NZ7iEOac7paM4IdlhRfD",
+      "contentType": "text/plain",
+      "conversationId": "U1ScyH44pZT5GvAjY6He",
+      "dateAdded": "2026-06-20T10:11:47.547Z",
+      "dateUpdated": "2026-06-20T10:11:47.547Z",
+      "altId": "SM3537b3093302081e429628c8558bc34b",
+      "from": "+16789101526",
+      "to": "+16789712411",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "GHeokVJBFLLY8xVvcLZz",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Tom, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "NZ7iEOac7paM4IdlhRfD",
+      "contentType": "text/plain",
+      "conversationId": "U1ScyH44pZT5GvAjY6He",
+      "dateAdded": "2026-06-19T21:50:07.997Z",
+      "dateUpdated": "2026-06-19T21:50:15.103Z",
+      "source": "app",
+      "altId": "SM0fffa3f39ed73eb9bba78185aa554e37",
+      "from": "+16789712411",
+      "to": "+16789101526",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

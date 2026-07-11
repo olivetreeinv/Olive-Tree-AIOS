@@ -1,0 +1,92 @@
+{
+  "conversation": {
+    "id": "FLPCb4v3dcM6roG11kzR",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249932884,
+    "dateUpdated": 1750249932884,
+    "lastMessageDate": 1750249932884,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "LrixxCHVLQSjnG1EquM0",
+    "fullName": "Arnoldo Perez Paz",
+    "contactName": "Arnoldo Perez Paz",
+    "companyName": "Appliance Install For Multifamily",
+    "email": "abetterwaytransport@yahoo.com",
+    "phone": "+17862715960",
+    "tags": [],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "sort": [
+      1750249932884
+    ]
+  },
+  "messages": [
+    {
+      "id": "1C1QwJ0Hj33Fdkf4fWRt",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "LrixxCHVLQSjnG1EquM0",
+      "conversationId": "FLPCb4v3dcM6roG11kzR",
+      "dateAdded": "2025-07-24T12:05:46.057Z",
+      "dateUpdated": "2025-07-24T12:05:46.070Z",
+      "from": "+17862715960",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "Email"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "Ai66HM3IAnfLH6fdYez8",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "LrixxCHVLQSjnG1EquM0",
+      "conversationId": "FLPCb4v3dcM6roG11kzR",
+      "dateAdded": "2025-07-22T14:12:07.325Z",
+      "dateUpdated": "2025-07-22T14:12:23.409Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "R2hhHvwj4ZPGqj4hpe4X"
+          ],
+          "direction": "outbound",
+          "subject": "Real Estate Tax & Rate Shifts You Can\u2019t Ignore"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "PS3iqjR0GpFsdPfDRLYs",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "LrixxCHVLQSjnG1EquM0",
+      "conversationId": "FLPCb4v3dcM6roG11kzR",
+      "dateAdded": "2025-06-18T12:31:19.117Z",
+      "dateUpdated": "2025-06-18T12:32:13.308Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "xUc236HACxsrPKj0r3Ix"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

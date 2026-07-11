@@ -1,0 +1,105 @@
+{
+  "conversation": {
+    "id": "xwSeUWUTQ18WLPJEDVyD",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249883059,
+    "dateUpdated": 1783364118558,
+    "lastMessageDate": 1783364118555,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Waundricka, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781961039363,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "al7xxBskAUHDBFO5djWS",
+    "fullName": "Waundricka Jones",
+    "contactName": "Waundricka Jones",
+    "companyName": null,
+    "email": "wrkjones1991@gmail.com",
+    "phone": "+16786995564",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364118555
+    ]
+  },
+  "messages": [
+    {
+      "id": "ibkKJYl0NLX6Yp6YMmQf",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Waundricka, a copy of the pitch deck has been sent to your email.",
+      "contactId": "al7xxBskAUHDBFO5djWS",
+      "contentType": "text/plain",
+      "conversationId": "xwSeUWUTQ18WLPJEDVyD",
+      "dateAdded": "2026-07-06T18:55:17.920Z",
+      "dateUpdated": "2026-07-06T18:55:22.603Z",
+      "source": "workflow",
+      "altId": "SM01f7e5733d5bc1379370ee76f21c998b",
+      "from": "+16789712411",
+      "to": "+16786995564",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "rT5EusPLy6DsJQV9dFAA",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Waundricka, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "al7xxBskAUHDBFO5djWS",
+      "contentType": "text/plain",
+      "conversationId": "xwSeUWUTQ18WLPJEDVyD",
+      "dateAdded": "2026-06-20T13:10:38.676Z",
+      "dateUpdated": "2026-06-20T13:10:40.134Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+16786995564",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "3uqU5LR4j05IWjnlq1I6",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "al7xxBskAUHDBFO5djWS",
+      "conversationId": "xwSeUWUTQ18WLPJEDVyD",
+      "dateAdded": "2025-06-18T12:30:58.264Z",
+      "dateUpdated": "2025-06-18T12:41:00.684Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "rb0zGy98Vgan6RrYunRb"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

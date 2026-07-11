@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "mUmjsntXXVHk6BOjZMjT",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906454379,
+    "dateUpdated": 1783365057377,
+    "lastMessageDate": 1783365057374,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Becky, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906455310,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "NvAFDvBJ0UsGnsJiIham",
+    "fullName": "Becky Ashworth",
+    "contactName": "Becky Ashworth",
+    "companyName": null,
+    "phone": "+17703308091",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783365057374
+    ]
+  },
+  "messages": [
+    {
+      "id": "6O8I88aH8E7Vupi3tgxh",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Becky, a copy of the pitch deck has been sent to your email.",
+      "contactId": "NvAFDvBJ0UsGnsJiIham",
+      "contentType": "text/plain",
+      "conversationId": "mUmjsntXXVHk6BOjZMjT",
+      "dateAdded": "2026-07-06T19:10:56.804Z",
+      "dateUpdated": "2026-07-06T19:10:56.804Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+17703308091",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "tjmDkorSPtcW7wy7aW6q",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Becky, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "NvAFDvBJ0UsGnsJiIham",
+      "contentType": "text/plain",
+      "conversationId": "mUmjsntXXVHk6BOjZMjT",
+      "dateAdded": "2026-06-19T22:00:54.639Z",
+      "dateUpdated": "2026-06-19T22:00:56.319Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+17703308091",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

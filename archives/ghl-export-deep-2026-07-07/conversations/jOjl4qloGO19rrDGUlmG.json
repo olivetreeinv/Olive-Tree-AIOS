@@ -1,0 +1,56 @@
+{
+  "conversation": {
+    "id": "jOjl4qloGO19rrDGUlmG",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364429050,
+    "dateUpdated": 1783364429727,
+    "lastMessageDate": 1783364429723,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "JD, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "DWx1hyenHx2VFf2FwYo8",
+    "fullName": "Jd",
+    "contactName": "JD",
+    "companyName": "H20 Foundation",
+    "phone": "+14705430113",
+    "tags": [
+      "contractor",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364429723
+    ]
+  },
+  "messages": [
+    {
+      "id": "VKyBYNAs9MAwWulD6EgE",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "JD, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "DWx1hyenHx2VFf2FwYo8",
+      "contentType": "text/plain",
+      "conversationId": "jOjl4qloGO19rrDGUlmG",
+      "dateAdded": "2026-07-06T19:00:29.119Z",
+      "dateUpdated": "2026-07-06T19:00:34.375Z",
+      "source": "workflow",
+      "altId": "SM7a643c0372ed9bc59e1b3d7a21345cf9",
+      "from": "+16789712411",
+      "to": "+14705430113",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "conversation": {
+    "id": "d4VJGkamArNspQP9sFTr",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249903531,
+    "dateUpdated": 1783364383524,
+    "lastMessageDate": 1783364383521,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Jen, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781961121092,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "h4TDfDKlWNQTsLfkyvhL",
+    "fullName": "Jen Smith",
+    "contactName": "Jen Smith",
+    "companyName": null,
+    "email": "jennifer.smith@ingeniumrs.com",
+    "phone": "+18646340804",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "profilePhoto": null,
+    "sort": [
+      1783364383521
+    ]
+  },
+  "messages": [
+    {
+      "id": "lRMh3fK2DsWmqbvCv7MT",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "h4TDfDKlWNQTsLfkyvhL",
+      "conversationId": "d4VJGkamArNspQP9sFTr",
+      "dateAdded": "2026-07-06T18:59:46.283Z",
+      "dateUpdated": "2026-07-06T18:59:46.283Z",
+      "from": "+18646340804",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "SMS"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "BnJsfjIcLhFJEZcxjQUl",
+      "direction": "outbound",
+      "status": "undelivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Jen, a copy of the pitch deck has been sent to your email.",
+      "contactId": "h4TDfDKlWNQTsLfkyvhL",
+      "contentType": "text/plain",
+      "conversationId": "d4VJGkamArNspQP9sFTr",
+      "dateAdded": "2026-07-06T18:59:42.869Z",
+      "dateUpdated": "2026-07-06T18:59:45.977Z",
+      "source": "workflow",
+      "altId": "SMe170376f3add802d960a12e5e1b616e6",
+      "from": "+16789712411",
+      "to": "+18646340804",
+      "error": "Error 30003 - Number unreachable or out of service.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "NQGwicbYy9DTyeo6ZPab",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Jen, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "h4TDfDKlWNQTsLfkyvhL",
+      "contentType": "text/plain",
+      "conversationId": "d4VJGkamArNspQP9sFTr",
+      "dateAdded": "2026-06-20T13:12:00.173Z",
+      "dateUpdated": "2026-06-20T13:12:01.772Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+18646340804",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "mA7mJrvW3yQ2yittLhz7",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "h4TDfDKlWNQTsLfkyvhL",
+      "conversationId": "d4VJGkamArNspQP9sFTr",
+      "dateAdded": "2025-06-18T12:31:04.939Z",
+      "dateUpdated": "2025-06-18T12:33:19.709Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "QgZxwf3uXPChoKtWgm6u"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

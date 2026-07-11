@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "dbZrbyvLsZd1WBgYiVp3",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906072895,
+    "dateUpdated": 1783364673855,
+    "lastMessageDate": 1783364673850,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Emma, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906073765,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "MOdUuFk8M8EvPMFdOnj5",
+    "fullName": "Emma Meadows",
+    "contactName": "Emma Meadows",
+    "companyName": null,
+    "phone": "+17705700546",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364673850
+    ]
+  },
+  "messages": [
+    {
+      "id": "VA0GsgoxanA6dhi6aIbS",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Emma, a copy of the pitch deck has been sent to your email.",
+      "contactId": "MOdUuFk8M8EvPMFdOnj5",
+      "contentType": "text/plain",
+      "conversationId": "dbZrbyvLsZd1WBgYiVp3",
+      "dateAdded": "2026-07-06T19:04:33.145Z",
+      "dateUpdated": "2026-07-06T19:04:33.145Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+17705700546",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "3Q0eCFlArZCsOJ96XmW8",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Emma, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "MOdUuFk8M8EvPMFdOnj5",
+      "contentType": "text/plain",
+      "conversationId": "dbZrbyvLsZd1WBgYiVp3",
+      "dateAdded": "2026-06-19T21:54:33.145Z",
+      "dateUpdated": "2026-06-19T21:54:35.032Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+17705700546",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}
