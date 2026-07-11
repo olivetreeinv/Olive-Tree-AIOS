@@ -44,17 +44,17 @@ _LOGO_MARK = str(Path(__file__).resolve().parent.parent / "assets" / "brand" / "
 
 # Fallback brand palette (Olive Tree logo) — used when there's no cover photo.
 BRAND = {
-    "bg":        (28, 33, 16),
+    "bg":        (27, 30, 8),
     "title":     (255, 255, 255),
-    "body":      (215, 217, 197),
-    "kicker":    (156, 175, 74),
-    "rule":      (156, 175, 74),
-    "ghost":     (42, 50, 26),
-    "footer":    (150, 156, 132),
-    "track":     (62, 70, 44),
-    "cta_bg":    (90, 106, 30),
+    "body":      (218, 212, 197),
+    "kicker":    (183, 150, 90),
+    "rule":      (125, 139, 60),
+    "ghost":     (36, 40, 15),
+    "footer":    (139, 144, 114),
+    "track":     (46, 49, 32),
+    "cta_bg":    (80, 90, 25),
     "cta_title": (255, 255, 255),
-    "cta_body":  (231, 236, 211),
+    "cta_body":  (218, 212, 197),
     "handle":    "@olivetreeinv.io",
     "logo_path": _LOGO_MARK,
 }
