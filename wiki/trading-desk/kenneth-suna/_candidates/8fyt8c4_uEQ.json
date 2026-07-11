@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth teaches a disciplined covered call strategy executed in ~1 hour/week: scout downtrending stocks on Sunday evening, evaluate premiums Monday morning at market open (9:30am), target high-beta volatile stocks for 2-7% weekly premiums, and aim for assignment as the primary goal. He emphasizes buying dips rather than overbought highs and accepting smaller but consistent gains over maximum returns.",
+  "takeaways": [
+    "Buy stocks in downtrends (not at all-time highs or overbought levels) to increase probability of stock recovery and assignment",
+    "Target high-beta stocks that are more volatile than overall market to generate higher premiums (3-7% per contract)",
+    "Sunday evening: spend 30 minutes creating watchlist of 15-20 stocks in downtrends that could rebound",
+    "Monday at 9:30am market open: spend 10-15 minutes reviewing premiums for all positions and calculating per-contract gains",
+    "Adjust risk tolerance by comparing premium opportunities: accept 2-3% gains to avoid earnings risk, or take 7% if risk parameters allow",
+    "Sell covered calls at strike prices slightly above purchase price (e.g., buy at $25, sell $26 strike) accepting capped upside for consistent premium income",
+    "Goal is not maximum profit but consistent, achievable gains paired with high assignment probability"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Establish a fixed weekly premium target ($1,250/mo \u2248 $289/week) and systematically size positions across the 15-20 stock watchlist to hit that target consistently",
+      "evidence": "Kenneth mentions maintaining a 15-20 stock rotation and spending 10-15 minutes Monday morning calculating per-contract gains, suggesting a formulaic approach to position sizing that could be optimized to guarantee Brian's $1,250/month premium goal across the Premium Desk portfolio"
+    }
+  ],
+  "id": "8fyt8c4_uEQ",
+  "title": "I haven\u2019t worked a real job since 2011 ",
+  "duration": 274
+}

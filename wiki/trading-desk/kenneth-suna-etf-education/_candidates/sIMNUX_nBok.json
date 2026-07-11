@@ -1,0 +1,22 @@
+{
+  "trading_relevant": "partial",
+  "strategy": "covered-calls",
+  "summary": "Kenneth Suna discusses whether to sell covered calls on Amazon shares, covering strike selection strategies (at-the-money vs. out-of-the-money), capital requirements (~$22,700 for 100 shares at $227), and risks including assignment and opportunity cost if the stock gaps higher. He avoids recommending a specific approach, emphasizing personal decision-making.",
+  "takeaways": [
+    "At-the-money covered calls (227.50 strike on 226 stock) yield $830 premium but result in assignment if stock closes above strike by expiration",
+    "Out-of-the-money covered calls (235 strike) yield lower premium ($540) but capture $800 additional profit if stock rises to strike price (8-point gain)",
+    "Assignment risk peaks when selling covered calls close to purchase price (buying at 227, selling 228 call caps gains at 228)",
+    "Stock drops after purchase eliminate covered call income generation; sitting on losses with shares you don't want to sell creates forced holding",
+    "Buying additional 100-share positions enables simultaneous long holding and covered call selling to preserve upside while generating premium"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Implement tiered strike selection rule: sell covered calls 3-5% out-of-the-money on high-conviction holdings to capture both premium and upside appreciation (235 strike example), vs. at-the-money on neutral positions",
+      "evidence": "Kenneth demonstrates 235 strike yields $540 premium plus $800 stock gain ($8/share \u00d7 100), totaling $1,340 vs. $830 at-the-money; positions this as strategy for those bullish long-term who don't want to sacrifice stock appreciation"
+    }
+  ],
+  "id": "sIMNUX_nBok",
+  "title": "Should you sell covered calls on AMZN? #shorts",
+  "duration": 180
+}

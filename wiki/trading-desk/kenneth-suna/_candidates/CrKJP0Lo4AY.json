@@ -1,0 +1,25 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth Suna demonstrates a weekly covered call strategy targeting volatile stocks to generate consistent premium income. He analyzes three high-volatility stocks (BBAI, Archer Aviation, Joby Aviation) with 1,000-share positions, comparing returns on premium income alone versus total profit including stock appreciation, and shows how position sizing can optimize dollar returns for fixed capital.",
+  "takeaways": [
+    "Sell covered calls on 1,000-share positions (10 contracts per position)",
+    "Target weekly expirations for faster income cycles",
+    "BBAI example: $7 entry, $7.50 strike, $400 premium = 5.6% weekly return",
+    "Archer Aviation example: $10.78 entry, $11 strike, $340 premium = 3.1% weekly return",
+    "Joby Aviation example: $12.33 entry, $12.50 strike, $500 premium = 4.0% weekly return",
+    "Choose strike prices 5-10% above current stock price for high premium",
+    "Accept capped upside: \"I'm not here to make all the money, just some of it\"",
+    "Reposition sizing for better returns: same $12k in BBAI (1,700 shares) yields $680 premium vs $500 in Joby"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Prioritize high-volatility stocks (>300% annual moves like BBAI) in weekly covered call rotation to maximize premium per capital deployed",
+      "evidence": "BBAI's 359% one-year gain enabled 5.6% weekly returns vs 3-4% for lower-volatility names; Kenneth explicitly hunts for \"volatile stocks that also pay high premiums\" and uses this to generate $600/week income"
+    }
+  ],
+  "id": "CrKJP0Lo4AY",
+  "title": "I\u2019m going to make $600 Next Week Selling COVERED CALLS ",
+  "duration": 332
+}

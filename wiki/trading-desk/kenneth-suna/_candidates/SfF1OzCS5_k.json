@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth documents his weekly covered call selling strategy across multiple stocks (HIMS, OLO) targeting $180/week in premium. He buys shares at market prices and immediately sells covered calls at or slightly above purchase prices, collecting premium regardless of assignment while capturing modest capital gains if assigned. This week he generated $642.67 in premium across three positions.",
+  "takeaways": [
+    "Sell covered calls at strike prices at or slightly above purchase price to enable assignment gains of $0.16-$0.32 per share while keeping premium",
+    "Check premium levels and underlying risk before selling\u2014avoid writing calls when implied volatility spikes and risk increases",
+    "Premium collected is kept regardless of assignment outcome; unassigned shares can be re-sold with new covered calls the following week",
+    "At assignment on OLO: $255 total ($240 premium + $15 capital gain on 100 shares purchased at $56.85, sold at $57)",
+    "At assignment on HIMS: $434.67 total ($426.67 premium + $32 capital gain on 200 shares purchased at $47.84, sold at $48)",
+    "Weekly premium target: $180 across multiple positions; actual result $642.67 (356% of target) in single week",
+    "Diversify across multiple stocks and positions rather than single holding to reduce concentration risk"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Systematically document weekly premium collection targets ($180/week) and track cumulative performance against $1,250/month goal ($288/week average needed); adjust position sizing and strike selection if weekly performance consistently exceeds or misses target",
+      "evidence": "Kenneth shows disciplined weekly tracking with specific dollar targets ($180/week goal, achieved $642.67); Brian's Premium Desk targets $1,250/mo which requires consistent $288/week average. Video demonstrates that mixing share purchases at support levels with immediately-sold covered calls at ATM or slightly OTM strikes generates reliable premium capture."
+    }
+  ],
+  "id": "SfF1OzCS5_k",
+  "title": "PART 7 -- 7/14 - can I make $180 per week? FAIL, BUT! I still MADE $600+",
+  "duration": 213
+}

@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth Suna teaches how to identify stocks suitable for selling covered calls by focusing on highly volatile stocks, particularly technology stocks, which command higher premiums. He demonstrates specific examples showing weekly premium generation from out-of-the-money calls, emphasizing the importance of maintaining a diversified portfolio of volatile stocks rather than relying on a single name.",
+  "takeaways": [
+    "Target highly volatile stocks, primarily technology stocks, for highest premiums",
+    "Sell weekly covered calls expiring Friday, typically purchasing on Monday when premiums are highest",
+    "Go right out-of-the-money (1-2 strike price above current stock price) for safer premium collection",
+    "Calculate capital efficiency: e.g., Big Bear at $7.38/share costs $7,380 for 100 shares generating ~$50/contract weekly (~$500 for 10 contracts)",
+    "Compare to expensive stocks: Lululemon at $239/share costs $24,000 to generate $375/contract, versus buying 10 cheaper stocks for similar or better income",
+    "Maintain a diversified 'rolodex' of volatile stocks because volatility decreases over time and you need backup positions",
+    "Generate $400-600/week per account through disciplined weekly covered call selling"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Implement volatility-based stock rotation system to maintain consistent $1,250/mo premium target ($287/week) across the $50k portfolio by cycling 5-7 volatile tech positions",
+      "evidence": "Kenneth emphasizes maintaining a 'rolodex' of volatile stocks because individual stocks lose volatility over time; his $400-600/week generation rate suggests systematic rotation strategy could stabilize Brian's $1,250/mo goal across market conditions"
+    }
+  ],
+  "id": "58lcGTl97Jg",
+  "title": "The Secret to Finding Covered Calls",
+  "duration": 295
+}

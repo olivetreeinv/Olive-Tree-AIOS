@@ -1,0 +1,22 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth demonstrates a covered call strategy on HIMS stock following a 30% crash, buying 100 shares at $46 and immediately selling a $48 strike call for $2.05 premium ($200/week). He explains why he avoided selling cash-secured puts during volatility and outlines decision rules for managing positions when stock price moves below entry cost.",
+  "takeaways": [
+    "Sold covered call at $48 strike for $2.05 premium ($200/week target) on 100-share position",
+    "Bought shares at $46 after previous assignment at $58 (captured $200 premium + $200 stock gain = $400 total)",
+    "Avoid selling cash-secured puts during major negative catalysts (downgrade, partnership end) to prevent forced assignment at bad prices",
+    "If stock drops below covered call strike at expiration, wait for stock to recover above entry ($46) before selling next call, or sell lower strike ($44) accepting assignment loss risk",
+    "Strike selection rule: only sell call strikes above entry cost to avoid losses on assignment"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "covered-calls",
+      "change": "Document the precise entry/strike/premium decision matrix for Premium Desk \u2014 codify when to sit out vs. sell lower strikes when stock crashes below entry",
+      "evidence": "Kenneth explicitly walked through: bought at $46, sold $48 call for $2.05, but noted if stock stays at $42 he won't sell $48 call again and must choose between waiting for recovery or accepting loss on lower strike. This decision-making process can be templated for the $50k portfolio to automate premium capture while protecting capital."
+    }
+  ],
+  "id": "r1HJWJNyMVI",
+  "title": "Part 4: 6/23/25 $200 per WEEK on HIMS?",
+  "duration": 209
+}

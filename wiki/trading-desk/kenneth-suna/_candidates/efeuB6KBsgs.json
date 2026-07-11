@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth Suna reviews his worst week trading options, down to $1,142 from typical $2,500/week earnings. He demonstrates the covered call recovery strategy applied across multiple underwater positions (HIMS, D-Wave, Enphase, SoundHound, ELF) and emphasizes the critical risk of trading into earnings season, exemplified by an ELF position that collapsed 44% from $131 to $73.",
+  "takeaways": [
+    "Use covered call recovery strategy when stock drops significantly below purchase price to generate income while waiting for recovery",
+    "Never trade into earnings season due to extreme volatility and unpredictability of guidance impact, even if earnings beats expectations",
+    "Monitor earnings dates before entering positions\u2014Kenneth missed ELF earnings check and lost $58/share ($131 to $73)",
+    "Current portfolio totals $68,184 across multiple positions accumulated over weeks/months",
+    "Typical weekly premium target is $2,500; worst week generated only $1,142",
+    "Strike prices sold typically 20-40% below current stock price (e.g., HIMS at $42, sold $50 strike; QuantumCape at $16.62, selling $17 strike)",
+    "Covered calls become problematic during earnings season when unrealized losses can suddenly become severe"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Implement pre-trade earnings calendar check as mandatory step before all equity purchases to prevent buying into earnings events",
+      "evidence": "Kenneth explicitly states he violated his own rule on ELF ('don't trade into earnings...I didn't check') resulting in $58 loss per share; he notes this same earnings issue affected multiple positions (HIMS, SoundHound) that all reported bad earnings/guidance over prior 1-2 weeks"
+    }
+  ],
+  "id": "efeuB6KBsgs",
+  "title": "Part 22 ",
+  "duration": 290
+}

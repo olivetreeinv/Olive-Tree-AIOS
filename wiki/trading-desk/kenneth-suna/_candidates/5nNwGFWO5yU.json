@@ -1,0 +1,23 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth Suna explains the covered call repair strategy for managing underwater covered call positions. When the underlying stock declines below the original strike price, traders can sell lower-strike covered calls to generate premium while waiting for recovery, and roll those contracts weekly to higher strikes as the stock rebounds, offsetting losses and lowering cost basis.",
+  "takeaways": [
+    "Sell covered calls at strike prices lower than current stock price when stock tanks (e.g., buy at $55, stock drops to $40, sell $45 strike calls)",
+    "Avoid selling calls at very low strike prices (e.g., $41) because early assignment risk before expiration is too high",
+    "Rolling contracts requires buying back the expiring call and selling a new call at higher strike for next week",
+    "Premium earned from rolling can offset or completely erase the loss from buying back the original contract",
+    "When rolling, verify your brokerage app defaults to 'sell' not 'buy' for the new covered call leg",
+    "Check market price near market close on Friday; if stock likely closing above strike, roll to next week at higher strike price"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Implement weekly covered call rolls on underwater positions as core Premium Desk tactic to generate $150-250/week per rolled position while recovering from drawdowns",
+      "evidence": "Kenneth demonstrates rolling HIMS position weekly, generating premium ($120 example per contract) while waiting for recovery; rolling converts potential losses into income-generating opportunities that align with $1,250/month target by capturing theta decay on multiple expirations per month rather than holding losers"
+    }
+  ],
+  "id": "5nNwGFWO5yU",
+  "title": "Covered call repair strategy explained ",
+  "duration": 248
+}

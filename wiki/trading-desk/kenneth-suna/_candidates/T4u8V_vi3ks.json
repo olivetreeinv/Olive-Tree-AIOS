@@ -1,0 +1,29 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth demonstrates executing the covered call wheel strategy on HIM and NPhase stocks to generate weekly premium income. He shows multiple entry points, strike selection logic, and premium collection of $540 in one week across three positions, explaining assignment scenarios and profit outcomes.",
+  "takeaways": [
+    "Sell covered calls 1 week out when entering position late in trading week to optimize premium collection",
+    "Strike selection: sell calls at or very close to purchase price ($50 strike on $50 HIM purchase, $41.50 strike on $41.50 NPhase purchase) to maximize premium while accepting assignment",
+    "Premium collection prioritized over capital gains: $24-$193 premium per call is the primary profit target, not stock appreciation",
+    "Assignment outcome math: retain all premiums regardless of assignment; if assigned, realize small profit ($33-$34) plus premium; if not assigned, keep shares plus premium ($370+ total)",
+    "Buy dips opportunistically within same strategy: re-buy HIM at $50 after assignment, buy NPhase again at $38.66 after initial drop for another call sale",
+    "Target weekly premium income of $540 minimum across portfolio ($180/week stated goal appears conservative relative to actual results)",
+    "Multiple simultaneous positions on different stocks compress timeline and reduce single-stock risk while compounding premium income"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "covered-calls",
+      "change": "Establish minimum premium threshold per position: only sell calls generating $20+ premium on sub-$50 stocks, $30+ on $50+ stocks to ensure time-value adequacy for weekly rotation",
+      "evidence": "Kenneth shows $24 premium on HIM ($50) and $144-$193 on NPhase ($38-$41) positions; these thresholds prevent low-premium assignments that don't justify capital deployment"
+    },
+    {
+      "strategy": "covered-calls",
+      "change": "Maintain 3-4 simultaneous covered call positions across different stocks rather than single-stock focus to achieve $500+/week target with lower individual stock concentration risk",
+      "evidence": "Three simultaneous positions (HIM x2, NPhase x2) generated $540/week; demonstrates portfolio compounding vs. single-stock limitation"
+    }
+  ],
+  "id": "T4u8V_vi3ks",
+  "title": "Part 5, 6/30 - can I make $180 Per Week?",
+  "duration": 242
+}

@@ -1,0 +1,18 @@
+{
+  "trading_relevant": "no",
+  "strategy": "market-analysis",
+  "summary": "Kenneth Suna demonstrates a 30-second template for analyzing and comparing international ETFs (VXUS vs. EEM) by evaluating expense ratios, performance consistency, diversification, sector concentration, and dividend yields. This is fundamental equity research rather than options or premium-selling strategy.",
+  "takeaways": [
+    "Compare expense ratios directly (VXUS 0.05% vs EEM 0.72%) rather than share price alone",
+    "Evaluate holdings count for diversification (VXUS 8,700 vs EEM 1,200 = concentration risk)",
+    "Assess sector concentration risk (VXUS 14% tech vs EEM 33% tech = double volatility exposure)",
+    "Check performance consistency over 1, 5, and 10-year periods for stability",
+    "Review dividend yield comparison (VXUS 3.03% vs EEM 2.07%)",
+    "Use a template-based analysis system to standardize ETF evaluation across candidates",
+    "Broader market exposure reduces volatility compared to concentrated emerging market bets"
+  ],
+  "strategy_candidates": [],
+  "id": "n-xP1FR1mjo",
+  "title": "International ETFs might be a huge trap!! Here\u2019s how to analyze them in 30 seconds!",
+  "duration": 161
+}

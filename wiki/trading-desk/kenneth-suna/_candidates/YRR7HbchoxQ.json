@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth Suna demonstrates selling covered calls on Broadcom to generate premium income (~$620 per two-day cycle) to fund a vacation trip, targeting five cycles to cover the cost. He buys 100 shares at $40,654 and repeatedly sells out-of-the-money calls at the 407.50 strike, exploiting Broadcom's biweekly expiration cycle.",
+  "takeaways": [
+    "Sell covered calls at the next price right out of the money (DITM by one strike)",
+    "Broadcom offers covered calls expiring every other day enabling rapid premium cycling",
+    "Each covered call contract on 100 shares generates ~$620 premium at current levels",
+    "Sell at the bid column (enter negative contract quantity)",
+    "Use Fibonacci retracements to identify support levels for optimal entry (e.g., 360 support on Broadcom)",
+    "Five cycles of $620 premium = $3,100 total trip funding target",
+    "Monitor market technicals; expect pullbacks after all-time highs in account or broader indices"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Integrate bi-weekly or daily expiration cycles (like Broadcom's every-other-day structure) into Premium Desk rotation to accelerate premium collection toward $1,250/mo target",
+      "evidence": "Kenneth demonstrates that Broadcom's frequent expirations enable $620 per two-day cycle; scaling this across multiple tickers with similar structures would compress timeframe to hit monthly premium goals faster than standard weekly/monthly wheels"
+    }
+  ],
+  "id": "YRR7HbchoxQ",
+  "title": "Covered calls pay for my vacation ",
+  "duration": 222
+}

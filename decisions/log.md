@@ -629,3 +629,43 @@ Closed the three follow-ups from the stop-loss fix:
 **Open:** if the original vector file (AI/EPS/SVG) of the logo surfaces, swap it into the mono set for exact geometry. Next step: lock palette/fonts/logos into a Canva Brand Kit so decks and drips inherit them.
 
 **Update (same day):** Original logo masters located at `assets/brand/` (2751px, true transparency: `olive-tree-logo.png`, `olive-tree-mark-dark.png`, `olive-tree-mark-white.png`). All mono/IG variants rebuilt pixel-exact from the real mark via `output/brandkit/logo/make_variants.py` (alpha channel = mask, recolored). The SVG approximation is retired to `output/brandkit/_retired-redraw/` — do not use it for brand assets.
+
+---
+
+## 2026-07-10 — Premium Desk v3: Suna-method redesign approved
+
+Redesigning the paper trading desk to run Kenneth Suna's weekly income-wheel method (mined into `wiki/trading-desk/`). Full spec: `wiki/trading-desk/_suna-redesign-spec.md`.
+
+**Decisions locked (Brian):**
+- Goal changed to **$1,000/week** premium (≈$4,333/mo, ~104% annualized on $50k). Was $1,250/mo. Weekly is now the primary reporting unit. Applied in `trading_covered_calls.py` (`CC_WEEKLY_TARGET_USD`) + SKILL.md.
+- **Weekly cadence** (5–7 DTE), **income-first delta** (~0.45Δ, 1-strike-OTM, assignment welcome), **share-first** entry.
+- **Sell-fear vs anomaly breaker** resolved by definition: breaker halts only *unexplained* equity moves (data glitches); a *normal market selloff* is a green light for fear-CSPs.
+- **Stock discovery** switches from the fixed 38-name blue-chip list to a **weekly Alpaca movers scan** (most-actives + gainers/losers) + ~10 vetted core, with an options-liquidity floor and Haiku structural-vs-transient event-screen on droppers — mirroring Suna's CNBC-movers hunt.
+
+**Why:** the old blue-chip universe pays <1%/week and can't reach $1k/week; Suna's edge is high-vol movers bought on the dip. 
+
+**Status:** design approved, not yet built. New code: `trading_suna.py` driver + movers discovery + premium-band rank + entry-timing filter + repair ladder, wired behind `--suna`. Paper-locked; validate via `--test` + `--backtest` + 2wk paper before any real-money discussion.
+
+**Update (2026-07-10 PM — BUILT):** Premium Desk v3 shipped. New `scripts/trading_suna.py` (weekly share-first wheel: SYNC→MANAGE→COVER→ENTER→WHEEL, ~0.45Δ weekly calls, premium-band gate 0.8–2.5% / >3% pause, entry-timing filter, Wed ITM roll, repair ladder) + `scripts/trading_movers.py` (Alpaca most-actives + gainers/losers discovery). `--suna` wired through the orchestrator; launchd plist `com.olivetree.trading-desk` now runs `--loop --suna` (reloaded, PID confirmed). Reuses v2 guard/report/DB/execution untouched. Both `--test` self-checks pass; live `--once --suna` syncs + skips correctly (market closed); starts trading Mon 2026-07-13. Deferred to v3.1: Haiku structural-vs-transient screen on droppers (for now the >3% premium pause + $10–100 band + liquidity floor + earnings filter guard against junk movers). Recommend `/code-review` on the two new scripts before real-money talk.
+
+**Update (2026-07-10 PM — LLM drop-screen + code review):** Added `structural_drop_screen()` (Haiku) to trading_suna.py — meaningful droppers (movers 'losers' or ≤−8%/day) get a structural-vs-transient read before buying the dip; lazy, per-cycle-cached, fail-open. Live-verified (INTC→structural, PLUG→transient). Ran /code-review: APPROVED, 0 critical, 4 warnings. Fixed 3: (1) partial-roll now books the buyback + clears the option before the new sell, so a failed new-sell leaves a clean uncovered lot instead of a stranded marked-covered one; (2) per-sector cap now skips the "Unknown" bucket so off-universe movers aren't throttled to ~2 entries/cycle; (3) `_DROP_CACHE` cleared each cycle so verdicts don't go stale in the multi-day --loop. OPEN (warning #4, Brian's call): `_free_cash` likely double-counts deployed share cost vs Alpaca `cash` (safe-direction/under-trades) — reconcile against buying_power given the shared paper account. launchd restarted with fresh code.
+
+---
+
+## 2026-07-10 — 2026 Brand Kit adopted; old olive/ivory/gold palette retired
+
+Brian's Claude Design brand kit implemented as a local page at `site/brand/index.html` (13 sections: story, logo suite, clear space, misuse, color, type, voice, motif, social kit, applications) and applied across every branded surface.
+
+**The kit (authoritative):**
+- Palette: Forest Night `#1B1E08` (text/dark grounds) · Olive `#505A19` (links/fills) · Sage Leaf `#7D8B3C` (accent) · Brass `#B7965A` (emphasis) · Ink `#26281C` · Stone `#DAD4C5` · Bone `#F5F2E9` · Paper `#FBFAF5`
+- Fonts: Cormorant Garamond (display) + Archivo (text/UI) + Space Mono (labels). Playfair Display, Fraunces, Outfit retired. Georgia stands in for Cormorant inside email.
+- Tagline: "Rooted in patience, grown with purpose." (replaces "Rooted in community")
+- Logo rules: full-color mark on light grounds; Bone mark on Forest/Olive; Forest mark on Brass.
+
+**Applied to:** `templates/newsletter.html` + `scripts/newsletter.py` + `scripts/newsletter_rates.py` (email), `scripts/carousel_render.py` + `scripts/carousel_render_html.py` (social — photo-derived palettes still adapt per cover by design; only the no-photo fallback is brand-fixed), `site/style.css` + self-hosted Cormorant variable woff2s in `site/fonts/` (web), regenerated mark PNGs in `templates/newsletter-assets/` and `site/assets/`.
+
+**Why:** email, social, and web had drifted onto a cousin palette (`#3A4A2E`/`#F5F1E6`/`#C0A060`); one authoritative kit ends the drift. Design-project placeholders (fake NY address, "Eleanor Vance") were replaced with real Olive Tree details during implementation.
+
+**Note:** the Claude Design API caps file downloads at 256KiB, so brand PNGs are regenerated locally from `assets/brand/olive-tree-mark-dark.png` (alpha-mask recolor) rather than downloaded. Supersedes the 2026-07-08 brandkit board (`output/brandkit/`) as the palette source of truth.
+
+**Update (2026-07-10 PM — warning #4 fixed):** Reconciled the Suna cash math. Replaced `_free_cash` (which double-counted deployed share cost against Alpaca `cash`) with `_book_available(open_rows)` = notional $50k book − committed (DB-sourced) − buffer, capped by real Alpaca `buying_power` (shared paper account). Fail-closed on account-read error. Live check: deployed=$11.4k → available=$36.1k (was constrained tighter against `cash`), unblocking ~3–4 more full positions toward the $1k/week goal. Both `--test` pass; launchd restarted. All 4 review warnings now resolved.

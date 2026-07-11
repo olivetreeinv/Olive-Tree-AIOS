@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth Suna teaches covered call selling as income generation for high earners protecting against job loss. He demonstrates selling weekly covered calls on individual stock positions using Charles Schwab's Think or Swim platform, emphasizing that premium collected is kept immediately regardless of assignment outcome.",
+  "takeaways": [
+    "Sell weekly covered calls (one week out) for consistent income generation",
+    "Strike selection: pick strikes slightly out-of-money if protecting shares, or closer strikes for maximum premium",
+    "Example trade: buy 100 shares at $45, sell $46 strike for $300 premium on HIMS",
+    "Kenneth works ~1 hour per week managing covered call positions",
+    "Only sell covered calls on stocks you're willing to hold long-term if assigned and price declines",
+    "If assigned on long-held shares with large gains, use tax lot ID or cost basis method (LIFO) to control which shares are sold and manage tax liability",
+    "Premium received is kept immediately upon sale, before assignment or expiration"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Implement weekly covered call rolling schedule with 3-5 core holdings instead of ad-hoc selection to create predictable $1,250/month income stream on $50k portfolio",
+      "evidence": "Kenneth demonstrates selling weekly calls and states this generates his income; scaling to multiple positions per week aligns with Brian's $1,250/month target (approximately $50-60 premium per position per week across 20-25 positions)"
+    }
+  ],
+  "id": "7ZuI7QPIA1o",
+  "title": "Job security is a myth ",
+  "duration": 268
+}

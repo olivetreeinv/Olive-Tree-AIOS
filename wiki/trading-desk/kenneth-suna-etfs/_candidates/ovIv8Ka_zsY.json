@@ -1,0 +1,15 @@
+{
+  "trading_relevant": "no",
+  "strategy": "other",
+  "summary": "Kenneth demonstrates how to use TD Ameritrade's ETF screener to filter for low expense ratio funds, but this is general investment education rather than options trading strategy. The content focuses on selecting low-cost index ETFs for passive investing, which is unrelated to Brian Norton's Premium Desk strategy of generating monthly premium through covered calls and cash-secured puts.",
+  "takeaways": [
+    "Use TD Ameritrade's Research and Ideas > Screeners > ETF Screener tool to find low-cost funds",
+    "Filter by expense ratio in the Overview section to identify funds charging under 0.70% (or set custom thresholds like \u22641.00%)",
+    "Example: $10,000 invested in an ETF charging 0.25% expense ratio costs $25 annually",
+    "Can narrow 3,000+ ETF options by filtering on sector, current price, dividend yield, and expense ratio"
+  ],
+  "strategy_candidates": [],
+  "id": "ovIv8Ka_zsY",
+  "title": "How to Find ETFs with Low Expense Ratios!",
+  "duration": 101
+}

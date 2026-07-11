@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth Suna contrasts two approaches to generating $1,000/week in covered call premium: concentrating on a single expensive stock versus diversifying across multiple positions. He argues that multiple positions offer superior flexibility and risk management despite slightly higher operational complexity, using real portfolio examples showing weekly rotation across 3-4 companies.",
+  "takeaways": [
+    "Sell covered calls $1 out-of-the-money on weekly expirations to maximize premium on high-volatility stocks",
+    "Target $1,000/week premium income using covered calls",
+    "Accept capped upside as trade-off for consistent weekly premium generation ('make some of the money, not all of it')",
+    "Concentrated single-position approach ties up $28,000+ capital but generates minimal fees ($0.60-$1.00 per contract)",
+    "Multiple position approach requires ~$26,000 capital across 3-4 stocks but allows tactical rotation when stocks spike to all-time highs",
+    "Adjust strike price distance (e.g., $10-15 OTM instead of $1 OTM) if you are bullish long-term on the underlying to reduce assignment risk",
+    "Weekly expirations on volatile stocks tend to generate higher premiums than longer-dated options"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Implement tactical rotation rule: scale out of positions approaching all-time highs, re-enter after pullback correction",
+      "evidence": "Kenneth demonstrates this explicitly: 'I can back off on the stock when it's skyrocketing. And after it corrects and pulls back a little, I can buy the stock, sell the covered call, rotate, move them around.' Real example: pulled Nphase when it spiked, re-entered the following week. This allows the $50k desk to maintain $1,000-1,200/week premium while avoiding peak concentration risk."
+    }
+  ],
+  "id": "GumGpGQ8yc8",
+  "title": "Covered calls: one position or many? ",
+  "duration": 332
+}

@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth Suna demonstrates how to find sub-$10 stocks suitable for covered call selling using stock screeners, using Xerox as a case study. He emphasizes the elevated risks inherent in low-priced stocks, including extreme volatility, potential 25%+ weekly drops, and asymmetric payoff structures where small premiums ($15 per contract on a $524 investment = 2.8%) are offset by catastrophic downside risk.",
+  "takeaways": [
+    "Screen for optionable stocks under $10 with price range 0-$10",
+    "Filter for tech sector (higher volatility)",
+    "Select short interest 10-20% or 20-30% (avoid >30%)",
+    "Use beta screening 1-2 (stocks more volatile than overall market)",
+    "Target nearest strike price to current stock price for income generation",
+    "Accept capped upside (e.g., Xerox $6 strike caps gains if stock rallies to $11)",
+    "Recognize asymmetric risk: small premium ($15) vs large potential loss ($2,400 on $524 investment)"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Exclude sub-$10 optionable stocks from Premium Desk covered call allocation despite higher premiums; prioritize $10+ stocks with better risk/reward and historical earnings stability",
+      "evidence": "Video explicitly warns sub-$10 stocks face 25% weekly drops on hype/earnings, lack weekly option chains (only monthlies), and show 2.8% return on $524 investment with potential -450% drawdown, making them unsuitable for a $50k portfolio targeting consistent $1,250/mo premium via wheels strategy"
+    }
+  ],
+  "id": "Iu3J4KhO0qg",
+  "title": "Covered call stocks under $10 - how to find them and the risks ",
+  "duration": 320
+}

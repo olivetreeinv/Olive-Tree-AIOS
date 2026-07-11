@@ -62,7 +62,7 @@ CARD_OPEN = (
     '<table width="100%" cellpadding="0" cellspacing="0" border="0" '
     'style="background:#FFFFFF;border-radius:16px;"><tr>'
     '<td style="padding:26px 28px;font-family:arial,helvetica,sans-serif;'
-    'font-size:14px;line-height:1.6;color:#1A1A1A;">'
+    'font-size:14px;line-height:1.6;color:#26281C;">'
 )
 CARD_CLOSE = (
     '</td></tr></table>'
@@ -91,25 +91,32 @@ def _md_to_html(text: str) -> str:
             flush_para()
             continue
 
+        # {{rates}} → live residential + commercial rate table (newsletter_rates.py)
+        if line.strip() == "{{rates}}":
+            flush_para()
+            from scripts.newsletter_rates import rates_html
+            out.append(rates_html())
+            continue
+
         # headings (before escaping so we can detect #)
         if line.startswith("### "):
             flush_para()
             content = _inline(line[4:])
-            out.append(f"<p style='margin:20px 0 8px;color:#3A4A2E;'><strong>{content}</strong></p>")
+            out.append(f"<p style='margin:20px 0 8px;color:#505A19;'><strong>{content}</strong></p>")
         elif line.startswith("## "):
             flush_para()
             content = _inline(line[3:])
             out.append(
                 CARD_CLOSE + CARD_OPEN
-                + "<h2 style='margin:0;text-align:center;color:#3A4A2E;font-size:24px;"
+                + "<h2 style='margin:0;text-align:center;color:#505A19;font-size:24px;"
                   "font-weight:normal;font-family:Georgia,\"Times New Roman\",serif;'>"
                 + content + "</h2>"
-                + "<div style='width:48px;height:2px;background:#C0A060;margin:14px auto 0;font-size:0;line-height:0;'>&nbsp;</div>"
+                + "<div style='width:48px;height:2px;background:#B7965A;margin:14px auto 0;font-size:0;line-height:0;'>&nbsp;</div>"
                 + CARD_CLOSE + CARD_OPEN
             )
         elif line.startswith("---"):
             flush_para()
-            out.append("<hr style='border:none;border-top:1px solid #E8E2D4;margin:24px 0;'>")
+            out.append("<hr style='border:none;border-top:1px solid #E4DFCF;margin:24px 0;'>")
         else:
             para.append(_inline(line))
 
@@ -133,7 +140,7 @@ def _inline(text: str) -> str:
     # links  [label](url)
     text = re.sub(
         r"\[([^\]]+)\]\((https?://[^\)]+)\)",
-        r'<a href="\2" style="color:#3A4A2E;">\1</a>',
+        r'<a href="\2" style="color:#505A19;">\1</a>',
         text,
     )
     return text

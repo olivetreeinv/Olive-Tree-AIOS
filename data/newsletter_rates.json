@@ -1,0 +1,26 @@
+{
+ "2026-05": {
+  "30-Year Fixed Mortgage": 6.41,
+  "15-Year Fixed Mortgage": 5.68,
+  "FHA Loans": 6.23,
+  "VA Loans": 6.13,
+  "Agency Debt (Fannie/Freddie)": 6.12,
+  "Bridge Loans (Floating)": 8.25,
+  "CMBS (Conduit)": 6.23,
+  "Life Company Loans": 5.83,
+  "HUD/FHA Multifamily": 5.51
+ },
+ "2026-07": {
+  "30-Year Fixed Mortgage": 6.64,
+  "15-Year Fixed Mortgage": 6.19,
+  "30-Year Jumbo": 6.82,
+  "7/6 SOFR ARM": 6.23,
+  "FHA Loans": 6.21,
+  "VA Loans": 6.23,
+  "Agency Debt (Fannie/Freddie)": 6.19,
+  "Bridge Loans (Floating)": 9.25,
+  "CMBS (Conduit)": 7.15,
+  "Life Company Loans": 7.29,
+  "HUD/FHA Multifamily": 5.79
+ }
+}

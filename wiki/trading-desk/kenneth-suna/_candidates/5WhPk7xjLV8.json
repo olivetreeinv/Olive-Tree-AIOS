@@ -1,0 +1,22 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth reviews his weekly covered call performance on HIMS stock, highlighting a timing mistake where he sold a $50 call Monday morning for only $50 premium when the stock was down, versus waiting until Wednesday when he could have earned $130 on a similar strike. He also discusses a successful position where 200 shares were called away at $46, generating $392 total profit and freeing $9,000 in capital for reinvestment.",
+  "takeaways": [
+    "Wait for stock recoveries before selling covered calls\u2014RSI oversold + moving average crossovers + volume increase indicate better premium timing",
+    "Premium improvement example: $50 call sold at $46-47 stock price=$50 premium vs. waiting to $50 stock price=$130 premium (2.6x difference in 2-3 days)",
+    "Called away shares at $46 strike purchased at $45.87 = $26 profit on stock plus $366 in premiums = $392 total on 200-share position",
+    "Assignment frees capital for redeployment\u2014200 shares called away freed ~$9,000 for next investment",
+    "Covered call strategy: sell calls slightly OTM, wait for intra-week stock strength to maximize premium rather than selling immediately on down days"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Implement a rule: do not sell covered calls on down days at market open; wait 1-2 days for RSI oversold recovery + moving average recrossing before premium sale",
+      "evidence": "Kenneth's $46-47 sale for $50 premium vs. $50 stock price sale for $130 premium (same week, same strike)\u2014waiting 2-3 days yielded 2.6x better premium on HIMS; RSI indicator and volume increase confirmed ideal entry timing Wednesday vs. Monday"
+    }
+  ],
+  "id": "5WhPk7xjLV8",
+  "title": "PART 6.5 -- 7/11 - learn from my mistake",
+  "duration": 240
+}

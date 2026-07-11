@@ -46,10 +46,12 @@ Read all six files above before proceeding.
 4. **Southeast signal** — `multifamily Georgia Tennessee Alabama [year] rent apartment`
 
 **Rate snapshot — pull every run:**
-- SF: `site:mortgagenewsdaily.com 30 year mortgage rate today`
-- MF: `site:commercialloandirect.com multifamily loan rates` or `site:apartmentloanstore.com rates`
-
-Compare to `references/news-research.md` rate tables. Flag if >0.25% move or table is >7 days old.
+```bash
+python3 scripts/newsletter_rates.py
+# → prints cached months; live-fetches Mortgage News Daily (residential) +
+#   Commercial Loan Direct (multifamily) and updates data/newsletter_rates.json
+```
+Use these numbers in the Signal Report and story drafts. Flag any >0.25% month-over-month move as a possible story angle. If the fetch fails (site changed/blocked), say so and fall back to `site:mortgagenewsdaily.com` / `site:commercialloandirect.com` web searches — never reuse a stale table silently.
 
 **Tier 2 — pull only if a macro event broke this week:**
 
@@ -71,10 +73,9 @@ If YES → pull Reuters/AP (macro headline) + Bloomberg (rate/credit depth). Use
 **Tier 2 (macro event this week? Y/N):**
 - [Event + CRE impact] OR N/A
 
-**Rate snapshot:**
-- 30-yr fixed (SF): [X]% ([up/down/flat] vs. reference)
-- Fannie Mae (MF): [X–X]%
-- Rate table last updated: [date] — [flag if stale]
+**Rate snapshot** (from `scripts/newsletter_rates.py`):
+- 30-yr fixed (SF): [X]% ([monthly change])
+- Agency debt (MF): [X–X]% ([monthly change])
 
 **Strongest signal:** [one sentence]
 **MF story angle:** [pillar + why now]
@@ -117,6 +118,8 @@ Translation: [plain English implication for the reader]
 - 250–350 words — shorter, simpler
 - Rate environment + affordability + seasonal timing angle
 - Same voice, lighter on operator jargon
+
+**Rates table:** every newsletter body includes a `## Where Rates Stand` section whose content is the single line `{{rates}}` — the build step replaces it with a live residential + multifamily rate table (green header, monthly-change badges) fetched at build time. Never hand-type rates into that section; prose can cite the same numbers from the Signal Report.
 
 **Output:**
 
@@ -351,7 +354,7 @@ IG posts are drafts in Metricool — approve when ready.
 
 ## Notes
 
-- **Rate tables age fast.** Flag if `references/news-research.md` is >7 days old before any rate-angle content.
+- **Rates are always live.** `{{rates}}` in the body markdown + `scripts/newsletter_rates.py` at build time — the old static rate image (`templates/newsletter-assets/rate-2026-05.png`) is retired. Monthly-change badges come from `data/newsletter_rates.json` (one snapshot per month, auto-maintained).
 - **Never fabricate data.** If a source isn't returning live results, note it and ask Brian to verify.
 - **Faith + Mission posts:** powerful but max 1/month. Flag when suggesting one.
 - **Newsletter send is local now** — `scripts/newsletter.py` via Gmail API. GHL email campaigns are retired; the only remaining GHL use here is the social-posting fallback in Step 6.

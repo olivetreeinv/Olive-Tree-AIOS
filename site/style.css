@@ -1,19 +1,19 @@
 /* Olive Tree Investments -- shared stylesheet
    Cinematic-still redesign, brand kit v2.
    Tokens: olive / ivory / gold accent. Sharp corners everywhere (zero border-radius).
-   Fonts: Playfair Display (display) + Archivo (body), self-hosted via fonts/fonts.css.
+   Fonts: Cormorant Garamond (display) + Archivo (body), self-hosted via fonts/fonts.css.
 */
 
 :root {
-  --olive:      #3A4A2E;
-  --olive-deep: #2E3B24;
-  --ivory:      #F5F1E6;
-  --ivory-warm: #EFE9DA;
-  --gold:       #C0A060;
-  --charcoal:   #1A1A1A;
-  --ink-soft:   #4A4A40;
-  --ivory-on-olive: rgba(245,241,230,0.78);
-  --display: 'Playfair Display', Georgia, serif;
+  --olive:      #505A19;
+  --olive-deep: #1B1E08;
+  --ivory:      #FBFAF5;
+  --ivory-warm: #F5F2E9;
+  --gold:       #B7965A;
+  --charcoal:   #26281C;
+  --ink-soft:   #4A4C3E;
+  --ivory-on-olive: rgba(251,250,245,0.78);
+  --display: 'Cormorant Garamond', Georgia, serif;
   --body: 'Archivo', Arial, sans-serif;
 
   --nav-h: 68px;

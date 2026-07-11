@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "partial",
+  "strategy": "covered-calls",
+  "summary": "Kenneth Suna explains covered call ETFs (Yieldmax, JEPI, QQQ) as a way to generate passive income through premium selling, but warns against single-stock covered call ETFs due to volatility risk and inconsistent dividend payouts. He recommends diversified covered call ETFs and demonstrates his own TS position strategy of not reinvesting dividends.",
+  "takeaways": [
+    "Covered calls require owning at least 100 shares to sell one contract",
+    "Single-stock covered call ETFs like TS (Tesla) generated 96% yields initially but dividends dropped from 80 cents to 55 cents as volatility declined",
+    "Diversified covered call ETFs (JEPI, QQQ) are less volatile and more consistent than single-stock alternatives",
+    "Do not reinvest dividends from high-volatility covered call ETFs; take cash instead to redeploy into quality assets",
+    "High dividend yields on volatile stocks often precede both premium and share price declines when momentum slows",
+    "Covered call ETFs underperform index funds because shares get called away, but provide consistent income trade-off",
+    "Kenneth's risk rule: only put in what you're willing to lose, and redirect high-volatility covered call income to stable assets like S&P 500 index funds"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Allocate premium income from TS/single-stock covered call ETFs to higher-quality dividend ETFs (SCHD, REALTY) or index funds rather than reinvesting in the same volatile position",
+      "evidence": "Kenneth explicitly states he collects TS dividends as cash and deploys them into SCD, REALTY, or S&P 500 index funds instead of reinvesting, specifically to avoid catching a falling knife when volatility cools and the ETF declines"
+    }
+  ],
+  "id": "xYHAMt0l1c8",
+  "title": "Yieldmax Covered Call ETFs Explained! #kennethsuna #investingforbeginners",
+  "duration": 313
+}

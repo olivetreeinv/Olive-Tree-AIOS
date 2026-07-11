@@ -1,0 +1,22 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth Suna demonstrates his covered call strategy generating approximately $1,100/week in premium income from his portfolio, illustrating real positions with both winners and losers while emphasizing the flexibility of capital management when shares get called away.",
+  "takeaways": [
+    "Generate ~$1,100/week selling covered calls on invested capital",
+    "When shares get called away, freed-up capital can be redeployed to new positions",
+    "Monitor weekly decision points: decide whether to hold losing positions or sell for losses",
+    "Covered calls can be applied across multiple holdings simultaneously (demonstrated with QuantumScape, Nphase, HIMS, Oscar Health positions)",
+    "Each weekly cycle presents opportunity to reassess positions and make tactical adjustments"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Target $1,100/week covered call premium as the baseline yield goal for the $50k Premium Desk portfolio",
+      "evidence": "Kenneth explicitly states he makes 'around $1,100 a week selling covered calls on my investments' and mentions organizing content into a '$180 a week playlist,' demonstrating weekly premium targets are the primary metric for this strategy"
+    }
+  ],
+  "id": "yGU9mziNzq0",
+  "title": "Quit your 9-5?? #shorts",
+  "duration": 180
+}

@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth demonstrates his weekly covered call strategy on Hims, selling 1-week-out calls $1 above his $56 purchase price ($57 strike) to generate ~$180-205 per week in premium. He discusses the trade-off between higher strike prices (58-59) that risk early assignment versus rolling contracts to retain shares when stock moves significantly.",
+  "takeaways": [
+    "Sell covered calls 1 week out ($1 above purchase price for predictable entry)",
+    "Target ~$180-205 premium per covered call on 100-share positions",
+    "Monitor for early assignment risk when underlying moves significantly ITM before Friday expiration",
+    "Consider rolling contracts to following week to preserve shares rather than repurchasing",
+    "Track weekly premium accumulation systematically in a playlist series",
+    "Current position: 100 shares Hims bought at $56, high probability of $58 strike assignment by June 20th expiration",
+    "Monitor geopolitical/macro events (Israel-Iran tensions mentioned) that can cause rapid directional moves mid-week"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Establish predetermined rolling rules: automatically roll when stock moves >$1 ITM by Wednesday to preserve shares and extend premium collection",
+      "evidence": "Kenneth explicitly mentions rolling as an option to keep shares rather than lose them to assignment, but indicates he decides case-by-case; a preset rule would optimize the weekly premium desk consistency"
+    }
+  ],
+  "id": "ELs2IKme24o",
+  "title": "PART 3: Can I make $180 per week selling covered calls?",
+  "duration": 187
+}

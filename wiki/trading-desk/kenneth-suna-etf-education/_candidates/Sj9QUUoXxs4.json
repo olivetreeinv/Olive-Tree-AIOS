@@ -1,0 +1,29 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "cash-secured-puts",
+  "summary": "Kenneth Suna explains that cash-secured puts and covered calls are not gambling when executed with proper risk understanding. The key distinction: they become gambling only if the trader ignores downside risk, chases quick profits, or lacks understanding of assignment mechanics and capital requirements.",
+  "takeaways": [
+    "Covered calls: sell shares you already own at a strike price (e.g., bought at $50, sell calls at $52) and keep the premium regardless of outcome",
+    "Cash-secured puts require full cash reserve in account (e.g., $4,700 cash to sell puts on 100 shares at $47 strike)",
+    "Assignment on cash-secured puts is mandatory if stock falls below strike at expiration (e.g., forced to buy at $47 even if stock is $42)",
+    "You can buy back (close) put contracts early to avoid assignment, though you may pay extra to exit the trade",
+    "Cash-secured puts and covered calls are income strategies on intended positions, not gambling, if you understand and respect downside risk",
+    "These strategies become gambling if: you ignore downside risk, chase quick profits, don't understand assignment mechanics, or bet without position intention",
+    "Weekly expiration cycles mentioned as timeframe example for covered calls"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "cash-secured-puts",
+      "change": "Implement hard rule requiring $4,700+ cash reserve per 100-share CSP contract on Premium Desk to ensure assignment capacity",
+      "evidence": "Kenneth emphasizes 'you must have that cash on hand' and explicitly states the cash requirement ($4,700 for $47 strike on 100 shares), contrasting uninformed trading with disciplined execution"
+    },
+    {
+      "strategy": "cash-secured-puts",
+      "change": "Add early buy-to-close rule: close profitable CSP contracts at 50% of max profit before expiration to reduce assignment risk",
+      "evidence": "Kenneth notes ability to 'buy back the options contract' and exit trades early when underlying moves against the position, reducing forced assignment risk"
+    }
+  ],
+  "id": "Sj9QUUoXxs4",
+  "title": "Are cash secured puts gambling?",
+  "duration": 180
+}

@@ -1,0 +1,23 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "cash-secured-puts",
+  "summary": "Kenneth demonstrates how to roll cash-secured puts using HIMS as a real example, showing the buy-to-close and sell-to-open process to avoid unfavorable assignment. He turned a potential $17,100 loss into a $98 net loss by rolling the position one week further out at a different strike price.",
+  "takeaways": [
+    "Rolling CSP involves two steps: buy-to-close the existing position, then sell-to-open a new series one week further out",
+    "Can roll to a higher strike price if bullish on the stock (HIMS example: rolled from $57 to $52 strike)",
+    "Rolling premium ($985 in HIMS case) helps offset the buy-to-close loss ($1,897)",
+    "Net loss on HIMS roll was $98 ($814 initial premium - $1,897 buy-to-close + $985 new premium), vastly better than taking assignment at $57 when stock was at $51-52",
+    "Avoid selling CSP into earnings events due to high volatility risk",
+    "Use roll functionality in brokerage platform: click 'roll selected' to access buy-to-close and sell-to-open in one workflow"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Establish a rolling threshold rule: when a CSP goes ITM and assignment is unfavorable, automatically roll out one week if the net debit is less than 20% of the strike price (roughly $11.40 in a $57 strike situation)",
+      "evidence": "HIMS example shows rolling cost $98 net (1.7% of $5,700 risk capital), demonstrating rolling can be capital-efficient vs. taking assignment; Kenneth avoided $17,100 loss by rolling for $98"
+    }
+  ],
+  "id": "k_5jHipqLOk",
+  "title": "Part 10.5 -  8/8/25 how to roll a cash secured put ",
+  "duration": 375
+}

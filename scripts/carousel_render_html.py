@@ -4,7 +4,7 @@ carousel_render_html.py — premium HTML/CSS → PNG carousel renderer (Olive Tr
 
 Light & airy editorial slide system designed with the taste-skill principles:
 soft off-white grounds, generous whitespace, one locked olive accent, refined
-type (Outfit), a photo-top cover (no dark scrim), and a single inverted olive CTA.
+type (Archivo), a photo-top cover (no dark scrim), and a single inverted olive CTA.
 
 Each slide is a self-contained 1080x1350 HTML block; Playwright screenshots each.
 Same spec + output contract as the Pillow renderer, so Drive/Metricool/sheet flow
@@ -38,11 +38,11 @@ FONT_DIR = ROOT / "assets" / "fonts"
 W, H = 1080, 1350
 
 # Light & airy tokens (olive brand; NOT the banned cream/beige family).
-BG = "#F4F5F1"        # soft light warm-neutral, faint green undertone
-PANEL = "#FBFBF9"     # near-white panel
-INK = "#1E2418"       # warm charcoal
-MUTED = "#6B7060"     # muted olive-gray (body / footer)
-ACCENT_DEFAULT = "#5A6A1E"  # olive green
+BG = "#F5F2E9"        # Bone — brand-kit light ground (site/brand/)
+PANEL = "#FBFAF5"     # Paper — near-white panel
+INK = "#1B1E08"       # Forest Night
+MUTED = "#4A4C3E"     # muted olive-gray (body / footer)
+ACCENT_DEFAULT = "#505A19"  # Olive
 
 
 def _b64(path):
@@ -52,7 +52,7 @@ def _b64(path):
 def _accent_for_light(photo):
     """Olive-green brand base with a subtle tint pulled from the hero photo, kept
     dark/saturated enough to read on a light ground."""
-    base = (90, 106, 30)  # #5A6A1E olive
+    base = (80, 90, 25)  # #505A19 olive
     if not photo:
         return ACCENT_DEFAULT
     _, accent, _ = palette_from_image(photo)
@@ -78,9 +78,9 @@ def _font_css():
     """Local variable fonts embedded as base64 — Google Fonts @import silently
     failed at screenshot time and every render fell back to Helvetica."""
     faces = [
-        ("Outfit", "normal", FONT_DIR / "Outfit-normal.woff2"),
-        ("Fraunces", "normal", FONT_DIR / "Fraunces-normal.woff2"),
-        ("Fraunces", "italic", FONT_DIR / "Fraunces-italic.woff2"),
+        ("Archivo", "normal", FONT_DIR / "Archivo-normal.woff2"),
+        ("Cormorant Garamond", "normal", FONT_DIR / "CormorantGaramond-normal.woff2"),
+        ("Cormorant Garamond", "italic", FONT_DIR / "CormorantGaramond-italic.woff2"),
     ]
     return "".join(
         f"@font-face{{font-family:'{fam}';font-style:{style};font-weight:300 700;"
@@ -93,12 +93,12 @@ CSS = """
 * { margin:0; padding:0; box-sizing:border-box; }
 .slide {
   width:1080px; height:1350px; position:relative; overflow:hidden;
-  font-family:'Outfit',-apple-system,sans-serif; background:%(BG)s; color:%(INK)s;
+  font-family:'Archivo',-apple-system,sans-serif; background:%(BG)s; color:%(INK)s;
   -webkit-font-smoothing:antialiased;
 }
 .pad { position:absolute; inset:0; padding:96px; display:flex; flex-direction:column; }
 .progress { position:absolute; top:56px; left:96px; right:96px; height:5px;
-  border-radius:3px; background:rgba(30,36,24,0.12); overflow:hidden; z-index:5; }
+  border-radius:3px; background:rgba(27,30,8,0.12); overflow:hidden; z-index:5; }
 .progress > i { display:block; height:100%%; border-radius:3px; background:var(--accent); }
 .kicker { font-size:30px; font-weight:600; letter-spacing:.14em; text-transform:uppercase;
   color:var(--accent); }
@@ -131,9 +131,9 @@ CSS = """
 
 /* Quote: typography-led, serif, no photo */
 .quote .stack { margin-top:auto; margin-bottom:auto; }
-.quote .qmark { font-family:'Fraunces',serif; font-size:220px; line-height:.55;
+.quote .qmark { font-family:'Cormorant Garamond',serif; font-size:220px; line-height:.55;
   color:var(--accent); height:120px; }
-.quote .headline { font-family:'Fraunces',serif; font-weight:420; font-style:italic;
+.quote .headline { font-family:'Cormorant Garamond',serif; font-weight:420; font-style:italic;
   line-height:1.22; letter-spacing:0; }
 .quote .attr { margin-top:56px; display:flex; align-items:center; gap:24px; }
 .quote .attr .bar { width:56px; height:3px; background:var(--accent); border-radius:2px; }
@@ -205,7 +205,7 @@ def _page_html(spec, accent, photo_b64):
     slides = spec["slides"]
     total = len(slides)
     handle = spec.get("handle", "@olivetreeinv.io")
-    cta_text = "#F4F5F1" if _lum(accent) < 150 else "#1E2418"
+    cta_text = "#F5F2E9" if _lum(accent) < 150 else "#1B1E08"
     css = CSS % {"BG": BG, "PANEL": PANEL, "INK": INK, "MUTED": MUTED, "CTA_TEXT": cta_text}
     body = []
     for idx, s in enumerate(slides, 1):

@@ -43,7 +43,7 @@ See [.claude/skills/marketing/SKILL.md] for the full spec.
 
 ## Quote Posts
 
-Single-image typography posts — Fraunces serif on the light olive system, quote mark, attribution. Zero photos = zero stock-slop risk.
+Single-image typography posts — Cormorant Garamond serif on the light olive system, quote mark, attribution. Zero photos = zero stock-slop risk.
 
 **Where quotes come from (in order — this is the anti-slop rule):**
 

@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth Suna demonstrates his weekly covered call strategy generating ~$1,000/week on a $32,853 portfolio (3% weekly return). He shares specific positions, premium collected, and key lessons learned about position sizing and avoiding over-concentration in high-risk stocks.",
+  "takeaways": [
+    "Target ~3% weekly premium return on covered call positions",
+    "Avoid large position sizes (>$5,000) in high-risk/volatile stocks like QuantumCape",
+    "Reduced position size from $5,000 to $2,500 in risky names after learning from mistakes",
+    "Execute buy and sell covered calls on the same day (Monday) when possible",
+    "Accept <1% premium on positions near purchase price to maintain portfolio activity",
+    "Monitor stocks approaching purchase price to identify covered call opportunities",
+    "Nphase position size ~$7,600 generated 3.2% premium in one week"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Enforce maximum position size cap of $2,500-$3,700 per high-volatility stock to improve capital efficiency and reduce concentration risk",
+      "evidence": "Kenneth explicitly states buying $5,000 of QuantumCape was a mistake due to excessive capital allocation, then successfully reduced Open position to $2,500 and generated $351 premium; demonstrates learning that smaller position sizes in risky names maintain better overall portfolio flexibility"
+    }
+  ],
+  "id": "LqkiRTyQPHY",
+  "title": "Part 13 : 8/25: Can I Make $180 Per Week? #shorts",
+  "duration": 180
+}
