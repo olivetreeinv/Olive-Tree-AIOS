@@ -1,0 +1,66 @@
+{
+  "creationSource": "builder",
+  "_id": "b1dc85ce-f80f-4189-bde6-ef38c3aa89d2",
+  "locationId": "SLq7B2pldVzfQLKjGpvw",
+  "companyId": "etFEpuKKLwVQ4AMNOaLs",
+  "companyAge": 30,
+  "name": "Tag \"Agent/Wholesaler\">> send text/email",
+  "status": "published",
+  "version": 4,
+  "dataVersion": 7,
+  "allowMultiple": true,
+  "timezone": "account",
+  "removeContactFromLastStep": true,
+  "filePath": "location/SLq7B2pldVzfQLKjGpvw/workflows/b1dc85ce-f80f-4189-bde6-ef38c3aa89d2/4",
+  "fileUrl": "https://firebasestorage.googleapis.com/v0/b/highlevel-backend.appspot.com/o/location%2FSLq7B2pldVzfQLKjGpvw%2Fworkflows%2Fb1dc85ce-f80f-4189-bde6-ef38c3aa89d2%2F4?alt=media&token=d4e121bd-bdf5-449c-b996-677334895a59",
+  "stopOnResponse": false,
+  "autoMarkAsRead": false,
+  "permission": 380,
+  "type": "workflow",
+  "parentId": "1e3a4816-61df-4e49-9468-e01c5e6586b6",
+  "updatedBy": "19yXb0RGsCa7H4A2u7ij",
+  "createdAt": "2025-05-13T18:08:11.790Z",
+  "updatedAt": "2025-05-13T18:18:13.362Z",
+  "deleted": false,
+  "allowMultipleOpportunity": true,
+  "originType": "user",
+  "__v": 0,
+  "eventStartDate": null,
+  "triggersFilePath": "location/SLq7B2pldVzfQLKjGpvw/workflow-triggers/b1dc85ce-f80f-4189-bde6-ef38c3aa89d2/3",
+  "window": null,
+  "workflowNote": null,
+  "id": "b1dc85ce-f80f-4189-bde6-ef38c3aa89d2",
+  "workflowData": {
+    "templates": [
+      {
+        "id": "8b74874e-bc67-49ac-a2d7-b38e1529e4f2",
+        "order": 0,
+        "attributes": {
+          "html": "<p style=\"margin:0px\">Hi {{contact.first_name}}, this is Brian Norton. How's your day going? Do you have anything cooking? My buy box is 3/2+, 1500sqft+, with a price range of 350-450k.</p><br/><p style=\"margin:0px\">The ARV needs to be 200k above purchase price or more. Here are the counties I'm interested in: Cobb, Cherokee, Bartow, Fulton (Alpharetta, Roswell, John's Creek).<br></p><p style=\"margin:0px\">Looking forward to hearing from you.</p><p style=\"margin:0px\">Thank you!</p><br/><p style=\"margin:0px\">Regards,</p><p style=\"margin:0px\">{{location_owner.first_name}} {{location_owner.last_name}}</p>",
+          "from_name": "{{location.name}}",
+          "from_email": "{{location.email}}",
+          "subject": "Do you have anything in my buy box?",
+          "attachments": []
+        },
+        "name": "Email",
+        "type": "email",
+        "next": "eadc796b-ee96-4413-9cd8-09eef8273b33"
+      },
+      {
+        "id": "eadc796b-ee96-4413-9cd8-09eef8273b33",
+        "order": 1,
+        "attributes": {
+          "body": "Hi {{contact.first_name}}, this is Brian Norton. How's your day going? Do you have anything cooking? My buy box is 3/2+, 1500sqft+, with a price range of 350-450k. The ARV needs to be 200k above purchase price or more. Here are the counties I'm interested in: Cobb, Cherokee, Bartow, Fulton (Alpharetta, Roswell, John's Creek). Looking forward to hearing from you. Thank you!",
+          "attachments": []
+        },
+        "name": "SMS",
+        "type": "sms",
+        "parentKey": "8b74874e-bc67-49ac-a2d7-b38e1529e4f2"
+      }
+    ]
+  },
+  "permissionMeta": {
+    "canRead": true,
+    "canWrite": true
+  }
+}
