@@ -53,7 +53,7 @@ SPREADSHEET_ID   = "1VxOlof56s8GosrWkSctL-FMm7AoJKJ6YtM3GllMKVH4"
 
 # Deal Analyzer templates — selected by door count. Both are native Google
 # Sheets (download via Drive export, not alt=media).
-DEAL_ANALYZER_SMALL_ID = "1smas_-1rTtqZSIvfqxF_NzRFyMe_ID-M17z1BQ7qQQU"  # MF Schooled Deal Analyzer 0-50 v10
+DEAL_ANALYZER_SMALL_ID = "1eLSwrb3juJQtqflUsKSyjpg8375nAZHQPkUyUWCNmJ4"  # MF Schooled Deal Analyzer 0-50 v10 (blanked template). Prev 1smas_ got repurposed into the 117 Cedarwood deal → leaked its inputs into every clone.
 DEAL_ANALYZER_LARGE_ID = "1_vfRIk8lcj-bGLxj3pf46p8OYwjeiI3o7g7AgjwHZQk"  # MF Schooled 50+ Unit Proforma
 
 # Effective property-tax rates by buy-box zip (assessment ratio × total millage).
@@ -2052,7 +2052,9 @@ def build_parser():
     p.add_argument("--current-gpr",   type=float, help="Current gross potential rent (monthly total)")
     p.add_argument("--current-opex",  type=float, help="Current operating expenses (monthly total)")
     p.add_argument("--market-gpr",    type=float, help="Stabilized market GPR (monthly total)")
-    p.add_argument("--vacancy-pct",   type=float, default=0.10, help="Vacancy % as decimal (default: 0.10)")
+    # ponytail: accept 12 or 0.12 — vacancy is never legitimately ≥100%, so >1 means whole-percent entry
+    p.add_argument("--vacancy-pct",   type=lambda v: float(v) / 100 if float(v) > 1 else float(v),
+                   default=0.10, help="Vacancy pct; accepts 0.12 or 12 (default: 0.10)")
 
     # Rentometer market rent inputs (auto-lookup if --beds + --address provided)
     p.add_argument("--beds",      type=int, choices=[1, 2, 3, 4],
