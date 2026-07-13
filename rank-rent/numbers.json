@@ -1,0 +1,14 @@
+[
+  {
+    "site_slug": "cartersville-tree",
+    "tracking_number": "+15551234567",
+    "forwards_to": "+17705550100",
+    "renter_name": "PLACEHOLDER — set once first operator signs",
+    "billing": {
+      "type": "flat",
+      "flat_monthly": 500,
+      "per_call": 50,
+      "min_seconds": 60
+    }
+  }
+]

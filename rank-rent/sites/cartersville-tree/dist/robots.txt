@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://cartersville-tree.example.com/sitemap.xml

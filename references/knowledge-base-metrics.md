@@ -97,6 +97,38 @@ Typical terms: Non-recourse, 36-month I/O, 1% lender fee, 0.5% broker fee, 6-mon
 
 ---
 
+## MFS Expense Benchmarks — fallbacks when the T-12/OM is missing a line
+
+**Source precedence: T-12 actuals → OM figures → MFS benchmarks.** The T-12 is actual operating history and always wins; OM numbers are the broker's marketing case and fill in only where the T-12 is silent. When a line item has no source in either, underwrite with these Multifamily Schooled (MFS) numbers — **proforma column only**, every defaulted cell tagged as an estimate. `deal_analysis.py` applies these automatically.
+
+**Total operating-expense ratio by vintage (% of Effective Gross Income):**
+
+| Vintage | MFS band | Backfill midpoint |
+|---|---|---|
+| Pre-1980 (or unknown) | 45–50% | 47.5% |
+| 1980–2010 | 35–45% | 40% |
+| 2010+ | 30–40% | 35% |
+
+Stabilized target is 49–50% even for 1960s product; 60%+ signals operational problems. Small self-managed 5–10 unit deals can run low-30s — not applicable to Olive Tree (third-party PM always).
+
+**Per-line-item defaults:**
+
+| Line | Default | Notes |
+|---|---|---|
+| Repairs & Maintenance | $750/unit/yr | MFS: $700–800 typical; $600–800 pre-1980. Never accept a seller number far below this |
+| Turnover | $450/unit/yr | $1,500 per turned unit × ~30% annual turnover. R&M + Turnover combined should benchmark ~$1,000/unit/yr — flag if far above |
+| Property management | 7–8% of EGI blended (incl. leasing) | Never owner-quoted 5%. Analyzer template auto-calcs 8% |
+| Replacement reserves | $250/unit/yr | Analyzer template auto-calc |
+| Vacancy / economic loss | 10% of gross rent minimum | 10–12% for 1950–1980 vintage, even at 93% physical occupancy |
+| Payroll | $0 at ≤50 units | Offsite third-party management only; payroll lives inside the PM fee |
+| Water/sewer RUBS recovery | 60–65% of utility cost recovered | Remainder stays a landlord expense — never model 100% recovery |
+| Insurance | No MFS default — quote it | Vendor quotes take 2–3 days; seller master-policy rates aren't transferable. KB floor $1,500/unit until quoted |
+| Utilities / Gen-Admin / Contract Serv / Marketing | No MFS default — backfill | Plug the gap between known proforma opex and the vintage-band midpoint (deal_analysis.py splits the plug 60/15/15/10) |
+
+Sources: `wiki/mfs-videos` coaching notes — 11-11-25 mentorship (vintage bands, R&M $800, turnover math), 11-25-25 mentorship (four critical lines, RUBS 60–65%), 02-19-26 (R&M $700–800, 10% vacancy), 05-07-26 (pre-1980 R&M, insurance quotes, 10–12% economic vacancy), 05-14-26 (49–50% stabilized target, 60% RUBS recovery), 05-22-25 (40–50% when seller lacks docs), 04-30-26 (no onsite payroll ≤20 units), 04-22-25 (PM 7–8% blended).
+
+---
+
 ## Glossary — Key Terms
 
 | Term | Definition |
