@@ -138,7 +138,7 @@ python3 scripts/deal_analysis.py --fetch-docs --drive-id [file_id]
 
 ### Step 3: Extract inputs
 
-Parse documents and extract:
+Parse documents and extract. **Expense source precedence: T-12 actuals → OM figures → MFS benchmarks** (T-12 is actual history; OM numbers are the broker's marketing case).
 
 | Input | Primary Source | Fallback |
 |---|---|---|
@@ -147,7 +147,7 @@ Parse documents and extract:
 | Current gross rents | Rent roll (sum of current rent column) | T-12 revenue line |
 | Market rents | OM rent comp section | Buy box market rate estimate |
 | Occupancy | Rent roll (occupied ÷ total) | OM summary |
-| Operating expenses | T-12 expense total | 45% of EGI estimate |
+| Operating expenses | T-12 expense total | OM figures, then MFS vintage-band midpoint |
 | Repair budget / capex | OM capex section | Brian-provided |
 | Building vintage | OM / county records | Estimate from description |
 | Unit mix | Rent roll (1BR/2BR/3BR counts) | OM floor plan section |
@@ -156,7 +156,7 @@ Parse documents and extract:
 
 | Units | Template | Sheet | ID |
 |---|---|---|---|
-| ≤ 50 | MF Schooled Deal Analyzer 0-50 v10 | INPUTS | `1smas_-1rTtqZSIvfqxF_NzRFyMe_ID-M17z1BQ7qQQU` |
+| ≤ 50 | MF Schooled Deal Analyzer 0-50 v10 | INPUTS | `1eLSwrb3juJQtqflUsKSyjpg8375nAZHQPkUyUWCNmJ4` (locked — do not repurpose as a live deal file) |
 | > 50 | MF Schooled 50+ Unit Proforma | Inputs | `1_vfRIk8lcj-bGLxj3pf46p8OYwjeiI3o7g7AgjwHZQk` |
 
 0-50 INPUTS mapping: Row 4 asking/offer · Row 6 units · Row 8 repair budget · Row 12 vintage · Rows 21–34 unit mix · F14 rate · C39/F39 vacancy · R35–R38 hold/exit.
@@ -224,14 +224,13 @@ Annual Debt Service = Loan × rate (use current bridge rate from references/news
 DSCR = NOI ÷ Annual Debt Service
 
 # DSCR gate & max-price solve — output a CEILING, not just a yes/no
-Require DSCR ≥ 1.25x at the lender's quoted rate. Then sweep rates
-(5.0 / 5.75 / 6.0 / 6.5%) and solve the purchase price that holds 1.25x:
-  Rate    Max Price @ 1.25 DSCR
-  5.75%   $[n]
-  6.00%   $[n]
-  6.50%   $[n]   ← if this is the likely rate, this is the ceiling
-Recommendation line: "Max defensible offer = $X at [rate]. Seller ask $Y is $Z above
-the DSCR ceiling." Numbers set the offer, not the seller's anchor.
+`deal_analysis.py --analyze` now computes this automatically (`solve_dscr_price()`
+in the script) — the report prints a "DSCR 1.25x MAX DEFENSIBLE OFFER" table swept
+across [underwritten rate, 5.75%, 6.25%, 6.75%], using fully-amortized debt service
+(never I/O) and holding NOI/LTV/amortization constant. `go_price` and `go_price_sweep`
+land in `metrics` for downstream skills (`/loi`, `/pitch-deck`). Don't recompute this
+by hand — read it off the script output and lead with it: "Max defensible offer = $X
+at [rate]. Seller ask $Y is $Z above the DSCR ceiling."
 
 # Returns
 Equity Invested = Asking Price × 0.25 + Repair Budget + Closing Costs (3.5%)

@@ -81,6 +81,39 @@ DEFAULT_TAX_RATE = 0.0124   # fallback for zips outside the buy box
 # So proforma taxes are the current actual drifted for cycle inflation, NOT price-scaled.
 TAX_INFLATION = 1.03
 
+# MFS expense fallbacks — proforma column only, used when no OM/T-12 actual exists.
+# Sources: wiki/mfs-videos coaching notes; full table in
+# references/knowledge-base-metrics.md ("MFS Expense Benchmarks").
+MFS_RM_PER_UNIT       = 750    # R&M $700-800/unit/yr typical; $600-800 pre-1980
+MFS_TURNOVER_PER_UNIT = 450    # $1,500/turned unit x ~30% annual turnover
+MFS_MGMT_PCT          = 0.08   # analyzer row 30 auto-calcs 8% x EGI (MFS band: 7-8% blended)
+MFS_RESERVES_PER_UNIT = 250    # analyzer row 31 auto-calcs $250/unit
+
+
+def mfs_expense_ratio_mid(vintage):
+    """Midpoint of the MFS vintage expense-ratio band (pre-1980: 45-50%,
+    1980-2010: 35-45%, 2010+: 30-40%). Unknown vintage → pre-1980 band —
+    the buy box skews older value-add."""
+    try:
+        v = int(vintage) if vintage else 0
+    except (TypeError, ValueError):
+        v = 0
+    return 0.475 if v < 1980 else 0.40 if v < 2010 else 0.35
+
+
+def mfs_expense_backfill(egi_pf, known_opex, vintage, unsourced):
+    """Plug unsourced soft expense lines so total proforma opex lands on the MFS
+    vintage-band midpoint. `unsourced` = keys from ('utilities', 'admin',
+    'contracts', 'marketing'). Returns {key: annual $}; empty when known lines
+    already reach the midpoint."""
+    # ponytail: fixed weights, utilities carries most; refine if DD actuals show a pattern
+    weights = {"utilities": 0.60, "admin": 0.15, "contracts": 0.15, "marketing": 0.10}
+    residual = egi_pf * mfs_expense_ratio_mid(vintage) - known_opex
+    if residual <= 0 or not unsourced:
+        return {}
+    wsum = sum(weights[k] for k in unsourced)
+    return {k: round(residual * weights[k] / wsum, 0) for k in unsourced}
+
 SHEETS_BASE = "https://sheets.googleapis.com/v4/spreadsheets"
 DRIVE_BASE  = "https://www.googleapis.com/drive/v3/files"
 UPLOAD_BASE = "https://www.googleapis.com/upload/drive/v3/files"
@@ -199,6 +232,25 @@ def _loan_balance(loan, rate_annual, amort_years, months_paid):
     return max(0.0, loan * (1 + r) ** months_paid - pmt * ((1 + r) ** months_paid - 1) / r)
 
 
+def solve_dscr_price(noi, ltv, rate_annual, amort_years, target_dscr=1.25):
+    """
+    Back-solve the max defensible purchase price at which Year-1 DSCR equals
+    target_dscr, using FULLY-AMORTIZED debt service (banks underwrite amortized,
+    not I/O). Holds NOI, LTV, rate, and amortization constant — closed form,
+    no iteration needed since NOI here has no price-linked components (proforma
+    taxes are never scaled to price — see EFFECTIVE_TAX_RATE / TAX_INFLATION).
+    """
+    if not noi or noi <= 0 or not ltv:
+        return None
+    annual_ds_target = noi / target_dscr
+    monthly_pmt_target = annual_ds_target / 12
+    pmt_factor = _pi_payment(1.0, rate_annual, amort_years)   # payment per $1 of loan
+    if pmt_factor <= 0:
+        return None
+    loan = monthly_pmt_target / pmt_factor
+    return loan / ltv
+
+
 def calculate_metrics(args):
     """
     Core underwriting aligned with the Olive Tree Deal Analyzer spreadsheet.
@@ -230,6 +282,7 @@ def calculate_metrics(args):
     current_opex_mo = getattr(args, 'current_opex', None)  # monthly
     entry_cap       = getattr(args, 'entry_cap', None)
     exit_cap        = getattr(args, 'exit_cap', None)
+    vintage         = getattr(args, 'vintage', None)
 
     # ── Sources & uses ──
     loan_amount   = offer * ltv
@@ -313,8 +366,29 @@ def calculate_metrics(args):
         total_return = sum(annual_cf) + net_sale_proceeds
         equity_multiple = total_return / equity_invest
 
-    # ── DSCR (year 1) ──
-    dscr = annual_noi[0] / annual_ds[0] if annual_noi and annual_ds[0] else None
+    # ── DSCR (year 1) — MFS: banks underwrite fully-amortized debt service, even
+    # during an I/O period, so the pass/fail gate always uses the amortized DSCR.
+    # The softer I/O DSCR is reported alongside for visibility, never as the gate.
+    dscr_io        = annual_noi[0] / io_pmt_annual if annual_noi and io_pmt_annual else None
+    dscr_amortized = annual_noi[0] / pi_pmt_annual if annual_noi and pi_pmt_annual else None
+    dscr = dscr_amortized
+
+    # ── Year-1 expense ratio (opex / EGI) — sanity check vs. MFS vintage bands ──
+    egi_yr1 = (yr1_gpr * (1 - vacancy_pct) + other_income_annual) if yr1_gpr else None
+    opex_yr1 = proforma_opex if proforma_opex else None
+    expense_ratio = (opex_yr1 / egi_yr1) if (egi_yr1 and opex_yr1) else None
+
+    # ── DSCR 1.25x max defensible offer (fully amortized), + rate sweep ──
+    noi_for_go = annual_noi[0] if annual_noi else None
+    go_price = solve_dscr_price(noi_for_go, ltv, interest_rate, amort_years)
+    sweep_rates = []
+    for r in (interest_rate, 0.0575, 0.0625, 0.0675):
+        if r not in sweep_rates:
+            sweep_rates.append(r)
+    go_price_sweep = [
+        {"rate": r, "price": solve_dscr_price(noi_for_go, ltv, r, amort_years)}
+        for r in sweep_rates
+    ]
 
     # ── Stabilized value & 75% rule (uses yr1 proforma NOI) ──
     stabilized_noi   = annual_noi[0] if annual_noi else None
@@ -367,6 +441,8 @@ def calculate_metrics(args):
         "annual_ds":         annual_ds,
         "levered_cfs":       levered_cfs,
         "dscr":              dscr,
+        "dscr_io":           dscr_io,
+        "dscr_amortized":    dscr_amortized,
         "coc_yr1":           coc_yr1,
         "coc_yr3":           coc_yr3,
         "equity_multiple":   equity_multiple,
@@ -380,6 +456,15 @@ def calculate_metrics(args):
         "ppu_in_range":      ppu_in_range,
         "yr1_gpr":           yr1_gpr,
         "yr2_gpr":           yr2_gpr,
+        "vintage":           vintage,
+        "vacancy_pct":       vacancy_pct,
+        "expense_ratio":     expense_ratio,
+        "ltv":               ltv,
+        "loan_rate":         interest_rate,
+        "amort_years":       amort_years,
+        "io_years":          io_years,
+        "go_price":          go_price,
+        "go_price_sweep":    go_price_sweep,
     }
 
 
@@ -439,6 +524,25 @@ def score_deal(metrics, zip_str):
     if metrics["ppu_in_range"] is not None and not metrics["ppu_in_range"]:
         warnings.append(f"Price/unit ${metrics['ppu']:,.0f} outside buy box range for this market")
 
+    # ── Sanity checks (MFS) ──
+    try:
+        v = int(metrics.get("vintage")) if metrics.get("vintage") else None
+    except (TypeError, ValueError):
+        v = None
+
+    er = metrics.get("expense_ratio")
+    if v is not None and er is not None:
+        band = (0.45, 0.55) if v < 1980 else (0.35, 0.45) if v < 2010 else (0.30, 0.40)
+        lo, hi = band
+        if er < lo:
+            warnings.append(f"Expense ratio {er:.1%} below MFS band {lo:.0%}-{hi:.0%} for vintage {v} — broker numbers may be understated")
+        elif er > hi:
+            warnings.append(f"Expense ratio {er:.1%} above MFS band {lo:.0%}-{hi:.0%} for vintage {v} — verify opex assumptions")
+
+    vac = metrics.get("vacancy_pct")
+    if v is not None and v < 1980 and vac is not None and vac < 0.10:
+        warnings.append(f"Vacancy input {vac:.0%} below MFS floor: 10% for 1970s product")
+
     hard_fails = len(fails)
     if hard_fails == 0:
         rec = "PURSUE_LOI"
@@ -460,7 +564,7 @@ def fmt_pct(v):
 def fmt_num(v, prefix="$"):
     if v is None:
         return "N/A"
-    if isinstance(v, float) and v < 100:
+    if isinstance(v, float) and abs(v) < 100:
         return f"{v:.2f}x"
     return f"{prefix}{v:,.0f}"
 
@@ -626,9 +730,12 @@ def print_analysis(args, metrics, rec, passes, fails, warnings):
         f"{metrics['entry_cap']:.2f}%" if metrics["entry_cap"] else "N/A", "—", "—", "—")
     row("Exit Cap (est.)",
         "—", f"{metrics['exit_cap']:.2f}%" if metrics["exit_cap"] else "N/A", "—", "—")
-    row("DSCR",
+    row("DSCR (amortized)",
         fmt_num(metrics["dscr"], ""), "—", f"≥ {THRESHOLDS['dscr']:.2f}",
         "✅" if metrics["dscr"] and metrics["dscr"] >= THRESHOLDS["dscr"] else "❌" if metrics["dscr"] else "—")
+    if metrics.get("io_years") and metrics.get("dscr_io") and metrics["dscr_io"] != metrics["dscr"]:
+        row("DSCR (I/O yrs)",
+            fmt_num(metrics["dscr_io"], ""), "—", "info only", "—")
     row("Cash-on-Cash Yr1",
         fmt_pct(metrics["coc_yr1"]), "—", "—", "—")
     row("Cash-on-Cash Yr3",
@@ -683,6 +790,23 @@ def print_analysis(args, metrics, rec, passes, fails, warnings):
             print(f"  Equity Multiple     : {metrics['equity_multiple']:.2f}x")
         if metrics.get("irr_estimate"):
             print(f"  Levered IRR         : {metrics['irr_estimate']:.1%}")
+
+    # ── DSCR 1.25x max defensible offer (fully amortized) + rate sweep ──
+    go_price = metrics.get("go_price")
+    sweep    = metrics.get("go_price_sweep") or []
+    if go_price:
+        units_n = metrics.get("units")
+        print()
+        print(f"  DSCR {THRESHOLDS['dscr']:.2f}x MAX DEFENSIBLE OFFER (fully amortized debt, NOI held constant)")
+        print(f"  {'Rate':<8} {'Max Price':>14} {'$/Unit':>12}")
+        print(f"  {'-'*8} {'-'*14} {'-'*12}")
+        for s in sweep:
+            ppu_s = (s["price"] / units_n) if s["price"] and units_n else None
+            tag = "  ← underwritten rate" if abs(s["rate"] - metrics.get("loan_rate", 0)) < 1e-9 else ""
+            print(f"  {s['rate']:>6.2%}  {fmt_num(s['price']):>14} {fmt_num(ppu_s):>12}{tag}")
+        print(f"  Max defensible offer = {fmt_num(go_price)} at {metrics.get('loan_rate', 0):.2%}"
+              + (f" — asking is {fmt_num(metrics['asking'] - go_price)} above the ceiling"
+                 if metrics.get("asking") and metrics["asking"] > go_price else ""))
 
     print()
     if passes:
@@ -1602,6 +1726,46 @@ def print_om_summary(parsed):
 # Template by door count: ≤50 units → MF Schooled 0-50 v10, >50 → 50+ Unit Proforma
 # ─────────────────────────────────────────────
 
+def _verify_small_template_layout(ws):
+    """Guard against a repeat of the template-contamination bug (see comment on
+    DEAL_ANALYZER_SMALL_ID) — a wrong/renamed template must never silently get
+    written to. Checks stable row/column labels from the 0-50 v10 layout."""
+    checks = [
+        ("A18", "SCHEDULED INCOME"),
+        ("H18", "ANNUALIZED EXPENSES"),
+        ("J19", "Current"),
+        ("L19", "Proforma"),
+        ("H21", "Taxes"),
+        ("H22", "Insurance"),
+    ]
+    for cell, expected in checks:
+        actual = str(ws[cell].value or "").strip()
+        if actual.lower() != expected.lower():
+            raise SystemExit(
+                f"ERROR: Deal Analyzer 0-50 template layout changed or wrong template ID — "
+                f"refusing to write. Expected {cell}='{expected}', found '{actual}'. "
+                f"Verify DEAL_ANALYZER_SMALL_ID still points at the blanked v10 template."
+            )
+
+
+def _verify_large_template_layout(ws):
+    """Same guard for the 50+ Unit Proforma (Inputs sheet)."""
+    checks = [
+        ("B6",  "Purchase Price"),
+        ("B8",  "Physical Vacancy"),
+        ("S12", "Loan to Cost?"),
+        ("S13", "LTC or LTV"),
+    ]
+    for cell, expected in checks:
+        actual = str(ws[cell].value or "").strip()
+        if actual.lower() != expected.lower():
+            raise SystemExit(
+                f"ERROR: 50+ Unit Proforma template layout changed or wrong template ID — "
+                f"refusing to write. Expected {cell}='{expected}', found '{actual}'. "
+                f"Verify DEAL_ANALYZER_LARGE_ID still points at the correct template."
+            )
+
+
 def analyzer_sheet_name(args):
     units = getattr(args, 'units', 0) or 0
     tag = "50+ Proforma" if units > 50 else "Deal Analyzer 0-50"
@@ -1651,6 +1815,7 @@ def populate_analyzer_small(token, args, metrics=None):
 
     wb = openpyxl.load_workbook(local_path)
     ws = wb["INPUTS"]
+    _verify_small_template_layout(ws)
 
     # ── INPUTS sheet ──
     # Deal identity
@@ -1685,9 +1850,11 @@ def populate_analyzer_small(token, args, metrics=None):
         ws["R37"] = exit_cap / 100   # store as decimal (e.g. 6.0 → 0.06)
     ws["R38"] = 0.05                 # selling costs % (5% default)
 
-    # Expenses (APOD, J=current / L=proforma) — use OM actuals where passed via
-    # --taxes/--insurance/--utilities/--contracts/--repairs/--turnover; fall back
-    # to template defaults only when no OM actual is available.
+    # Expenses (APOD, J=current / L=proforma) — pass sourced actuals via
+    # --taxes/--insurance/--utilities/--contracts/--repairs/--turnover/--admin/
+    # --marketing. Source precedence (caller enforces when extracting docs):
+    # T-12 actuals → OM figures → MFS defaults + vintage-band ratio backfill
+    # (proforma only).
     zip_s = str(getattr(args, 'zip', '') or '')
     tax_rate = EFFECTIVE_TAX_RATE.get(zip_s, DEFAULT_TAX_RATE)
 
@@ -1697,6 +1864,8 @@ def populate_analyzer_small(token, args, metrics=None):
     om_contracts= getattr(args, 'contracts', None)
     om_repairs  = getattr(args, 'repairs', None)
     om_turnover = getattr(args, 'turnover', None)
+    om_admin    = getattr(args, 'admin', None)
+    om_marketing= getattr(args, 'marketing', None)
     pf_taxes    = getattr(args, 'taxes_proforma', None)
 
     # Taxes — write annual dollar totals only (J=current, L=proforma).
@@ -1735,21 +1904,73 @@ def populate_analyzer_small(token, args, metrics=None):
         ws["J22"] = 1500 * units
         ws["L22"] = 1500 * units
 
-    # Utilities
+    # Utilities / Contract services / Gen-Admin / Marketing — OM actuals when passed;
+    # unsourced lines get the MFS ratio backfill below.
     if om_utils is not None:
         _write_expense("J25", "I25", "L25", "K25", om_utils, units)
-
-    # Contract services
     if om_contracts is not None:
         _write_expense("J27", "I27", "L27", "K27", om_contracts, units)
+    if om_admin is not None:
+        _write_expense("J26", "I26", "L26", "K26", om_admin, units)
+    if om_marketing is not None:
+        _write_expense("J28", "I28", "L28", "K28", om_marketing, units)
 
-    # Repairs & maintenance
+    # Repairs & maintenance — OM actual to both columns; else MFS estimate, PROFORMA ONLY.
+    rm_estimate_per_unit = None
     if om_repairs is not None:
         _write_expense("J23", "I23", "L23", "K23", om_repairs, units)
+    elif units:
+        rm_estimate_per_unit = MFS_RM_PER_UNIT
+        ws["L23"] = rm_estimate_per_unit * units
+        ws["K23"] = rm_estimate_per_unit
+        print(f"  ⚠️  Proforma R&M estimated at ${rm_estimate_per_unit}/unit (MFS) — no OM/T-12 source; current column left blank.")
 
-    # Turnover
+    # Turnover — OM actual to both columns; else MFS estimate, PROFORMA ONLY.
+    turnover_estimate_per_unit = None
     if om_turnover is not None:
         _write_expense("J24", "I24", "L24", "K24", om_turnover, units)
+    elif units:
+        turnover_estimate_per_unit = MFS_TURNOVER_PER_UNIT
+        ws["L24"] = turnover_estimate_per_unit * units
+        ws["K24"] = turnover_estimate_per_unit
+        print(f"  ⚠️  Proforma turnover estimated at ${turnover_estimate_per_unit}/unit (MFS: $1,500/turned unit x 30% turnover) — no OM/T-12 source; current column left blank.")
+
+    # MFS ratio backfill — the remaining soft lines have no MFS per-unit rule, so
+    # back into them: plug the gap between known proforma opex and the MFS
+    # vintage-band expense-ratio midpoint. PROFORMA ONLY; each plugged cell gets
+    # an ESTIMATE note below.
+    backfill = {}
+    unsourced = [k for k, v in [("utilities", om_utils), ("admin", om_admin),
+                                ("contracts", om_contracts), ("marketing", om_marketing)]
+                 if v is None]
+    gpr_pf_annual = (mkt_gpr or curr_gpr or 0) * 12
+    if unsourced and units and gpr_pf_annual:
+        egi_pf = gpr_pf_annual * (1 - vacancy) + other_inc
+        taxes_pf_val = pf_taxes if pf_taxes is not None else \
+            (om_taxes * TAX_INFLATION if om_taxes is not None else asking * tax_rate * TAX_INFLATION)
+        known = (taxes_pf_val
+                 + (om_ins if om_ins is not None else 1500 * units)
+                 + (om_repairs if om_repairs is not None else MFS_RM_PER_UNIT * units)
+                 + (om_turnover if om_turnover is not None else MFS_TURNOVER_PER_UNIT * units)
+                 + (om_utils or 0) + (om_admin or 0) + (om_contracts or 0) + (om_marketing or 0)
+                 + MFS_MGMT_PCT * egi_pf + MFS_RESERVES_PER_UNIT * units)
+        backfill = mfs_expense_backfill(egi_pf, known, vintage, unsourced)
+        backfill_cells = {"utilities": ("L25", "K25"), "admin": ("L26", "K26"),
+                          "contracts": ("L27", "K27"), "marketing": ("L28", "K28")}
+        for key, amt in backfill.items():
+            tot_cell, unit_cell = backfill_cells[key]
+            ws[tot_cell] = amt
+            pu = _per_unit(amt, units)
+            if pu is not None:
+                ws[unit_cell] = pu
+        if backfill:
+            print(f"  ⚠️  Unsourced lines ({', '.join(backfill)}) plugged with ${sum(backfill.values()):,.0f} proforma "
+                  f"to hit the MFS {mfs_expense_ratio_mid(vintage):.1%} expense-ratio midpoint — ESTIMATES, replace with actuals in DD.")
+        else:
+            print(f"  ✓ Known expenses already reach the MFS {mfs_expense_ratio_mid(vintage):.1%} midpoint — "
+                  f"unsourced lines ({', '.join(unsourced)}) left blank.")
+    elif unsourced:
+        print(f"  ⚠️  Unsourced expense lines ({', '.join(unsourced)}) left blank — no GPR/units available for the MFS ratio backfill.")
 
     # ── SENIOR LOAN sheet — amortization ──
     ws_loan = wb["SENIOR LOAN"]
@@ -1794,6 +2015,16 @@ def populate_analyzer_small(token, args, metrics=None):
         elif units:
             _note("J22", f"Insurance ${1500*units:,.0f} = $1,500/unit KB floor. Replace with OM actual / live quote.")
             _note("L22", "Insurance KB floor — replace with live quote in DD.")
+        if rm_estimate_per_unit is not None:
+            _note("L23", f"MFS estimate — no OM/T-12 data (${rm_estimate_per_unit}/unit, vintage {vintage or 'unknown'}). Current column intentionally blank.")
+        if turnover_estimate_per_unit is not None:
+            _note("L24", f"MFS estimate — no OM/T-12 data (${turnover_estimate_per_unit}/unit = $1,500/turned unit x ~30% annual turnover). Current column intentionally blank.")
+        backfill_labels = {"utilities": ("L25", "Utilities"), "admin": ("L26", "Gen/Admin"),
+                           "contracts": ("L27", "Contract services"), "marketing": ("L28", "Marketing")}
+        for key, amt in backfill.items():
+            cell, label = backfill_labels[key]
+            _note(cell, f"{label} ${amt:,.0f} — ESTIMATE plugged to the MFS {mfs_expense_ratio_mid(vintage):.1%} vintage-band expense-ratio midpoint (no OM/T-12 source). Replace with actuals in DD. Current column intentionally blank.")
+        _note("L29", "Payroll — MFS: no onsite payroll at ≤50 units; third-party PM only (fee auto-calcs in the Management row). Add only if the OM shows real payroll.")
 
         # Unit mix comments
         if curr_gpr and units:
@@ -1817,6 +2048,10 @@ def populate_analyzer_small(token, args, metrics=None):
                 f"DSCR             : {dscr:.2f}x" if dscr else "DSCR             : N/A",
                 f"CoC Yr3          : {coc3:.1%}" if coc3 else "CoC Yr3          : N/A",
             ]
+            go_price_note = metrics.get("go_price")
+            if go_price_note:
+                ppu_note = f" (${go_price_note/units:,.0f}/unit)" if units else ""
+                note_lines += ["", f"DSCR 1.25x GO Price : ${go_price_note:,.0f}{ppu_note}"]
             rec  = metrics.get("_rec", "")
             if rec:
                 note_lines += ["", f"RECOMMENDATION: {rec}"]
@@ -1839,6 +2074,8 @@ def populate_analyzer_small(token, args, metrics=None):
             pass
 
     if mix:
+        if len(mix) > 14:
+            print(f"  ⚠️  Unit mix has {len(mix)} entries — the 0-50 template only fits 14; {len(mix)-14} dropped.")
         total_mix_units = sum(u.get("count", 0) for u in mix)
         for i, unit in enumerate(mix[:14]):
             rn     = 21 + i
@@ -1851,6 +2088,12 @@ def populate_analyzer_small(token, args, metrics=None):
             ws.cell(row=rn, column=2, value=unit.get("type", ""))
             ws.cell(row=rn, column=3, value=cur_r)
             ws.cell(row=rn, column=6, value=mkt_r or 0)
+            # Rewrite the row-total formulas — the template shipped with D22's
+            # missing (blanked in the 7/12 cleanup), which silently dropped every
+            # row-22+ unit from current income. Writing them per used row makes
+            # clones immune to template holes.
+            ws.cell(row=rn, column=4, value=f"=C{rn}*A{rn}")
+            ws.cell(row=rn, column=7, value=f"=F{rn}*A{rn}")
     elif units:
         # No unit mix — single row with avg per unit
         cur_per = round(curr_gpr / units, 0) if curr_gpr and units else None
@@ -1860,7 +2103,10 @@ def populate_analyzer_small(token, args, metrics=None):
         if cur_per: ws["C21"] = cur_per
         if mkt_per: ws["F21"] = mkt_per
 
-    return _upload_workbook_as_sheet(token, wb, analyzer_sheet_name(args), args)
+    file_id = _upload_workbook_as_sheet(token, wb, analyzer_sheet_name(args), args)
+    if metrics:
+        reconcile_analyzer(token, file_id, metrics, "small")
+    return file_id
 
 
 def populate_analyzer_large(token, args, metrics=None):
@@ -1895,6 +2141,7 @@ def populate_analyzer_large(token, args, metrics=None):
 
     wb = openpyxl.load_workbook(local_path)
     ws = wb["Inputs"]
+    _verify_large_template_layout(ws)
 
     # ── Property information ──
     if prop:    ws["D4"]  = prop
@@ -1923,6 +2170,8 @@ def populate_analyzer_large(token, args, metrics=None):
             pass
 
     if mix:
+        if len(mix) > 16:
+            print(f"  ⚠️  Unit mix has {len(mix)} entries — the 50+ template only fits 16; {len(mix)-16} dropped.")
         for i, unit in enumerate(mix[:16]):
             rn = 5 + i
             ws.cell(row=rn, column=12, value=unit.get("type", ""))            # L
@@ -1968,7 +2217,10 @@ def populate_analyzer_large(token, args, metrics=None):
     except Exception:
         pass  # comments are non-critical — never block the upload
 
-    return _upload_workbook_as_sheet(token, wb, analyzer_sheet_name(args), args)
+    file_id = _upload_workbook_as_sheet(token, wb, analyzer_sheet_name(args), args)
+    if metrics:
+        reconcile_analyzer(token, file_id, metrics, "large")
+    return file_id
 
 
 def _upload_workbook_as_sheet(token, wb, sheet_name, args=None):
@@ -1992,6 +2244,8 @@ def _upload_workbook_as_sheet(token, wb, sheet_name, args=None):
         folder_id = ensure_deal_folder(token, args)
         if folder_id:
             meta["parents"] = [folder_id]
+        else:
+            print(f"⚠️⚠️  NO DEAL FOLDER — '{sheet_name}' will upload to Drive ROOT, not the deal folder. Fix --address and re-run.")
     metadata = json.dumps(meta)
     boundary = "boundary_olive_tree_analyzer"
     body = (
@@ -2015,6 +2269,146 @@ def _upload_workbook_as_sheet(token, wb, sheet_name, args=None):
     print(f"   Drive ID : {file_id}")
     print(f"   Open     : https://docs.google.com/spreadsheets/d/{file_id}/edit")
     return file_id
+
+
+# ─────────────────────────────────────────────
+# Read-back reconciliation — sheet vs Python metrics engine
+#
+# calculate_metrics() (DSCR/CoC/IRR/EM) and the spreadsheet's own formulas are
+# two parallel engines that were never compared — a wrong cell write or template
+# drift would go unnoticed. This reads the uploaded sheet's computed cells back
+# via the Sheets API and diffs them against Python's numbers.
+#
+# Cell maps: (display name, label cell, value cell, expected label substring,
+# calculate_metrics() key, display kind "pct"|"x"). Refs are hardcoded and
+# anchored to a label check, same pattern as _verify_*_template_layout — if the
+# label doesn't match, the cell isn't trusted.
+# ─────────────────────────────────────────────
+
+RECON_CELLS_SMALL = [
+    ("Cash-on-Cash (Yr1)", "INPUTS!A50", "INPUTS!D50", "cash/cash yr1",  "coc_yr1",         "pct"),
+    ("Equity Multiple",    "INPUTS!F53", "INPUTS!G53", "equity multiple", "equity_multiple", "x"),
+    ("IRR",                "INPUTS!F54", "INPUTS!G54", "irr",             "irr_estimate",    "pct"),
+]
+# ponytail: the 0-50 v10 template never computes a DSCR cell anywhere in the
+# workbook (verified by a full-workbook label scan) — DSCR is reported "not
+# found" for this template rather than guessing a cell. Upgrade path: add a
+# lender-DSCR row to the template if Brian wants this checked automatically.
+
+RECON_CELLS_LARGE = [
+    ("DSCR (Yr1, amortized)",  "Inputs!B43",    "Inputs!E43",    "dscr",         "dscr",            "x"),
+    ("IRR (Levered, project)", "Waterfall!B24", "Waterfall!E24", "levered irr",  "irr_estimate",    "pct"),
+    ("Equity Multiple",        "Waterfall!B25", "Waterfall!E25", "equity multiple", "equity_multiple", "x"),
+]
+# ponytail: Cash-on-Cash skipped for the 50+ template — 'Pro Forma'!row62
+# ("Project Cash on Cash") is a monthly-column series with no single annual
+# cell to anchor, and Summary!"LP Avg Cash on Cash" is post-waterfall (not
+# comparable to Python's project-level CoC). Reported "not found". Upgrade
+# path: anchor a year-1/year-3 annualized CoC cell if this needs checking.
+
+RECON_TOLERANCE = {
+    "dscr":            0.10,   # ±0.10
+    "coc_yr1":         0.02,   # ±2.0 pts
+    "coc_yr3":         0.02,   # ±2.0 pts
+    "irr_estimate":    0.03,   # ±3.0 pts
+    "equity_multiple": 0.20,   # ±0.20x
+}
+
+# Static "not found" rows — known structurally absent from a template, not a
+# runtime failure. Printed first so the table always shows all 4 metrics.
+RECON_NOT_FOUND = {
+    "small": [("DSCR", "not computed by this template")],
+    "large": [("Cash-on-Cash", "no clean annual project-level cell")],
+}
+
+
+def _recon_fmt(val, kind):
+    if val is None:
+        return "N/A"
+    return f"{val:.1%}" if kind == "pct" else f"{val:.2f}x"
+
+
+def recon_classify(py_val, sheet_val, tol):
+    """Pure compare: (delta, status). status is 'OK', 'DRIFT', or 'N/A' (either
+    side missing). Split out from the live-fetch path so it's unit-testable
+    without hitting the Sheets API — see scripts/test_go_price.py."""
+    if py_val is None or sheet_val is None:
+        return None, "N/A"
+    delta = sheet_val - py_val
+    return delta, ("DRIFT" if abs(delta) > tol else "OK")
+
+
+def _sheets_batch_get(token, sheet_id, ranges):
+    r = requests.get(
+        f"{SHEETS_BASE}/{sheet_id}/values:batchGet",
+        headers=auth(token),
+        params=[("ranges", rng) for rng in ranges] + [("valueRenderOption", "UNFORMATTED_VALUE")],
+        timeout=30,
+    )
+    r.raise_for_status()
+    vrs = r.json().get("valueRanges", [])
+    out = {}
+    for rng, vr in zip(ranges, vrs):
+        vals = vr.get("values")
+        out[rng] = vals[0][0] if vals and vals[0] else None
+    return out
+
+
+def reconcile_analyzer(token, sheet_id, metrics, template):
+    """Read the just-uploaded Deal Analyzer's own computed cells back and diff
+    them against calculate_metrics(). Entirely non-fatal — any API/parse
+    failure prints one warning line and never blocks the run."""
+    try:
+        cells = RECON_CELLS_SMALL if template == "small" else RECON_CELLS_LARGE
+        label_cells = [c[1] for c in cells]
+        value_cells = [c[2] for c in cells]
+        ranges = label_cells + value_cells
+
+        got = _sheets_batch_get(token, sheet_id, ranges)
+        # Converted xlsx→Sheet formulas can recalc lazily — one retry.
+        if all(got.get(vc) is None for vc in value_cells):
+            import time
+            time.sleep(3)
+            got = _sheets_batch_get(token, sheet_id, ranges)
+
+        rows = [(name, "not found", note) for name, note in RECON_NOT_FOUND.get(template, [])]
+        for name, label_cell, value_cell, label_expect, py_key, kind in cells:
+            label_actual = str(got.get(label_cell) or "").strip().lower()
+            if label_expect not in label_actual:
+                rows.append((name, "not found", f"label mismatch at {label_cell}"))
+                continue
+            sheet_val = got.get(value_cell)
+            try:
+                sheet_val = float(sheet_val) if sheet_val is not None else None
+            except (TypeError, ValueError):
+                sheet_val = None
+            py_val = metrics.get(py_key)
+            delta, status = recon_classify(py_val, sheet_val, RECON_TOLERANCE[py_key])
+            rows.append((name, status, (_recon_fmt(py_val, kind), _recon_fmt(sheet_val, kind),
+                                         _recon_fmt(delta, kind) if delta is not None else "—")))
+
+        print(f"\n{'─'*66}")
+        print(f"  READ-BACK RECONCILIATION ({template} template)")
+        print(f"{'─'*66}")
+        print(f"  {'Metric':<24} {'Python':>10} {'Sheet':>10} {'Δ':>10}  Status")
+        print(f"  {'-'*24} {'-'*10} {'-'*10} {'-'*10}  {'-'*6}")
+        drift = False
+        for name, status, extra in rows:
+            if status == "not found":
+                print(f"  {name:<24} {'—':>10} {'—':>10} {'—':>10}  not found ({extra})")
+                continue
+            py_s, sheet_s, delta_s = extra
+            print(f"  {name:<24} {py_s:>10} {sheet_s:>10} {delta_s:>10}  {status}")
+            if status == "DRIFT":
+                drift = True
+        print(f"{'─'*66}")
+        if drift:
+            print("  ⚠️ RECONCILIATION DRIFT — trust the Sheet, not this table. Eyeball "
+                  "the inputs you passed in; a wrong cell write or template drift can "
+                  "silently misprice a deal.")
+        print()
+    except Exception as e:
+        print(f"⚠️  Reconciliation skipped ({e})")
 
 
 # ─────────────────────────────────────────────
@@ -2077,6 +2471,8 @@ def build_parser():
     p.add_argument("--contracts",     type=float, help="3rd party contract services annual (OM actual)")
     p.add_argument("--repairs",       type=float, help="Repairs & maintenance annual (OM actual or estimate)")
     p.add_argument("--turnover",      type=float, help="Turnover expense annual (OM actual or estimate)")
+    p.add_argument("--admin",         type=float, help="General/admin annual (OM actual)")
+    p.add_argument("--marketing",     type=float, help="Marketing annual (OM actual)")
     p.add_argument("--taxes-proforma",type=float, help="Proforma taxes annual (post-reassessment estimate); falls back to zip-rate formula if not set")
 
     # Sheet logging
