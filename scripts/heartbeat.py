@@ -39,12 +39,13 @@ SCAN_LOG = REPO / "output" / "daily_scan" / "scan.log"
 DB = REPO / "data" / "olive.db"
 
 # KeepAlive jobs must show a PID; calendar jobs must be loaded with exit 0.
+# (label, kind, plain-language name)
 EXPECTED_JOBS = {
-    "com.olivetree.trading-desk": "keepalive",
-    "com.olivetree.dailyscan": "calendar",
-    "com.olivetree.aios-autocommit": "calendar",
-    "com.olivetree.heartbeat": "calendar",
-    "com.olivetree.usage-audit": "calendar",
+    "com.olivetree.trading-desk": ("keepalive", "Trading desk (paper-trading loop)"),
+    "com.olivetree.dailyscan": ("calendar", "Daily deal scan (Crexi/LoopNet/FMLS listings)"),
+    "com.olivetree.aios-autocommit": ("calendar", "AIOS auto-commit (hourly git backup)"),
+    "com.olivetree.heartbeat": ("calendar", "Heartbeat (this 7:45am check)"),
+    "com.olivetree.usage-audit": ("calendar", "Monthly usage audit (1st of month)"),
 }
 
 
@@ -65,37 +66,41 @@ def check_launchd() -> list[tuple[bool, str]]:
         if len(parts) == 3:
             rows[parts[2]] = (parts[0], parts[1])  # (pid, last exit status)
     results = []
-    for label, kind in EXPECTED_JOBS.items():
+    for label, (kind, name) in EXPECTED_JOBS.items():
         if label not in rows:
-            results.append((False, f"{label}: NOT LOADED"))
+            results.append((False, f"{name}: NOT SCHEDULED — macOS lost the job; reload with `launchctl load ~/Library/LaunchAgents/{label}.plist`"))
             continue
         pid, status = rows[label]
         if kind == "keepalive":
             ok = pid != "-"
-            results.append((ok, f"{label}: {'running pid ' + pid if ok else 'NOT RUNNING (exit ' + status + ')'}"))
+            results.append((ok, f"{name}: running now (pid {pid})" if ok
+                            else f"{name}: DOWN — process not running, last exit code {status}"))
         else:
             ok = status == "0"
-            results.append((ok, f"{label}: loaded" + ("" if ok else f", last exit {status}")))
+            results.append((ok, f"{name}: scheduled, last run finished clean" if ok
+                            else f"{name}: scheduled, but last run FAILED (exit code {status}) — check its log"))
     return results
 
 
 def check_trading_log() -> tuple[bool, str]:
     age = _age_minutes(TRADING_LOG)
     if age is None:
-        return False, "trading-desk log: missing"
+        return False, "Trading desk activity: no log file — the desk has never written anything; is it installed?"
     # loop interval is 300s; 20 min of silence means the loop is wedged
     ok = age < 20
-    return ok, f"trading-desk log: last write {age:.0f}m ago" + ("" if ok else " — STALE")
+    return ok, (f"Trading desk activity: alive, last log write {age:.0f} min ago" if ok
+                else f"Trading desk activity: WEDGED — no log writes in {age:.0f} min (expects one every ~5); restart the desk")
 
 
 def check_daily_scan() -> tuple[bool, str]:
     age = _age_minutes(SCAN_LOG)
     if age is None:
-        return False, "daily scan: log missing"
+        return False, "Daily deal scan output: no scan log found — the scan has never run"
     # ponytail: 4-day threshold dodges weekend/7:45-vs-9:40 false alarms;
     # catches sustained failure, not a single miss
     ok = age < 60 * 24 * 4
-    return ok, f"daily scan: last run {age / 60 / 24:.1f}d ago" + ("" if ok else " — STALE")
+    return ok, (f"Daily deal scan output: last scan ran {age / 60 / 24:.1f} days ago" if ok
+                else f"Daily deal scan output: STALE — no scan in {age / 60 / 24:.1f} days; check the dailyscan job")
 
 
 def _google_token() -> str:
@@ -117,7 +122,7 @@ def _google_token() -> str:
 
 def check_morning_brief() -> tuple[bool, str]:
     if datetime.now().weekday() >= 5:
-        return True, "morning brief: weekend, not expected"
+        return True, "Morning Brief email: weekend — no brief expected today"
     try:
         tok = _google_token()
         r = requests.get(
@@ -126,9 +131,10 @@ def check_morning_brief() -> tuple[bool, str]:
             headers={"Authorization": f"Bearer {tok}"}, timeout=15,
         ).json()
         ok = bool(r.get("messages"))
-        return ok, "morning brief: delivered today" if ok else "morning brief: NOT in inbox today (cloud routine?)"
+        return ok, ("Morning Brief email: today's brief is in your inbox" if ok
+                    else "Morning Brief email: NOT in inbox yet — the 8am cloud routine may have failed; check claude.ai/code")
     except Exception as e:
-        return False, f"morning brief: check failed ({e})"
+        return False, f"Morning Brief email: couldn't check Gmail ({e})"
 
 
 def unreviewed_scripts() -> list[str]:
@@ -145,9 +151,9 @@ def check_db() -> tuple[bool, str]:
         con = sqlite3.connect(DB, timeout=5)
         n = con.execute("select count(*) from sqlite_master").fetchone()[0]
         con.close()
-        return True, f"olive.db: ok ({n} tables)"
+        return True, f"olive.db (CRM + deals + trading database): healthy, {n} tables readable"
     except Exception as e:
-        return False, f"olive.db: {e}"
+        return False, f"olive.db (CRM + deals + trading database): CAN'T OPEN — {e}"
 
 
 def main():
@@ -163,7 +169,8 @@ def main():
     checks.append(check_db())
 
     today = datetime.now()
-    print(f"OLIVE AIOS HEARTBEAT — {today:%a %b %d %H:%M}\n")
+    print(f"OLIVE AIOS HEARTBEAT — {today:%a %b %d %H:%M}")
+    print("  (GREEN = healthy, RED = needs your attention)\n")
     for ok, msg in checks:
         print(f"  {'GREEN' if ok else 'RED  '}  {msg}")
 
@@ -202,7 +209,8 @@ def main():
         print("\n  FRIDAY: run /q3-scoreboard.")
 
     n_ok = len(checks) - len(reds)
-    summary = f"{n_ok}/{len(checks)} green" if not reds else f"{len(reds)} RED: " + "; ".join(r[:60] for r in reds)
+    summary = (f"All {n_ok} systems green" if not reds
+               else f"{len(reds)} RED — " + "; ".join(r.split(":")[0] for r in reds))
     if new_deals:
         summary += f" · {len(new_deals)} new deal folder(s)"
     if stale:
