@@ -142,6 +142,7 @@ def update_env(access_token, refresh_token):
     # Atomic write — .env holds every secret; never risk a half-written file.
     tmp = ENV_FILE.with_suffix(".tmp")
     tmp.write_text("\n".join(new_lines) + "\n")
+    tmp.chmod(0o600)  # .env holds secrets — owner-only, survives the replace
     os.replace(tmp, ENV_FILE)
     print(f"✓ Tokens saved to .env")
 

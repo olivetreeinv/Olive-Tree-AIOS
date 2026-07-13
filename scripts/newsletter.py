@@ -19,6 +19,7 @@ import random
 import re
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from email.header import Header
 from email.mime.image import MIMEImage
@@ -371,14 +372,24 @@ def cmd_scan_unsubs(args):
     ]
     found_emails = set()
     for q in queries:
-        r = requests.get(
-            f"{GMAIL_BASE}/messages",
-            headers={"Authorization": f"Bearer {token}"},
-            params={"q": q, "maxResults": 100},
-            timeout=30,
-        )
-        r.raise_for_status()
-        for msg in r.json().get("messages", []):
+        messages, page_token = [], None
+        while True:  # paginate — a missed unsubscribe keeps getting mail
+            params = {"q": q, "maxResults": 100}
+            if page_token:
+                params["pageToken"] = page_token
+            r = requests.get(
+                f"{GMAIL_BASE}/messages",
+                headers={"Authorization": f"Bearer {token}"},
+                params=params,
+                timeout=30,
+            )
+            r.raise_for_status()
+            data = r.json()
+            messages.extend(data.get("messages", []))
+            page_token = data.get("nextPageToken")
+            if not page_token:
+                break
+        def _fetch_detail(msg):
             detail = requests.get(
                 f"{GMAIL_BASE}/messages/{msg['id']}",
                 headers={"Authorization": f"Bearer {token}"},
@@ -386,11 +397,15 @@ def cmd_scan_unsubs(args):
                 timeout=30,
             )
             detail.raise_for_status()
-            for h in detail.json().get("payload", {}).get("headers", []):
-                if h["name"] == "From":
-                    m = re.search(r"[\w.+-]+@[\w.-]+\.\w+", h["value"])
-                    if m and m.group(0).lower() != "brian@olivetreeinv.io":
-                        found_emails.add(m.group(0).lower())
+            return detail.json()
+
+        with ThreadPoolExecutor(max_workers=8) as pool:
+            for detail_json in pool.map(_fetch_detail, messages):
+                for h in detail_json.get("payload", {}).get("headers", []):
+                    if h["name"] == "From":
+                        m = re.search(r"[\w.+-]+@[\w.-]+\.\w+", h["value"])
+                        if m and m.group(0).lower() != "brian@olivetreeinv.io":
+                            found_emails.add(m.group(0).lower())
 
     if not found_emails:
         print(f"No UNSUBSCRIBE requests found in last {days} days.")

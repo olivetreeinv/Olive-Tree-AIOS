@@ -92,7 +92,10 @@ def _build_symbol_block(symbol: str, is_crypto: bool = False) -> str:
             from datetime import datetime as _dt
             candle_lines = []
             for b in reversed(bars_5m[:5]):
-                ts  = _dt.fromtimestamp(b["t"] / 1000).strftime("%H:%M")
+                # Alpaca returns ISO strings; Polygon-era data was epoch ms
+                t   = b["t"]
+                dt  = _dt.fromisoformat(t).astimezone() if isinstance(t, str) else _dt.fromtimestamp(t / 1000)
+                ts  = dt.strftime("%H:%M")
                 dir_arrow = "▲" if b["c"] >= b["o"] else "▼"
                 candle_lines.append(f"  {ts} {dir_arrow} o={b['o']}  h={b['h']}  l={b['l']}  c={b['c']}  v={int(b['v'])}")
             lines.append("5-min candles (recent):")

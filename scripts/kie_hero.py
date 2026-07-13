@@ -67,19 +67,28 @@ def credits() -> float | None:
 
 def _run_task(key, model, input_obj, out_path, poll_s=6, timeout_s=600) -> Path | None:
     """createTask -> poll -> download first result URL. None on any failure."""
-    r = requests.post(f"{BASE}/createTask", headers=_headers(key),
-                      json={"model": model, "input": input_obj}, timeout=60)
-    data = r.json()
+    try:
+        r = requests.post(f"{BASE}/createTask", headers=_headers(key),
+                          json={"model": model, "input": input_obj}, timeout=60)
+        r.raise_for_status()
+        data = r.json()
+    except requests.RequestException as e:
+        print(f"kie: createTask request failed ({e}) — falling back", file=sys.stderr)
+        return None
     if data.get("code") != 200 or not data.get("data", {}).get("taskId"):
         print(f"kie: createTask failed ({data.get('msg')}) — falling back", file=sys.stderr)
         return None
     task_id = data["data"]["taskId"]
+    print(f"kie: task {task_id} created (billed — recoverable via /recordInfo)", file=sys.stderr)
 
     deadline = time.time() + timeout_s
     while time.time() < deadline:
         time.sleep(poll_s)
-        rec = requests.get(f"{BASE}/recordInfo", headers=_headers(key),
-                           params={"taskId": task_id}, timeout=30).json()
+        try:
+            rec = requests.get(f"{BASE}/recordInfo", headers=_headers(key),
+                               params={"taskId": task_id}, timeout=30).json()
+        except requests.RequestException:
+            continue  # transient blip mid-poll must not abandon a billed task
         state = rec.get("data", {}).get("state")
         if state == "success":
             import json
@@ -89,7 +98,12 @@ def _run_task(key, model, input_obj, out_path, poll_s=6, timeout_s=600) -> Path 
                 return None
             out_path = Path(out_path)
             out_path.parent.mkdir(parents=True, exist_ok=True)
-            out_path.write_bytes(requests.get(urls[0], timeout=120).content)
+            try:
+                dl = requests.get(urls[0], timeout=120)
+                dl.raise_for_status()
+            except requests.RequestException:
+                continue  # result stays available — retry download next poll
+            out_path.write_bytes(dl.content)
             return out_path
         if state == "fail":
             print(f"kie: generation failed ({rec['data'].get('failMsg')}) — falling back", file=sys.stderr)
@@ -126,19 +140,29 @@ def generate_motion(image_url, out_path, prompt="Subtle slow cinematic push-in, 
     key = _key()
     if not key:
         return None
-    r = requests.post(f"{VEO_BASE}/generate", headers=_headers(key),
-                      json={"model": MOTION_MODEL, "prompt": prompt,
-                            "imageUrls": [image_url], "mode": "FIRST_AND_LAST_FRAMES_2_VIDEO"},
-                      timeout=60).json()
+    try:
+        resp = requests.post(f"{VEO_BASE}/generate", headers=_headers(key),
+                             json={"model": MOTION_MODEL, "prompt": prompt,
+                                   "imageUrls": [image_url], "mode": "FIRST_AND_LAST_FRAMES_2_VIDEO"},
+                             timeout=60)
+        resp.raise_for_status()
+        r = resp.json()
+    except requests.RequestException as e:
+        print(f"kie/veo: generate request failed ({e}) — falling back", file=sys.stderr)
+        return None
     task_id = r.get("data", {}).get("taskId")
     if r.get("code") != 200 or not task_id:
         print(f"kie/veo: generate failed ({r.get('msg')}) — falling back", file=sys.stderr)
         return None
+    print(f"kie/veo: task {task_id} created (billed — recoverable via /record-info)", file=sys.stderr)
     deadline = time.time() + 900
     while time.time() < deadline:
         time.sleep(10)
-        rec = requests.get(f"{VEO_BASE}/record-info", headers=_headers(key),
-                           params={"taskId": task_id}, timeout=30).json().get("data", {})
+        try:
+            rec = requests.get(f"{VEO_BASE}/record-info", headers=_headers(key),
+                               params={"taskId": task_id}, timeout=30).json().get("data", {})
+        except requests.RequestException:
+            continue  # transient blip mid-poll must not abandon a billed task
         flag = rec.get("successFlag")
         if flag == 1:
             resp = rec.get("response") or {}
@@ -150,7 +174,12 @@ def generate_motion(image_url, out_path, prompt="Subtle slow cinematic push-in, 
                 return None
             out_path = Path(out_path)
             out_path.parent.mkdir(parents=True, exist_ok=True)
-            out_path.write_bytes(requests.get(urls[0], timeout=180).content)
+            try:
+                dl = requests.get(urls[0], timeout=180)
+                dl.raise_for_status()
+            except requests.RequestException:
+                continue  # result stays available — retry download next poll
+            out_path.write_bytes(dl.content)
             return out_path
         if flag in (2, 3):
             print(f"kie/veo: failed ({rec.get('errorMessage')}) — falling back", file=sys.stderr)

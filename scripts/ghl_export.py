@@ -48,7 +48,13 @@ def _curl_config(version: str = "2021-07-28") -> str:
     )
 
 
+CURL_TIMEOUTS = ["--connect-timeout", "15", "--max-time", "120"]
+
+
 def _parse(result: subprocess.CompletedProcess, label: str) -> dict:
+    if result.returncode != 0:
+        print(f"  WARNING: curl failed ({label}, exit {result.returncode}). stderr: {result.stderr.strip()}", file=sys.stderr)
+        return {}
     if not result.stdout.strip():
         print(f"  WARNING: empty response ({label}). stderr: {result.stderr.strip()}", file=sys.stderr)
         return {}
@@ -59,24 +65,32 @@ def _parse(result: subprocess.CompletedProcess, label: str) -> dict:
         return {}
 
 
+def _run_curl(args: list[str], label: str, config: str) -> subprocess.CompletedProcess:
+    try:
+        return subprocess.run(args, input=config, capture_output=True, text=True, timeout=130)
+    except subprocess.TimeoutExpired:
+        print(f"  WARNING: curl timed out ({label})", file=sys.stderr)
+        return subprocess.CompletedProcess(args, returncode=1, stdout="", stderr="timed out")
+
+
 def ghl_get(path: str, params: dict | None = None, version: str = "2021-07-28") -> dict:
     url = f"{GHL_BASE}{path}"
     if params:
         qs = "&".join(f"{k}={v}" for k, v in params.items())
         url = f"{url}?{qs}"
     # ponytail: headers via stdin config — keeps token out of argv/ps
-    r = subprocess.run(
-        ["curl", "-s", "-K", "-", url],
-        input=_curl_config(version), capture_output=True, text=True,
+    r = _run_curl(
+        ["curl", "-s", "--fail-with-body", *CURL_TIMEOUTS, "-K", "-", url],
+        f"GET {path}", _curl_config(version),
     )
     return _parse(r, f"GET {path}")
 
 
 def ghl_post(path: str, body: dict) -> dict:
     # ponytail: headers via stdin config — keeps token out of argv/ps
-    r = subprocess.run(
-        ["curl", "-s", "-K", "-", "-X", "POST", f"{GHL_BASE}{path}", "-d", json.dumps(body)],
-        input=_curl_config(), capture_output=True, text=True,
+    r = _run_curl(
+        ["curl", "-s", "--fail-with-body", *CURL_TIMEOUTS, "-K", "-", "-X", "POST", f"{GHL_BASE}{path}", "-d", json.dumps(body)],
+        f"POST {path}", _curl_config(),
     )
     return _parse(r, f"POST {path}")
 

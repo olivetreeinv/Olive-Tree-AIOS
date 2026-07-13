@@ -19,6 +19,7 @@ import calendar
 import json
 import os
 import sys
+from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime
 from pathlib import Path
 
@@ -102,12 +103,24 @@ def cmd_sync(a):
     start, end, month = _month_bounds(a.month)
 
     total_new = 0
-    for site in numbers:
+    # Twilio call-log fetches are independent per site — run them concurrently,
+    # then do the DB writes serially (sqlite doesn't like concurrent writers).
+    with ThreadPoolExecutor(max_workers=min(8, len(numbers))) as pool:
+        calls_by_site = list(pool.map(
+            lambda s: _fetch_calls(sid, token, s["tracking_number"], start, end),
+            numbers,
+        ))
+
+    for site, calls in zip(numbers, calls_by_site):
         min_seconds = site["billing"].get("min_seconds", 60)
-        calls = _fetch_calls(sid, token, site["tracking_number"], start, end)
-        with engine.begin() as conn:
-            for c in calls:
-                dur = int(c.get("duration") or 0)
+        rows = [{
+            "sid": c["sid"], "slug": site["site_slug"],
+            "from_n": c.get("from"), "to_n": c.get("to"),
+            "start": c.get("start_time"), "dur": int(c.get("duration") or 0),
+            "billable": int(int(c.get("duration") or 0) >= min_seconds),
+        } for c in calls]
+        if rows:
+            with engine.begin() as conn:
                 conn.execute(text("""
                     INSERT INTO rr_leads
                         (call_sid, site_slug, from_number, to_number, start_time,
@@ -115,12 +128,7 @@ def cmd_sync(a):
                     VALUES (:sid, :slug, :from_n, :to_n, :start, :dur, :billable)
                     ON CONFLICT(call_sid) DO UPDATE SET
                         duration_sec=excluded.duration_sec, billable=excluded.billable
-                """), {
-                    "sid": c["sid"], "slug": site["site_slug"],
-                    "from_n": c.get("from"), "to_n": c.get("to"),
-                    "start": c.get("start_time"), "dur": dur,
-                    "billable": int(dur >= min_seconds),
-                })
+                """), rows)
         total_new += len(calls)
         print(f"  {site['site_slug']}: {len(calls)} call(s) synced for {month}")
     print(f"\n{total_new} call(s) synced across {len(numbers)} site(s).")

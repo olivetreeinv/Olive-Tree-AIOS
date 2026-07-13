@@ -34,7 +34,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from land_sheets import get_token, read_rows, upsert_row  # noqa: E402
+from land_sheets import bulk_upsert, get_token, read_rows, upsert_row  # noqa: E402
 
 TAB = "Land Builders"
 # Land Builders header order (land_setup.TABS):
@@ -187,15 +187,17 @@ def cmd_discover(a):
         print(f"No builder leads found for {zip_code}.")
         return
     token = get_token()
+    # header: Name|Company|State|City|Phone|Email|Markets|Avg$|Min|Max|Price|
+    #         Vol|Conditions|Timeline|Tier|Deals|LastContact|Notes|IntakePortal
+    items = []
     for L in leads:
-        # header: Name|Company|State|City|Phone|Email|Markets|Avg$|Min|Max|Price|
-        #         Vol|Conditions|Timeline|Tier|Deals|LastContact|Notes|IntakePortal
         row = ["", L["company"], L["state"], L["city"], L["phone"], "", zip_code,
                "", "", "", "", "", "", "", "unverified", 0,
                date.today().isoformat(),
                f"discovered via Google Places {date.today().isoformat()}", L["site"]]
-        upsert_row(token, TAB, 1, L["company"], row)  # dedup on Company
+        items.append((L["company"], row))  # dedup on Company
         print(f"  {L['company']:32} {L['phone']:16} {L['city']}, {L['state']}")
+    bulk_upsert(token, TAB, 1, items)
     print(f"\n{len(leads)} unverified leads in Land Builders for {zip_code}. "
           f"Call to capture buy box, then --add to verify.")
 

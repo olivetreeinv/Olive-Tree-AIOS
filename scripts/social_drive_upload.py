@@ -16,6 +16,7 @@ CLI:
 """
 from __future__ import annotations
 import argparse, glob, json, sys
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 import requests
 
@@ -54,14 +55,18 @@ def upload_carousel(slides_dir: str, date_str: str, title: str,
     """Upload all slide*.png in slides_dir. Returns {folder_id, urls:[...]}."""
     tok = get_token()
     sub = _find_or_make_folder(tok, f"{date_str} — {title}", parent)
-    urls = []
-    for p in sorted(glob.glob(f"{slides_dir}/slide*.png")):
+    paths = sorted(glob.glob(f"{slides_dir}/slide*.png"))
+
+    def _upload_one(p):
         fid = upload_file(tok, sub, p, display_name=Path(p).name)
         requests.post(f"{DRIVE}/files/{fid}/permissions",
                       headers={**_h(tok), "Content-Type": "application/json"},
                       data=json.dumps({"role": "reader", "type": "anyone"}),
                       timeout=30).raise_for_status()
-        urls.append(f"https://lh3.googleusercontent.com/d/{fid}")
+        return f"https://lh3.googleusercontent.com/d/{fid}"
+
+    with ThreadPoolExecutor(max_workers=5) as pool:
+        urls = list(pool.map(_upload_one, paths))  # map preserves slide order
     return {"folder_id": sub, "urls": urls}
 
 

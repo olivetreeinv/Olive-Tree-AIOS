@@ -181,7 +181,7 @@ def _get_token_via_playwright() -> tuple[str, dict]:
         )
 
     token_id = captured["token-id"]
-    print(f"[enumerate] token-id captured (first 20 chars: {token_id[:20]}…)")
+    print("[enumerate] token-id captured")
     return token_id, captured
 
 
@@ -310,11 +310,18 @@ def _split_audio(mp3: Path) -> list[Path]:
     """Split mp3 into ≤CHUNK_SECONDS chunks if > MAX_BYTES. Returns list of chunk paths."""
     if mp3.stat().st_size <= MAX_BYTES:
         return [mp3]
-    duration_r = subprocess.run(
-        ["ffprobe", "-v", "error", "-show_entries", "format=duration",
-         "-of", "default=noprint_wrappers=1:nokey=1", str(mp3)],
-        capture_output=True, text=True,
-    )
+    try:
+        duration_r = subprocess.run(
+            ["ffprobe", "-v", "error", "-show_entries", "format=duration",
+             "-of", "default=noprint_wrappers=1:nokey=1", str(mp3)],
+            capture_output=True, text=True, timeout=60,
+        )
+    except subprocess.TimeoutExpired:
+        print(f"[transcribe] WARN: ffprobe timed out on {mp3.name}")
+        return [mp3]
+    if duration_r.returncode != 0:
+        print(f"[transcribe] WARN: ffprobe failed on {mp3.name}: {duration_r.stderr.strip()[:200]}")
+        return [mp3]
     try:
         total_sec = float(duration_r.stdout.strip())
     except ValueError:
@@ -324,11 +331,18 @@ def _split_audio(mp3: Path) -> list[Path]:
     for i in range(n_chunks):
         start = i * CHUNK_SECONDS
         out = mp3.with_stem(f"{mp3.stem}_chunk{i:02d}")
-        subprocess.run(
-            ["ffmpeg", "-y", "-i", str(mp3), "-ss", str(start),
-             "-t", str(CHUNK_SECONDS), "-c", "copy", str(out)],
-            capture_output=True,
-        )
+        try:
+            r = subprocess.run(
+                ["ffmpeg", "-y", "-i", str(mp3), "-ss", str(start),
+                 "-t", str(CHUNK_SECONDS), "-c", "copy", str(out)],
+                capture_output=True, timeout=900,
+            )
+        except subprocess.TimeoutExpired:
+            print(f"[transcribe] WARN: ffmpeg chunk {i} timed out on {mp3.name}")
+            continue
+        if r.returncode != 0:
+            print(f"[transcribe] WARN: ffmpeg chunk {i} failed on {mp3.name}: {r.stderr.decode(errors='ignore')[:200]}")
+            continue
         if out.exists():
             chunks.append(out)
     return chunks or [mp3]

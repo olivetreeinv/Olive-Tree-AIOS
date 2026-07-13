@@ -110,15 +110,26 @@ def main():
     print(text)
 
     if args.email:
-        import subprocess, tempfile
+        import subprocess, tempfile, os
         from datetime import date
         with tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False) as f:
             f.write(text); path = f.name
-        subprocess.run([sys.executable, "scripts/daily_brief_cloud.py", "send",
-                        "--to", "brian@olivetreeinv.io",
-                        "--subject", f"Two-sided trade scan — {date.today():%b %d}",
-                        "--body-file", path], check=False)
-        print("\n  📧 Emailed.")
+        try:
+            send = subprocess.run([sys.executable, "scripts/daily_brief_cloud.py", "send",
+                            "--to", "brian@olivetreeinv.io",
+                            "--subject", f"Two-sided trade scan — {date.today():%b %d}",
+                            "--body-file", path], capture_output=True, text=True, timeout=120)
+            if send.returncode == 0:
+                print("\n  📧 Emailed.")
+            else:
+                print(f"\n  ✗ Email failed (exit {send.returncode}): {send.stderr.strip()[:300]}")
+        except subprocess.TimeoutExpired:
+            print("\n  ✗ Email failed: timed out after 120s")
+        finally:
+            try:
+                os.unlink(path)
+            except OSError:
+                pass
 
 
 if __name__ == "__main__":
