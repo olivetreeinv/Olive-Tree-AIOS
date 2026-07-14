@@ -46,6 +46,7 @@ EXPECTED_JOBS = {
     "com.olivetree.aios-autocommit": ("calendar", "AIOS auto-commit (hourly git backup)"),
     "com.olivetree.heartbeat": ("calendar", "Heartbeat (this 7:45am check)"),
     "com.olivetree.usage-audit": ("calendar", "Monthly usage audit (1st of month)"),
+    "com.olivetree.morning-deal-scan": ("calendar", "Morning deal scan (Crexi buy-box + broker replies, 8am)"),
 }
 
 
