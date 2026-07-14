@@ -87,10 +87,10 @@ def check_trading_log() -> tuple[bool, str]:
     age = _age_minutes(TRADING_LOG)
     if age is None:
         return False, "Trading desk activity: no log file — the desk has never written anything; is it installed?"
-    # loop interval is 300s; 20 min of silence means the loop is wedged
-    ok = age < 20
+    # v3 desk wakes hourly (--interval 3600) and logs one line per wake; 75 min of silence means the loop is wedged
+    ok = age < 75
     return ok, (f"Trading desk activity: alive, last log write {age:.0f} min ago" if ok
-                else f"Trading desk activity: WEDGED — no log writes in {age:.0f} min (expects one every ~5); restart the desk")
+                else f"Trading desk activity: WEDGED — no log writes in {age:.0f} min (expects one every ~60); restart the desk")
 
 
 def check_daily_scan() -> tuple[bool, str]:
@@ -150,8 +150,10 @@ def unreviewed_scripts() -> list[str]:
 def check_db() -> tuple[bool, str]:
     try:
         con = sqlite3.connect(DB, timeout=5)
-        n = con.execute("select count(*) from sqlite_master").fetchone()[0]
-        con.close()
+        try:
+            n = con.execute("select count(*) from sqlite_master").fetchone()[0]
+        finally:
+            con.close()
         return True, f"olive.db (CRM + deals + trading database): healthy, {n} tables readable"
     except Exception as e:
         return False, f"olive.db (CRM + deals + trading database): CAN'T OPEN — {e}"

@@ -71,14 +71,24 @@ def auth_headers(token):
 def search_messages(token, query, days):
     after = (datetime.now() - timedelta(days=days)).strftime("%Y/%m/%d")
     full_query = f"{query} after:{after}"
-    r = requests.get(
-        f"{GMAIL_BASE}/messages",
-        headers=auth_headers(token),
-        params={"q": full_query, "maxResults": 50},
-        timeout=30,
-    )
-    r.raise_for_status()
-    return r.json().get("messages", [])
+    messages, page_token = [], None
+    while True:  # paginate — an active inbox can exceed one page and silently drop deals
+        params = {"q": full_query, "maxResults": 100}
+        if page_token:
+            params["pageToken"] = page_token
+        r = requests.get(
+            f"{GMAIL_BASE}/messages",
+            headers=auth_headers(token),
+            params=params,
+            timeout=30,
+        )
+        r.raise_for_status()
+        data = r.json()
+        messages.extend(data.get("messages", []))
+        page_token = data.get("nextPageToken")
+        if not page_token:
+            break
+    return messages
 
 
 def get_message_full(token, msg_id):

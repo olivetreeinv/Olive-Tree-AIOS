@@ -204,7 +204,7 @@ def enumerate_posts(product_id: str = PRODUCT_ID, token_id: str = "") -> list[di
 
     if token_id:
         extra_hdrs: dict = {}
-        print(f"[enumerate] Using supplied token-id (first 20 chars: {token_id[:20]}…)")
+        print("[enumerate] Using supplied token-id")
     else:
         token_id, extra_hdrs = _get_token_via_playwright()
     hdrs = _api_headers(token_id, extra_hdrs)
