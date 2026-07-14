@@ -26,8 +26,11 @@ if [ -f "$REPO/.env" ]; then
   NTFY_TOPIC=$(env_val NTFY_TOPIC)
 fi
 
-# 1) macOS banner (shows at the Mac).
-osascript -e "display notification \"$MESSAGE\" with title \"$TITLE\" sound name \"Glass\""
+# 1) macOS banner (shows at the Mac). Pass text as args, not interpolated, so
+# quotes/newlines in the message can't break the AppleScript.
+osascript -e 'on run {t, m}' \
+          -e 'display notification m with title t sound name "Glass"' \
+          -e 'end run' "$TITLE" "$MESSAGE" 2>/dev/null
 
 # 1b) ntfy push — the reliable phone notifier (free, no carrier/verification needed).
 if [ -n "$NTFY_TOPIC" ]; then
