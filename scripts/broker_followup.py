@@ -35,9 +35,11 @@ TODAY_STR      = TODAY.strftime("%m/%d/%Y")
 FOLLOW_UP_INTERVAL_DAYS = 7
 MAX_FOLLOW_UPS = 3
 
+# keep in sync with references/buy-box.md
 MARKETS_BY_STATE = {
     "GA": [
         {"zip": "30341", "name": "Chamblee",   "strategy": "Value-add",            "price": "$90K–$140K/unit"},
+        {"zip": "30340", "name": "Doraville",  "strategy": "Value-add",            "price": "$80K–$130K/unit"},
         {"zip": "30080", "name": "Smyrna",     "strategy": "Stabilized w/ upside", "price": "$110K–$160K/unit"},
         {"zip": "30005", "name": "Alpharetta", "strategy": "Long-term hold",        "price": "$140K–$200K+/unit"},
     ],
@@ -46,6 +48,9 @@ MARKETS_BY_STATE = {
         {"zip": "37115", "name": "Madison",               "strategy": "Cash flow",            "price": None},
         {"zip": "37408", "name": "Chattanooga Southside", "strategy": "Selective/Off-market", "price": None},
         {"zip": "37087", "name": "Lebanon",               "strategy": "Value-add/Emerging",   "price": None},
+        {"zip": "37918", "name": "Knoxville",             "strategy": "Value-add/Emerging",   "price": None},
+        {"zip": "37804", "name": "Maryville",             "strategy": "Value-add/Emerging",   "price": None},
+        {"zip": "37615", "name": "Johnson City",          "strategy": "Value-add/Emerging",   "price": None},
     ],
     "AL": [
         {"zip": "35801", "name": "Huntsville Core",            "strategy": "Quality + upside", "price": None},

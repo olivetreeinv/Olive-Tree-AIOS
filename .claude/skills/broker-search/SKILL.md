@@ -10,7 +10,23 @@ Scans Crexi, LoopNet, and FMLS for commercial brokers who have **2 or more activ
 This skill is **not buy-box filtered.** Any broker with 2+ MF listings on any of the three platforms qualifies — regardless of zip code or unit count. The goal is to build the broadest possible broker network, especially for markets where active listings are thin.
 
 **Pipeline:**
-Crexi API + LoopNet platform + FMLS API → aggregate listings by broker → filter 2+ listings → cross-ref Google Drive Brokers List → add qualifying new brokers
+Crexi live browser scan (preferred) or Crexi/LoopNet email alerts + FMLS API → aggregate listings by broker → filter 2+ listings → cross-ref Google Drive Brokers List → enrich contacts → add qualifying new brokers
+
+**Three modes:**
+- **Crexi live scan (preferred, fully automated)** — `scripts/crexi_live.py` hits api.crexi.com directly. No browser, no API key, no login: the API is open to residential IPs (cloud/sandbox IPs get 403 — this is local-only, never a cloud routine). Full coverage of every active listing in a state. Proven 2026-07-13: 405/406 GA listings in one run.
+- **Browser mode** — needed exactly once per new state, to capture that state's search-polygon fixture (see below). Also handy for ad-hoc interactive pulls.
+- **Email-alert mode (fallback)** — `scripts/broker_search.py` scans Crexi/LoopNet alert emails + FMLS API. This is what cloud/headless-scheduled runs use.
+
+```bash
+# Automated scan — appends new 2+ brokers to the sheet (contact fields blank)
+python3 scripts/crexi_live.py --state GA
+python3 scripts/crexi_live.py --state GA --dry-run   # print only
+
+# New states need a one-time polygon capture first:
+ls references/crexi-polygons/    # states already captured
+```
+
+**After every crexi_live run with new brokers:** their email/phone are blank (Crexi never exposes contact info). Run the contact-enrichment step (Step 6 below) on the new names, then update the sheet rows.
 
 ---
 
@@ -39,7 +55,42 @@ New brokers are added with:
 
 ---
 
-## Running the script
+## Broker-site coverage — every broker gets their listings page swept
+
+Off-market deals post on a broker's own site before Crexi/LoopNet (see /deal-search "Off-market broker-site sweep"). Coverage is driven off the Brokers List sheet, so **every broker we add is automatically in scope** — the only per-broker step is discovering their listings-page URL once.
+
+**After adding brokers (crexi_live or manual), reconcile + discover URLs:**
+1. `python3 scripts/broker_sites.py --sync` — reconciles `references/broker-sites.json` against the sheet, auto-fills URLs for brokerages with a known pattern (Marcus & Millichap → `advisors/{first-last}`), and lists brokers still needing a URL.
+2. **Discover the gaps with agents** (batch ~15 names, general-purpose/sonnet). For each broker, WebSearch their brokerage's agent page / listings page. Return `Name | URL | type` where type ∈ `agent-listings` (server-rendered), `js-app` (client-rendered → @browser DOM sweep), `brokerage-all-listings`, or `none` (residential agents at KW / RE/MAX / Century 21 / eXp rarely have a per-agent listings page — record `none` so they're not re-checked).
+3. Append every result to `broker-sites.json` (including `none` entries — a recorded "no page" is resolved, and `--sync` skips it next time). CRE brokerages worth the discovery effort: M&M, Bull Realty, Cushman, Berkadia, GREA, Franklin Street, SVN, EDGE, Charles Hawkins, Fickling, Sherman & Hemstreet, Meybohm, Matthews, Colliers, Avison Young. Skip residential-only agents.
+4. Sweep: `python3 scripts/broker_sites.py` (curl, server-rendered) + the @browser DOM pass for `js-app` sites. Extract → screen vs buy box → cross-check `analyzed_deals.py` → flag pre-portal (not on `crexi_live --deals`).
+
+Registry entry shape: `{"broker","brokerage","url","status": active|js-app|404|none, "source": manual|template|discovered}`.
+
+---
+
+## Browser mode — one-time polygon capture + ad-hoc pulls
+
+Full procedure notes live in memory: `crexi-browser-api-scraping.md`. Requires the Claude in Chrome extension (`@browser` in VSCode — tools attach per-message).
+
+**Capturing a new state's polygon fixture (once per state):**
+1. Load `crexi.com/properties?types[]=Multifamily` and add the state via the location filter.
+2. `POST api.crexi.com/assets/search` ignores `placeIds` alone — it needs the polygon payload the site builds. Patch `XMLHttpRequest` AND `fetch` via `javascript_tool` to capture any request body containing `assets/search`, click a pagination link to trigger a search, then **persist the captured body to `localStorage`** (window state dies on navigation).
+3. Export via blob download: `new Blob([payload])` → `a.download = 'crexi-XX-polygon.json'` → click. Lands in `~/Downloads` (avoids the ~1KB `javascript_tool` output limit).
+4. Strip `latitudeMax/Min`, `longitudeMax/Min` (viewport clipping), `count`, `offset`, `userId`, `excludeAssetIds`, `mlScenario` → save as `references/crexi-polygons/<STATE>.json`.
+
+`scripts/crexi_live.py` handles everything else (paging, dedupe, per-asset brokers, sheet cross-ref/append) from that fixture — no browser needed again for that state.
+
+**Step 6 — Enrich contacts.**
+Fan out background agents (batches of ~17 brokers, general-purpose/sonnet) to find each broker's direct email + cell via WebSearch → brokerage agent-profile pages, then LinkedIn/directories. Rules: never fabricate; pattern-inferred emails marked `guessed`; prefer cell/direct over office lines; label phone type + source + confidence. Expected hit rate ~70% email, ~90% phone.
+
+**Step 7 — Append to the sheet** using `build_broker_row()` format (Tier B, Buy Box Sent = No, Status "New — Found via Platform Scan"; put confidence + Crexi profile slug in Notes).
+
+Gotchas: the Chrome extension blocks JS outputs that look like cookies/query strings — strip `?query` from hrefs before returning them. Don't navigate the working tab mid-run; all state is lost.
+
+---
+
+## Running the script (fallback mode)
 
 ```bash
 # Standard run — live API calls to all three platforms
@@ -165,7 +216,7 @@ Favor mom-and-pop brokers on sub-20-unit assets — you reach the decision-maker
 
 ## Suggested cadence
 
-Run **every Monday morning** as part of `/lets-get-to-work`, after deal-search. Platform listings update daily — weekly scans catch new brokers before competitors reach out.
+Run **every Monday morning** as part of `/lets-get-to-work`, after deal-search: `python3 scripts/crexi_live.py --state GA` (add states as polygons are captured), then enrich + draft buy-box intros for any new names. Platform listings update daily — weekly scans catch new brokers before competitors reach out. Crexi live scans are **local-only** (cloud IPs are blocked); cloud routines fall back to email-alert mode.
 
 ---
 
@@ -173,6 +224,10 @@ Run **every Monday morning** as part of `/lets-get-to-work`, after deal-search. 
 
 | Symptom | Fix |
 |---|---|
+| Browser tools not available | User must attach `@browser` in the prompt (VSCode) — the tools load per-message; fall back to script mode |
+| `assets/search` returns national results | Payload missing the polygon — re-capture via the XHR patch (Step 1) |
+| `javascript_tool` result `[BLOCKED...]` | Output looked like cookie/query-string data — strip URL query strings before returning |
+| Window state gone mid-run | Tab was navigated — re-run from the localStorage payload (Step 2) |
 | "Crexi API error" | Check `CREXI_API_KEY` in `.env` |
 | "LoopNet scraper rate-limited" | Add `LOOPNET_API_KEY` to `.env` for API access |
 | "FMLS source skipped" | Set `FMLS_API_KEY` in `.env` |

@@ -109,11 +109,11 @@ Proceed to selected phases only.
 After Brian selects a scope that includes any of Phases 1, 2, or 4, launch them as concurrent sub-agents before presenting any results. Do not run them sequentially.
 
 **Spawn simultaneously:**
-- **Agent A** — `python3 scripts/deal_search.py --days 7` (Phase 1: new listings)
-- **Agent B** — `python3 scripts/broker_search.py` (Phase 2: broker discovery)
-- **Agent C** — `python3 scripts/deal_inbox.py --days 7` (Phase 4: inbound deal emails)
+- **Agent A** — `python3 scripts/deal_search.py --days 7` + `python3 scripts/crexi_live.py --state GA --deals` + `python3 scripts/broker_sites.py` then extract/screen the fetched pages (Phase 1: new listings — email alerts + full live Crexi buy-box screen + off-market broker-site sweep per /deal-search SKILL.md)
+- **Agent B** — `python3 scripts/crexi_live.py --state GA` (Phase 2: broker discovery — live Crexi, add states as polygons are captured; `scripts/broker_search.py` for email-alert fallback). New brokers land with blank contact fields — enrich via background agents per /broker-search Step 6 before outreach.
+- **Agent C** — `python3 scripts/deal_inbox.py --days 7` + `python3 scripts/broker_replies.py --days 7` (Phase 4: inbound deal emails + replies from known brokers — deal emails to run, contact updates, replies needing Brian)
 
-Wait for all three to complete. Then run Phase 3 (broker follow-ups) using Agent B's new-broker output.
+Wait for all three to complete. Then run Phase 3 (broker follow-ups) using Agent B's new-broker output. If broker_replies reported contact updates, apply with `broker_replies.py --apply`; if it flagged DEAL emails, offer `/deal-analysis` on each.
 
 Merge all results and present in the Phase 1 → 2 → 3 → 4 order below. Brian sees one unified view, not three separate outputs.
 
@@ -429,10 +429,10 @@ Log any decisions from this session? (y/n)
 
 | Phase | Script / Skill |
 |---|---|
-| Phase 1 | `/deal-search` → `scripts/deal_search.py` |
-| Phase 2 | `/broker-search` → `scripts/broker_search.py` |
+| Phase 1 | `/deal-search` → `scripts/deal_search.py` + `scripts/crexi_live.py --deals` |
+| Phase 2 | `/broker-search` → `scripts/crexi_live.py` (live) / `scripts/broker_search.py` (email alerts) |
 | Phase 3 | `scripts/broker_followup.py` |
-| Phase 4 | `scripts/deal_inbox.py` |
+| Phase 4 | `scripts/deal_inbox.py` + `scripts/broker_replies.py` |
 | Phase 5 | `/deal-analysis` → `scripts/deal_analysis.py` |
 | Phase 6 | LOI draft using `/loi` → `scripts/loi.py` |
 

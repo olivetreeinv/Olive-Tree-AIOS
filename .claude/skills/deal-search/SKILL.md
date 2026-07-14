@@ -52,17 +52,23 @@ FMLS (First Multiple Listing Service) provides a REST API for active listings in
 
 ---
 
-## Active buy box (10 zips)
+## Active buy box
+
+Authoritative list: `references/buy-box.md` (14 markets). The zip map used by the scripts lives in `deal_inbox.py` `BUY_BOX` — keep both in sync.
 
 | Zip | Market |
 |---|---|
 | 30341 | Chamblee, GA |
+| 30340 / 30360 | Doraville, GA |
 | 30080 | Smyrna, GA |
 | 30005 | Alpharetta, GA |
 | 37207 | North Nashville, TN |
 | 37115 | Madison, TN |
 | 37408 | Chattanooga Southside, TN |
 | 37087 | Lebanon, TN |
+| 37918 | Knoxville, TN |
+| 37804 | Maryville, TN |
+| 37615 | Johnson City, TN |
 | 35801 | Huntsville Core, AL |
 | 35205 | Birmingham Urban, AL |
 | 35806 | Huntsville Growth, AL |
@@ -120,9 +126,37 @@ Duplicates checked by address and property name.
 
 ---
 
+## Live Crexi buy-box screen (no email alerts needed)
+
+`python3 scripts/crexi_live.py --state GA --deals` screens EVERY active Crexi listing in the state against the buy box (matches + near-misses with links). Full coverage, not just what alerts caught. Local-only (cloud IPs are 403'd by Crexi).
+
+---
+
+## Off-market broker-site sweep
+
+**Why:** off-market deals post on broker/brokerage sites FIRST — only hitting Crexi/LoopNet if they don't sell. Crexi/LoopNet are for broker discovery; the broker sites are the early deal source.
+
+**How:**
+1. `python3 scripts/broker_sites.py` — fetches every URL in `references/broker-sites.json` from the local IP, saves page text to `output/broker-sites/<date>/`.
+2. Have Claude (or a background agent) extract listings from the .txt files: property, city, units, price, status. Only count clearly-active listings; advisor pages mix in closed transactions.
+3. Screen vs buy box; cross-check names against `crexi_live --deals` output — a buy-box fit NOT on Crexi = pre-portal candidate → surface to Brian immediately with the broker's contact.
+4. Grow the registry: when a new broker is added to the Brokers List, add their listings-page URL to `broker-sites.json` (M&M advisors: `marcusmillichap.com/advisors/{first-last}`).
+
+**JS-app broker sites (M&M, Meybohm, GREA, MRG, Franklin Street) — need `@browser`:**
+These render listings client-side; curl gets only a shell or a server error (M&M's `/mm/related/contentSearch` fails outside a real browser). When Brian has `@browser` connected, sweep them by DOM extraction:
+1. Navigate to the advisor/listings URL, wait ~5s for the widget to populate.
+2. Run `scripts/mm_listings_extractor.js` (paste into `javascript_tool`) → returns `[{name, city, units, price, cap}]`. Chain navigate→wait→extract across advisors in one `browser_batch`.
+3. **Dedupe by office** — M&M advisors on the same team share one "Featured Listings" set (Mitchell/Welch/Shepard/Johnson/Brigel/Spaulding = one Atlanta inventory). Extract one advisor per office.
+4. Screen vs buy box; cross-check names against `crexi_live --deals` (GA) — a buy-box fit NOT on Crexi = pre-portal candidate. NOTE: cross-check against the SAME state's Crexi scan (a TN listing absent from the GA scan isn't proven pre-portal until checked vs Crexi TN).
+5. **Cross-check the Deals folder** (`scripts/analyzed_deals.py`) so already-worked-up deals don't re-surface: `match_analyzed(city_state, name, load_analyzed(token))` returns `(deal, strength)` — `address` = exact street match = ALREADY ANALYZED (skip); `city` = same city, verify it's not a dup before re-analyzing (a zip holds many properties, so city alone is only a nudge). `crexi_live --deals` already applies this automatically.
+
+Proven 2026-07-13: surfaced Windgate Apartments (Chattanooga, 22u, $2.55M) off Cosgrove's page, not yet on Crexi. M&M's GA listings had already migrated to Crexi; the TN ones hadn't — exactly the pre-portal edge.
+
+---
+
 ## Suggested cadence
 
-Run **every Monday morning** as part of `/lets-get-to-work`. Alerts accumulate over the week — Monday scan catches everything from the prior 7 days.
+Run **every Monday morning** as part of `/lets-get-to-work`: email-alert scan + `crexi_live --deals` + broker-site sweep. Alerts accumulate over the week — Monday scan catches everything from the prior 7 days.
 
 ---
 

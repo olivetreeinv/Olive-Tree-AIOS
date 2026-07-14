@@ -672,3 +672,6 @@ Brian's Claude Design brand kit implemented as a local page at `site/brand/index
 
 ## 2026-07-12 — .env GOOGLE_* keys filled + cloud routines unblocked
 Local `.env` GOOGLE_CLIENT_ID/SECRET/REFRESH_TOKEN were empty placeholders; filled from the gws CLI store (`gws auth export --unmasked` = source of truth). Same three values added to cloud env `env_01KRuwLNKnGrHiafdWsRi8Co` and verified end-to-end (Deal Docs routine rebuilt the deal index from cloud). All four Friday cloud routines now unblocked. Deal index updates only via the Friday routine or a local `deal_index.py` run — not per-workup.
+
+## 2026-07-13 — Doraville (30340/30360) added to buy box
+Added as market #14, a Chamblee-corridor extension (same value-add thesis, 1965–1990 vintage, $80K–$130K/unit — Chamblee at a discount). Market research scored it INVESTIGATE (45/100): vacancy 5.6% and compressing, 2026 deliveries at a decade low, Atlanta forecast #2 nationally for 2026 rent growth (4.1%), MHI $67K. Held back from PURSUE by +1% trailing rent growth and the paused Assembly Phase 2 (800 apts/retail/hotels). Rule attached: re-check Assembly Phase 2 before any Doraville LOI; a restart upgrades to PURSUE. Beware annexation-inflated population stats in OMs (14.7%/yr headline vs ~1.2% organic).

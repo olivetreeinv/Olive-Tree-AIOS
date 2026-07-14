@@ -31,14 +31,20 @@ SPREADSHEET_ID = "1VxOlof56s8GosrWkSctL-FMm7AoJKJ6YtM3GllMKVH4"
 SHEETS_BASE    = "https://sheets.googleapis.com/v4/spreadsheets"
 GMAIL_BASE     = "https://gmail.googleapis.com/gmail/v1/users/me"
 
+# keep in sync with references/buy-box.md
 BUY_BOX = {
     "30341": "Chamblee, GA",
+    "30340": "Doraville, GA",
+    "30360": "Doraville, GA",
     "30080": "Smyrna, GA",
     "30005": "Alpharetta, GA",
     "37207": "North Nashville, TN",
     "37115": "Madison, TN",
     "37408": "Chattanooga Southside, TN",
     "37087": "Lebanon, TN",
+    "37918": "Knoxville, TN",
+    "37804": "Maryville, TN",
+    "37615": "Johnson City, TN",
     "35801": "Huntsville Core, AL",
     "35205": "Birmingham Urban, AL",
     "35806": "Huntsville Growth, AL",
