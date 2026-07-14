@@ -532,7 +532,7 @@ def score_deal(metrics, zip_str):
 
     er = metrics.get("expense_ratio")
     if v is not None and er is not None:
-        band = (0.45, 0.55) if v < 1980 else (0.35, 0.45) if v < 2000 else (0.30, 0.40)
+        band = (0.45, 0.55) if v < 1980 else (0.35, 0.45) if v < 2010 else (0.30, 0.40)
         lo, hi = band
         if er < lo:
             warnings.append(f"Expense ratio {er:.1%} below MFS band {lo:.0%}-{hi:.0%} for vintage {v} — broker numbers may be understated")

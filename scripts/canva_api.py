@@ -77,6 +77,7 @@ def _update_env(key: str, value: str):
     # Write to a temp file in the same dir, then atomically replace
     tmp = ENV_FILE.with_suffix(ENV_FILE.suffix + ".tmp")
     tmp.write_text(content)
+    tmp.chmod(0o600)  # .env holds secrets — owner-only, survives the replace
     os.replace(tmp, ENV_FILE)
 
 

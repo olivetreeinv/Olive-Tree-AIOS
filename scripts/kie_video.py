@@ -81,7 +81,12 @@ def generate(prompt, out_path, *, resolution="1080p", aspect="16:9", duration=8,
                 return None
             out_path = Path(out_path)
             out_path.parent.mkdir(parents=True, exist_ok=True)
-            out_path.write_bytes(requests.get(urls[0], timeout=180).content)
+            try:
+                dl = requests.get(urls[0], timeout=180)
+                dl.raise_for_status()
+            except requests.RequestException:
+                continue  # result stays available — retry download next poll
+            out_path.write_bytes(dl.content)
             return out_path, urls[0]
         if state == "fail":
             print(f"kie: generation failed ({rec['data'].get('failMsg')})", file=sys.stderr)

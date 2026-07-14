@@ -38,3 +38,4 @@ data/trading_halt.json
 
 # Root scratch files
 scratchpad_*
+data/*.bak-*
