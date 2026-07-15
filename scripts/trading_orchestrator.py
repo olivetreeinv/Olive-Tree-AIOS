@@ -468,7 +468,7 @@ def main():
             return "equities"
         if is_extended_hours():
             return "extended"
-        return "idle"  # 8pm–4am ET: no active session
+        return "idle"  # outside regular + after-hours (incl. pre-market, overnight, weekends)
 
     if args.once:
         # Same fail-safe as --loop below: an Alpaca outage mid-cycle shouldn't crash
@@ -500,7 +500,7 @@ def main():
                         send_session_report(last_session, sess)
                 last_session = sess
                 if sess == "idle":
-                    print(f"  Markets closed (8pm–4am ET). Next check in {args.stop_interval}s.")
+                    print(f"  No active session (regular 9:30am–4pm, after-hours 4–8pm ET). Next session check in {args.interval}s.")
                 else:
                     run_cycle(dry_run=args.dry_run, market_session=sess,
                               with_insiders=args.insiders, with_options=args.options,

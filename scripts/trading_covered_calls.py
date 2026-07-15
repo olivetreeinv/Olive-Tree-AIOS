@@ -420,7 +420,7 @@ def _premium_floor(strike: float, dte: int) -> float:
 
 
 def _two_stage_sell(client, symbol: str, bid: float, ask: float, mid: float,
-                    strike: float, dte: int, dry_run: bool = False,
+                    strike: float, dte: int, qty: int = 1, dry_run: bool = False,
                     label: str = "") -> Optional[float]:
     """
     Two-stage sell for option contracts:
@@ -433,7 +433,7 @@ def _two_stage_sell(client, symbol: str, bid: float, ask: float, mid: float,
     floor = _premium_floor(strike, dte)
 
     # Stage 1: mid
-    oid = _submit_limit(client, symbol, 1, OrderSide.SELL, mid, dry_run=dry_run,
+    oid = _submit_limit(client, symbol, qty, OrderSide.SELL, mid, dry_run=dry_run,
                         label=f"{label} [stage1 mid=${mid:.2f}]")
     if dry_run:
         print(f"    [DRY RUN] Stage 2 would try bid=${bid:.2f} (floor=${floor:.2f})")
@@ -451,7 +451,7 @@ def _two_stage_sell(client, symbol: str, bid: float, ask: float, mid: float,
         print(f"  ⏭  {symbol}: bid ${bid:.2f} < floor ${floor:.2f} (yield gate) — "
               f"leaving naked for next cycle")
         return None
-    oid2 = _submit_limit(client, symbol, 1, OrderSide.SELL, stage2, dry_run=False,
+    oid2 = _submit_limit(client, symbol, qty, OrderSide.SELL, stage2, dry_run=False,
                          label=f"{label} [stage2 ${stage2:.2f} (bid−3%)]")
     fill2 = _fill_or_cancel(client, oid2, timeout=45)
     if fill2 is None:
@@ -460,14 +460,14 @@ def _two_stage_sell(client, symbol: str, bid: float, ask: float, mid: float,
 
 
 def _two_stage_buy(client, symbol: str, bid: float, ask: float, mid: float,
-                   dry_run: bool = False, label: str = "") -> Optional[float]:
+                   qty: int = 1, dry_run: bool = False, label: str = "") -> Optional[float]:
     """
     Two-stage buy-to-close for option contracts:
       Stage 1: limit at mid, wait 45s.
       Stage 2: if unfilled, resubmit at ASK (more aggressive to close winners).
     Returns fill price or None.
     """
-    oid = _submit_limit(client, symbol, 1, OrderSide.BUY, mid, dry_run=dry_run,
+    oid = _submit_limit(client, symbol, qty, OrderSide.BUY, mid, dry_run=dry_run,
                         label=f"{label} [stage1 mid=${mid:.2f}]")
     if dry_run:
         print(f"    [DRY RUN] Stage 2 would try ask=${ask:.2f}")
@@ -479,7 +479,7 @@ def _two_stage_buy(client, symbol: str, bid: float, ask: float, mid: float,
 
     # Mirror of the sell path: a touch over the ask so a stale snapshot can't strand us.
     stage2 = round(ask * 1.03, 2)
-    oid2 = _submit_limit(client, symbol, 1, OrderSide.BUY, stage2, dry_run=False,
+    oid2 = _submit_limit(client, symbol, qty, OrderSide.BUY, stage2, dry_run=False,
                          label=f"{label} [stage2 ${stage2:.2f} (ask+3%)]")
     fill2 = _fill_or_cancel(client, oid2, timeout=45)
     if fill2 is None:
@@ -539,7 +539,7 @@ def _sync(client, dry_run: bool = False):
                 # Shares are gone — either assigned or manually sold
                 if row.option_symbol and not option_in_alpaca:
                     # Both gone → assignment (call exercised)
-                    pnl = (row.premium_received or 0) + ((row.strike or 0) - (row.avg_cost or 0)) * 100
+                    pnl = (row.premium_received or 0) + ((row.strike or 0) - (row.avg_cost or 0)) * (row.shares_qty or 100)
                     print(f"  🔔 {row.underlying}: ASSIGNED — shares called away @ ${row.strike:.2f}  P&L ${pnl:+,.0f}")
                     _close_cc_pos(s, row, pnl=pnl, status="assigned")
                     send_alert("CC Desk — Assignment",

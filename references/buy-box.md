@@ -1,5 +1,5 @@
 # Olive Tree Investments — Buy Box
-**Last updated:** 2026-06-10
+**Last updated:** 2026-07-13
 **Owner:** Brian Norton, CEO
 
 This is the authoritative source for which markets and deal types Brian is actively pursuing. Reference this before running market research, underwriting a deal, or drafting broker outreach. If a deal doesn't fit a box below, it's a pass — don't spend time on it.
@@ -23,6 +23,7 @@ This is the authoritative source for which markets and deal types Brian is activ
 | 11 | Knoxville | 37918 | TN | Value-add / Emerging | open | Active |
 | 12 | Maryville | 37804 | TN | Value-add / Emerging | open | Active |
 | 13 | Johnson City | 37615 | TN | Value-add / Emerging | open | Active |
+| 14 | Doraville | 30340 (+30360) | GA | Value-add | $80K–$130K | Active |
 
 ---
 
@@ -59,6 +60,20 @@ These apply regardless of market. A deal that misses any of these is a pass befo
 **Pricing:** $90K–$140K/unit depending on condition
 **Move speed:** Fast — can move quickly on deals with clear upside
 **Red flags:** Fully renovated / fully priced, no MARTA proximity, heavy deferred maintenance with no upside story
+
+---
+
+### 1b — Doraville, GA (30340 primary, 30360)
+*Added 2026-07-13 as a Chamblee-corridor extension — same thesis, lower basis.*
+**Strategy:** Value-add (same as Chamblee)
+**Vintage target:** 1965–1990
+**What I'm looking for:**
+- Same profile as Chamblee: below-market rents, MARTA/Peachtree Industrial corridor, renovation upside
+- Proximity to Assembly (135-acre GM plant redevelopment, MARTA Gold Line terminus) — Phase 1 studios operating, Phase 2 mixed-use paused
+
+**Pricing:** $80K–$130K/unit — Chamblee at a discount
+**Move speed:** Measured — market scored INVESTIGATE (45/100, 2026-07-13); re-check Assembly Phase 2 status before any LOI. A Phase 2 restart upgrades this to PURSUE.
+**Red flags:** Same as Chamblee, plus: OMs citing the 14.7%/yr population headline (annexation artifact — organic growth is ~1.2%/yr)
 
 ---
 

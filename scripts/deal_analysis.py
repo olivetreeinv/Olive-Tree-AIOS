@@ -1165,11 +1165,19 @@ def fetch_gmail_attachments(token, message_id, dest_dir="/tmp"):
         if ext not in ("xlsx", "xls", "pdf") and mime not in (EXCEL_MIMES | PDF_MIMES):
             print(f"  Skipping: {fname}")
             continue
+        # Sanitize + dedupe serially — parallel downloads must never share a dest path,
+        # and never trust an email-supplied path (traversal/overwrite)
+        base = os.path.basename(fname) or "attachment"
+        safe, n = base, 2
+        while safe in (p["_dest_name"] for p in wanted):
+            root, dot_ext = os.path.splitext(base)
+            safe = f"{root}-{n}{dot_ext}"
+            n += 1
+        part["_dest_name"] = safe
         wanted.append(part)
 
     def download(part):
-        # Sanitize the filename — never trust an email-supplied path (traversal/overwrite)
-        fname  = os.path.basename(part["filename"]) or "attachment"
+        fname  = part["_dest_name"]
         att_id = part["body"]["attachmentId"]
         att = requests.get(
             f"{GMAIL_BASE}/messages/{message_id}/attachments/{att_id}",

@@ -267,7 +267,7 @@ def cmd_test_send(args):
 def cmd_send(args):
     # pre-send hygiene: flag UNSUBSCRIBE replies before building the audience
     print("Scanning for UNSUBSCRIBE replies...")
-    cmd_scan_unsubs(argparse.Namespace(days=30, dry_run=False))
+    cmd_scan_unsubs(argparse.Namespace(days=30, dry_run=args.dry_run))
 
     session = get_session()
     camp = _get_campaign(session, args.campaign)

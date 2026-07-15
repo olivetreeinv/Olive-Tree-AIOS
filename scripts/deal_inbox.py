@@ -31,14 +31,20 @@ SPREADSHEET_ID = "1VxOlof56s8GosrWkSctL-FMm7AoJKJ6YtM3GllMKVH4"
 SHEETS_BASE    = "https://sheets.googleapis.com/v4/spreadsheets"
 GMAIL_BASE     = "https://gmail.googleapis.com/gmail/v1/users/me"
 
+# keep in sync with references/buy-box.md
 BUY_BOX = {
     "30341": "Chamblee, GA",
+    "30340": "Doraville, GA",
+    "30360": "Doraville, GA",
     "30080": "Smyrna, GA",
     "30005": "Alpharetta, GA",
     "37207": "North Nashville, TN",
     "37115": "Madison, TN",
     "37408": "Chattanooga Southside, TN",
     "37087": "Lebanon, TN",
+    "37918": "Knoxville, TN",
+    "37804": "Maryville, TN",
+    "37615": "Johnson City, TN",
     "35801": "Huntsville Core, AL",
     "35205": "Birmingham Urban, AL",
     "35806": "Huntsville Growth, AL",
@@ -65,14 +71,24 @@ def auth_headers(token):
 def search_messages(token, query, days):
     after = (datetime.now() - timedelta(days=days)).strftime("%Y/%m/%d")
     full_query = f"{query} after:{after}"
-    r = requests.get(
-        f"{GMAIL_BASE}/messages",
-        headers=auth_headers(token),
-        params={"q": full_query, "maxResults": 50},
-        timeout=30,
-    )
-    r.raise_for_status()
-    return r.json().get("messages", [])
+    messages, page_token = [], None
+    while True:  # paginate — an active inbox can exceed one page and silently drop deals
+        params = {"q": full_query, "maxResults": 100}
+        if page_token:
+            params["pageToken"] = page_token
+        r = requests.get(
+            f"{GMAIL_BASE}/messages",
+            headers=auth_headers(token),
+            params=params,
+            timeout=30,
+        )
+        r.raise_for_status()
+        data = r.json()
+        messages.extend(data.get("messages", []))
+        page_token = data.get("nextPageToken")
+        if not page_token:
+            break
+    return messages
 
 
 def get_message_full(token, msg_id):
