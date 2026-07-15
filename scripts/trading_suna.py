@@ -10,8 +10,8 @@ Reuses v2's tested primitives (option fetch, quotes, two-stage fills, order
 submit, sync/assignment detection, the TradingCCPosition table) so `--status`,
 `--report`, and assignment handling all work unchanged. Only what makes it *Suna*
 lives here: movers discovery, premium-band ranking, entry-timing filter,
-share-first entry, ~0.45Δ weekly calls, the Wednesday roll trigger, and the
-underwater repair ladder.
+share-first multi-lot entry (sized to the $10k position cap), ~0.45Δ weekly
+calls, the Wednesday roll trigger, and the underwater repair ladder.
 
 Cycle:  SYNC (reused) → MANAGE → COVER → ENTER (share-first) → WHEEL
 
@@ -157,6 +157,14 @@ def premium_band_ok(premium: float, price: float) -> tuple[bool, str]:
     return True, f"prem {pct:.2%}/wk"
 
 
+def position_lots(price: float, avail: float) -> int:
+    """How many 100-share lots to buy: fill the per-position cap ($10k), bounded
+    by the book's available cash. Suna sizes into a name, not one token lot."""
+    if price <= 0:
+        return 0
+    return int(min(CC_MAX_POSITION_USD, avail) // (price * 100))
+
+
 def already_ripped(symbol: str) -> bool:
     """Entry-timing filter: True if the stock already surged this week (skip the
     chase). 5-day close-to-now return above RIP_5D_PCT. Fail-open (can't tell → allow)."""
@@ -269,15 +277,16 @@ def _manage(client, dry_run: bool = False):
             bid, ask, mid = _option_quote(row.option_symbol)
             if mid <= 0:
                 continue
+            contracts = max(1, (row.shares_qty or 0) // 100)
             prem_in = row.premium_received or 0
             # Profit-close: bought back for ≤ (1−60%) of premium collected.
-            if prem_in > 0 and mid * 100 <= prem_in * (1 - CC_PROFIT_CLOSE):
-                print(f"  💰 {row.underlying}: profit-close — buy back ${mid*100:,.0f} "
+            if prem_in > 0 and mid * 100 * contracts <= prem_in * (1 - CC_PROFIT_CLOSE):
+                print(f"  💰 {row.underlying}: profit-close — buy back ${mid*100*contracts:,.0f} "
                       f"vs ${prem_in:,.0f} collected")
                 fill = _two_stage_buy(client, row.option_symbol, bid, ask, mid,
-                                      dry_run=dry_run, label="profit-close")
+                                      qty=contracts, dry_run=dry_run, label="profit-close")
                 if fill is not None and not dry_run:
-                    row.realized_pnl = (row.realized_pnl or 0) + (prem_in - fill * 100)
+                    row.realized_pnl = (row.realized_pnl or 0) + (prem_in - fill * 100 * contracts)
                     row.option_symbol = None; row.option_type = None
                     row.strike = 0; row.expiry = None; row.premium_received = 0
                     s.commit()
@@ -298,6 +307,7 @@ def _manage(client, dry_run: bool = False):
 def _roll(client, s, row, spot, buyback, dry_run):
     """Roll an ITM weekly call out (+1 week) and up, net-credit only; else let it
     ride to assignment (the wheel picks it up)."""
+    contracts = max(1, (row.shares_qty or 0) // 100)
     bid, ask, mid = buyback
     snaps = _get_option_snapshots(row.underlying, opt_type="call", dte_min=SUNA_DTE_MIN)
     # Roll target: higher strike than current, above spot, next weekly.
@@ -308,19 +318,20 @@ def _roll(client, s, row, spot, buyback, dry_run):
     net_credit = nxt["premium"] - mid            # sell new − buy back old, per share
     if net_credit <= 0:
         print(f"  ↪  {row.underlying}: roll would be a net debit "
-              f"(${net_credit*100:,.0f}) — ride to assignment, wheel handles it")
+              f"(${net_credit*100*contracts:,.0f}) — ride to assignment, wheel handles it")
         return
     print(f"  🔁 {row.underlying}: roll ${row.strike:g}→${nxt['strike']:g} "
-          f"{row.expiry}→{nxt['expiry']} net credit ${net_credit*100:,.0f}")
+          f"{row.expiry}→{nxt['expiry']} net credit ${net_credit*100*contracts:,.0f}")
     if dry_run:
         return
-    close_fill = _two_stage_buy(client, row.option_symbol, bid, ask, mid, label="roll-close")
+    close_fill = _two_stage_buy(client, row.option_symbol, bid, ask, mid,
+                                qty=contracts, label="roll-close")
     if close_fill is None:
         return
     # Book the close and clear the option NOW — if the new sell fails below, the lot
     # is left cleanly uncovered so _cover re-covers it next cycle (never stranded
     # marked-covered against a contract that no longer exists in Alpaca).
-    row.realized_pnl = (row.realized_pnl or 0) + (row.premium_received or 0) - close_fill * 100
+    row.realized_pnl = (row.realized_pnl or 0) + (row.premium_received or 0) - close_fill * 100 * contracts
     row.option_symbol = None; row.option_type = None
     row.strike = 0; row.expiry = None; row.premium_received = 0
     s.commit()
@@ -328,14 +339,14 @@ def _roll(client, s, row, spot, buyback, dry_run):
     if n_mid <= 0:
         n_bid, n_ask, n_mid = nxt["bid"], nxt["ask"], nxt["premium"]
     fill = _two_stage_sell(client, nxt["symbol"], n_bid, n_ask, n_mid,
-                           nxt["strike"], nxt["dte"], label="roll-open")
+                           nxt["strike"], nxt["dte"], qty=contracts, label="roll-open")
     if fill is not None:
         row.option_symbol = nxt["symbol"]; row.option_type = "call"
-        row.strike = nxt["strike"]; row.expiry = nxt["expiry"]; row.premium_received = fill * 100
+        row.strike = nxt["strike"]; row.expiry = nxt["expiry"]; row.premium_received = fill * 100 * contracts
         s.commit()
         send_alert("Suna Desk — Roll",
                    f"🔁 {row.underlying} rolled to ${nxt['strike']:g} {nxt['expiry']} "
-                   f"(+${net_credit*100:,.0f} credit)")
+                   f"(+${net_credit*100*contracts:,.0f} credit)")
     else:
         print(f"  ⚠️  {row.underlying}: closed old call but new sell unfilled — "
               f"lot left uncovered, _cover retries next cycle")
@@ -382,24 +393,25 @@ def _cover(client, dry_run: bool = False):
 
 
 def _sell_call_row(client, s, row, call, spot, label, dry_run):
+    contracts = max(1, (row.shares_qty or 0) // 100)
     yld = _annualized_yield(call["premium"], call["strike"], call["dte"])
     ok, why = premium_band_ok(call["premium"], spot)
     print(f"  🧾 {row.underlying}: sell {call['symbol']} exp {call['expiry']} "
-          f"strike=${call['strike']:g} prem=${call['premium']*100:,.0f} "
+          f"strike=${call['strike']:g} prem=${call['premium']*100*contracts:,.0f} "
           f"({why}, {yld:.0%}/yr) [{label}]")
     b, a, m = _option_quote(call["symbol"])
     if m <= 0:
         b, a, m = call["bid"], call["ask"], call["premium"]
     fill = _two_stage_sell(client, call["symbol"], b, a, m, call["strike"], call["dte"],
-                           dry_run=dry_run, label=label)
+                           qty=contracts, dry_run=dry_run, label=label)
     if fill is not None and not dry_run:
         row.option_symbol = call["symbol"]; row.option_type = "call"
         row.strike = call["strike"]; row.expiry = call["expiry"]
-        row.premium_received = fill * 100
+        row.premium_received = fill * 100 * contracts
         s.commit()
         send_alert(f"Suna Desk — {label.title()}",
                    f"🧾 {row.underlying} sold ${call['strike']:g} call {call['expiry']} "
-                   f"for ${fill*100:,.0f}")
+                   f"for ${fill*100*contracts:,.0f}")
 
 
 # ── Step 4: ENTER (share-first on the week's movers pool) ──────────────────────
@@ -445,7 +457,7 @@ def _enter(client, dry_run: bool = False):
                     q = get_quote(tkr); price = q.get("last") or q.get("ask") or 0
                 except Exception:
                     price = 0
-            if not price or price * 100 > CC_MAX_POSITION_USD or price < 10:
+            if not price or price < 10:
                 continue
             if already_ripped(tkr):
                 print(f"  ⏭  {tkr}: already ripped this week — wait for pullback")
@@ -463,9 +475,10 @@ def _enter(client, dry_run: bool = False):
             if not ok:
                 print(f"  ⏭  {tkr}: {why}")
                 continue
-            cost = price * 100
-            if cost > avail:
+            lots = position_lots(price, avail)
+            if lots < 1:
                 continue
+            cost = price * 100 * lots
             # Structural-drop screen (Haiku) — only for meaningful droppers, and only
             # now that the name has cleared every cheap filter, so we spend tokens on
             # names we'd actually buy. Buy the overreaction, skip the broken business.
@@ -475,21 +488,21 @@ def _enter(client, dry_run: bool = False):
                 if structural:
                     print(f"  🚩 {tkr}: structural drop — {why_drop} — skip")
                     continue
-            print(f"  🛒 ENTER {tkr}: buy 100sh ~${price:.2f} (${cost:,.0f}), "
+            print(f"  🛒 ENTER {tkr}: buy {lots*100}sh ~${price:.2f} (${cost:,.0f}), "
                   f"sell ${call['strike']:g} call {call['expiry']} "
-                  f"prem=${call['premium']*100:,.0f} ({why}) [{sector}]")
+                  f"prem=${call['premium']*100*lots:,.0f} ({why}) [{sector}]")
             if dry_run:
                 sector_counts[sector] += 1; avail -= cost; entered += 1
                 continue
             # Buy shares (marketable limit a touch above ask), then cover.
-            oid = _submit_limit(client, tkr, 100, OrderSide.BUY, round(price * 1.003, 2),
+            oid = _submit_limit(client, tkr, 100 * lots, OrderSide.BUY, round(price * 1.003, 2),
                                 label="share buy")
             sh_fill = _fill_or_cancel(client, oid, timeout=45)
             if sh_fill is None:
                 print(f"  ⏳ {tkr}: share buy unfilled — retry next cycle")
                 continue
             row = TradingCCPosition(
-                underlying=tkr, shares_qty=100, avg_cost=sh_fill,
+                underlying=tkr, shares_qty=100 * lots, avg_cost=sh_fill,
                 status="open", opened_at=datetime.now(timezone.utc).isoformat(),
             )
             s.add(row); s.commit()
@@ -497,15 +510,15 @@ def _enter(client, dry_run: bool = False):
             if m <= 0:
                 b, a, m = call["bid"], call["ask"], call["premium"]
             fill = _two_stage_sell(client, call["symbol"], b, a, m, call["strike"],
-                                   call["dte"], label="cover-on-entry")
+                                   call["dte"], qty=lots, label="cover-on-entry")
             if fill is not None:
                 row.option_symbol = call["symbol"]; row.option_type = "call"
                 row.strike = call["strike"]; row.expiry = call["expiry"]
-                row.premium_received = fill * 100
+                row.premium_received = fill * 100 * lots
                 s.commit()
             send_alert("Suna Desk — Entry",
-                       f"🛒 {tkr}: 100sh @ ${sh_fill:.2f} + ${call['strike']:g} call "
-                       f"{call['expiry']} for ${(fill or 0)*100:,.0f}")
+                       f"🛒 {tkr}: {lots*100}sh @ ${sh_fill:.2f} + ${call['strike']:g} call "
+                       f"{call['expiry']} for ${(fill or 0)*100*lots:,.0f}")
             sector_counts[sector] += 1; avail -= cost; entered += 1
         if entered == 0:
             print("  No entries passed movers → premium-band → timing filters.")
@@ -593,7 +606,12 @@ def _snap(sym, delta, bid, ask):
 
 def _test():
     from datetime import timedelta
-    fri = (date.today() + timedelta(days=(4 - date.today().weekday()) % 7 or 7))
+    # Next Friday that's still >= SUNA_DTE_MIN out, so the live DTE filter in
+    # _sellable() doesn't reject the fixture depending on what weekday the test runs.
+    days_out = (4 - date.today().weekday()) % 7
+    if days_out < SUNA_DTE_MIN:
+        days_out += 7
+    fri = date.today() + timedelta(days=days_out)
     exp = fri.strftime("%y%m%d")
 
     def occ(strike, kind="C"):
@@ -650,6 +668,13 @@ def _test():
         assert structural_drop_screen("ERRS_XYZ")[0] is False
     finally:
         _classify_drop = _orig
+
+    # Lot sizing: fill the $10k cap, bounded by available cash.
+    assert position_lots(25.0, 50_000) == 4      # $10k cap → 4 lots
+    assert position_lots(80.0, 50_000) == 1      # $8k lot, 2 would breach cap
+    assert position_lots(120.0, 50_000) == 0     # one lot > $10k cap → no entry
+    assert position_lots(25.0, 3_000) == 1       # cash-bound below the cap
+    assert position_lots(25.0, 2_000) == 0       # can't afford one lot
 
     print("✅ trading_suna self-check passed")
 
