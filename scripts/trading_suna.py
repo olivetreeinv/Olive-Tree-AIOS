@@ -606,7 +606,12 @@ def _snap(sym, delta, bid, ask):
 
 def _test():
     from datetime import timedelta
-    fri = (date.today() + timedelta(days=(4 - date.today().weekday()) % 7 or 7))
+    # Next Friday that's still >= SUNA_DTE_MIN out, so the live DTE filter in
+    # _sellable() doesn't reject the fixture depending on what weekday the test runs.
+    days_out = (4 - date.today().weekday()) % 7
+    if days_out < SUNA_DTE_MIN:
+        days_out += 7
+    fri = date.today() + timedelta(days=days_out)
     exp = fri.strftime("%y%m%d")
 
     def occ(strike, kind="C"):

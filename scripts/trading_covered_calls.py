@@ -3,6 +3,12 @@
 trading_covered_calls.py — Premium Desk v2: CSP-first wheel trader for the
 Olive Tree Trading Desk.
 
+RETIRED as a strategy (2026-07-15) — the orchestrator only runs Suna v3
+(trading_suna.py) now. This module stays because trading_suna.py imports its
+order/fill/position primitives (_two_stage_sell, _submit_limit, TradingCCPosition,
+etc). Running this file's --once/--loop directly still works but nothing
+schedules it anymore.
+
 Pure rules, NO LLM calls (except the opt-in AI event-screen pass in the
 screener). One run = one idempotent manage cycle:
   1. SYNC   — reconcile Alpaca positions with DB
@@ -54,7 +60,10 @@ _PAPER = True  # hard-coded — never flip without explicit Brian approval
 
 # ── Config: book + sizing ─────────────────────────────────────────────────────
 CC_BOOK_USD         = 50_000
-CC_MAX_UNDERLYINGS  = 8
+CC_MAX_UNDERLYINGS  = 12          # raised from 8 (2026-07-15): 8x$10k cap already covered the
+                                   # full $47.5k deployable, real blocker was legacy 1-lot v2
+                                   # positions occupying slots; more slots let full-sized v3
+                                   # entries open alongside them instead of waiting them out
 CC_MAX_POSITION_USD = 10_000      # <=20% of book per underlying (100sh lot <= $100/share)
 CC_MAX_PER_SECTOR   = 2           # max underlyings per SECTOR bucket (see trading_screener.SECTOR)
 CC_CASH_BUFFER      = 0.05        # keep >=5% of book in cash
@@ -1203,7 +1212,7 @@ def _self_check():
     # captured takes the profit-close branch, not the roll branch.
     assert _should_profit_close(100.0, 40.0),  "dte<=21, 60% captured → profit-close should trigger"
     assert not _should_profit_close(100.0, 50.0), "dte<=21, 50% captured → falls through to roll-for-credit"
-    assert CC_MAX_POSITION_USD == 10_000 and CC_MAX_UNDERLYINGS == 8 and CC_MAX_PER_SECTOR == 2
+    assert CC_MAX_POSITION_USD == 10_000 and CC_MAX_UNDERLYINGS == 12 and CC_MAX_PER_SECTOR == 2
     print("  ✅ 21-DTE trigger: profit-close checked first, roll-for-credit otherwise; sizing constants set")
 
     print("\n  All CC self-checks passed. ✅")

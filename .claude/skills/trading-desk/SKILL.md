@@ -9,7 +9,7 @@ Paper-trading income desk. Covered-call/wheel book is PRIMARY. All paper money u
 
 ## Premium Desk v3 — Kenneth Suna weekly wheel (LIVE since 2026-07-10, trades from Mon 2026-07-13)
 
-The desk now runs **Suna's weekly share-first income wheel** by default (launchd plist runs `--loop --suna`). It supersedes the v2 monthly CSP-first wheel described below, which is still fully wired and runs if `--suna` is dropped. Full spec + rationale: `wiki/trading-desk/_suna-redesign-spec.md`; decision: `decisions/log.md` 2026-07-10. Source: `wiki/trading-desk/kenneth-suna*` (mined from his videos + paid guide).
+The desk runs **Suna's weekly share-first income wheel** exclusively (launchd plist runs `--loop`). v2 (the monthly CSP-first wheel described below) was retired as a strategy on 2026-07-15 — the `--suna` flag was removed since Suna is now the only path; `trading_covered_calls.py` stays in the repo only because `trading_suna.py` imports its order/fill/position primitives. Full spec + rationale: `wiki/trading-desk/_suna-redesign-spec.md`; decisions: `decisions/log.md` 2026-07-10, 2026-07-15. Source: `wiki/trading-desk/kenneth-suna*` (mined from his videos + paid guide).
 
 - **Goal:** $1,000/week premium (weekly is the primary unit; `--status` leads with premium WTD).
 - **New code:** `scripts/trading_suna.py` (weekly driver) + `scripts/trading_movers.py` (Alpaca movers discovery). Reuses v2's guard/report/DB/execution primitives.
@@ -22,12 +22,12 @@ python3 scripts/trading_suna.py --test        # offline rules self-check
 python3 scripts/trading_suna.py --discover    # this week's movers pool
 python3 scripts/trading_suna.py --once --dry-run   # print intended actions, no orders
 python3 scripts/trading_movers.py --test      # discovery self-check
-python3 scripts/trading_orchestrator.py --once --suna   # one live Suna cycle
+python3 scripts/trading_orchestrator.py --once   # one live Suna cycle
 ```
 
 ---
 
-## Premium Desk v2 (still available without --suna)
+## Premium Desk v2 (RETIRED as a strategy — library only, not scheduled)
 
 ## Architecture (Premium Desk v2 — since 2026-07-07)
 
