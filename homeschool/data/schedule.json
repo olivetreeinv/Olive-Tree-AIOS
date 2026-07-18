@@ -1,0 +1,2202 @@
+{
+ "curriculum": "Exploration to 1850",
+ "publisher": "My Father's World",
+ "startDate": "2026-08-17",
+ "familySubjects": [
+  "Bible",
+  "History",
+  "Book Basket",
+  "Science",
+  "Art & Music",
+  "Read-Aloud"
+ ],
+ "children": [
+  {
+   "id": "c1",
+   "name": "Child 1",
+   "grade": 8,
+   "subjects": [
+    "Math",
+    "English",
+    "Writing",
+    "Spelling",
+    "Reading",
+    "Science (Gr 7-8)"
+   ]
+  },
+  {
+   "id": "c2",
+   "name": "Child 2",
+   "grade": 7,
+   "subjects": [
+    "Math",
+    "English",
+    "Writing",
+    "Spelling",
+    "Reading",
+    "Science (Gr 7-8)"
+   ]
+  },
+  {
+   "id": "c3",
+   "name": "Child 3",
+   "grade": 5,
+   "subjects": [
+    "Math",
+    "English",
+    "Writing",
+    "Spelling",
+    "Reading"
+   ]
+  }
+ ],
+ "lessons": {},
+ "done": {
+  "family": {},
+  "c1": {}
+ },
+ "weeks": [
+  {
+   "num": 1,
+   "history": "Leif Ericsson, Columbus, Cabot, Ponce de Leon, Balboa, De Soto",
+   "science": "Creation",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 2,
+   "history": "Charles V, Spanish Conquistadors, William the Silent, Mary Queen of Scots, Sir Walter Raleigh",
+   "science": "Classification System, The Animal Kingdom, Vertebrates",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 3,
+   "history": "King James, Jamestown, French Exploration, Champlain",
+   "science": "Mammals",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 4,
+   "history": "Henry Hudson, The Pilgrims",
+   "science": "Monkeys and Apes, Aquatic Mammals",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 5,
+   "history": "Massachusetts Bay Colony, Rhode Island Colony, Salem Witchcraft Trials",
+   "science": "Marsupials, Charles Darwin",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 6,
+   "history": "New York Colony, Tobacco in Virginia, Angola",
+   "science": "Birds",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 7,
+   "history": "Thirty Years' War, Charles I, Cromwell, Charles II, Carolina Colonies, Maryland Colony",
+   "science": "Fish",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 8,
+   "history": "Virginia Colony, Louis XIV of France, Frederick, First Prussian King",
+   "science": "Amphibians, Reptiles",
+   "hymn": "Then Sings My Soul p16: Now Thank We All Our God",
+   "days": [
+    {
+     "topic": "Virginia Colony",
+     "family": {
+      "Bible": "Read/study James 1:22-25 (see notes)\nReview James 1:12-21\nLearn/copy v. 22\nEvening: review James 1:22",
+      "History": "Exploring American History p24-26 John Smith (begin at The Decline of Jamestown)\nGr. 6-8: Building a City on a Hill p333-337\nNotebook: Virginia Colony summary",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "World of Animals p54 Amphibians (see notes)\nGuide to God's Animals p84-85",
+      "Art & Music": "God and the History of Art p293 (review top of page); Lesson #172 Sign of the Fish",
+      "Read-Aloud": "Amos Fortune, Free Man p93 The Arrival at Jaffrey"
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "Read 2x James 1:22-25\nReview James 1:1-11 and 1:12-22\nLearn/copy v. 23\nIn God We Trust p37 Father Jacques Marquette\nEvening: review James 1:23",
+      "History": "The New England Primer (see notes)\nOptional Gr. 6-8: Building a City on a Hill p338-346",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "Music: Schubert (see notes)",
+      "Read-Aloud": "Amos Fortune, Free Man p109-118 Hard Work Fills the Iron Kettle"
+     }
+    },
+    {
+     "topic": "Louis XIV of France, 1643-1715",
+     "family": {
+      "Bible": "Read 2x James 1:22-25\nReview James 1:12-23\nLearn/copy v. 24\nEvening: review James 1:24",
+      "History": "The Story of the World p143 The Sun King of France\nWorld History p218-219 France and the Sun King\nNotebook: King Louis XIV summary\nTimeline: Louis XIV",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "World of Animals p57 Amphibian Metamorphosis (see notes)",
+      "Art & Music": "God and the History of Art (see notes)",
+      "Read-Aloud": "Amos Fortune, Free Man p119-129"
+     }
+    },
+    {
+     "topic": "Frederick, First Prussian King, 1701",
+     "family": {
+      "Bible": "Read 2x James 1:22-25\nReview James 1:12-24\nLearn/copy v. 25\nEvening: review James 1:22-25",
+      "History": "The Story of the World p151 Frederick, The First Prussian King",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "World of Animals p60 Reptiles (see notes)\nGuide to God's Animals p104-105",
+      "Art & Music": "God and the History of Art p316 Watteau (optional, no project)",
+      "Read-Aloud": "Amos Fortune, Free Man p130 Amos on the Mountain"
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "Test: James 1:22-25",
+      "History": "",
+      "Book Basket": "",
+      "Science": "Frog video: mfwbooks.com/media",
+      "Art & Music": "",
+      "Read-Aloud": "Amos Fortune, Free Man p146 Auctioned for Freedom"
+     }
+    }
+   ]
+  },
+  {
+   "num": 9,
+   "history": "King Philip's War, War in New France, William Penn, Pennsylvania Colony",
+   "science": "Snakes, Lizards, Turtles and Crocodiles",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 10,
+   "history": "Georgia Colony, Newton, Locke, Farming",
+   "science": "Invertebrates, Arthropods, Insects",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 11,
+   "history": "Russia and Peter the Great, Persia, Ottoman Empire",
+   "science": "Insect Metamorphosis, Arachnids, Crustaceans",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 12,
+   "history": "India",
+   "science": "Myriapods, Mollusks, Coelenterates",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 13,
+   "history": "Japan, China",
+   "science": "Echinoderms, Sponges, Worms",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 14,
+   "history": "China, Benjamin Franklin",
+   "science": "Protists, Monerans, Louis Pasteur",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 15,
+   "history": "Wars, George Washington, French and Indian War",
+   "science": "Introduction to Botany",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 16,
+   "history": "King George III, Catherine the Great, The Stamp Act",
+   "science": "Introduction to Botany",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 17,
+   "history": "Spanish Missions",
+   "science": "Seeds",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 18,
+   "history": "Daniel Boone, Revolutionary War",
+   "science": "Angiosperms (Flowers)",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 19,
+   "history": "Thomas Jefferson, Declaration of Independence",
+   "science": "Angiosperms (Flowers)",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 20,
+   "history": "Revolutionary War (continued)",
+   "science": "Pollination",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 21,
+   "history": "The U.S. Constitution, President George Washington",
+   "science": "Fruit",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 22,
+   "history": "Captain Cook and Australia, The French Revolution",
+   "science": "Fruit",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 23,
+   "history": "Catherine the Great",
+   "science": "Leaves",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 24,
+   "history": "Robert Fulton, Eli Whitney",
+   "science": "Leaves",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 25,
+   "history": "Opium in China, Napoleon",
+   "science": "Roots",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 26,
+   "history": "Louisiana Purchase, Haiti, Factories, Lewis and Clark",
+   "science": "Stems",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 27,
+   "history": "Napoleon's Wars, War of 1812, Waterloo, Simon Bolivar",
+   "science": "Gardening",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 28,
+   "history": "Mexican Independence, Abolitionists, Africa, Trail of Tears, Nat Turner's Revolt",
+   "science": "Gardening",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 29,
+   "history": "China's Opium War, Samuel Morse, The Alamo",
+   "science": "Trees",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 30,
+   "history": "New Zealand, California Gold Rush",
+   "science": "Gymnosperms",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 31,
+   "history": "State Report",
+   "science": "Seedless Vascular Plants, Nonvascular Plants, Mycology",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 32,
+   "history": "State Report",
+   "science": "Seedless Vascular Plants, Nonvascular Plants, Mycology",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 33,
+   "history": "State Report",
+   "science": "Seedless Vascular Plants, Nonvascular Plants, Mycology",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  },
+  {
+   "num": 34,
+   "history": "State Report",
+   "science": "Seedless Vascular Plants, Nonvascular Plants, Mycology",
+   "hymn": "",
+   "days": [
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "Free reading from the book basket",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    },
+    {
+     "topic": "",
+     "family": {
+      "Bible": "",
+      "History": "",
+      "Book Basket": "",
+      "Science": "",
+      "Art & Music": "",
+      "Read-Aloud": ""
+     }
+    }
+   ]
+  }
+ ]
+}
