@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exploration to 1850 - Lesson Scheduler</title>
+<style>
+  :root {
+    --paper: #FAFAF6;
+    --card: #FFFFFE;
+    --ink: #23281F;
+    --muted: #7C7E70;
+    --line: #E4E3D8;
+    --line-strong: #C9C8B8;
+    --accent: #2F5233;
+    --accent-ink: #24401F;
+    --accent-soft: #EDF2E8;
+    --done-bg: #F4F6EF;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --sans: -apple-system, "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  .wrap { max-width: 1360px; margin: 0 auto; padding: 0 24px 64px; }
+
+  /* Masthead */
+  header.mast {
+    display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap;
+    padding: 28px 0 18px; border-bottom: 2px solid var(--ink);
+  }
+  .mast h1 { font-family: var(--serif); font-weight: 600; font-size: 30px; margin: 0; letter-spacing: .01em; }
+  .mast .pub { color: var(--muted); font-size: 13px; }
+  .mast .spacer { flex: 1; }
+  .mast .startdate { color: var(--muted); font-size: 12.5px; display: flex; align-items: center; gap: 6px; }
+  .mast input[type=date] {
+    font: inherit; color: var(--ink); background: transparent;
+    border: 1px solid var(--line-strong); border-radius: 6px; padding: 3px 6px;
+  }
+  #saveState { font-size: 12px; color: var(--muted); min-width: 52px; text-align: right; }
+
+  /* Controls row */
+  .controls {
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    padding: 16px 0 14px;
+  }
+  .weeknav { display: flex; align-items: center; gap: 8px; }
+  .weeknav button, .printbtn {
+    font: inherit; background: var(--card); color: var(--ink);
+    border: 1px solid var(--line-strong); border-radius: 6px;
+    padding: 6px 12px; cursor: pointer;
+  }
+  .weeknav button:hover, .printbtn:hover { border-color: var(--accent); color: var(--accent-ink); }
+  .weeknav button:active, .printbtn:active { transform: translateY(1px); }
+  .weeknav select {
+    font: inherit; padding: 6px 8px; border: 1px solid var(--line-strong);
+    border-radius: 6px; background: var(--card); color: var(--ink); max-width: 420px;
+  }
+  .controls .spacer { flex: 1; }
+  .progress { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 13px; }
+  .progress .bar { width: 140px; height: 6px; background: var(--line); border-radius: 6px; overflow: hidden; }
+  .progress .bar i { display: block; height: 100%; background: var(--accent); border-radius: 6px; }
+
+  /* Tabs */
+  nav.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line-strong); }
+  nav.tabs button {
+    font: inherit; font-size: 14px; background: none; border: none; cursor: pointer;
+    padding: 9px 16px 11px; color: var(--muted);
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+  }
+  nav.tabs button.active { color: var(--accent-ink); border-bottom-color: var(--accent); font-weight: 600; }
+  nav.tabs button:hover { color: var(--ink); }
+
+  /* Week heading */
+  .weekhead { padding: 22px 0 6px; }
+  .weekhead .kicker { font-size: 13px; color: var(--muted); }
+  .weekhead h2 { font-family: var(--serif); font-size: 22px; font-weight: 600; margin: 4px 0 2px; }
+  .weekhead .sci { color: var(--muted); font-size: 13.5px; }
+  .weekhead .hymn { color: var(--accent-ink); font-size: 13.5px; margin-top: 2px; }
+  .childname[contenteditable] { border-bottom: 1px dashed var(--line-strong); cursor: text; }
+  .childname[contenteditable]:focus { outline: none; border-bottom-color: var(--accent); }
+
+  /* Outstanding carry-forward */
+  .outstanding {
+    margin: 14px 0 4px; padding: 12px 16px 6px;
+    background: var(--accent-soft); border: 1px solid #D8E2CE; border-radius: 8px;
+  }
+  .outstanding h3 { margin: 0 0 6px; font-size: 13px; font-weight: 600; color: var(--accent-ink); }
+  .outstanding label {
+    display: flex; gap: 9px; align-items: baseline; padding: 4px 0 8px; cursor: pointer; font-size: 13.5px;
+  }
+  .outstanding label .where { color: var(--muted); white-space: nowrap; }
+
+  /* The grid */
+  .gridwrap { overflow-x: auto; margin-top: 14px; }
+  table.sched { border-collapse: collapse; width: 100%; min-width: 1080px; background: var(--card); }
+  table.sched th, table.sched td { border: 1px solid var(--line); vertical-align: top; }
+  table.sched thead th {
+    background: var(--paper); padding: 8px 10px; text-align: left;
+    font-weight: 600; font-size: 13px; border-bottom: 1px solid var(--line-strong);
+  }
+  table.sched thead th .date { color: var(--muted); font-weight: 400; font-size: 12px; }
+  table.sched thead th .daytopic {
+    display: block; font-family: var(--serif); font-weight: 600; font-size: 12.5px;
+    color: var(--accent-ink); margin-top: 2px;
+  }
+  table.sched th.subj {
+    width: 108px; min-width: 108px; padding: 10px; text-align: left;
+    font-size: 12.5px; font-weight: 600; background: var(--paper); color: var(--ink);
+  }
+  td.cell { padding: 0; width: calc((100% - 108px) / 5); }
+  .cellin { display: flex; gap: 8px; padding: 9px 10px; min-height: 46px; }
+  .cellin input[type=checkbox] {
+    flex: none; width: 16px; height: 16px; margin: 2px 0 0; accent-color: var(--accent); cursor: pointer;
+  }
+  .cellin .txt {
+    flex: 1; white-space: pre-line; min-height: 20px; font-size: 13px; cursor: text; border-radius: 4px;
+  }
+  .cellin .txt:empty::before { content: "add lesson"; color: #C4C4B4; }
+  .cellin .txt:focus { outline: 1px solid var(--accent); outline-offset: 3px; }
+  td.cell.done { background: var(--done-bg); }
+  td.cell.done .txt { color: var(--muted); }
+  .hint { color: var(--muted); font-size: 12.5px; margin-top: 10px; }
+
+  /* Print */
+  .printhead { display: none; }
+  @media print {
+    @page { size: landscape; margin: 10mm; }
+    body { background: #fff; font-size: 11px; }
+    .wrap { max-width: none; padding: 0; }
+    header.mast, .controls, nav.tabs, .outstanding, .weekhead, .hint { display: none !important; }
+    .printhead { display: block; padding: 0 0 8px; }
+    .printhead .line1 { font-family: var(--serif); font-size: 18px; font-weight: 600; }
+    .printhead .line2 { color: #444; font-size: 11.5px; margin-top: 2px; }
+    .gridwrap { overflow: visible; margin-top: 0; }
+    table.sched { min-width: 0; }
+    table.sched th, table.sched td { border-color: #999; }
+    td.cell.done { background: #f2f2ee; }
+    .cellin input[type=checkbox] { width: 11px; height: 11px; }
+    .cellin { min-height: 30px; padding: 5px 6px; }
+    .cellin .txt { font-size: 10px; }
+    .cellin .txt:empty::before { content: ""; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <h1 id="title">Exploration to 1850</h1>
+    <span class="pub" id="pub"></span>
+    <span class="spacer"></span>
+    <span class="startdate">Week 1 begins <input type="date" id="startDate"></span>
+    <button class="printbtn" onclick="window.print()">Print week</button>
+    <span id="saveState"></span>
+  </header>
+
+  <div class="controls">
+    <div class="weeknav">
+      <button id="prevWeek" aria-label="Previous week">&lsaquo;</button>
+      <select id="weekSelect"></select>
+      <button id="nextWeek" aria-label="Next week">&rsaquo;</button>
+    </div>
+    <span class="spacer"></span>
+    <div class="progress">
+      <span id="progressText"></span>
+      <span class="bar"><i id="progressFill" style="width:0%"></i></span>
+    </div>
+  </div>
+
+  <nav class="tabs" id="tabs"></nav>
+
+  <div class="printhead">
+    <div class="line1" id="printLine1"></div>
+    <div class="line2" id="printLine2"></div>
+  </div>
+
+  <div id="weekhead" class="weekhead"></div>
+  <div id="outstanding"></div>
+  <div class="gridwrap"><table class="sched" id="grid"></table></div>
+  <p class="hint">Click any cell text to edit; changes save automatically. Unchecked lessons from earlier weeks stay in the carry-forward list until done.</p>
+</div>
+
+<script>
+"use strict";
+let doc = null;
+let curWeek = 1;
+let curTab = "family";   // "family" or a child id
+const DAY_NAMES = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+
+// ---------- persistence ----------
+let saveTimer = null;
+function save() {
+  clearTimeout(saveTimer);
+  document.getElementById("saveState").textContent = "…";
+  saveTimer = setTimeout(async () => {
+    try {
+      const r = await fetch("/data", { method: "POST", body: JSON.stringify(doc) });
+      document.getElementById("saveState").textContent = r.ok ? "Saved" : "Save failed";
+    } catch {
+      document.getElementById("saveState").textContent = "Offline";
+    }
+  }, 400);
+}
+
+// ---------- helpers ----------
+const key = (w, d, s) => `${w}.${d}.${s}`;
+function isDone(owner, w, d, s) { return !!(doc.done[owner] && doc.done[owner][key(w, d, s)]); }
+function setDone(owner, w, d, s, val) {
+  doc.done[owner] = doc.done[owner] || {};
+  if (val) doc.done[owner][key(w, d, s)] = true;
+  else delete doc.done[owner][key(w, d, s)];
+  save();
+}
+function lessonText(owner, w, d, s) {
+  if (owner === "family") return doc.weeks[w - 1].days[d].family[s] || "";
+  return (doc.lessons[owner] && doc.lessons[owner][key(w, d, s)]) || "";
+}
+function setLessonText(owner, w, d, s, text) {
+  if (owner === "family") doc.weeks[w - 1].days[d].family[s] = text;
+  else {
+    doc.lessons[owner] = doc.lessons[owner] || {};
+    if (text) doc.lessons[owner][key(w, d, s)] = text;
+    else delete doc.lessons[owner][key(w, d, s)];
+  }
+  save();
+}
+function subjectsFor(owner) {
+  if (owner === "family") return doc.familySubjects;
+  return doc.children.find(c => c.id === owner).subjects;
+}
+function ownerLabel(owner) {
+  return owner === "family" ? "Family" : doc.children.find(c => c.id === owner).name;
+}
+function weekMonday(w) {
+  const d = new Date(doc.startDate + "T00:00:00");
+  d.setDate(d.getDate() + (w - 1) * 7);
+  return d;
+}
+function dayDate(w, i) {
+  const d = weekMonday(w);
+  d.setDate(d.getDate() + i);
+  return d;
+}
+const fmt = d => d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+function currentWeekFromToday() {
+  const days = Math.floor((Date.now() - weekMonday(1).getTime()) / 86400000);
+  return Math.min(34, Math.max(1, Math.floor(days / 7) + 1));
+}
+
+// ---------- rendering ----------
+function render() {
+  renderWeekSelect();
+  renderTabs();
+  renderWeekHead();
+  renderOutstanding();
+  renderGrid();
+  renderProgress();
+  renderPrintHead();
+}
+
+function renderWeekSelect() {
+  const sel = document.getElementById("weekSelect");
+  sel.innerHTML = "";
+  for (const w of doc.weeks) {
+    const opt = document.createElement("option");
+    opt.value = w.num;
+    opt.textContent = `Week ${w.num} (${fmt(weekMonday(w.num))}) ${w.history}`;
+    sel.appendChild(opt);
+  }
+  sel.value = curWeek;
+}
+
+function renderTabs() {
+  const nav = document.getElementById("tabs");
+  nav.innerHTML = "";
+  const mk = (id, label) => {
+    const b = document.createElement("button");
+    b.textContent = label;
+    b.className = id === curTab ? "active" : "";
+    b.onclick = () => { curTab = id; render(); };
+    nav.appendChild(b);
+  };
+  mk("family", "Family");
+  for (const c of doc.children) mk(c.id, `${c.name} (Gr ${c.grade})`);
+}
+
+function renderWeekHead() {
+  const w = doc.weeks[curWeek - 1];
+  const el = document.getElementById("weekhead");
+  const range = `${fmt(dayDate(curWeek, 0))} to ${fmt(dayDate(curWeek, 4))}`;
+  let nameHtml;
+  if (curTab === "family") {
+    nameHtml = "Family";
+  } else {
+    const c = doc.children.find(c => c.id === curTab);
+    nameHtml = `<span class="childname" contenteditable="plaintext-only" id="childNameEdit">${escapeHtml(c.name)}</span> · Grade ${c.grade}`;
+  }
+  el.innerHTML = `
+    <div class="kicker">${nameHtml} · Week ${curWeek} of 34 · ${range}</div>
+    <h2>${escapeHtml(w.history)}</h2>
+    <div class="sci">Science: ${escapeHtml(w.science)}</div>
+    ${w.hymn ? `<div class="hymn">Hymn: ${escapeHtml(w.hymn)}</div>` : ""}`;
+  const edit = document.getElementById("childNameEdit");
+  if (edit) edit.onblur = () => {
+    const c = doc.children.find(c => c.id === curTab);
+    c.name = edit.textContent.trim() || c.name;
+    save(); render();
+  };
+}
+
+function renderOutstanding() {
+  const box = document.getElementById("outstanding");
+  const items = [];
+  for (let w = 1; w < curWeek; w++) {
+    for (let d = 0; d < 5; d++) {
+      for (const s of subjectsFor(curTab)) {
+        const text = lessonText(curTab, w, d, s);
+        if (text && !isDone(curTab, w, d, s)) items.push({ w, d, s, text });
+      }
+    }
+  }
+  if (!items.length) { box.innerHTML = ""; return; }
+  box.innerHTML = `<div class="outstanding"><h3>Carried forward (${items.length} not yet done)</h3></div>`;
+  const panel = box.firstElementChild;
+  for (const it of items) {
+    const label = document.createElement("label");
+    const cb = document.createElement("input");
+    cb.type = "checkbox";
+    cb.onchange = () => { setDone(curTab, it.w, it.d, it.s, cb.checked); render(); };
+    const where = document.createElement("span");
+    where.className = "where";
+    where.textContent = `W${it.w} ${DAY_NAMES[it.d].slice(0, 3)} · ${it.s}:`;
+    const txt = document.createElement("span");
+    txt.textContent = it.text.split("\n")[0];
+    label.append(cb, where, txt);
+    panel.appendChild(label);
+  }
+}
+
+function renderGrid() {
+  const table = document.getElementById("grid");
+  table.innerHTML = "";
+  const week = doc.weeks[curWeek - 1];
+
+  const thead = table.createTHead();
+  const hr = thead.insertRow();
+  const corner = document.createElement("th");
+  corner.className = "subj";
+  hr.appendChild(corner);
+  for (let d = 0; d < 5; d++) {
+    const th = document.createElement("th");
+    th.innerHTML = `${DAY_NAMES[d]} <span class="date">${fmt(dayDate(curWeek, d))}</span>`;
+    if (curTab === "family" && week.days[d].topic) {
+      th.innerHTML += `<span class="daytopic">${escapeHtml(week.days[d].topic)}</span>`;
+    }
+    hr.appendChild(th);
+  }
+
+  const tbody = table.createTBody();
+  for (const s of subjectsFor(curTab)) {
+    const row = tbody.insertRow();
+    const th = document.createElement("th");
+    th.className = "subj";
+    th.textContent = s;
+    row.appendChild(th);
+    for (let d = 0; d < 5; d++) row.appendChild(makeCell(curTab, curWeek, d, s));
+  }
+}
+
+function makeCell(owner, w, d, s) {
+  const td = document.createElement("td");
+  td.className = "cell" + (isDone(owner, w, d, s) ? " done" : "");
+  const inner = document.createElement("div");
+  inner.className = "cellin";
+
+  const cb = document.createElement("input");
+  cb.type = "checkbox";
+  cb.checked = isDone(owner, w, d, s);
+  cb.onchange = () => {
+    setDone(owner, w, d, s, cb.checked);
+    td.classList.toggle("done", cb.checked);
+    renderProgress();
+  };
+
+  const txt = document.createElement("div");
+  txt.className = "txt";
+  txt.contentEditable = "plaintext-only";
+  txt.textContent = lessonText(owner, w, d, s);
+  txt.onblur = () => {
+    const val = txt.innerText.replace(/\n+$/, "");
+    if (val !== lessonText(owner, w, d, s)) {
+      setLessonText(owner, w, d, s, val);
+      renderProgress();
+    }
+  };
+
+  inner.append(cb, txt);
+  td.appendChild(inner);
+  return td;
+}
+
+function renderProgress() {
+  let total = 0, done = 0;
+  for (let d = 0; d < 5; d++) {
+    for (const s of subjectsFor(curTab)) {
+      const has = lessonText(curTab, curWeek, d, s);
+      const checked = isDone(curTab, curWeek, d, s);
+      if (has || checked) { total++; if (checked) done++; }
+    }
+  }
+  document.getElementById("progressText").textContent =
+    total ? `${done} of ${total} done this week` : "Nothing scheduled yet this week";
+  document.getElementById("progressFill").style.width = total ? (100 * done / total) + "%" : "0%";
+}
+
+function renderPrintHead() {
+  const w = doc.weeks[curWeek - 1];
+  document.getElementById("printLine1").textContent =
+    `${doc.curriculum} · ${ownerLabel(curTab)} · Week ${curWeek}`;
+  document.getElementById("printLine2").textContent =
+    `${fmt(dayDate(curWeek, 0))} to ${fmt(dayDate(curWeek, 4))} · ${w.history} · Science: ${w.science}`;
+}
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+}
+
+// ---------- wiring ----------
+document.getElementById("prevWeek").onclick = () => { if (curWeek > 1) { curWeek--; render(); } };
+document.getElementById("nextWeek").onclick = () => { if (curWeek < 34) { curWeek++; render(); } };
+document.getElementById("weekSelect").onchange = e => { curWeek = +e.target.value; render(); };
+document.getElementById("startDate").onchange = e => {
+  if (e.target.value) { doc.startDate = e.target.value; save(); render(); }
+};
+
+(async function init() {
+  doc = await (await fetch("/data")).json();
+  document.getElementById("title").textContent = doc.curriculum;
+  document.getElementById("pub").textContent = doc.publisher;
+  document.getElementById("startDate").value = doc.startDate;
+  curWeek = currentWeekFromToday();
+  render();
+})();
+</script>
+</body>
+</html>
