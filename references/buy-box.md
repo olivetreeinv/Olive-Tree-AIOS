@@ -38,7 +38,6 @@ These apply regardless of market. A deal that misses any of these is a pass befo
 | **Property type** | Multifamily (apartment buildings, townhome-style communities) |
 | **Strategy** | Value-add or stabilized with operational upside — not fully priced stabilized assets |
 | **Seller motivation** | Must have upside available: below-market rents, operational inefficiency, deferred maintenance, or off-market pricing |
-| **Hold period** | 4–6 years |
 | **Return target** | 18.21% annual ROI, 2.09x equity multiple |
 | **Preferred return** | 6% pref, then 70/30 LP/GP split |
 | **Min investment** | $25K (individual LPs), accredited and non-accredited |
