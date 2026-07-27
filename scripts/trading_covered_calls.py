@@ -60,13 +60,14 @@ _PAPER = True  # hard-coded — never flip without explicit Brian approval
 
 # ── Config: book + sizing ─────────────────────────────────────────────────────
 CC_BOOK_USD         = 50_000
-CC_MAX_UNDERLYINGS  = 12          # raised from 8 (2026-07-15): 8x$10k cap already covered the
-                                   # full $47.5k deployable, real blocker was legacy 1-lot v2
-                                   # positions occupying slots; more slots let full-sized v3
-                                   # entries open alongside them instead of waiting them out
+CC_MAX_UNDERLYINGS  = 16          # raised 12→16 (2026-07-26, full-deployment push): with the
+                                   # $1.2k entry floor, tail entries are $1-3k lots, so filling
+                                   # the book takes more names than 12 ($50k / 12 = $4.2k avg)
 CC_MAX_POSITION_USD = 10_000      # <=20% of book per underlying (100sh lot <= $100/share)
 CC_MAX_PER_SECTOR   = 2           # max underlyings per SECTOR bucket (see trading_screener.SECTOR)
-CC_CASH_BUFFER      = 0.05        # keep >=5% of book in cash
+CC_CASH_BUFFER      = 0.02        # keep >=2% of book in cash (was 5%; v3 rolls are net-credit
+                                   # only and profit-close buybacks are <=40% of premium, so the
+                                   # big buffer just sat idle — buying_power cap is the backstop)
 
 # ── Config: option selection ──────────────────────────────────────────────────
 CC_TARGET_DELTA     = 0.30        # covered calls target 0.30Δ (accept 0.25–0.35)
@@ -1258,7 +1259,7 @@ def _self_check():
     # captured takes the profit-close branch, not the roll branch.
     assert _should_profit_close(100.0, 40.0),  "dte<=21, 60% captured → profit-close should trigger"
     assert not _should_profit_close(100.0, 50.0), "dte<=21, 50% captured → falls through to roll-for-credit"
-    assert CC_MAX_POSITION_USD == 10_000 and CC_MAX_UNDERLYINGS == 12 and CC_MAX_PER_SECTOR == 2
+    assert CC_MAX_POSITION_USD == 10_000 and CC_MAX_UNDERLYINGS == 16 and CC_MAX_PER_SECTOR == 2
     print("  ✅ 21-DTE trigger: profit-close checked first, roll-for-credit otherwise; sizing constants set")
 
     print("\n  All CC self-checks passed. ✅")

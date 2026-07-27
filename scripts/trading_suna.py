@@ -540,7 +540,10 @@ def _enter(client, dry_run: bool = False):
             print("  ⏭  can't see live account — skipping entries this cycle"); return
 
         avail = _book_available(open_rows)
-        if avail < CC_MAX_POSITION_USD * 0.5:
+        # Floor = cheapest permissible lot (movers price band starts at $10 → $1,000
+        # per 100sh) + slippage headroom. Was $5k (half the position cap), which
+        # parked up to $5k idle whenever the tail couldn't fund a full-size entry.
+        if avail < 1_200:
             print(f"  ⏭  book cash too low (${avail:,.0f}) — skipping entry"); return
 
         pool = discover()
