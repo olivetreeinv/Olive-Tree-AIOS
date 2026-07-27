@@ -34,19 +34,21 @@ HALT_FLAG_FILE = Path(__file__).parent.parent / "data" / "trading_halt.json"
 
 ANOMALY_PCT_THRESHOLD      = 0.05  # |equity - last_equity| / last_equity beyond this → investigate
 UNEXPLAINED_PCT_THRESHOLD  = 0.05  # unexplained portion of the move, as % of last_equity → HALT
+CONSISTENCY_PCT_THRESHOLD  = 0.02  # |equity - (cash + positions mv)| / equity beyond this → HALT
 ACTIVITIES_LOOKBACK_DAYS   = 3      # gap window to pull activities for
 
 
 def _activity_impact(a: dict) -> float:
     """
-    Best-effort $ cash-flow impact of one Alpaca activity record.
-    Non-trade activities (DIV, CSD, FEE, ...) carry net_amount/amount directly.
-    FILL activities carry qty/price/side instead — approximate as qty*price,
-    signed by side.
-    ponytail: doesn't apply the x100 options multiplier (FILL doesn't reliably
-    flag options vs equity in the same field set) — fine as a rough plausibility
-    sum for a halt gate, not for actual P&L accounting. Upgrade if options fills
-    start producing false anomaly halts.
+    Best-effort $ EQUITY impact of one non-trade Alpaca activity record
+    (DIV, CSD, FEE, JNLC, ... carry net_amount/amount directly).
+
+    Trade FILLs are deliberately NOT summed: a fill converts asset↔cash at
+    market (assignment at strike ≈ market), so its equity impact is ~0 — but
+    its cash proceeds are huge. Counting proceeds as equity change made an
+    assignment-heavy expiry weekend look like $17,850 of "explained" move
+    against a real move of -$3,178, manufacturing a false $21k unexplained
+    residual (2026-07-27 false halt).
     """
     for key in ("net_amount", "amount"):
         v = a.get(key)
@@ -55,22 +57,34 @@ def _activity_impact(a: dict) -> float:
                 return float(v)
             except (TypeError, ValueError):
                 pass
-    if a.get("activity_type") == "FILL" and a.get("qty") and a.get("price"):
-        try:
-            qty, price = float(a["qty"]), float(a["price"])
-            sign = -1 if a.get("side") == "buy" else 1
-            return sign * qty * price
-        except (TypeError, ValueError):
-            pass
     return 0.0
 
 
-def check_equity_anomaly(equity: float, last_equity: float, activities: list[dict]) -> tuple[bool, str]:
+def check_equity_anomaly(equity: float, last_equity: float, activities: list[dict],
+                         cash: float = None, positions_value: float = None) -> tuple[bool, str]:
     """
     Pure, no network. Returns (should_halt, reason).
 
     activities: Alpaca /v2/account/activities records for the gap window.
+    cash + positions_value (optional): enables the internal-consistency check —
+    equity must ≈ cash + Σ position market value, or the account data itself is
+    corrupt (catches valuation glitches even on active trading days).
+
+    The glitch signature this breaker exists for (2026-07-06: $100k → $3.5k
+    overnight) is a BIG equity move with ZERO trade activity. A big move WITH
+    fills in the window is market/settlement-driven — per the v3 Suna spec
+    that's a green light condition, not an anomaly.
     """
+    if cash is not None and positions_value is not None and equity > 0:
+        recon = cash + positions_value
+        drift = abs(equity - recon) / equity
+        if drift > CONSISTENCY_PCT_THRESHOLD:
+            return True, (
+                f"account internally inconsistent: equity ${equity:,.2f} vs cash+positions "
+                f"${recon:,.2f} ({drift:.1%} apart, over {CONSISTENCY_PCT_THRESHOLD:.0%}) — "
+                f"valuation/data glitch"
+            )
+
     if last_equity <= 0:
         return False, "last_equity <= 0 — no baseline to compare, skipping"
 
@@ -79,23 +93,31 @@ def check_equity_anomaly(equity: float, last_equity: float, activities: list[dic
     if change_pct <= ANOMALY_PCT_THRESHOLD:
         return False, f"equity change {change_pct:+.1%} within {ANOMALY_PCT_THRESHOLD:.0%} band — normal"
 
-    explained = sum(_activity_impact(a) for a in activities)
+    has_fills = any(a.get("activity_type") == "FILL" for a in activities)
+    explained = sum(_activity_impact(a) for a in activities
+                    if a.get("activity_type") != "FILL")
     unexplained = change - explained
     unexplained_pct = abs(unexplained) / last_equity
 
     if unexplained_pct > UNEXPLAINED_PCT_THRESHOLD:
+        if has_fills:
+            return False, (
+                f"equity moved {change:+,.2f} ({change_pct:+.1%}) with trade fills in the "
+                f"window — market/settlement-driven (fills are equity-neutral), not halting; "
+                f"glitch signature is a big move with ZERO activity"
+            )
         reason = (
-            f"equity moved {change:+,.2f} ({change_pct:+.1%}) from last_equity=${last_equity:,.2f}; "
-            f"activity log explains ${explained:+,.2f}; unexplained ${unexplained:+,.2f} "
-            f"({unexplained_pct:.1%} of last_equity, over {UNEXPLAINED_PCT_THRESHOLD:.0%} threshold) — "
-            f"grossly unexplained equity move, looks like an account/data glitch, not a trade"
+            f"equity moved {change:+,.2f} ({change_pct:+.1%}) from last_equity=${last_equity:,.2f} "
+            f"with NO trade activity; non-trade flows explain ${explained:+,.2f}; unexplained "
+            f"${unexplained:+,.2f} ({unexplained_pct:.1%} of last_equity, over "
+            f"{UNEXPLAINED_PCT_THRESHOLD:.0%} threshold) — looks like an account/data glitch"
         )
         return True, reason
 
     return False, (
-        f"equity moved {change:+,.2f} ({change_pct:+.1%}) but activity log explains ${explained:+,.2f} "
-        f"(unexplained {unexplained_pct:.1%}, within {UNEXPLAINED_PCT_THRESHOLD:.0%} band) — "
-        f"looks like legitimate P&L, not halting"
+        f"equity moved {change:+,.2f} ({change_pct:+.1%}) but non-trade flows explain "
+        f"${explained:+,.2f} (unexplained {unexplained_pct:.1%}, within "
+        f"{UNEXPLAINED_PCT_THRESHOLD:.0%} band) — looks like legitimate P&L, not halting"
     )
 
 
@@ -157,8 +179,23 @@ def check_and_guard() -> tuple[bool, str]:
     except Exception as e:
         return False, f"guard check skipped — account fetch failed ({e}); fail-open, no halt"
 
+    # Consistency inputs are best-effort: the layer just switches off if either
+    # fetch fails (fail-open, same rationale as above).
+    try:
+        cash = float(acct.get("cash"))
+    except (TypeError, ValueError):
+        cash = None
+    positions_value = None
+    try:
+        pos = _alpaca_get(f"{_ALPACA_BASE}/v2/positions", _alpaca_headers())
+        if isinstance(pos, list):
+            positions_value = sum(float(p.get("market_value") or 0) for p in pos)
+    except Exception:
+        pass
+
     activities = _fetch_activities()
-    should_halt, reason = check_equity_anomaly(equity, last_equity, activities)
+    should_halt, reason = check_equity_anomaly(equity, last_equity, activities,
+                                               cash=cash, positions_value=positions_value)
 
     if should_halt:
         _write_halt(reason, equity, last_equity)
@@ -199,11 +236,28 @@ def _self_check():
     assert not h, r
     print(f"  ✅ Zero/negative baseline skipped (no false halt): {r}")
 
-    # FILL-shaped activity (no net_amount/amount) — qty*price*sign approximation.
-    # Buying 10sh @ $950 = -$9,500 cash impact, matching the equity drop.
-    h, r = check_equity_anomaly(90_500, 100_000, [{"activity_type": "FILL", "qty": "10", "price": "950", "side": "buy"}])
+    # Big move WITH fills present → market/settlement-driven, never a halt.
+    # Real case (2026-07-27): assignment weekend, equity -6% off an inflated
+    # last_equity, $17,850 of call-away FILL proceeds in the log — old math
+    # counted proceeds as equity change and false-halted on Monday open.
+    h, r = check_equity_anomaly(50_176, 53_354, [
+        {"activity_type": "FILL", "qty": "100", "price": "56.50", "side": "sell"},
+        {"activity_type": "FILL", "qty": "400", "price": "21.50", "side": "sell"},
+        {"activity_type": "FILL", "qty": "100", "price": "36.00", "side": "sell"},
+    ])
     assert not h, r
-    print(f"  ✅ FILL-shaped activity approximated: {r}")
+    print(f"  ✅ Assignment-weekend move with fills: no halt — {r[:80]}...")
+
+    # Internal consistency: equity far from cash + positions mv → data glitch, HALT
+    # even with fills in the window.
+    h, r = check_equity_anomaly(50_000, 50_000, [{"activity_type": "FILL", "qty": "1", "price": "1", "side": "buy"}],
+                                cash=20_000, positions_value=10_000)
+    assert h, r
+    print(f"  ✅ Internally inconsistent account: HALT — {r[:90]}...")
+
+    h, r = check_equity_anomaly(50_000, 50_000, [], cash=32_750, positions_value=17_425)
+    assert not h, r
+    print(f"  ✅ Internally consistent account: {r}")
 
     print("\n  All equity guard self-checks passed. ✅")
 
