@@ -414,10 +414,11 @@ def _build_scorecard_html(prev: str, new: str, is_friday: bool = False) -> tuple
         pos_rows_html = "<tr><td colspan='6'>No open momentum positions</td></tr>"
 
     # ── CC book ───────────────────────────────────────────────────────────────
-    premium_mtd  = sum((r.premium_received or 0) for r in open_cc) + \
-                   sum((r.premium_received or 0) for r in closed_cc)
-    cc_realized  = sum((r.realized_pnl or 0) for r in closed_cc)
-    from scripts.trading_covered_calls import CC_MONTHLY_TARGET_USD, CC_BOOK_USD
+    from scripts.trading_covered_calls import (CC_MONTHLY_TARGET_USD, CC_BOOK_USD,
+                                               cc_premium_stats)
+    _cc_stats    = cc_premium_stats()  # shared calc — resell-aware, ledger-backed
+    premium_mtd  = _cc_stats["premium_mtd"]
+    cc_realized  = _cc_stats["realized_pnl"]
     cc_target    = CC_MONTHLY_TARGET_USD
     cc_rows_html = ""
     for r in open_cc:
@@ -625,24 +626,17 @@ def _cc_book_summary() -> dict:
     from db.schema import TradingCCPosition
     s = Session()
     try:
-        today = date.today().isoformat()
-        mtd_start = today[:7] + "-01"  # YYYY-MM-01
         open_cc = s.query(TradingCCPosition).filter_by(status="open").all()
-        closed_cc = s.query(TradingCCPosition).filter(
-            TradingCCPosition.status.in_(("closed", "assigned", "expired", "wheeled")),
-            TradingCCPosition.closed_at >= mtd_start,
-        ).all()
-        premium_mtd = sum((r.premium_received or 0) for r in open_cc) + \
-                      sum((r.premium_received or 0) for r in closed_cc)
-        realized_pnl = sum((r.realized_pnl or 0) for r in closed_cc)
+        from scripts.trading_covered_calls import cc_premium_stats
+        stats = cc_premium_stats()  # shared calc — resell-aware, ledger-backed
         covered   = sum(1 for r in open_cc if r.option_symbol)
         uncovered = sum(1 for r in open_cc if not r.option_symbol)
         return {
             "underlyings":   len(open_cc),
             "covered":       covered,
             "uncovered":     uncovered,
-            "premium_mtd":   round(premium_mtd, 2),
-            "realized_pnl":  round(realized_pnl, 2),
+            "premium_mtd":   stats["premium_mtd"],
+            "realized_pnl":  stats["realized_pnl"],
         }
     except Exception:
         return {}

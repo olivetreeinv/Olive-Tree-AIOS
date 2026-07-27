@@ -35,6 +35,7 @@ archives/ghl-export-2026-07-06/
 # Trading-desk runtime state (churns every cycle)
 data/cc_last_run.txt
 data/trading_halt.json
+data/suna_uncovered.json
 
 # Root scratch files
 scratchpad_*

@@ -48,7 +48,7 @@ from alpaca.trading.requests import LimitOrderRequest, MarketOrderRequest
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from db.connection import Session
-from db.schema import TradingCCPosition
+from db.schema import TradingCCPosition, TradingOrder
 from scripts.trading_report import send_alert
 from scripts.trading_data import _get as _http_get, _alpaca_headers
 from scripts.trading_screener import (
@@ -1013,9 +1013,8 @@ def cc_next_actions() -> list[str]:
             if row.expiry:
                 if dte <= CC_MANAGE_DTE:
                     expiry_note = (
-                        f"; expires {row.expiry} — at {CC_MANAGE_DTE} DTE it rolls (ITM out-and-up, "
-                        f"or OTM to the next monthly-ish expiry) for net credit only; a debit roll "
-                        f"is skipped and left to ride"
+                        f"; expires {row.expiry} — Wed close >$1 ITM rolls out-and-up net-"
+                        f"credit only, else rides to Friday expiry/assignment (wheel resells)"
                     )
                 else:
                     expiry_note = f"; expires {row.expiry}"
@@ -1030,8 +1029,12 @@ def cc_next_actions() -> list[str]:
     return lines
 
 
-def _print_status():
-    """Print CC book positions + premium vs the $1,000/week target + annualized yield-on-book."""
+def cc_premium_stats() -> dict:
+    """Premium WTD/MTD + realized P&L for the CC book — the ONE calc every
+    surface (--status, heartbeat summary, scorecard email) must use. Option legs
+    get RESOLD IN PLACE on the same position row (opened_at never moves), so any
+    opened_at-filtered sum goes blind on resold legs; the trading_orders option-
+    fill ledger is the source of truth once it covers the window."""
     s = Session()
     try:
         today     = date.today().isoformat()
@@ -1042,6 +1045,58 @@ def _print_status():
             TradingCCPosition.status.in_(("closed", "assigned", "expired", "wheeled")),
             TradingCCPosition.closed_at >= mtd_start,
         ).all()
+        # _parse_occ filters out the momentum book's plain-ticker equity orders,
+        # which share the trading_orders table.
+        all_fills = [o for o in s.query(TradingOrder).filter(
+                        TradingOrder.status == "filled")
+                        .order_by(TradingOrder.submitted_at).all()
+                     if _parse_occ(o.symbol or "")]
+    finally:
+        s.close()
+
+    # Per-window source pick: the ledger is only truthful for a window it fully
+    # covers — its first-ever fill must predate the window start. A window the
+    # ledger only partially covers (e.g. the month the ledger went live) falls
+    # back to the opened_at-based estimate; a partial ledger sum would silently
+    # drop everything earned before the first logged fill.
+    ledger_start = all_fills[0].submitted_at[:10] if all_fills else None
+    def _net_premium(fills, start):
+        fills = [f for f in fills if (f.submitted_at or "") >= start]
+        return sum((f.filled_price or 0) * 100 * (f.filled_qty or 0) *
+                   (1 if f.side == "sell" else -1) for f in fills)
+    # ponytail fallback (pre-ledger history): opened_at is an ISO string, so
+    # >= "YYYY-MM-01" compares correctly. A resold leg on a still-open row
+    # doesn't move opened_at, so its premium is invisible here UNLESS it also
+    # closed out (realized_pnl) — add open-row realized_pnl back in for MTD so
+    # resold legs still count. WTD has no such add-back (realized_pnl has no
+    # per-week timestamps) — it undercounts until the ledger covers a full week.
+    if ledger_start and ledger_start <= mtd_start:
+        premium_mtd = _net_premium(all_fills, mtd_start)
+    else:
+        premium_mtd = sum((r.premium_received or 0) for r in open_rows
+                          if (r.opened_at or "") >= mtd_start) + \
+                      sum((r.premium_received or 0) for r in closed) + \
+                      sum((r.realized_pnl or 0) for r in open_rows)
+    if ledger_start and ledger_start <= wtd_start:
+        premium_wtd = _net_premium(all_fills, wtd_start)
+    else:
+        premium_wtd = sum((r.premium_received or 0) for r in open_rows
+                          if (r.opened_at or "") >= wtd_start) + \
+                      sum((r.premium_received or 0) for r in closed
+                          if (r.closed_at or "") >= wtd_start)
+    # Realized P&L MTD: closed-lot P&L this month, plus P&L already banked on
+    # still-open lots from legs that were closed and resold in place.
+    realized_pnl = sum((r.realized_pnl or 0) for r in closed) + \
+                   sum((r.realized_pnl or 0) for r in open_rows)
+    return {"premium_wtd": round(premium_wtd, 2), "premium_mtd": round(premium_mtd, 2),
+            "realized_pnl": round(realized_pnl, 2)}
+
+
+def _print_status():
+    """Print CC book positions + premium vs the $1,000/week target + annualized yield-on-book."""
+    s = Session()
+    try:
+        open_rows = s.query(TradingCCPosition).filter_by(status="open").all()
     finally:
         s.close()
 
@@ -1058,18 +1113,9 @@ def _print_status():
         print(f"  {row.underlying:6s}  {lot}  |  {opt_info}  "
               f"prem_rcvd=${row.premium_received or 0:,.0f}")
 
-    # ponytail: opened_at is an ISO string, so >= "YYYY-MM-01" compares correctly;
-    # a position rolled across a month boundary undercounts (its premium lives in
-    # realized_pnl) — acceptable until premium gets its own ledger table.
-    premium_mtd  = sum((r.premium_received or 0) for r in open_rows
-                       if (r.opened_at or "") >= mtd_start) + \
-                   sum((r.premium_received or 0) for r in closed)
-    realized_pnl = sum((r.realized_pnl or 0) for r in closed)
-    # WTD ⊂ MTD, so re-filter the already-loaded rows by the Monday cutoff.
-    premium_wtd  = sum((r.premium_received or 0) for r in open_rows
-                       if (r.opened_at or "") >= wtd_start) + \
-                   sum((r.premium_received or 0) for r in closed
-                       if (r.closed_at or "") >= wtd_start)
+    stats = cc_premium_stats()
+    premium_wtd, premium_mtd = stats["premium_wtd"], stats["premium_mtd"]
+    realized_pnl = stats["realized_pnl"]
     wk_pct  = premium_wtd / CC_WEEKLY_TARGET_USD if CC_WEEKLY_TARGET_USD else 0
     mo_pct  = premium_mtd / CC_MONTHLY_TARGET_USD if CC_MONTHLY_TARGET_USD else 0
     days_elapsed = date.today().day  # mtd_start is always the 1st

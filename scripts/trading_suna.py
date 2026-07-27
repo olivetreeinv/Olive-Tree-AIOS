@@ -31,7 +31,7 @@ from typing import Optional
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from db.connection import Session
-from db.schema import TradingCCPosition
+from db.schema import TradingCCPosition, TradingOrder
 from scripts.trading_movers import discover
 from scripts.trading_data import get_quote, get_account, get_bars, get_news, is_market_open
 from scripts.trading_report import send_alert
@@ -73,19 +73,28 @@ SUNA_MODEL = "claude-haiku-4-5-20251001"
 
 # Repair ladder: when a lot is underwater, sell a call this many $ above spot so an
 # intraweek pop is unlikely to exercise it (early-assignment guard), stepping the
-# strike up toward basis each week.
-REPAIR_OTM_GAP    = 2.0
+# strike up toward basis each week. Scales with price — a flat $2 gap put the
+# strike ~11% OTM on an $18 stock (unsellable); 3% of spot, floored at $0.50,
+# capped at $2.00.
+REPAIR_OTM_GAP_MIN, REPAIR_OTM_GAP_MAX, REPAIR_OTM_GAP_PCT = 0.50, 2.0, 0.03
 REPAIR_TRIGGER_PCT = 0.05   # only "repair" (allow a below-basis strike) once >5% underwater
 
 # Wednesday roll trigger for an ITM short call.
 ROLL_ITM_DOLLARS = 1.0
 WEDNESDAY = 2  # date.weekday(): Mon=0
 
+# Dead-lot escalation: a lot uncovered this many calendar days retries with a
+# widened (up to N-day) expiry window before we give up and sell the shares.
+DEAD_LOT_ESCALATE_DAYS = 5
+DEAD_LOT_WIDE_DTE_MAX  = 14
+UNCOVERED_STATE_FILE = Path(__file__).parent.parent / "data" / "suna_uncovered.json"
+
 
 # ── Selection (pure; driven by the self-check with stubbed snapshots) ──────────
-def _sellable(snap: dict, opt_type: str) -> Optional[dict]:
+def _sellable(snap: dict, opt_type: str, dte_max: int = SUNA_DTE_MAX) -> Optional[dict]:
     """Parse+price one option snapshot into a candidate dict, or None if unusable.
-    Applies the weekly DTE window and the liquidity floor."""
+    Applies the weekly DTE window and the liquidity floor. dte_max is overridable
+    for the dead-lot escalation retry (widens past the normal weekly window)."""
     parsed = _parse_occ(snap.get("symbol", ""))
     if not parsed:
         return None
@@ -93,7 +102,7 @@ def _sellable(snap: dict, opt_type: str) -> Optional[dict]:
     if o_type != opt_type or strike <= 0:
         return None
     dte = _dte(exp_str)
-    if not (SUNA_DTE_MIN <= dte <= SUNA_DTE_MAX):
+    if not (SUNA_DTE_MIN <= dte <= dte_max):
         return None
     quote = snap.get("latestQuote", {}) or {}
     bid = float(quote.get("bp", 0) or 0)
@@ -111,12 +120,13 @@ def _sellable(snap: dict, opt_type: str) -> Optional[dict]:
             "dte": dte, "delta": delta, "premium": mid, "bid": bid, "ask": ask}
 
 
-def pick_weekly_call(snaps: list[dict], price: float, min_strike: float = 0.0
-                     ) -> Optional[dict]:
+def pick_weekly_call(snaps: list[dict], price: float, min_strike: float = 0.0,
+                     dte_max: int = SUNA_DTE_MAX) -> Optional[dict]:
     """Income-first weekly call: nearest ~0.45Δ inside the band, strike above
     min_strike (basis, or spot for repair). Falls back to the first strike above
-    price when greeks are missing."""
-    calls = [c for c in (_sellable(s, "call") for s in snaps)
+    price when greeks are missing. dte_max: widened by the dead-lot escalation
+    retry in _cover() when nothing sells in the normal weekly window."""
+    calls = [c for c in (_sellable(s, "call", dte_max=dte_max) for s in snaps)
              if c and c["strike"] >= min_strike]
     if not calls:
         return None
@@ -155,6 +165,13 @@ def premium_band_ok(premium: float, price: float) -> tuple[bool, str]:
     if pct > PREM_MAX:
         return True, f"prem {pct:.2%}/wk (aggressive)"
     return True, f"prem {pct:.2%}/wk"
+
+
+def _repair_gap(spot: float) -> float:
+    """Repair-strike offset above spot: 3% of price, floored at $0.50, capped at
+    $2.00. (Flat $2 was too wide for cheap stocks — SOFI at $18 put the strike
+    ~11% OTM, so nothing sellable ever appeared in the weekly chain.)"""
+    return max(REPAIR_OTM_GAP_MIN, min(REPAIR_OTM_GAP_MAX, REPAIR_OTM_GAP_PCT * spot))
 
 
 def position_lots(price: float, avail: float) -> int:
@@ -266,6 +283,87 @@ def _live_symbols(client) -> Optional[set]:
         return None
 
 
+def _log_option_fill(s, symbol: str, side: str, qty: int, fill_price: float, label: str):
+    """Append a trading_orders row for one option fill. This is the source of
+    truth --status reads for WTD/MTD premium: option legs get RE-SOLD IN PLACE on
+    the same trading_cc_positions row (opened_at never moves), so the old
+    opened_at-filtered premium calc goes blind on resold legs. Options only —
+    share buys/sells aren't logged here."""
+    now = datetime.now(timezone.utc).isoformat()
+    s.add(TradingOrder(symbol=symbol, side=side, qty=qty, order_type=label,
+                       filled_price=fill_price, filled_qty=qty, status="filled",
+                       submitted_at=now, filled_at=now))
+
+
+# ── Dead-lot state (uncovered-lot escalation) ───────────────────────────────────
+def _load_uncovered() -> dict:
+    """{symbol: first_fail_date_iso} — ponytail: smallest persistent counter for
+    tracking how long a lot has gone uncovered; upgrade to a DB column only if
+    more per-lot state accrues."""
+    try:
+        return json.loads(UNCOVERED_STATE_FILE.read_text())
+    except Exception:
+        return {}
+
+
+def _save_uncovered(state: dict):
+    UNCOVERED_STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
+    UNCOVERED_STATE_FILE.write_text(json.dumps(state))
+
+
+def _exit_lot(client, s, row, spot) -> Optional[float]:
+    """Sell the shares to recycle capital when a lot can't be covered even at the
+    widened 14-day expiry. Mirrors ENTER's share-buy order pattern (marketable
+    limit + fill_or_cancel, single stage — no options involved). Returns the fill
+    price, or None if unfilled (caller keeps the escalation clock running)."""
+    shares = row.shares_qty or 0
+    oid = _submit_limit(client, row.underlying, shares, OrderSide.SELL,
+                        round(spot * 0.997, 2), label="dead-lot exit")
+    fill = _fill_or_cancel(client, oid, timeout=45)
+    if fill is None:
+        print(f"  ⚠️  {row.underlying}: exit sell unfilled — retries next cycle")
+        return None
+    pnl = (fill - (row.avg_cost or 0)) * shares
+    row.status = "closed"
+    row.closed_at = datetime.now(timezone.utc).isoformat()
+    row.realized_pnl = (row.realized_pnl or 0) + pnl
+    s.commit()
+    send_alert("Suna Desk — Dead Lot Exit",
+               f"{row.underlying}: sold {shares}sh @ ${fill:.2f} to exit — P&L ${pnl:+,.0f}")
+    return fill
+
+
+def _handle_dead_lot(client, s, row, spot, underwater, min_strike, snaps, state, dry_run) -> None:
+    """Called when a lot can't be covered this cycle (no weekly call, or the only
+    one fails the premium band). Tracks the first-fail date in state; once stuck
+    >= DEAD_LOT_ESCALATE_DAYS, retries with a widened (up to 14-day) expiry, and
+    if that's still unsellable, alerts and — unless dry_run — sells the shares."""
+    sym = row.underlying
+    first_fail = state.get(sym)
+    if not first_fail:
+        state[sym] = date.today().isoformat()
+        return
+    days_stuck = (date.today() - date.fromisoformat(first_fail)).days
+    if days_stuck < DEAD_LOT_ESCALATE_DAYS:
+        return
+    wide = pick_weekly_call(snaps, spot, min_strike=min_strike, dte_max=DEAD_LOT_WIDE_DTE_MAX)
+    ok = wide and premium_band_ok(wide["premium"], spot)[0]
+    if ok:
+        print(f"  🗓  {sym}: {days_stuck}d uncovered — widening to a {wide['dte']}-day expiry")
+        label = "repair-cover" if underwater else "cover"
+        _sell_call_row(client, s, row, wide, spot, label, dry_run)
+        if row.option_symbol:  # sell went through
+            del state[sym]
+        return
+    msg = f"{sym}: no sellable call for {days_stuck} days — selling shares to recycle capital"
+    print(f"  🚨 {msg}")
+    send_alert("Suna Desk — Dead Lot", msg)
+    # Clear the clock only on a real fill — an unfilled exit must retry next
+    # cycle, not restart the 5-day escalation wait.
+    if not dry_run and _exit_lot(client, s, row, spot) is not None:
+        del state[sym]
+
+
 # ── Step 2: MANAGE (profit-close, Wednesday ITM roll, repair) ──────────────────
 def _manage(client, dry_run: bool = False):
     print("\n  [SUNA 2/5] Manage (profit-close / Wed ITM roll)...")
@@ -286,6 +384,7 @@ def _manage(client, dry_run: bool = False):
                 fill = _two_stage_buy(client, row.option_symbol, bid, ask, mid,
                                       qty=contracts, dry_run=dry_run, label="profit-close")
                 if fill is not None and not dry_run:
+                    _log_option_fill(s, row.option_symbol, "buy", contracts, fill, "profit-close")
                     row.realized_pnl = (row.realized_pnl or 0) + (prem_in - fill * 100 * contracts)
                     row.option_symbol = None; row.option_type = None
                     row.strike = 0; row.expiry = None; row.premium_received = 0
@@ -328,6 +427,7 @@ def _roll(client, s, row, spot, buyback, dry_run):
                                 qty=contracts, label="roll-close")
     if close_fill is None:
         return
+    _log_option_fill(s, row.option_symbol, "buy", contracts, close_fill, "roll-close")
     # Book the close and clear the option NOW — if the new sell fails below, the lot
     # is left cleanly uncovered so _cover re-covers it next cycle (never stranded
     # marked-covered against a contract that no longer exists in Alpaca).
@@ -341,6 +441,7 @@ def _roll(client, s, row, spot, buyback, dry_run):
     fill = _two_stage_sell(client, nxt["symbol"], n_bid, n_ask, n_mid,
                            nxt["strike"], nxt["dte"], qty=contracts, label="roll-open")
     if fill is not None:
+        _log_option_fill(s, nxt["symbol"], "sell", contracts, fill, "roll-open")
         row.option_symbol = nxt["symbol"]; row.option_type = "call"
         row.strike = nxt["strike"]; row.expiry = nxt["expiry"]; row.premium_received = fill * 100 * contracts
         s.commit()
@@ -356,6 +457,8 @@ def _roll(client, s, row, spot, buyback, dry_run):
 def _cover(client, dry_run: bool = False):
     print("\n  [SUNA 3/5] Cover uncovered lots...")
     s = Session()
+    state = _load_uncovered()
+    before = dict(state)
     try:
         for row in _open_rows(s):
             if row.option_symbol or not row.shares_qty:
@@ -371,25 +474,29 @@ def _cover(client, dry_run: bool = False):
             # Normal: never sell below basis. Repair: deeply underwater → sell a
             # call a few $ above spot (below basis, with an early-assignment guard),
             # laddering up toward basis each week.
-            min_strike = basis if not underwater else spot + REPAIR_OTM_GAP
+            min_strike = basis if not underwater else spot + _repair_gap(spot)
             snaps = _get_option_snapshots(row.underlying, opt_type="call", dte_min=SUNA_DTE_MIN)
             best = pick_weekly_call(snaps, spot, min_strike=min_strike)
-            if not best:
-                tag = "repair strike" if underwater else f"strike ≥ basis ${basis:.2f}"
-                print(f"  ⚠️  {row.underlying}: no weekly call at {tag} — hold uncovered")
-                continue
-            ok, why = premium_band_ok(best["premium"], spot)
-            if not ok:
-                print(f"  ⏭  {row.underlying}: {why} — hold uncovered")
+            ok, why = premium_band_ok(best["premium"], spot) if best else (False, "")
+            if not best or not ok:
+                if not best:
+                    tag = "repair strike" if underwater else f"strike ≥ basis ${basis:.2f}"
+                    print(f"  ⚠️  {row.underlying}: no weekly call at {tag} — hold uncovered")
+                else:
+                    print(f"  ⏭  {row.underlying}: {why} — hold uncovered")
+                _handle_dead_lot(client, s, row, spot, underwater, min_strike, snaps, state, dry_run)
                 continue
             label = "repair-cover" if underwater else "cover"
             if underwater:
                 print(f"  🩹 {row.underlying}: REPAIR — spot ${spot:.2f} < basis ${basis:.2f}, "
                       f"sell ${best['strike']:g} call (ladder up next week)")
             _sell_call_row(client, s, row, best, spot, label, dry_run)
+            state.pop(row.underlying, None)  # covered — clear any escalation tracking
         s.commit()
     finally:
         s.close()
+    if state != before:
+        _save_uncovered(state)
 
 
 def _sell_call_row(client, s, row, call, spot, label, dry_run):
@@ -405,6 +512,7 @@ def _sell_call_row(client, s, row, call, spot, label, dry_run):
     fill = _two_stage_sell(client, call["symbol"], b, a, m, call["strike"], call["dte"],
                            qty=contracts, dry_run=dry_run, label=label)
     if fill is not None and not dry_run:
+        _log_option_fill(s, call["symbol"], "sell", contracts, fill, label)
         row.option_symbol = call["symbol"]; row.option_type = "call"
         row.strike = call["strike"]; row.expiry = call["expiry"]
         row.premium_received = fill * 100 * contracts
@@ -512,6 +620,7 @@ def _enter(client, dry_run: bool = False):
             fill = _two_stage_sell(client, call["symbol"], b, a, m, call["strike"],
                                    call["dte"], qty=lots, label="cover-on-entry")
             if fill is not None:
+                _log_option_fill(s, call["symbol"], "sell", lots, fill, "enter")
                 row.option_symbol = call["symbol"]; row.option_type = "call"
                 row.strike = call["strike"]; row.expiry = call["expiry"]
                 row.premium_received = fill * 100 * lots
@@ -561,6 +670,7 @@ def _wheel(client, dry_run: bool = False):
             fill = _two_stage_sell(client, put["symbol"], b, a, m, put["strike"], put["dte"],
                                    label="CSP wheel")
             if fill is not None:
+                _log_option_fill(s, put["symbol"], "sell", 1, fill, "csp")
                 s.add(TradingCCPosition(
                     underlying=row.underlying, shares_qty=0, avg_cost=0,
                     option_symbol=put["symbol"], option_type="put",
@@ -578,6 +688,28 @@ def _wheel(client, dry_run: bool = False):
         s.close()
 
 
+def _check_stale_legs(market_open: bool):
+    """After SYNC, flag any open row whose option leg's expiry is already past.
+    SYNC only reconciles a leg once it drops out of Alpaca's book (expired-
+    worthless or assigned) — if Alpaca hasn't processed that yet (e.g. a Monday
+    assignment-processing lag), the row sits open with a stale expiry and SYNC's
+    branch never fires. A leg that expired Friday is expected to look stale over
+    the weekend, so only alert once the market's open (Alpaca should have caught
+    up by then)."""
+    if not market_open:
+        return
+    s = Session()
+    try:
+        stale = [r for r in _open_rows(s)
+                if r.option_symbol and r.expiry and r.expiry < date.today().isoformat()]
+    finally:
+        s.close()
+    if stale:
+        syms = ", ".join(f"{r.underlying} ({r.expiry})" for r in stale)
+        print(f"\n  ⚠️  Stale leg(s) past expiry, not reconciled by sync: {syms}")
+        send_alert("Suna Desk — Stale Leg", f"⚠️ Not reconciled by sync: {syms}")
+
+
 # ── Public API ────────────────────────────────────────────────────────────────
 def run_suna_cycle(dry_run: bool = False):
     """One full weekly Suna wheel cycle. Called by the orchestrator under --suna."""
@@ -588,7 +720,9 @@ def run_suna_cycle(dry_run: bool = False):
     _DROP_CACHE.clear()   # fresh structural/transient reads each cycle (loop runs for days)
     client = _client()
     _sync(client, dry_run)                       # reused: assignment/expiry reconciliation
-    if not is_market_open():
+    market_open = is_market_open()
+    _check_stale_legs(market_open)
+    if not market_open:
         print("\n  Market closed — sync done; skipping manage/cover/enter/wheel.")
         return
     _manage(client, dry_run)
@@ -653,6 +787,21 @@ def _test():
     # DTE window: a 30-DTE call is out of the weekly window.
     far = (date.today() + timedelta(days=30)).strftime("%y%m%d")
     assert _sellable(_snap(f"HIMS{far}C{int(58*1000):08d}", 0.45, 1.0, 1.1), "call") is None
+
+    # Dead-lot DTE widening: a 12-DTE call sits outside the normal 3-9 weekly
+    # window but inside the widened 14-day dead-lot retry window.
+    wide_exp = (date.today() + timedelta(days=12)).strftime("%y%m%d")
+    wide_snap = _snap(f"HIMS{wide_exp}C{int(59*1000):08d}", 0.40, 1.20, 1.30)
+    assert pick_weekly_call([wide_snap], price=56.0, min_strike=56.0) is None, \
+        "12-DTE call should be rejected by the default 3-9 DTE weekly window"
+    assert pick_weekly_call([wide_snap], price=56.0, min_strike=56.0,
+                            dte_max=DEAD_LOT_WIDE_DTE_MAX) is not None, \
+        "dead-lot escalation (dte_max=14) should accept a 12-DTE call"
+
+    # Repair-gap formula: 3% of spot, floored at $0.50, capped at $2.00.
+    assert abs(_repair_gap(18.0) - 0.54) < 1e-9, "3% of $18 = $0.54"
+    assert _repair_gap(5.0) == REPAIR_OTM_GAP_MIN, "below floor → floor"
+    assert _repair_gap(200.0) == REPAIR_OTM_GAP_MAX, "above cap → cap"
 
     # Structural-drop screen: cache + fail-open, no network.
     _DROP_CACHE.clear()
