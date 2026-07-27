@@ -455,6 +455,7 @@ class Contact(Base):
     city           = Column(String(100))
     state          = Column(String(50))
     postal_code    = Column(String(20))
+    website        = Column(String(200))
     custom_fields  = Column(Text)               # JSON string
     source         = Column(String(100))
     dnd            = Column(Boolean)

@@ -108,6 +108,7 @@ def cmd_show(args):
     print(f"  Phone:       {c.phone or '—'}")
     print(f"  Company:     {c.company or '—'}")
     print(f"  Address:     {', '.join(filter(None, [c.address, c.city, c.state, c.postal_code])) or '—'}")
+    print(f"  Website:     {c.website or '—'}")
     print(f"  Source:      {c.source or '—'}")
     print(f"  Unsubscribed:{' YES' if c.unsubscribed else ' no'}")
     print(f"  DND:         {' YES' if c.dnd else ' no'}")
@@ -161,6 +162,11 @@ def cmd_add(args):
         c.last_name  = args.last  or c.last_name
         c.phone      = args.phone or c.phone
         c.company    = args.company or c.company
+        c.address    = args.address or c.address
+        c.city       = args.city or c.city
+        c.state      = args.state or c.state
+        c.postal_code = args.zip or c.postal_code
+        c.website    = args.website or c.website
     else:
         c = Contact(
             ghl_id     = f"local-{uuid.uuid4().hex[:12]}",
@@ -169,6 +175,11 @@ def cmd_add(args):
             email      = args.email,
             phone      = args.phone,
             company    = args.company,
+            address    = args.address,
+            city       = args.city,
+            state      = args.state,
+            postal_code = args.zip,
+            website    = args.website,
             date_added = date.today().isoformat(),
             created_at = date.today().isoformat(),
         )
@@ -383,6 +394,11 @@ def main():
     s.add_argument("--email",   required=True)
     s.add_argument("--phone",   default=None)
     s.add_argument("--company", default=None)
+    s.add_argument("--address", default=None)
+    s.add_argument("--city",    default=None)
+    s.add_argument("--state",   default=None)
+    s.add_argument("--zip",     default=None)
+    s.add_argument("--website", default=None)
     s.add_argument("--tag",     action="append", metavar="TAG")
     s.add_argument("--note",    default=None)
     s.add_argument("--force",   action="store_true", help="Overwrite on duplicate email")

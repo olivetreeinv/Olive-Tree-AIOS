@@ -33,6 +33,8 @@ python3 scripts/crm.py show jane@foo.com  # by email
 python3 scripts/crm.py add \
     --first Jane --last Doe --email jane@example.com \
     --phone 770-555-0100 --company "Acme Capital" \
+    --address "123 Main St #200" --city Atlanta --state GA --zip 30303 \
+    --website acmecapital.com \
     --tag investor --tag newsletter \
     --note "Met at Atlanta REIA, interested in next deal"
 # Rejects duplicate email; add --force to overwrite.
