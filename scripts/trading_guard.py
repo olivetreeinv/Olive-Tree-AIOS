@@ -37,18 +37,20 @@ UNEXPLAINED_PCT_THRESHOLD  = 0.05  # unexplained portion of the move, as % of la
 CONSISTENCY_PCT_THRESHOLD  = 0.02  # |equity - (cash + positions mv)| / equity beyond this → HALT
 ACTIVITIES_LOOKBACK_DAYS   = 3      # gap window to pull activities for
 
+# Equity-NEUTRAL trade events: asset↔cash conversion at (or near) market, so
+# their cash proceeds must not be counted as equity change. Verified against
+# real records 2026-07-27: Alpaca logs the share-delivery leg of an assignment
+# as OPTRD ("Options Trade") with net_amount = full strike proceeds ($17,850 of
+# call-aways), NOT as a FILL — keying on FILL alone re-produced the false halt.
+# OPASN/OPEXP/OPEXC are the option-side bookkeeping legs (net_amount 0).
+TRADE_ACTIVITY_TYPES = {"FILL", "OPTRD", "OPASN", "OPEXP", "OPEXC"}
+
 
 def _activity_impact(a: dict) -> float:
     """
     Best-effort $ EQUITY impact of one non-trade Alpaca activity record
-    (DIV, CSD, FEE, JNLC, ... carry net_amount/amount directly).
-
-    Trade FILLs are deliberately NOT summed: a fill converts asset↔cash at
-    market (assignment at strike ≈ market), so its equity impact is ~0 — but
-    its cash proceeds are huge. Counting proceeds as equity change made an
-    assignment-heavy expiry weekend look like $17,850 of "explained" move
-    against a real move of -$3,178, manufacturing a false $21k unexplained
-    residual (2026-07-27 false halt).
+    (DIV, CSD, FEE, JNLC, INT, ... carry net_amount/amount directly).
+    Only call this for activity types outside TRADE_ACTIVITY_TYPES.
     """
     for key in ("net_amount", "amount"):
         v = a.get(key)
@@ -93,18 +95,18 @@ def check_equity_anomaly(equity: float, last_equity: float, activities: list[dic
     if change_pct <= ANOMALY_PCT_THRESHOLD:
         return False, f"equity change {change_pct:+.1%} within {ANOMALY_PCT_THRESHOLD:.0%} band — normal"
 
-    has_fills = any(a.get("activity_type") == "FILL" for a in activities)
+    has_trades = any(a.get("activity_type") in TRADE_ACTIVITY_TYPES for a in activities)
     explained = sum(_activity_impact(a) for a in activities
-                    if a.get("activity_type") != "FILL")
+                    if a.get("activity_type") not in TRADE_ACTIVITY_TYPES)
     unexplained = change - explained
     unexplained_pct = abs(unexplained) / last_equity
 
     if unexplained_pct > UNEXPLAINED_PCT_THRESHOLD:
-        if has_fills:
+        if has_trades:
             return False, (
-                f"equity moved {change:+,.2f} ({change_pct:+.1%}) with trade fills in the "
-                f"window — market/settlement-driven (fills are equity-neutral), not halting; "
-                f"glitch signature is a big move with ZERO activity"
+                f"equity moved {change:+,.2f} ({change_pct:+.1%}) with trade/settlement "
+                f"activity in the window — market-driven (trades are equity-neutral), not "
+                f"halting; glitch signature is a big move with ZERO activity"
             )
         reason = (
             f"equity moved {change:+,.2f} ({change_pct:+.1%}) from last_equity=${last_equity:,.2f} "
@@ -236,17 +238,21 @@ def _self_check():
     assert not h, r
     print(f"  ✅ Zero/negative baseline skipped (no false halt): {r}")
 
-    # Big move WITH fills present → market/settlement-driven, never a halt.
-    # Real case (2026-07-27): assignment weekend, equity -6% off an inflated
-    # last_equity, $17,850 of call-away FILL proceeds in the log — old math
-    # counted proceeds as equity change and false-halted on Monday open.
+    # Big move WITH trade/settlement activity → market-driven, never a halt.
+    # Real records from the 2026-07-27 false halts (both rounds): Alpaca logs
+    # assignment share-delivery as OPTRD with net_amount = strike proceeds
+    # (NOT as FILL — round two keyed on FILL and still false-halted), plus
+    # OPASN/OPEXP bookkeeping legs and FEE records.
     h, r = check_equity_anomaly(50_176, 53_354, [
-        {"activity_type": "FILL", "qty": "100", "price": "56.50", "side": "sell"},
-        {"activity_type": "FILL", "qty": "400", "price": "21.50", "side": "sell"},
-        {"activity_type": "FILL", "qty": "100", "price": "36.00", "side": "sell"},
+        {"activity_type": "OPTRD", "net_amount": "5650", "qty": "-100", "price": "56.5", "symbol": "XLE"},
+        {"activity_type": "OPTRD", "net_amount": "8600", "qty": "-400", "price": "21.5", "symbol": "T"},
+        {"activity_type": "OPTRD", "net_amount": "3600", "qty": "-100", "price": "36", "symbol": "IBIT"},
+        {"activity_type": "OPASN", "net_amount": "0", "qty": "1", "symbol": "XLE260724C00056500"},
+        {"activity_type": "OPEXP", "net_amount": "0", "qty": "1", "symbol": "F260724P00013000"},
+        {"activity_type": "FEE", "net_amount": "-0.17"},
     ])
     assert not h, r
-    print(f"  ✅ Assignment-weekend move with fills: no halt — {r[:80]}...")
+    print(f"  ✅ Assignment weekend (real OPTRD/OPASN/FEE records): no halt — {r[:70]}...")
 
     # Internal consistency: equity far from cash + positions mv → data glitch, HALT
     # even with fills in the window.
