@@ -35,7 +35,12 @@ HALT_FLAG_FILE = Path(__file__).parent.parent / "data" / "trading_halt.json"
 ANOMALY_PCT_THRESHOLD      = 0.05  # |equity - last_equity| / last_equity beyond this → investigate
 UNEXPLAINED_PCT_THRESHOLD  = 0.05  # unexplained portion of the move, as % of last_equity → HALT
 CONSISTENCY_PCT_THRESHOLD  = 0.02  # |equity - (cash + positions mv)| / equity beyond this → HALT
-ACTIVITIES_LOOKBACK_DAYS   = 3      # gap window to pull activities for
+# Must cover the longest possible baseline gap: Alpaca's last_equity can sit at
+# FRIDAY's close through Tuesday morning (weekend + halted/holiday Monday), so
+# Friday-evening assignment/expiry records are 4 days old by then — a 3-day
+# window dropped them and re-produced the false "NO trade activity" halt on
+# 2026-07-28. 5 days also survives a Monday holiday.
+ACTIVITIES_LOOKBACK_DAYS   = 5      # gap window to pull activities for
 
 # Equity-NEUTRAL trade events: asset↔cash conversion at (or near) market, so
 # their cash proceeds must not be counted as equity change. Verified against
