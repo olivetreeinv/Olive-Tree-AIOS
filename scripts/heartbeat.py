@@ -35,18 +35,18 @@ from scripts.deal_intake import find_candidates, _seen as intake_seen
 from scripts.loose_ends import harvest
 
 TRADING_LOG = Path.home() / "Library/Logs/trading-desk.log"
-SCAN_LOG = REPO / "output" / "daily_scan" / "scan.log"
 DB = REPO / "data" / "olive.db"
 
 # KeepAlive jobs must show a PID; calendar jobs must be loaded with exit 0.
 # (label, kind, plain-language name)
 EXPECTED_JOBS = {
     "com.olivetree.trading-desk": ("keepalive", "Trading desk (paper-trading loop)"),
-    "com.olivetree.dailyscan": ("calendar", "Daily deal scan (Crexi/LoopNet/FMLS listings)"),
     "com.olivetree.aios-autocommit": ("calendar", "AIOS auto-commit (hourly git backup)"),
     "com.olivetree.heartbeat": ("calendar", "Heartbeat (this 7:45am check)"),
     "com.olivetree.usage-audit": ("calendar", "Monthly usage audit (1st of month)"),
     "com.olivetree.morning-deal-scan": ("calendar", "Morning deal scan (Crexi buy-box + broker replies, 8am)"),
+    "com.olivetree.goal-watch": ("calendar", "Goal Watch (12:30pm judge)"),
+    "com.olivetree.drip": ("calendar", "Drip worker (9am)"),
 }
 
 
@@ -117,17 +117,6 @@ def check_desk_code_fresh() -> tuple[bool, str]:
         return True, f"Trading desk code: freshness check skipped ({e})"
 
 
-def check_daily_scan() -> tuple[bool, str]:
-    age = _age_minutes(SCAN_LOG)
-    if age is None:
-        return False, "Daily deal scan output: no scan log found — the scan has never run"
-    # ponytail: 4-day threshold dodges weekend/7:45-vs-9:40 false alarms;
-    # catches sustained failure, not a single miss
-    ok = age < 60 * 24 * 4
-    return ok, (f"Daily deal scan output: last scan ran {age / 60 / 24:.1f} days ago" if ok
-                else f"Daily deal scan output: STALE — no scan in {age / 60 / 24:.1f} days; check the dailyscan job")
-
-
 def _google_token() -> str:
     """Local auth lives in the gws keyring; .env GOOGLE_* is the fallback."""
     try:
@@ -192,7 +181,6 @@ def main():
     checks.extend(check_launchd())
     checks.append(check_trading_log())
     checks.append(check_desk_code_fresh())
-    checks.append(check_daily_scan())
     checks.append(check_morning_brief())
     checks.append(check_db())
 

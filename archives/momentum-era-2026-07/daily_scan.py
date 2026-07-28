@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 """
-daily_scan.py — Two-sided best-trades scan for the trading desk.
+daily_scan.py — RETIRED 2026-07-28. Momentum-era two-sided scan; the Suna v3
+desk sources candidates from trading_movers.discover() (Alpaca movers) and
+consumed nothing from this scan — its trading_theses writes had no reader.
+launchd job com.olivetree.dailyscan unloaded; plist archived alongside.
+Still runs standalone from here if the market-color email is ever wanted back.
+
+Two-sided best-trades scan for the trading desk.
 
 Screens a broad, liquid universe through the quant gate in BOTH directions and
 ranks the day's best LONGS and best SHORTS. Optionally runs Claude deep research

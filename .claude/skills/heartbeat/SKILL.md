@@ -1,6 +1,6 @@
 ---
 name: heartbeat
-description: One-shot ops health check for every AIOS system — launchd jobs, trading desk, daily scan, Morning Brief delivery, olive.db, new deal-doc drops, and top loose ends. Trigger on "/heartbeat", "is everything running", "is the trading desk running", "did the brief send", "status check", "are my systems up".
+description: One-shot ops health check for every AIOS system — launchd jobs, trading desk, Morning Brief delivery, olive.db, new deal-doc drops, and top loose ends. Trigger on "/heartbeat", "is everything running", "is the trading desk running", "did the brief send", "status check", "are my systems up".
 ---
 
 ## What this skill does
@@ -20,9 +20,8 @@ python3 scripts/heartbeat.py --notify   # + ntfy push (what the 7:45am job does)
 
 | System | Green means |
 |---|---|
-| launchd jobs (trading-desk, dailyscan, aios-autocommit, heartbeat) | loaded; KeepAlive jobs have a live PID |
-| trading-desk log | written < 20 min ago (loop is cycling) |
-| daily scan | ran within 4 days |
+| launchd jobs (trading-desk, morning-deal-scan, aios-autocommit, heartbeat, usage-audit, goal-watch, drip) | loaded; KeepAlive jobs have a live PID |
+| trading-desk log | written < 75 min ago (loop is cycling) |
 | Morning Brief | email with subject "Morning Brief" arrived today (weekdays) |
 | olive.db | opens and queries |
 
