@@ -93,6 +93,30 @@ def check_trading_log() -> tuple[bool, str]:
                 else f"Trading desk activity: WEDGED — no log writes in {age:.0f} min (expects one every ~60); restart the desk")
 
 
+def check_desk_code_fresh() -> tuple[bool, str]:
+    """RED when any trading script was edited AFTER the desk process started —
+    the loop imports modules once, so it's running stale code from memory until
+    kickstarted. Bit us 2026-07-27: guard fix landed on disk, the running loop
+    kept the old guard and false-halted all day."""
+    try:
+        out = subprocess.run(["launchctl", "list"], capture_output=True, text=True, timeout=15).stdout
+        pid = next((l.split("\t")[0] for l in out.splitlines()
+                    if l.endswith("com.olivetree.trading-desk")), "-")
+        if pid in ("-", ""):
+            return True, "Trading desk code: desk not running (freshness n/a — see the launchd check)"
+        ps = subprocess.run(["ps", "-o", "lstart=", "-p", pid],
+                            capture_output=True, text=True, timeout=15).stdout
+        started = datetime.strptime(" ".join(ps.split()), "%a %b %d %H:%M:%S %Y").timestamp()
+        newest = max(f.stat().st_mtime for f in (REPO / "scripts").glob("trading_*.py"))
+        if newest > started:
+            return False, ("Trading desk code: STALE — a trading script changed after the desk "
+                           "started; it's running old code from memory. Restart: "
+                           "launchctl kickstart -k gui/501/com.olivetree.trading-desk")
+        return True, "Trading desk code: process is newer than every trading script"
+    except Exception as e:
+        return True, f"Trading desk code: freshness check skipped ({e})"
+
+
 def check_daily_scan() -> tuple[bool, str]:
     age = _age_minutes(SCAN_LOG)
     if age is None:
@@ -167,6 +191,7 @@ def main():
     checks: list[tuple[bool, str]] = []
     checks.extend(check_launchd())
     checks.append(check_trading_log())
+    checks.append(check_desk_code_fresh())
     checks.append(check_daily_scan())
     checks.append(check_morning_brief())
     checks.append(check_db())
