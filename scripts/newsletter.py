@@ -8,6 +8,7 @@ build       merge content into template, save HTML, create campaigns row
 test-send   send to brian@olivetreeinv.io with [TEST] subject prefix
 send        send to newsletter-tagged audience (resume-safe, 2–4s delay)
 scan-unsubs search Gmail for UNSUBSCRIBE replies, flag contacts
+scan-bounces search Gmail for hard bounces (address not found), remove dead contacts
 """
 
 import argparse
@@ -433,6 +434,130 @@ def cmd_scan_unsubs(args):
         print(f"\nTotal: {len(flagged)} contact(s) {'(dry-run, nothing written)' if args.dry_run else 'marked unsubscribed'}.")
 
 
+# ── bounce hygiene ───────────────────────────────────────────────────────────
+
+_HARD_BOUNCE_SIGNALS = (
+    "does not exist", "couldn't be found", "could not be found",
+    "address not found", "no such user", "user unknown",
+    "recipient address rejected", "550 5.1.1",
+    # non-Google MTAs (Outlook/Exchange, Postfix, qmail)
+    "recipnotfound", "recipient not found", "unknown recipient",
+)
+
+
+def _decode_part(payload) -> str:
+    """Recursively base64url-decode every text part of a Gmail message payload."""
+    out = []
+    data = (payload.get("body") or {}).get("data")
+    if data:
+        out.append(base64.urlsafe_b64decode(data + "=" * (-len(data) % 4)).decode("utf-8", "replace"))
+    for p in payload.get("parts") or []:
+        out.append(_decode_part(p))
+    return "\n".join(out)
+
+
+def parse_bounce(text: str):
+    """From a Gmail bounce (DSN) blob → (failed_recipient_emails:set, is_hard:bool).
+
+    is_hard = permanent failure (5.x.x status / "address doesn't exist"). We remove ONLY on
+    hard bounces so a temporary 4.x.x (over-quota, greylisting) never nukes a good contact.
+    ponytail: classifies the whole message; a DSN bundling mixed pass/fail recipients would
+    need per-recipient Action parsing — our 1:1 drip/newsletter sends don't produce those.
+    """
+    low = text.lower()
+    # 5.1.x = permanent *recipient-address* failure (no such mailbox) — the real dead address.
+    # Deliberately NOT all 5.x.x: 5.2.2 (mailbox full) / 5.2.3 (too large) are valid people we
+    # must not delete. Text phrases below still catch the same "address not found" wording.
+    is_hard = bool(re.search(r"status:\s*5\.1\.\d+", low)) or any(s in low for s in _HARD_BOUNCE_SIGNALS)
+    emails = set(re.findall(r"final-recipient:\s*rfc822;\s*<?([\w.+-]+@[\w.-]+\.\w+)", low))
+    if not emails:  # fallback to the human-readable line if the DSN part is missing
+        m = re.search(r"wasn'?t delivered to\s*<?([\w.+-]+@[\w.-]+\.\w+)", low)
+        if m:
+            emails.add(m.group(1))
+    return emails, is_hard
+
+
+def cmd_scan_bounces(args):
+    """Scan Gmail for hard bounces (mailer-daemon 'address not found') → remove those
+    contacts from future sends: mark unsubscribed + add the `bounced` tag. The next drip
+    run then auto-stops their sequence (it already skips unsubscribed)."""
+    token = get_token()
+    days = args.days
+    # Bounces come from Google's mailer-daemon AND recipient-side postmasters (Outlook/Exchange,
+    # corporate MTAs). Match both by sender and by the standard NDR subjects; parse_bounce still
+    # gates on a hard 5.1.x / "no such user" status, so a soft or non-bounce match is discarded.
+    bounce_terms = (
+        "from:mailer-daemon OR from:postmaster OR "
+        'subject:undeliverable OR subject:"delivery status notification" OR '
+        'subject:"delivery has failed" OR subject:"mail delivery failed" OR '
+        'subject:"failure notice" OR subject:"returned mail" OR subject:"undelivered mail"'
+    )
+    q = f"in:inbox newer_than:{days}d ({bounce_terms})"
+
+    messages, page_token = [], None
+    while True:  # paginate — a missed bounce keeps costing sends
+        params = {"q": q, "maxResults": 100}
+        if page_token:
+            params["pageToken"] = page_token
+        r = requests.get(f"{GMAIL_BASE}/messages",
+                         headers={"Authorization": f"Bearer {token}"},
+                         params=params, timeout=30)
+        r.raise_for_status()
+        data = r.json()
+        messages.extend(data.get("messages", []))
+        page_token = data.get("nextPageToken")
+        if not page_token:
+            break
+
+    def _fetch_full(msg):
+        d = requests.get(f"{GMAIL_BASE}/messages/{msg['id']}",
+                         headers={"Authorization": f"Bearer {token}"},
+                         params={"format": "full"}, timeout=30)
+        d.raise_for_status()
+        return d.json()
+
+    hard, soft = set(), set()
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        for dj in pool.map(_fetch_full, messages):
+            blob = dj.get("snippet", "") + "\n" + _decode_part(dj.get("payload", {}))
+            emails, is_hard = parse_bounce(blob)
+            emails = {e for e in emails if e != FROM_ADDR.lower() and "mailer-daemon" not in e}
+            (hard if is_hard else soft).update(emails)
+    soft -= hard  # a hard failure elsewhere wins over a stray soft mention
+
+    if not hard:
+        extra = f" ({len(soft)} soft/transient skipped)" if soft else ""
+        print(f"No hard bounces found in last {days} days.{extra}")
+        return
+
+    session = get_session()
+    flagged, no_match = [], []
+    for email in sorted(hard):
+        c = session.query(Contact).filter(Contact.email.ilike(email)).first()
+        if not c:
+            no_match.append(email)
+            continue
+        already = session.query(ContactTag).filter(
+            ContactTag.contact_id == c.id, ContactTag.tag == "bounced").first()
+        flagged.append((c.id, c.email, c.first_name, bool(already)))
+        if not args.dry_run and not already:
+            c.unsubscribed = True
+            session.add(ContactTag(contact_id=c.id, tag="bounced"))
+    if not args.dry_run:
+        session.commit()
+    session.close()
+
+    verb = "[dry-run] would remove" if args.dry_run else "Removed (unsubscribed + tagged bounced)"
+    for cid, email, name, already in flagged:
+        print(f"  {verb}: id={cid} {email} ({name}){' (already bounced)' if already else ''}")
+    if no_match:
+        print(f"  bounced but not in CRM ({len(no_match)}): {', '.join(no_match)}")
+    if soft:
+        print(f"  soft/transient bounces skipped ({len(soft)}): {', '.join(sorted(soft))}")
+    new = sum(1 for *_, already in flagged if not already)
+    print(f"\nTotal: {new} contact(s) {'would be' if args.dry_run else ''} removed from future sends.")
+
+
 # ── main ─────────────────────────────────────────────────────────────────────
 
 def main():
@@ -458,9 +583,14 @@ def main():
     p_scan.add_argument("--days",    type=int, default=30)
     p_scan.add_argument("--dry-run", action="store_true", help="Print matches, don't write")
 
+    p_bounce = sub.add_parser("scan-bounces", help="Scan Gmail for hard bounces, remove dead contacts")
+    p_bounce.add_argument("--days",    type=int, default=30)
+    p_bounce.add_argument("--dry-run", action="store_true", help="Print matches, don't write")
+
     args = parser.parse_args()
     {"build": cmd_build, "test-send": cmd_test_send,
-     "send": cmd_send, "scan-unsubs": cmd_scan_unsubs}[args.cmd](args)
+     "send": cmd_send, "scan-unsubs": cmd_scan_unsubs,
+     "scan-bounces": cmd_scan_bounces}[args.cmd](args)
 
 
 if __name__ == "__main__":

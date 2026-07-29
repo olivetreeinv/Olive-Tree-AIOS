@@ -42,6 +42,12 @@ DRIPS_DIR = ROOT / "templates" / "drips"
 GMAIL_BASE = "https://gmail.googleapis.com/gmail/v1/users/me"
 FROM_ADDR = "brian@olivetreeinv.io"
 
+# Brian's Gmail signature (pulled from settings.sendAs). Appended to every send so
+# drip mail looks like it came from his normal inbox. Refresh via:
+#   settings/sendAs/brian@olivetreeinv.io -> signature  (see git history for fetch snippet)
+_SIG_FILE = ROOT / "templates" / "signature.html"
+SIGNATURE_HTML = _SIG_FILE.read_text().strip() if _SIG_FILE.exists() else ""
+
 
 # ─────────────────────────────────────────────
 # Template loading
@@ -95,7 +101,8 @@ def _to_html(text):
     # bare URLs → links
     body = re.sub(r'(?<!href=")(https?://[^\s<]+)', r'<a href="\1">\1</a>', body)
     body = body.replace("\n", "<br>\n")
-    return f"<html><body style='font-family:sans-serif;font-size:14px'>{body}</body></html>"
+    sig = f"<br><br>{SIGNATURE_HTML}" if SIGNATURE_HTML else ""
+    return f"<html><body style='font-family:sans-serif;font-size:14px'>{body}{sig}</body></html>"
 
 
 def send_email(token, to_email, subject, body):
@@ -283,6 +290,7 @@ def cmd_stop(args):
     c = resolve_contact(session, args.contact)
     if not c:
         raise SystemExit(f"ERROR: contact '{args.contact}' not found")
+    who = c.email or c.id  # capture before commit expires / close detaches the instance
     q = session.query(DripEnrollment).filter(
         DripEnrollment.contact_id == c.id, DripEnrollment.status == "active")
     if args.drip:
@@ -294,7 +302,7 @@ def cmd_stop(args):
         print(f"  stopped: {e.drip_name} (was step {e.step})")
     session.commit()
     session.close()
-    print(f"Stopped {n} enrollment(s) for {c.email or c.id}")
+    print(f"Stopped {n} enrollment(s) for {who}")
 
 
 def cmd_status(args):

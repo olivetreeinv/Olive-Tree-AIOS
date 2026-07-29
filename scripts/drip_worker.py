@@ -2,8 +2,8 @@
 """
 drip_worker.py — launchd target for the daily drip run (com.olivetree.drip).
 
-Runs `drip.py run` then `newsletter.py scan-unsubs`, appending both outputs
-to output/drip-runner.log. A python3 worker (not /bin/sh) because launchd
+Runs `drip.py run`, `newsletter.py scan-unsubs`, then `newsletter.py scan-bounces`,
+appending all output to output/drip-runner.log. A python3 worker (not /bin/sh) because launchd
 shell jobs can't read ~/Documents under TCC (exit 126) — same pattern as
 the other com.olivetree.* jobs.
 
@@ -21,6 +21,7 @@ LOG = ROOT / "output" / "drip-runner.log"
 COMMANDS = [
     [sys.executable, str(ROOT / "scripts" / "drip.py"), "run"],
     [sys.executable, str(ROOT / "scripts" / "newsletter.py"), "scan-unsubs"],
+    [sys.executable, str(ROOT / "scripts" / "newsletter.py"), "scan-bounces"],
 ]
 
 
