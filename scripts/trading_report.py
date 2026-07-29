@@ -16,7 +16,7 @@ import calendar
 import os
 import subprocess
 import sys
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 import numpy as np
@@ -102,8 +102,34 @@ def _bottom_line(equity: float = None) -> list[str]:
     return lines
 
 
+def _week_pnl_line() -> str:
+    """'Week so far: +$X' — live equity vs the last snapshot before Monday.
+    Empty string on any failure so an alert never dies over a garnish."""
+    try:
+        equity = get_account()["equity"]
+        monday = (date.today() - timedelta(days=date.today().weekday())).isoformat()
+        s = Session()
+        try:
+            prev = (s.query(TradingEquityCurve)
+                    .filter(TradingEquityCurve.date < monday,
+                            TradingEquityCurve.portfolio_equity > 0)
+                    .order_by(TradingEquityCurve.date.desc())
+                    .first())
+        finally:
+            s.close()
+        base = prev.portfolio_equity if prev else _START_EQUITY
+        return f"Week so far: ${equity - base:+,.0f}"
+    except Exception:
+        return ""
+
+
 def send_alert(title: str, body: str):
     """Send an iMessage via notify.sh (osascript). Fire-and-forget."""
+    # HALT/ERROR pushes must not wait on a live Alpaca call (up to ~50s when it's down)
+    if "HALT" not in title and "ERROR" not in title:
+        wk = _week_pnl_line()
+        if wk:
+            body = f"{body}\n{wk}"
     if not _NOTIFY_TO:
         print(f"  [alert] {title}: {body}")
         return
@@ -682,7 +708,9 @@ def send_session_report(prev_session: str, new_session: str):
         f"net ${realized:+,.0f}  |  Open: {open_list}"
         f"{cc_line}"
     )
-    send_alert(f"Trading Desk — {prev_session} close", body)
+    # ponytail: title says "session closed", not "{X} close" — the hourly poll can send
+    # this 5-59min after the actual flip, and "equities close" read as a live extended-hours alert.
+    send_alert(f"Trading Desk — {prev_session.title()} session closed", body)
     _send_session_email(prev_session, new_session, equity, daily_pnl, n, wins, realized, open_list, cc=cc)
     print(f"  📋 Session report sent ({prev_session}→{new_session})")
     if cc_line:

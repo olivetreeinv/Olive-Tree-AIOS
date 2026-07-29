@@ -1,15 +1,28 @@
 #!/usr/bin/env python3
 import json
+import os
+import shutil
 import subprocess
 import time
 
 import requests
 
 
+def _gws_bin() -> str:
+    """Resolve the gws binary. launchd strips PATH to /usr/bin:/bin, where gws
+    (Homebrew) isn't found — so fall back to known install locations."""
+    return (
+        shutil.which("gws")
+        or next((p for p in ("/opt/homebrew/bin/gws", "/usr/local/bin/gws",
+                             os.path.expanduser("~/go/bin/gws")) if os.path.exists(p)), None)
+        or "gws"  # last resort: let subprocess raise the usual FileNotFoundError
+    )
+
+
 def get_token():
     try:
         result = subprocess.run(
-            ["gws", "auth", "export", "--unmasked"],
+            [_gws_bin(), "auth", "export", "--unmasked"],
             capture_output=True, text=True, check=True, timeout=30
         )
     except (subprocess.CalledProcessError, FileNotFoundError, subprocess.TimeoutExpired) as e:
