@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import json
 import subprocess
+import time
+
 import requests
 
 
@@ -25,11 +27,18 @@ def get_token():
             "gws credentials are malformed or incomplete. Re-run: gws auth login"
         ) from e
 
-    resp = requests.post("https://oauth2.googleapis.com/token", data={
-        "client_id":     client_id,
-        "client_secret": client_secret,
-        "refresh_token": refresh_token,
-        "grant_type":    "refresh_token",
-    }, timeout=10)
-    resp.raise_for_status()
-    return resp.json()["access_token"]
+    # ponytail: 3 tries, 5s backoff — Google's token endpoint flakes (~1/wk from launchd)
+    for attempt in range(3):
+        try:
+            resp = requests.post("https://oauth2.googleapis.com/token", data={
+                "client_id":     client_id,
+                "client_secret": client_secret,
+                "refresh_token": refresh_token,
+                "grant_type":    "refresh_token",
+            }, timeout=30)
+            resp.raise_for_status()
+            return resp.json()["access_token"]
+        except (requests.ConnectionError, requests.Timeout):
+            if attempt == 2:
+                raise
+            time.sleep(5)
