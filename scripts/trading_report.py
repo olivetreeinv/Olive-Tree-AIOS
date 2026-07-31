@@ -27,15 +27,15 @@ load_dotenv(Path(__file__).parent.parent / ".env")
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from scripts.trading_data import get_bars, get_account
 from db.connection import Session
-from db.schema import TradingEquityCurve, TradingPosition, TradingSignal
+from db.schema import TradingCCPosition, TradingEquityCurve, TradingPosition, TradingSignal
 
 _NOTIFY_TO = os.getenv("NOTIFY_IMESSAGE_TO", "")
 _NOTIFY_SH = str(Path(__file__).parent / "notify.sh")
-_START_EQUITY = 50_000.0    # Premium Desk v2 paper account (PA3TCU0QOGVS) starting equity
+_START_EQUITY = 50_000.0    # Premium Desk paper account (PA371XMPHCE2) starting equity
 # Soft daily profit goal — tracking/visibility only. Does NOT force or block trades
 # (the -2% daily halt is the only hard daily rule). Override via env.
 _DAILY_TARGET = float(os.getenv("DAILY_TARGET_USD", "1000"))
-_DESK_START = "2026-07-07"  # first equity-curve row of the v2 account — SPY comparisons anchor here
+_DESK_START = "2026-08-01"  # first equity-curve row of the v2 account — SPY comparisons anchor here
 
 
 def _spy_same_window(rows) -> float:
@@ -102,14 +102,36 @@ def _bottom_line(equity: float = None) -> list[str]:
     return lines
 
 
+def _share_pnl(rows) -> float:
+    """Share leg of realized P&L for lots called away — (strike − basis) × shares.
+    Their premium half is counted separately via the option-fill ledger, so adding
+    row.realized_pnl here instead would double-count it. Shares default to 0, not
+    the 100 the assignment path assumes: a share-less row must book $0 here."""
+    return sum(((r.strike or 0) - (r.avg_cost or 0)) * (r.shares_qty or 0) for r in rows)
+
+
 def _week_pnl_line() -> str:
-    """'Week so far: +$X' — live equity vs the last snapshot before Monday.
+    """'Week realized: +$X' — cash actually banked since Monday: net option premium
+    (sells − buybacks, from the timestamped fill ledger) plus the share leg of any
+    lot called away this week. Total equity change rides along in parens because
+    open positions still move the account, they just aren't banked yet.
     Empty string on any failure so an alert never dies over a garnish."""
     try:
-        equity = get_account()["equity"]
+        from scripts.trading_covered_calls import cc_premium_stats  # local: circular at module level
         monday = (date.today() - timedelta(days=date.today().weekday())).isoformat()
+        realized = cc_premium_stats()["premium_wtd"]
         s = Session()
         try:
+            # "wheeled" too, NOT just "assigned": the WHEEL step re-labels an already
+            # closed-as-assigned row once it sells the replacement CSP, which on this
+            # desk usually happens the same cycle. Filtering on "assigned" alone drops
+            # the share leg of every lot that got wheeled back the same week.
+            realized += _share_pnl(
+                s.query(TradingCCPosition)
+                 .filter(TradingCCPosition.status.in_(("assigned", "wheeled")),
+                         TradingCCPosition.closed_at >= monday,
+                         TradingCCPosition.avg_cost.isnot(None))
+                 .all())
             prev = (s.query(TradingEquityCurve)
                     .filter(TradingEquityCurve.date < monday,
                             TradingEquityCurve.portfolio_equity > 0)
@@ -117,9 +139,13 @@ def _week_pnl_line() -> str:
                     .first())
         finally:
             s.close()
+        equity = get_account()["equity"]
         base = prev.portfolio_equity if prev else _START_EQUITY
-        return f"Week so far: ${equity - base:+,.0f}"
-    except Exception:
+        return f"Week realized: ${realized:+,.0f}  (equity ${equity - base:+,.0f} incl. open)"
+    except Exception as e:
+        # Log it — this now spans two queries and the OCC-parsing premium calc, so a
+        # silent "" would drop the number from every text with nothing to trace.
+        print(f"  ⚠️  Week P&L line failed: {e}")
         return ""
 
 
