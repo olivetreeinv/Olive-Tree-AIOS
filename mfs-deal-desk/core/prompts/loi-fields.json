@@ -1,0 +1,26 @@
+{
+  "_comment": "LOI field spec for MFS Deal Desk — multi-tenant version of the AIOS templates/loi-fields.json. No Google Doc tokens (we render DOCX server-side); sponsor identity comes from user settings.contact at runtime, never hardcoded. default null = required; formula = expression over other keys; round = nearest N; type = money_plain | date_mmddyy.",
+  "fields": {
+    "OFFER_PRICE":       { "default": null, "type": "money_plain" },
+    "UNITS":             { "default": null },
+    "PRICE_PER_UNIT":    { "formula": "OFFER_PRICE/UNITS", "type": "money_plain" },
+    "TOTAL_DEPOSIT":     { "formula": "OFFER_PRICE*0.01",   "round": 500, "type": "money_plain" },
+    "HARD_DEPOSIT":      { "formula": "OFFER_PRICE*0.005",  "round": 250, "type": "money_plain" },
+    "EXTENSION_DEPOSIT": { "formula": "OFFER_PRICE*0.0015", "round": 100, "type": "money_plain" },
+    "COMPANY_NAME":      { "default": null, "from_settings": "contact.company" },
+    "OWNER_NAME":        { "default": null, "from_settings": "contact.name" },
+    "COMPANY_CITY":      { "default": "",   "from_settings": "contact.city" },
+    "OWNER_EMAIL":       { "default": null, "from_settings": "contact.email" },
+    "OWNER_PHONE":       { "default": "",   "from_settings": "contact.phone" },
+    "COMPANY_WEBSITE":   { "default": "",   "from_settings": "contact.website" },
+    "BROKER_NAME":       { "default": null },
+    "BROKERAGE":         { "default": null },
+    "PROPERTY_ADDRESS":  { "default": null },
+    "FINANCING_TYPE":    { "default": "70% LTC Bridge Financing. No Financing Contingency" },
+    "DOWNPAYMENT":       { "default": "30% Down Payment Equity" },
+    "DD_DAYS":           { "default": 28 },
+    "CLOSING_DAYS":      { "default": 60 },
+    "SPECIAL_CONDITIONS": { "default": "N/A" },
+    "DATE":              { "default": "today", "type": "date_mmddyy" }
+  }
+}

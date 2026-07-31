@@ -74,7 +74,7 @@ See `EXPANSIONS.md` for what to add as Brian grows.
 
 **Buy box is law.** Before spending time on any deal — market research, underwriting, OM review, broker reply — check `references/buy-box.md`. If the zip or city isn't in the buy box, flag it before proceeding.
 
-**13 active markets:** Chamblee (30341), Smyrna (30080), Alpharetta (30005), North Nashville (37207), Madison TN (37115), Chattanooga Southside (37408), Huntsville Core (35801), Birmingham Urban (35205), Huntsville Growth (35806), Lebanon TN (37087), Knoxville (37918), Maryville (37804), Johnson City (37615).
+**14 active markets:** Chamblee (30341), Smyrna (30080), Alpharetta (30005), North Nashville (37207), Madison TN (37115), Chattanooga Southside (37408), Huntsville Core (35801), Birmingham Urban (35205), Huntsville Growth (35806), Lebanon TN (37087), Knoxville (37918), Maryville (37804), Johnson City (37615), Doraville (30340/30360).
 
 **Universal filter:** 15–50 units, multifamily only, value-add or operational upside required — no fully stabilized retail-priced assets.
 
