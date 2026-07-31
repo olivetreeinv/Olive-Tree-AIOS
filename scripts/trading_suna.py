@@ -42,7 +42,7 @@ from scripts.trading_covered_calls import (
     OrderSide,
     _client, _sync, _get_option_snapshots, _option_quote, _parse_occ, _dte,
     _submit_limit, _fill_or_cancel, _two_stage_sell, _two_stage_buy,
-    _annualized_yield, _sector_of, _close_cc_pos, get_next_earnings,
+    _annualized_yield, _close_cc_pos, get_next_earnings,
     earnings_max_expiry,
     CC_BOOK_USD, CC_MAX_UNDERLYINGS, CC_MAX_POSITION_USD, CC_MAX_PER_SECTOR,
     CC_CASH_BUFFER, CC_MIN_ANNUAL_YIELD, CC_PROFIT_CLOSE,
@@ -468,6 +468,23 @@ def _book_available(open_rows) -> float:
     return min(avail, bp)
 
 
+def suna_sector(symbol: str) -> str:
+    """Real sector from the yfinance profile we already fetch.
+
+    Replaces v2's hardcoded SECTOR dict, which only knew the retired 38-name
+    blue-chip universe: measured on the live 478-name pool, 95% resolved to
+    "Unknown" — and _enter() skips the per-sector cap for Unknown, so
+    CC_MAX_PER_SECTOR was decorative and all 8 slots could pile into one sector.
+    On a 12-name sample of screener survivors, 7 were Consumer Cyclical.
+
+    No fallback to the old dict on purpose: it uses GICS names ("Consumer
+    Discretionary") where yfinance uses Yahoo's ("Consumer Cyclical"), so mixing
+    them would split one real sector across two cap buckets. Costs nothing —
+    suna_profile() is lru_cached and _enter() calls it for every candidate.
+    """
+    return suna_profile(symbol).get("sector") or "Unknown"
+
+
 def csp_collateral() -> float:
     """Options buying power — the pool Alpaca actually checks when securing a put.
     Fail-closed (0) if the account can't be read, so the wheel sits out rather
@@ -804,7 +821,7 @@ def _enter(client, dry_run: bool = False):
             print(f"  ⏭  At max {CC_MAX_UNDERLYINGS} underlyings — no entries"); return
 
         from collections import Counter
-        sector_counts = Counter(_sector_of(u) for u in held)
+        sector_counts = Counter(suna_sector(u) for u in held)
         live = _live_symbols(client)
         if live is None:
             print("  ⏭  can't see live account — skipping entries this cycle"); return
@@ -825,12 +842,6 @@ def _enter(client, dry_run: bool = False):
             tkr = cand["symbol"]
             if tkr in held or tkr in live:
                 continue
-            sector = _sector_of(tkr)
-            # The per-sector cap only applies to KNOWN sectors. Most movers-pool names
-            # aren't in the v2 SECTOR map and resolve to "Unknown"; capping that shared
-            # bucket at 2 would throttle the whole desk to ~2 entries/cycle.
-            if sector != "Unknown" and sector_counts[sector] >= CC_MAX_PER_SECTOR:
-                continue
             # Resolve price (most-actives rows lack it).
             price = cand.get("price")
             if not price:
@@ -849,6 +860,15 @@ def _enter(client, dry_run: bool = False):
                 print(f"  ⏭  {tkr}: {why_stock}")
                 continue
             if not _gate("quality", *quality_ok(profile), tkr):
+                continue
+            # Per-sector cap, now on the REAL sector from the profile above rather
+            # than v2's blue-chip dict (which resolved 95% of this pool to
+            # "Unknown" and was skipped, letting all 8 slots pile into one sector).
+            # Still skips Unknown — a shared bucket capped at 2 would throttle the
+            # desk — but that bucket is now the yfinance gaps, not the whole pool.
+            sector = suna_sector(tkr)
+            if sector != "Unknown" and sector_counts[sector] >= CC_MAX_PER_SECTOR:
+                print(f"  ⏭  {tkr}: {sector} already has {CC_MAX_PER_SECTOR} positions")
                 continue
             sig = entry_signals(tkr)          # one bars call → rip + trend + rvol
             if sig.get("ripped"):
@@ -1270,6 +1290,18 @@ def _test():
     # No collateral (or an unreadable account → 0.0) → no put, not a doomed order.
     assert csp_max_strike(price=170.0, book_free=40_000, opt_bp=0) == 0.0
     assert csp_max_strike(price=170.0, book_free=-5_000, opt_bp=50_000) == 0.0
+
+    # ── Sector cap uses the real sector, not v2's blue-chip dict ─────────────
+    suna_profile.cache_clear()
+    _orig_profile = sys.modules[__name__].suna_profile
+    try:
+        sys.modules[__name__].suna_profile = lambda s: (
+            {"sector": "Consumer Cyclical"} if s == "GME" else {})
+        assert suna_sector("GME") == "Consumer Cyclical"
+        assert suna_sector("NOSECTOR") == "Unknown", "missing sector → Unknown, not a crash"
+    finally:
+        sys.modules[__name__].suna_profile = _orig_profile
+        suna_profile.cache_clear()
 
     # ── Covered-call coverage: the other 13 rejections ───────────────────────
     class _Pos:
