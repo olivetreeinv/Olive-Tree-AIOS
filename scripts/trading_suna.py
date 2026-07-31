@@ -468,6 +468,57 @@ def _book_available(open_rows) -> float:
     return min(avail, bp)
 
 
+def csp_collateral() -> float:
+    """Options buying power — the pool Alpaca actually checks when securing a put.
+    Fail-closed (0) if the account can't be read, so the wheel sits out rather
+    than firing orders it can't collateralise."""
+    try:
+        return float(get_account().get("options_buying_power", 0) or 0)
+    except Exception as e:
+        print(f"  ⚠️  account fetch failed ({e}) — treating CSP collateral as $0")
+        return 0.0
+
+
+def csp_max_strike(price: float, book_free: float, opt_bp: float) -> float:
+    """Highest put strike we can actually sell: bounded by spot (never above the
+    price we'd happily own it at), the per-position cap, the book's notional
+    room, AND the broker's collateral. Returns 0 when nothing fits.
+
+    The last bound is the one that was missing — a put needs strike*100 in
+    OPTIONS buying power, and Alpaca rejects the order outright if it isn't
+    there, so an unbounded strike burned two order attempts every cycle.
+    """
+    cap = min(price, CC_MAX_POSITION_USD / 100, max(book_free, 0) / 100, max(opt_bp, 0) / 100)
+    return cap if cap > 0 else 0.0
+
+
+def broker_shares(client, symbol: str) -> int:
+    """Shares Alpaca actually shows for a symbol (0 if none/unreadable).
+
+    A covered call is only 'covered' against the BROKER's position book, not
+    ours. Selling before the share fill lands there — or against a lot our DB
+    still believes in but Alpaca has already assigned away — is what produced
+    13x "account not eligible to trade uncovered option contracts".
+    """
+    try:
+        return int(float(client.get_open_position(symbol).qty))
+    except Exception:
+        return 0
+
+
+def await_shares(client, symbol: str, want: int, timeout: int = 15) -> int:
+    """Poll until the broker shows `want` shares, up to timeout. Returns the
+    count seen. A filled buy order is not the same event as a visible position —
+    they can land a beat apart, and the cover sell in between reads as naked."""
+    import time
+    deadline = time.monotonic() + timeout
+    while True:
+        have = broker_shares(client, symbol)
+        if have >= want or time.monotonic() >= deadline:
+            return have
+        time.sleep(1)
+
+
 def _live_symbols(client) -> Optional[set]:
     """Underlyings with any live Alpaca position/order — off-limits (Alpaca nets
     same-symbol lots, breaking assignment detection). None = couldn't fetch → skip."""
@@ -711,6 +762,15 @@ def _cover(client, dry_run: bool = False):
 
 def _sell_call_row(client, s, row, call, spot, label, dry_run):
     contracts = max(1, (row.shares_qty or 0) // 100)
+    # Only the broker's share count makes a call "covered". Our DB can be ahead
+    # of Alpaca (fill not landed) or behind it (already assigned away) — either
+    # way the sell is rejected as uncovered, so check before burning two stages.
+    if not dry_run:
+        have = broker_shares(client, row.underlying)
+        if have < 100 * contracts:
+            print(f"  ⏭  {row.underlying}: broker shows {have}sh, need {100*contracts} "
+                  f"— skipping {label}, sync will reconcile")
+            return
     yld = _annualized_yield(call["premium"], call["strike"], call["dte"])
     ok, why = premium_band_ok(call["premium"], spot)
     print(f"  🧾 {row.underlying}: sell {call['symbol']} exp {call['expiry']} "
@@ -842,6 +902,15 @@ def _enter(client, dry_run: bool = False):
                 status="open", opened_at=datetime.now(timezone.utc).isoformat(),
             )
             s.add(row); s.commit()
+            # The buy FILLED, but Alpaca's position book can lag the fill by a
+            # beat — sell into that gap and the call reads as naked. Wait for the
+            # shares to actually appear; _cover() re-covers next cycle if not.
+            have = await_shares(client, tkr, 100 * lots)
+            if have < 100 * lots:
+                print(f"  ⏳ {tkr}: broker shows {have}sh of {100*lots} — "
+                      f"deferring cover to next cycle")
+                sector_counts[sector] += 1; avail -= cost; entered += 1
+                continue
             b, a, m = _option_quote(call["symbol"])
             if m <= 0:
                 b, a, m = call["bid"], call["ask"], call["premium"]
@@ -870,6 +939,15 @@ def _wheel(client, dry_run: bool = False):
     try:
         assigned = s.query(TradingCCPosition).filter_by(status="assigned").all()
         free = _book_available(_open_rows(s))
+        # A CSP is collateralised out of OPTIONS buying power — the only pool
+        # Alpaca checks. _book_available() is book-notional capped by equity
+        # `buying_power` (2-4x margin), so it happily reported five figures free
+        # while the broker had ~$1.1k of actual collateral. Every CSP the wheel
+        # has ever attempted was rejected for exactly this.
+        opt_bp = csp_collateral()
+        if assigned and opt_bp <= 0:
+            print("  ⏭  no options buying power — skipping the wheel this cycle")
+            return
         for row in assigned:
             try:
                 q = get_quote(row.underlying); price = q.get("last") or q.get("ask") or 0
@@ -877,7 +955,11 @@ def _wheel(client, dry_run: bool = False):
                 price = 0
             if not price:
                 continue
-            max_strike = min(price, CC_MAX_POSITION_USD / 100, max(free, 0) / 100)
+            max_strike = csp_max_strike(price, free, opt_bp)
+            if max_strike <= 0:
+                print(f"  ⏭  {row.underlying}: ${opt_bp:,.0f} options buying power "
+                      f"can't secure a single put — skip")
+                continue
             snaps = _get_option_snapshots(row.underlying, opt_type="put", dte_min=SUNA_DTE_MIN)
             put = pick_weekly_put(snaps, max_strike)
             if not put:
@@ -907,7 +989,11 @@ def _wheel(client, dry_run: bool = False):
                     status="open", opened_at=datetime.now(timezone.utc).isoformat()))
                 row.status = "wheeled"
                 s.commit()
+                # Both pools shrink: the book's notional AND the broker's actual
+                # collateral. Missing the second let one cycle queue several CSPs
+                # the account could only ever secure one of.
                 free -= put["strike"] * 100
+                opt_bp -= put["strike"] * 100 - fill * 100
                 send_alert("Suna Desk — Wheel",
                            f"🎡 {row.underlying} sold ${put['strike']:g} CSP {put['expiry']} "
                            f"for ${fill*100:,.0f}")
@@ -1167,6 +1253,40 @@ def _test():
             want = (day == 4 and hour == 20)
             assert _roll_window(utc(day, hour)) is want, \
                 f"roll window wrong for weekday {day} at {hour}:00 UTC"
+
+    # ── CSP collateral: the bug that made the wheel 0-for-8 ──────────────────
+    # Live failure reproduced: QCOM $165 put needed $16,190 of options buying
+    # power against $1,166 available. The old code bounded the strike by
+    # _book_available() (book notional, capped by 2-4x equity buying_power) and
+    # never looked at the collateral pool Alpaca actually checks.
+    assert csp_max_strike(price=170.0, book_free=40_000, opt_bp=1_166) == 11.66, \
+        "collateral must bound the strike — this is the 0-for-8 wheel bug"
+    # With real collateral, the per-position cap binds instead ($10k / 100).
+    assert csp_max_strike(price=170.0, book_free=40_000, opt_bp=50_000) == 100.0
+    # Spot binds when it's the smallest — never agree to buy above the market.
+    assert csp_max_strike(price=42.0, book_free=40_000, opt_bp=50_000) == 42.0
+    # Book notional still binds when it's tightest.
+    assert csp_max_strike(price=170.0, book_free=3_000, opt_bp=50_000) == 30.0
+    # No collateral (or an unreadable account → 0.0) → no put, not a doomed order.
+    assert csp_max_strike(price=170.0, book_free=40_000, opt_bp=0) == 0.0
+    assert csp_max_strike(price=170.0, book_free=-5_000, opt_bp=50_000) == 0.0
+
+    # ── Covered-call coverage: the other 13 rejections ───────────────────────
+    class _Pos:
+        def __init__(self, qty): self.qty = qty
+
+    class _StubClient:
+        def __init__(self, qty): self._qty = qty
+        def get_open_position(self, sym):
+            if self._qty is None:
+                raise RuntimeError("position does not exist")
+            return _Pos(str(self._qty))
+
+    assert broker_shares(_StubClient(300), "X") == 300
+    assert broker_shares(_StubClient(None), "X") == 0, "no position → 0, never a crash"
+    # await_shares returns immediately once the count is there (no sleep in test).
+    assert await_shares(_StubClient(200), "X", want=200, timeout=0) == 200
+    assert await_shares(_StubClient(0), "X", want=200, timeout=0) == 0
 
     # Lot sizing: fill the $10k cap, bounded by available cash.
     assert position_lots(25.0, 50_000) == 4      # $10k cap → 4 lots

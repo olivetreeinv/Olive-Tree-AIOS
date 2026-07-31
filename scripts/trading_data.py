@@ -117,6 +117,11 @@ def get_account() -> dict:
         "last_equity":   float(data.get("last_equity", data.get("equity", 0))),
         "cash":          float(data.get("cash", 0)),
         "buying_power":  float(data.get("buying_power", 0)),
+        # Collateral pool Alpaca checks for a cash-secured put. NOT buying_power
+        # (2-4x margin on equities, which options can't draw on) — sizing a CSP
+        # off buying_power is what produced "insufficient options buying power
+        # for cash-secured put (required: 16190.01, available: 1166.42)".
+        "options_buying_power": float(data.get("options_buying_power", 0)),
         "portfolio_value": float(data.get("portfolio_value", data.get("equity", 0))),
     }
 
