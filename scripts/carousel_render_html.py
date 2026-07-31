@@ -35,6 +35,17 @@ ROOT = Path(__file__).resolve().parent.parent
 LOGO_DARK = ROOT / "assets" / "brand" / "olive-tree-mark-dark.png"
 LOGO_LIGHT = ROOT / "assets" / "brand" / "olive-tree-mark-white.png"
 FONT_DIR = ROOT / "assets" / "fonts"
+# Closing "card" slide reuses the newsletter signature assets so social + email match.
+CARD_PHOTO = ROOT / "templates" / "newsletter-assets" / "brian.jpg"
+CARD_IG = ROOT / "templates" / "newsletter-assets" / "instagram.png"
+CARD = {
+    "name": "Brian Norton",
+    "role": "Agent | Investor | Syndicator",
+    "email": "brian@olivetreeinv.io",
+    "addr": "269 Market Place Blvd, Suite 126<br>Cartersville, GA 30121",
+    "handle": "@olivetreeinv.io",
+    "tagline": "Rooted in patience, grown with purpose.",
+}
 W, H = 1080, 1350
 
 # Light & airy tokens (olive brand; NOT the banned cream/beige family).
@@ -148,6 +159,30 @@ CSS = """
 .cta .progress { background:rgba(255,255,255,0.28); }
 .cta .progress > i { background:%(CTA_TEXT)s; }
 .cta .foot { color:%(CTA_TEXT)s; opacity:.85; }
+
+/* Card: closing slide = newsletter signature. Olive ground, Forest info box. */
+.card { background:#505A19; color:#F5F2E9; }
+/* ponytail: mirrors the newsletter signature block -- photo left, details right.
+   Horizontal keeps it ~290px tall so it fits the bottom band with the tagline
+   standing alone under it. Going vertical breaks that; keep it a flex row. */
+/* padding-top clears the .mark logo (top:92 + 96 tall = 188) so long close lines
+   can't wrap under it. Raise it if the mark ever grows. */
+.card .pad { align-items:center; text-align:center; padding-top:252px; }
+.card .close { font-size:74px; font-weight:600; line-height:1.05; color:#F5F2E9; }
+.card .sig { margin-top:auto; margin-bottom:128px; display:flex; align-items:center;
+  gap:48px; text-align:left; background:#1B1E08; border-radius:32px; padding:44px 56px;
+  border:2px solid rgba(183,150,90,.38); }
+.card .photo2 { width:150px; height:auto; border-radius:12px; display:block;
+  box-shadow:0 14px 38px rgba(0,0,0,.45); }
+.card .name { font-family:'Cormorant Garamond',serif; font-size:54px; font-weight:600; line-height:1.1; }
+.card .role { font-size:22px; font-weight:600; letter-spacing:.16em; text-transform:uppercase;
+  color:#B7965A; margin-top:10px; }
+.card .email { font-size:28px; color:#F5F2E9; text-decoration:underline; margin-top:22px; }
+.card .addr { font-size:26px; color:#F5F2E9; margin-top:12px; line-height:1.5; }
+.card .ig { margin-top:18px; }
+.card .ig img { width:34px; height:34px; border-radius:8px; display:block; }
+.card .tag { position:absolute; left:96px; right:96px; bottom:70px; text-align:center;
+  font-family:'Cormorant Garamond',serif; font-style:italic; font-size:36px; color:#B7965A; }
 """.strip()
 
 
@@ -190,6 +225,22 @@ def _slide_html(slide, i, total, stype, handle, accent, photo_b64):
                 f'<div class="stack"><div class="headline">{_esc(slide.get("title",""))}</div>{body}</div>'
                 f'</div>{logo}{foot}</div>')
 
+    if stype == "card":
+        logo = f'<div class="mark"><img src="data:image/png;base64,{_b64(LOGO_LIGHT)}"></div>'
+        close = f'<div class="close">{_esc(slide.get("title",""))}</div>' if slide.get("title") else ""
+        photo = (f'<img class="photo2" src="data:image/jpeg;base64,{_b64(CARD_PHOTO)}">'
+                 if CARD_PHOTO.exists() else "")
+        ig_icon = (f'<img src="data:image/png;base64,{_b64(CARD_IG)}">' if CARD_IG.exists() else "")
+        return (f'<div class="slide card">{logo}<div class="pad">{prog}'
+                f'{close}'
+                f'<div class="sig">{photo}<div>'
+                f'<div class="name">{_esc(CARD["name"])}</div>'
+                f'<div class="role">{_esc(CARD["role"])}</div>'
+                f'<div class="email">{_esc(CARD["email"])}</div>'
+                f'<div class="addr">{CARD["addr"]}</div>'
+                f'<div class="ig">{ig_icon}</div>'
+                f'</div></div></div><div class="tag">{_esc(CARD["tagline"])}</div></div>')
+
     # content
     ghost = f'<div class="ghost">{i:02d}</div>'
     kick = (f'<div class="kicker">{_esc(slide.get("kicker",""))}</div><div class="rule"></div>'
@@ -209,7 +260,7 @@ def _page_html(spec, accent, photo_b64):
     css = CSS % {"BG": BG, "PANEL": PANEL, "INK": INK, "MUTED": MUTED, "CTA_TEXT": cta_text}
     body = []
     for idx, s in enumerate(slides, 1):
-        stype = s.get("type") or ("cover" if idx == 1 else "cta" if idx == total else "content")
+        stype = s.get("type") or ("cover" if idx == 1 else "card" if idx == total else "content")
         if stype == "cover" and not photo_b64:
             stype = "content"  # no hero available -> fall back to text slide
         body.append(_slide_html(s, idx, total, stype, handle, accent, photo_b64))

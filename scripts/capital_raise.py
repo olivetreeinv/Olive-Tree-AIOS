@@ -13,6 +13,8 @@ Usage:
   python3 scripts/capital_raise.py enroll --send               # Live enroll (idempotent)
   python3 scripts/capital_raise.py enroll --send --contact <id-or-email>  # Single contact
   python3 scripts/capital_raise.py track                       # Soft-commit total vs target
+  python3 scripts/capital_raise.py commit --investor "Jane Doe" --amount 50000 \\
+      --deal "641 Powder Springs" [--status soft|funded] [--contact ... --type ...]
 """
 
 import argparse
@@ -26,7 +28,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from db.connection import get_session                                   # noqa: E402
-from db.schema import (Contact, ContactTag, DripEnrollment,             # noqa: E402
+from db.schema import (Contact, ContactTag, Deal, DripEnrollment,       # noqa: E402
                        Investor, InvestorCommitment)
 from drip import load_steps, resolve_contact                            # noqa: E402
 
@@ -204,6 +206,44 @@ def cmd_track(args):
 
 
 # ─────────────────────────────────────────────
+# Commit subcommand — log a soft/funded investor commitment
+# ─────────────────────────────────────────────
+
+def cmd_commit(args):
+    session = get_session()
+
+    deals = session.query(Deal).filter(
+        (Deal.address.ilike(f"%{args.deal}%")) | (Deal.name.ilike(f"%{args.deal}%"))
+    ).all()
+    if len(deals) != 1:
+        session.close()
+        if not deals:
+            raise SystemExit(f"ERROR: no deal matches '{args.deal}'")
+        listing = "\n".join(f"  [{d.id}] {d.address} ({d.name or 'no name'}, {d.status})"
+                            for d in deals)
+        raise SystemExit(f"ERROR: '{args.deal}' matches {len(deals)} deals — "
+                          f"be more specific:\n{listing}")
+    deal = deals[0]
+
+    investor = session.query(Investor).filter(Investor.name.ilike(args.investor)).first()
+    if not investor:
+        investor = Investor(name=args.investor, type=args.type, contact=args.contact,
+                             status="Funded" if args.status == "funded" else "Soft Committed")
+        session.add(investor)
+        session.flush()  # assigns investor.id before the commitment insert
+        print(f"New investor: {args.investor}")
+
+    deal_address = deal.address  # capture before close — session.close() detaches the row
+    session.add(InvestorCommitment(investor_id=investor.id, deal_id=deal.id,
+                                    amount=args.amount, status=args.status.capitalize()))
+    session.commit()
+    session.close()
+
+    print(f"Logged: {args.investor} — ${args.amount:,.0f} ({args.status}) on {deal_address}\n")
+    cmd_track(args)
+
+
+# ─────────────────────────────────────────────
 # Entry point
 # ─────────────────────────────────────────────
 
@@ -219,8 +259,19 @@ def main():
 
     sub.add_parser("track", help="Show soft-commit total vs raise target")
 
+    cp = sub.add_parser("commit", help="Log a soft/funded investor commitment")
+    cp.add_argument("--investor", required=True, help="Investor name (creates if new)")
+    cp.add_argument("--amount", required=True, type=float, help="Commitment amount in $")
+    cp.add_argument("--deal", required=True,
+                     help="Deal address/name substring — must match exactly one deal")
+    cp.add_argument("--status", default="soft", choices=["soft", "funded"])
+    cp.add_argument("--contact", help="New investor's email/phone (only used if creating)")
+    cp.add_argument("--type", help="New investor's type — Individual/HNW/Family Office/"
+                                    "Institution (only used if creating)")
+
     args = p.parse_args()
-    {"audience": cmd_audience, "enroll": cmd_enroll, "track": cmd_track}[args.cmd](args)
+    {"audience": cmd_audience, "enroll": cmd_enroll, "track": cmd_track,
+     "commit": cmd_commit}[args.cmd](args)
 
 
 if __name__ == "__main__":

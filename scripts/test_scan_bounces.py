@@ -35,6 +35,13 @@ Action: failed
 Status: 5.1.1
 Diagnostic-Code: smtp; 550 5.1.1 RESOLVER.ADR.RecipNotFound; not found"""
 
+# EarthLink/Vade (mindspring.com, pipeline.com) — 5.5.1 recipient rejected. Hard.
+EARTHLINK = """Delivery Status Notification (Failure)
+Final-Recipient: rfc822; dead@mindspring.com
+Action: failed
+Status: 5.5.1
+Diagnostic-Code: smtp; 550 5.5.1 Recipient rejected - ELNK001_403"""
+
 
 def test_hard_bounce_extracts_and_flags():
     emails, is_hard = parse_bounce(HARD)
@@ -60,9 +67,16 @@ def test_non_google_hard_bounce_is_caught():
     assert is_hard is True                                 # postmaster@ NDRs must count too
 
 
+def test_earthlink_recipient_rejected_is_hard():
+    emails, is_hard = parse_bounce(EARTHLINK)
+    assert emails == {"dead@mindspring.com"}, emails
+    assert is_hard is True                                 # 5.5.1 "recipient rejected" → dead
+
+
 if __name__ == "__main__":
     test_hard_bounce_extracts_and_flags()
     test_soft_bounce_is_kept()
     test_full_mailbox_is_kept()
     test_non_google_hard_bounce_is_caught()
+    test_earthlink_recipient_rejected_is_hard()
     print("ok")

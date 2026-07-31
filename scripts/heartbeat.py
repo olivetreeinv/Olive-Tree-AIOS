@@ -114,7 +114,9 @@ def check_desk_code_fresh() -> tuple[bool, str]:
                            "launchctl kickstart -k gui/501/com.olivetree.trading-desk")
         return True, "Trading desk code: process is newer than every trading script"
     except Exception as e:
-        return True, f"Trading desk code: freshness check skipped ({e})"
+        # fail closed, not open — a swallowed error here is the same false-green
+        # bug that hid the check_morning_brief outage; don't repeat it.
+        return False, f"Trading desk code: freshness check FAILED ({e}) — treat as unknown, not healthy"
 
 
 def _google_token() -> str:
@@ -134,19 +136,34 @@ def _google_token() -> str:
     }, timeout=15).json()["access_token"]
 
 
+def _brief_subject(dt: datetime) -> str:
+    """Exact subject the cloud routine sends: `date '+%A Morning Brief — %b %d'`."""
+    return dt.strftime("%A Morning Brief — %b %d")
+
+
+# ponytail: cheap format-drift guard — real example confirmed in Gmail 2026-07-27
+assert _brief_subject(datetime(2026, 7, 27)) == "Monday Morning Brief — Jul 27"
+
+
 def check_morning_brief() -> tuple[bool, str]:
     if datetime.now().weekday() >= 5:
         return True, "Morning Brief email: weekend — no brief expected today"
     try:
         tok = _google_token()
+        # Match today's exact subject, not a fuzzy "morning brief" + newer_than:1d —
+        # Gmail's newer_than: buckets by calendar day and was still matching a
+        # 2-3 day old brief, masking two real back-to-back outages (7/28, 7/29).
+        subject = _brief_subject(datetime.now())
         r = requests.get(
             "https://gmail.googleapis.com/gmail/v1/users/me/messages",
-            params={"q": 'subject:"morning brief" newer_than:1d', "maxResults": 1},
+            # in:anywhere — Brian reads the brief on his phone and swipe-deletes it,
+            # and a bare query skips Trash, so a read brief looked like a failed send.
+            params={"q": f'subject:"{subject}" in:anywhere', "maxResults": 1},
             headers={"Authorization": f"Bearer {tok}"}, timeout=15,
         ).json()
         ok = bool(r.get("messages"))
-        return ok, ("Morning Brief email: today's brief is in your inbox" if ok
-                    else "Morning Brief email: NOT in inbox yet — the 8am cloud routine may have failed; check claude.ai/code")
+        return ok, ("Morning Brief email: today's brief was delivered" if ok
+                    else "Morning Brief email: NOT delivered yet — the cloud routine may have failed; check claude.ai/code")
     except Exception as e:
         return False, f"Morning Brief email: couldn't check Gmail ({e})"
 

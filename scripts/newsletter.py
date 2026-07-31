@@ -151,7 +151,10 @@ def _inline(text: str) -> str:
 
 
 # ── template render ──────────────────────────────────────────────────────────
-def render_template(subject: str, body_html: str, first_name: str = "there") -> str:
+def render_template(subject: str, body_html: str, first_name: str = "there",
+                    edition: str = None) -> str:
+    # edition defaults to build month, but editions are drafted in the prior
+    # month (August built July 31), so allow an explicit override.
     tmpl = TEMPLATE.read_text()
     tmpl = tmpl.replace("{{subject}}", html.escape(subject))
     tmpl = tmpl.replace("{{preheader}}", html.escape(subject))
@@ -159,7 +162,7 @@ def render_template(subject: str, body_html: str, first_name: str = "there") -> 
     tmpl = tmpl.replace("{{body_html}}", body_html)
     tmpl = tmpl.replace("{{unsubscribe_note}}", UNSUB_NOTE)
     tmpl = tmpl.replace("{{year}}", str(datetime.now().year))
-    tmpl = tmpl.replace("{{edition}}", datetime.now().strftime("%B"))
+    tmpl = tmpl.replace("{{edition}}", edition or datetime.now().strftime("%B"))
     return tmpl
 
 
@@ -226,7 +229,7 @@ def cmd_build(args):
         sys.exit("Provide --html or --markdown")
 
     # render with generic first_name for the saved file
-    full_html = render_template(subject, body_html)
+    full_html = render_template(subject, body_html, edition=getattr(args, "edition", None))
     slug = slugify(args.name)
     out_path = OUTPUT_DIR / f"{slug}.html"
     out_path.write_text(full_html)
@@ -442,6 +445,8 @@ _HARD_BOUNCE_SIGNALS = (
     "recipient address rejected", "550 5.1.1",
     # non-Google MTAs (Outlook/Exchange, Postfix, qmail)
     "recipnotfound", "recipient not found", "unknown recipient",
+    # EarthLink/Vade (mindspring.com, pipeline.com) — "550 5.5.1 Recipient rejected"
+    "recipient rejected",
 )
 
 
@@ -467,7 +472,9 @@ def parse_bounce(text: str):
     low = text.lower()
     # 5.1.x = permanent *recipient-address* failure (no such mailbox) — the real dead address.
     # Deliberately NOT all 5.x.x: 5.2.2 (mailbox full) / 5.2.3 (too large) are valid people we
-    # must not delete. Text phrases below still catch the same "address not found" wording.
+    # must not delete. Text phrases below still catch the same wording, incl. EarthLink's
+    # "550 5.5.1 Recipient rejected" (gated on the phrase, not the bare 5.5.1 code, which also
+    # means auth errors that aren't recipient failures).
     is_hard = bool(re.search(r"status:\s*5\.1\.\d+", low)) or any(s in low for s in _HARD_BOUNCE_SIGNALS)
     emails = set(re.findall(r"final-recipient:\s*rfc822;\s*<?([\w.+-]+@[\w.-]+\.\w+)", low))
     if not emails:  # fallback to the human-readable line if the DSN part is missing
@@ -569,6 +576,7 @@ def main():
     p_build.add_argument("--subject",  help="Email subject (defaults to --name)")
     p_build.add_argument("--html",     help="Path to HTML body file")
     p_build.add_argument("--markdown", help="Path to Markdown body file")
+    p_build.add_argument("--edition",  help="Edition label in the hero (default: build month, e.g. 'August')")
 
     p_test = sub.add_parser("test-send", help="Send [TEST] copy to brian@olivetreeinv.io")
     p_test.add_argument("--campaign", required=True, help="Campaign id or name")

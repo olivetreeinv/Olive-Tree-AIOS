@@ -19,9 +19,15 @@ import argparse
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta
+from pathlib import Path
 
 import requests
 from gws_auth import get_token
+
+# Brian's branded Gmail signature ("Sig V2"), mirrors settings.sendAs. Appended raw
+# to every draft/send in _to_html; bodies carry no plain-text "-Brian" (the card has its own).
+_SIG_FILE = Path(__file__).resolve().parent.parent / "templates" / "signature.html"
+SIGNATURE_HTML = _SIG_FILE.read_text().strip() if _SIG_FILE.exists() else ""
 
 # ─────────────────────────────────────────────
 # Config
@@ -173,8 +179,9 @@ def draft_followup_email(broker_data):
     last_name    = name.split()[-1] if name else ""
     market_str   = markets if markets else "your markets"
     market_block = build_market_block(markets)
-    signature    = "-Brian"
-    sig_full     = "-Brian\nBrian Norton | Olive Tree Investments\nbrian@olivetreeinv.io | 404-643-2356"
+    # No plain-text sign-off — the branded signature (Sig V2) is appended in _to_html.
+    signature    = ""
+    sig_full     = ""
 
     # ── Tier A — casual (known relationship, no formal intro) ──
     if tier == "A":
@@ -286,12 +293,13 @@ def _to_html(text):
     """Convert plain text + markdown links to HTML for Gmail rendering."""
     import html
     import re
-    body = html.escape(text)
+    body = html.escape(text.rstrip())  # rstrip: bodies now end at the CTA, not a sign-off
     # Convert [label](url) → <a href="url">label</a>
     body = re.sub(r'\[([^\]]+)\]\((https?://[^\)]+)\)',
                   r'<a href="\2">\1</a>', body)
     body = body.replace("\n", "<br>\n")
-    return f"<html><body style='font-family:sans-serif;font-size:14px'>{body}</body></html>"
+    sig = f"<br><br>{SIGNATURE_HTML}" if SIGNATURE_HTML else ""
+    return f"<html><body style='font-family:sans-serif;font-size:14px'>{body}{sig}</body></html>"
 
 
 def send_email(token, draft):

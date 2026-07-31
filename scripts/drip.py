@@ -136,7 +136,10 @@ def resolve_contact(session, ref: str) -> Contact | None:
 
 
 def render(text: str, contact: Contact) -> str:
-    return text.replace("{{first_name}}", (contact.first_name or "there").strip() or "there")
+    name = (contact.first_name or "").strip()
+    # capitalize first letter only — non-destructive, keeps "McKenzie"/"JoAnn" intact
+    name = name[:1].upper() + name[1:] if name else "there"
+    return text.replace("{{first_name}}", name)
 
 
 # ─────────────────────────────────────────────

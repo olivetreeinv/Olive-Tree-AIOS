@@ -22,6 +22,11 @@ from datetime import date, datetime, timedelta
 import requests
 from bs4 import BeautifulSoup
 from gws_auth import get_token
+from pathlib import Path
+
+# Brian's branded Gmail signature ("Sig V2") — appended raw in _to_html; no plain-text "-Brian".
+_SIG_FILE = Path(__file__).resolve().parent.parent / "templates" / "signature.html"
+SIGNATURE_HTML = _SIG_FILE.read_text().strip() if _SIG_FILE.exists() else ""
 
 # ─────────────────────────────────────────────
 # Config
@@ -338,8 +343,7 @@ def draft_doc_request(result):
         f"- Offering memorandum\n"
         f"- T-12 (trailing 12-month P&L)\n"
         f"- Current rent roll\n\n"
-        f"We're active in {market} buying 15–50 unit value-add deals and can move quickly.\n\n"
-        f"-Brian"
+        f"We're active in {market} buying 15–50 unit value-add deals and can move quickly."
     )
     return {
         "to_name":  from_name,
@@ -353,11 +357,12 @@ def _to_html(text):
     """Convert plain text + markdown links to HTML for Gmail rendering."""
     import html
     import re
-    body = html.escape(text)
+    body = html.escape(text.rstrip())
     body = re.sub(r'\[([^\]]+)\]\((https?://[^\)]+)\)',
                   r'<a href="\2">\1</a>', body)
     body = body.replace("\n", "<br>\n")
-    return f"<html><body style='font-family:sans-serif;font-size:14px'>{body}</body></html>"
+    sig = f"<br><br>{SIGNATURE_HTML}" if SIGNATURE_HTML else ""
+    return f"<html><body style='font-family:sans-serif;font-size:14px'>{body}{sig}</body></html>"
 
 
 def send_doc_request(token, draft):

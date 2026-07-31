@@ -59,6 +59,7 @@ from scripts.trading_execution import submit_order, sync_fills, get_open_positio
 from scripts.trading_options   import find_contract, size_contracts, submit_option_order
 from scripts.trading_report import snapshot_equity, print_performance, send_alert, send_session_report
 from scripts.trading_guard  import check_and_guard, clear_halt
+from scripts.trading_eval_autofire import maybe_fire_eval
 from db.connection import Session
 from db.schema import TradingSignal
 
@@ -488,15 +489,25 @@ def main():
               f"Wrap with 'caffeinate -i' to keep Mac awake.")
         last_session = None
         while True:
+            # One-time: start the Aug 1–31 clean eval once the paper account is reset to $50k.
+            # No-ops every cycle until then; guarded so it can never break the trading loop.
+            try:
+                if maybe_fire_eval():
+                    continue  # desk is being kickstarted to reload the new anchor
+            except Exception as e:
+                print(f"  ⚠️  eval-autofire error (non-fatal): {e}")
             sess = _session()
+            flipped = sess != last_session
             try:
                 # Session flip → activity report (skip idle transitions — nothing to report).
-                if last_session and sess != last_session and not args.dry_run:
+                if last_session and flipped and not args.dry_run:
                     if "idle" not in (last_session, sess):
                         send_session_report(last_session, sess)
                 last_session = sess
                 if sess == "idle":
-                    print(f"  No active session (regular 9:30am–4pm, after-hours 4–8pm ET). Next session check in {args.interval}s.")
+                    if flipped:  # once per idle stretch, not every re-check
+                        print(f"  No active session (regular 9:30am–4pm, after-hours 4–8pm ET). "
+                              f"Watching for the open, re-checking every {args.stop_interval}s.")
                 else:
                     run_cycle(dry_run=args.dry_run, market_session=sess,
                               with_insiders=args.insiders, with_options=args.options,
@@ -510,9 +521,14 @@ def main():
                 traceback.print_exc()
                 send_alert("Trading Desk — ERROR", msg)
             # Sleep until the next research cycle, enforcing stops every stop_interval.
+            # ponytail: while idle, wait only one stop_interval so the session is re-checked
+            # every minute — the desk then picks up the open within 60s no matter what time
+            # it was started. (A flat --interval wait meant a 7:12am start didn't look at the
+            # market until 10:12am, missing the first 42 minutes of the day.)
+            budget = args.stop_interval if sess == "idle" else args.interval
             elapsed = 0
-            while elapsed < args.interval:
-                time.sleep(min(args.stop_interval, args.interval - elapsed))
+            while elapsed < budget:
+                time.sleep(min(args.stop_interval, budget - elapsed))
                 elapsed += args.stop_interval
                 if not args.dry_run:
                     try:
