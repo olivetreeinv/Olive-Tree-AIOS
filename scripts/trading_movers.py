@@ -6,8 +6,8 @@ Replaces the frozen 38-name blue-chip universe with a pool rebuilt each week fro
 real market movers, mirroring Kenneth Suna's CNBC-movers hunt — but sourced
 natively from Alpaca (our existing data provider, free tier).
 
-Three sources, movers first: top gainers/losers, most-actives, and the S&P 500
-constituents inside the price band (the screener universe — see _sp500_inband).
+Three sources: top gainers/losers, most-actives, and the S&P 500 + MidCap 400
+constituents inside the price band (the screener universe — see _index_inband).
 
 Discovery only, and deliberately wide — this module applies just symbol/price
 filters. All of Suna's actual selection happens in trading_suna.py: the stock
@@ -73,8 +73,21 @@ def _most_actives(top: int) -> list[dict]:
             for r in (data.get("most_actives") or [])]
 
 
-def _sp500_inband() -> list[dict]:
-    """S&P 500 constituents inside the price band — the desk's *screener universe*.
+_SP400_FILE = Path(__file__).parent.parent / "data" / "sp400.txt"
+
+
+def _midcap_universe() -> list[str]:
+    """S&P MidCap 400 constituents. Frozen snapshot, same one-ticker-per-line
+    pattern as data/sp500.txt. Empty list if the file is missing — the S&P 500
+    source still carries the pool."""
+    try:
+        return [l.strip() for l in _SP400_FILE.read_text().splitlines() if l.strip()]
+    except OSError:
+        return []
+
+
+def _index_inband() -> list[dict]:
+    """Index constituents inside the price band — the desk's *screener universe*.
 
     Suna works two sources: CNBC movers (the hunt) and a Schwab screener over a
     broad optionable universe that he narrows by sector/price/beta/short-interest
@@ -83,27 +96,37 @@ def _sp500_inband() -> list[dict]:
     selecting is done by stock_filters_ok() in trading_suna, which is what makes
     a broad universe safe to pour in here.
 
-    Measured 2026-07-31: of 11 names clearing Suna's full filter stack, 7 came
-    from this source and 4 from the movers feed. Without it the desk screens ~68
-    names/week against a screener designed for thousands, and starves.
+    Two indexes, because he explicitly shops mid-cap and away from the mega-caps:
+    "I went on Seeking Alpha, I typed in mid-cap growth ... cherry-pick their list
+    of top 10 holdings" (kenneth-suna/_transcripts/JCTs4QXTIwI.txt). He names no
+    ETF ticker anywhere in the corpus, so the S&P MidCap 400 stands in for the
+    segment. Measured 2026-07-31, the S&P 500 alone supplied 175 of 238 pool
+    names — a large-cap index doing the work of a mid-cap screen.
 
     Cost: one bulk price call per 200 symbols; the per-name walk in
     trading_suna._enter is self-limiting — it stops once the book is full.
     """
-    syms = [s for s in EQUITY_UNIVERSE if "." not in s and s not in _DENY]
+    seen, syms = set(), []
+    for source, universe in (("sp500", EQUITY_UNIVERSE), ("sp400", _midcap_universe())):
+        for s in universe:
+            if "." not in s and s not in _DENY and s not in seen:
+                seen.add(s)
+                syms.append((s, source))
     out = []
     for i in range(0, len(syms), 200):
-        chunk = ",".join(syms[i:i + 200])
+        chunk = syms[i:i + 200]
+        src = dict(chunk)
         try:
-            data = _get(f"{_ALPACA_DATA}/v2/stocks/trades/latest?symbols={chunk}", _alpaca_headers()) or {}
+            data = _get(f"{_ALPACA_DATA}/v2/stocks/trades/latest?symbols="
+                        + ",".join(s for s, _ in chunk), _alpaca_headers()) or {}
         except Exception as e:
-            print(f"  ⚠️  S&P price fetch failed ({e}) — movers-only pool this cycle")
+            print(f"  ⚠️  index price fetch failed ({e}) — movers-only pool this cycle")
             continue  # fail-open: degrade to the movers-only pool, never block discovery
         for sym, trade in (data.get("trades") or {}).items():
             price = _f(trade.get("p"))
             if price and MOVERS_PRICE_MIN <= price <= MOVERS_PRICE_MAX:
                 out.append({"symbol": sym.upper(), "price": price,
-                            "pct_change": None, "source": "sp500"})
+                            "pct_change": None, "source": src.get(sym.upper(), "index")})
     return out
 
 
@@ -128,6 +151,21 @@ def _dedup_priority(rows: list[dict]) -> list[dict]:
     return list(best.values())
 
 
+def _pool_rank(r: dict) -> tuple:
+    """Sort key for the candidate pool: BIGGEST DROPPERS FIRST.
+
+    Entry slots are finite, so this decides what actually gets bought — and Suna
+    shops the downside: "Companies that have been in a downtrend are the kinds of
+    stocks that I like to then buy when they're way down ... I look for stocks
+    that have been in a downtrend" (kenneth-suna/_transcripts/8fyt8c4_uEQ.txt).
+    This used to be abs(pct_change) descending, which put the biggest GAINER at
+    the head of the queue — names already_ripped() then rejected one by one.
+
+    Unknown %chg (most-actives, index rows) sinks below every real mover.
+    """
+    return (r["pct_change"] is None, r["pct_change"] or 0)
+
+
 def _price_ok(price) -> bool:
     # Unknown price (most-actives rows) passes here; trading_suna resolves + re-checks it.
     return price is None or (MOVERS_PRICE_MIN <= price <= MOVERS_PRICE_MAX)
@@ -139,15 +177,13 @@ def discover(top: int = 60, include_actives: bool = True) -> list[dict]:
     rows = _movers(top)
     if include_actives:
         rows += _most_actives(top)
-    rows += _sp500_inband()   # appended last → sorts behind the movers (stable sort, pct=None)
+    rows += _index_inband()   # appended last → sorts behind the movers (pct_change=None)
     rows = _dedup_priority(rows)
     pool = [r for r in rows
             if r["symbol"] not in _DENY
             and "." not in r["symbol"]          # skip preferreds/warrants (BRK.B etc.)
             and _price_ok(r["price"])]
-    # Biggest movers first (unknown %chg — most-actives — sinks to the bottom).
-    pool.sort(key=lambda r: abs(r["pct_change"]) if r["pct_change"] is not None else -1,
-              reverse=True)
+    pool.sort(key=_pool_rank)   # biggest droppers first — see _pool_rank
     return pool
 
 
@@ -178,20 +214,35 @@ def _test():
     assert _price_ok(None) is True
     assert _price_ok(9.0) is False and _price_ok(150.0) is False
 
-    # S&P breadth source: ranks BEHIND the movers (pct_change=None sinks to the
+    # Index breadth source: ranks BEHIND the movers (pct_change=None sinks to the
     # bottom), and a mover row wins dedup so source/pct_change survive for the
     # structural-drop screen in trading_suna._enter.
     mixed = _dedup_priority([
         {"symbol": "HIMS", "price": 56.0, "pct_change": -9.0, "source": "losers"},
         {"symbol": "NKE",  "price": 41.0, "pct_change": None, "source": "active"},
         {"symbol": "HIMS", "price": 56.0, "pct_change": None, "source": "sp500"},  # dup, loses
-        {"symbol": "SLB",  "price": 49.0, "pct_change": None, "source": "sp500"},
+        {"symbol": "SLB",  "price": 49.0, "pct_change": None, "source": "sp400"},
     ])
-    mixed.sort(key=lambda r: abs(r["pct_change"]) if r["pct_change"] is not None else -1,
-               reverse=True)
-    assert mixed[0]["symbol"] == "HIMS", "movers must rank ahead of the S&P breadth source"
+    mixed.sort(key=_pool_rank)   # the SAME key discover() uses, not a copy of it
+    assert mixed[0]["symbol"] == "HIMS", "movers must rank ahead of the index breadth source"
     assert mixed[0]["source"] == "losers", "dedup dropped the mover row's source/pct_change"
     assert [r["symbol"] for r in mixed[1:]] == ["NKE", "SLB"], "insertion order not preserved"
+
+    # Downtrend-first: a big GAINER must rank behind every dropper, and behind a
+    # smaller dropper too. The old abs() key put +18% at the head of the queue.
+    ranked = sorted([
+        {"symbol": "RIPPER", "price": 40.0, "pct_change": 18.0, "source": "gainers"},
+        {"symbol": "SMALLDIP", "price": 30.0, "pct_change": -2.0, "source": "losers"},
+        {"symbol": "BIGDIP", "price": 20.0, "pct_change": -11.0, "source": "losers"},
+        {"symbol": "IDX", "price": 25.0, "pct_change": None, "source": "sp400"},
+    ], key=_pool_rank)
+    assert [r["symbol"] for r in ranked] == ["BIGDIP", "SMALLDIP", "RIPPER", "IDX"], \
+        f"downtrend-first sort wrong: {[r['symbol'] for r in ranked]}"
+
+    # Mid-cap universe loads and is disjoint from the S&P 500 (no dedup waste).
+    mid = _midcap_universe()
+    assert len(mid) > 300, f"sp400 list looks short: {len(mid)}"
+    assert not (set(mid) & set(EQUITY_UNIVERSE)), "sp400 overlaps sp500"
     print("✅ trading_movers self-check passed")
 
 

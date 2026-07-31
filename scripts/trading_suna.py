@@ -11,7 +11,7 @@ submit, sync/assignment detection, the TradingCCPosition table) so `--status`,
 `--report`, and assignment handling all work unchanged. Only what makes it *Suna*
 lives here: movers discovery, premium-band ranking, entry-timing filter,
 share-first multi-lot entry (sized to the $10k position cap), ~0.45Δ weekly
-calls, the Wednesday roll trigger, and the underwater repair ladder.
+calls, the Friday-afternoon roll trigger, and the underwater repair ladder.
 
 Cycle:  SYNC (reused) → MANAGE → COVER → ENTER (share-first) → WHEEL
 
@@ -34,7 +34,9 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from db.connection import Session
 from db.schema import TradingCCPosition, TradingOrder
 from scripts.trading_movers import discover
-from scripts.trading_data import get_quote, get_account, get_bars, get_news, is_market_open
+from scripts.trading_data import (
+    get_quote, get_account, get_bars, get_news, is_market_open, _ET_TZ,
+)
 from scripts.trading_report import send_alert
 from scripts.trading_covered_calls import (
     OrderSide,
@@ -88,6 +90,22 @@ SUNA_MODEL = "claude-haiku-4-5-20251001"
 SUNA_BETA_MIN, SUNA_BETA_MAX = 1.0, 2.0    # below 1 = staples/utilities, no premium
 SUNA_SI_MIN,   SUNA_SI_MAX   = 0.10, 0.30  # short interest as % of float
 
+# Junk filter — OURS, NOT SUNA'S. His equivalent step is "do I recognize any
+# companies here?" (kenneth-suna/_transcripts/Iu3J4KhO0qg.txt), a query against
+# 26 years of personal memory. The corpus contains NO market-cap, float, or
+# liquidity number anywhere — his only hard figure is "penny stocks, anything $5
+# and under", already covered by MOVERS_PRICE_MIN=$10 (and he breaks it himself:
+# XRX $5.24, OPEN $5.17). These two floors are Brian's risk gate for the
+# micro-caps the movers feed surfaces. Do not cite them as Suna's rule.
+MIN_MARKET_CAP = 500_000_000
+MIN_AVG_VOLUME = 500_000
+
+# Gates named here COMPUTE AND LOG their verdict but do not reject. Remove a name
+# to make it binding. Both start advisory: `trend` because it can intersect the
+# downtrend-first pool at near-zero candidates, `quality` because its numbers are
+# ours and the log should prove what they'd cut before they cut anything.
+SHADOW_GATES = {"trend", "quality"}
+
 # Repair ladder: when a lot is underwater, sell a call this many $ above spot so an
 # intraweek pop is unlikely to exercise it (early-assignment guard), stepping the
 # strike up toward basis each week. Scales with price — a flat $2 gap put the
@@ -96,9 +114,16 @@ SUNA_SI_MIN,   SUNA_SI_MAX   = 0.10, 0.30  # short interest as % of float
 REPAIR_OTM_GAP_MIN, REPAIR_OTM_GAP_MAX, REPAIR_OTM_GAP_PCT = 0.50, 2.0, 0.03
 REPAIR_TRIGGER_PCT = 0.05   # only "repair" (allow a below-basis strike) once >5% underwater
 
-# Wednesday roll trigger for an ITM short call.
+# Roll trigger for an ITM short call. FRIDAY AFTERNOON, not Wednesday — his words:
+# "Friday afternoon, if it's looking pretty likely that it's going to close over
+# that strike price, you just roll the contract to the next Friday"
+# (kenneth-suna/_transcripts/5nNwGFWO5yU.txt). The old Wednesday trigger came from
+# a paraphrase in the redesign spec; rolling two days early buys back time value
+# he explicitly waits out, and an ITM call left to expire is assignment — which is
+# the goal ("my shares will get assigned, which is my goal", 8fyt8c4_uEQ.txt).
 ROLL_ITM_DOLLARS = 1.0
-WEDNESDAY = 2  # date.weekday(): Mon=0
+FRIDAY = 4        # date.weekday(): Mon=0
+ROLL_HOUR_ET = 12  # "afternoon" — he never names an hour, so midday is our read
 
 # Dead-lot escalation: a lot uncovered this many calendar days retries with a
 # widened (up to N-day) expiry window before we give up and sell the shares.
@@ -208,7 +233,9 @@ def suna_profile(symbol: str) -> dict:
         import yfinance as yf
         i = yf.Ticker(symbol).info
         p = {"quote_type": i.get("quoteType"), "beta": i.get("beta"),
-             "short_float": i.get("shortPercentOfFloat"), "sector": i.get("sector")}
+             "short_float": i.get("shortPercentOfFloat"), "sector": i.get("sector"),
+             # Same response, no extra call — feeds quality_ok().
+             "market_cap": i.get("marketCap"), "avg_volume": i.get("averageVolume")}
         # yfinance has no beta for ~10% of real equities. Compute it from bars
         # rather than reject the name for a data gap. EQUITY only — an ETF has
         # no business here regardless of what its beta works out to.
@@ -287,17 +314,85 @@ def stock_filters_ok(profile: dict) -> tuple[bool, str]:
     return True, f"beta {beta:.2f}, SI {si:.1%}"
 
 
-def already_ripped(symbol: str) -> bool:
-    """Entry-timing filter: True if the stock already surged this week (skip the
-    chase). 5-day close-to-now return above RIP_5D_PCT. Fail-open (can't tell → allow)."""
+def _gate(name: str, ok: bool, why: str, symbol: str) -> bool:
+    """Shadow-aware reject. Returns True to continue, False to skip the name."""
+    if ok:
+        return True
+    if name in SHADOW_GATES:
+        print(f"  👻 {symbol}: SHADOW {name} would reject — {why}")
+        return True
+    print(f"  ⏭  {symbol}: {why}")
+    return False
+
+
+def quality_ok(profile: dict) -> tuple[bool, str]:
+    """Junk filter (ours — see MIN_MARKET_CAP). Fails OPEN on missing data:
+    stock_filters_ok() already fails closed on the same profile, so anything
+    reaching here has real fundamentals; a null cap is a yfinance gap, not junk."""
+    cap = profile.get("market_cap")
+    if cap is not None and cap < MIN_MARKET_CAP:
+        return False, f"market cap ${cap/1e6:,.0f}M < ${MIN_MARKET_CAP/1e6:,.0f}M"
+    vol = profile.get("avg_volume")
+    if vol is not None and vol < MIN_AVG_VOLUME:
+        return False, f"avg volume {vol:,.0f} < {MIN_AVG_VOLUME:,}"
+    return True, "cap/volume ok"
+
+
+def _sma(values: list[float], period: int) -> Optional[float]:
+    return sum(values[-period:]) / period if len(values) >= period else None
+
+
+def entry_signals(symbol: str) -> dict:
+    """Every price/volume entry signal from ONE bars call (was a 7-day call for
+    the rip test alone; 320 calendar days ≈ 200 trading days, the window
+    trading_orchestrator._get_regime already uses).
+
+        {"ripped": bool, "above_50dma": bool|None, "above_200dma": bool|None,
+         "rvol": float|None}
+
+    Fail-open on any error → `{}`, and callers treat missing keys as "allow",
+    matching the old already_ripped() behaviour.
+    """
     try:
-        bars = get_bars(symbol, days=7, timeframe="1Day")
-        closes = [b.get("c") for b in bars if b.get("c")]
-        if len(closes) < 2:
-            return False
-        return (closes[-1] - closes[0]) / closes[0] >= RIP_5D_PCT
+        bars = get_bars(symbol, days=320, timeframe="1Day")
     except Exception:
-        return False
+        return {}
+    closes = [b["c"] for b in bars if b.get("c")]
+    if len(closes) < 2:
+        return {}
+    last = closes[-1]
+    # Genuinely 5 TRADING days now. The old already_ripped() took closes[0] of a
+    # days=7 fetch, but get_bars pads +10 calendar days, so it was measuring ~11
+    # trading days against a constant named RIP_5D_PCT — a wider window flags
+    # more names, so this loosens the filter slightly toward its stated intent.
+    sig: dict = {"ripped": (last - closes[-6]) / closes[-6] >= RIP_5D_PCT
+                 if len(closes) >= 6 else False}
+    for period, key in ((50, "above_50dma"), (200, "above_200dma")):
+        sma = _sma(closes, period)
+        sig[key] = None if sma is None else last > sma
+    # rvol is LOGGED, never gated: Suna says "an increase in volume" but never
+    # names a baseline, so any threshold would be ours dressed as his.
+    vols = [b["v"] for b in bars if b.get("v") is not None]
+    if len(vols) >= 21:
+        base = sum(vols[-21:-1]) / 20
+        sig["rvol"] = vols[-1] / base if base else None
+    return sig
+
+
+def trend_ok(sig: dict) -> tuple[bool, str]:
+    """Suna's one crisp technical trigger: price back above BOTH the 50-day and
+    200-day moving averages — "it's going to cross over the 50-day moving
+    average ... and cross over the 200 day moving average. This is a very
+    bullish indicator" (kenneth-suna/_transcripts/MDBy-6aGw3A.txt, part 12).
+
+    Fail-open: a name without 200 sessions of history (recent IPO) isn't
+    judged by a rule that needs them.
+    """
+    below = [name for key, name in (("above_50dma", "50DMA"), ("above_200dma", "200DMA"))
+             if sig.get(key) is False]
+    if below:
+        return False, f"below {' and '.join(below)}"
+    return True, "above 50/200DMA"
 
 
 _DROP_CACHE: dict[str, tuple[bool, str]] = {}
@@ -469,9 +564,19 @@ def _handle_dead_lot(client, s, row, spot, underwater, min_strike, snaps, state,
         del state[sym]
 
 
-# ── Step 2: MANAGE (profit-close, Wednesday ITM roll, repair) ──────────────────
+def _roll_window(now_utc: Optional[datetime] = None) -> bool:
+    """True during Suna's roll window: Friday, midday ET onward.
+    # ponytail: reuses trading_data._ET_TZ, a hardcoded UTC-4 — correct Mar-Nov,
+    # an hour early in winter. One threshold on a name that's already >$1 ITM
+    # doesn't justify a tz layer; revisit if a real intraday rule shows up.
+    """
+    et = (now_utc or datetime.now(timezone.utc)).astimezone(_ET_TZ)
+    return et.weekday() == FRIDAY and et.hour >= ROLL_HOUR_ET
+
+
+# ── Step 2: MANAGE (profit-close, Friday-afternoon ITM roll, repair) ──────────
 def _manage(client, dry_run: bool = False):
-    print("\n  [SUNA 2/5] Manage (profit-close / Wed ITM roll)...")
+    print("\n  [SUNA 2/5] Manage (profit-close / Fri ITM roll)...")
     s = Session()
     try:
         for row in _open_rows(s):
@@ -495,13 +600,13 @@ def _manage(client, dry_run: bool = False):
                     row.strike = 0; row.expiry = None; row.premium_received = 0
                     s.commit()
                 continue
-            # Wednesday roll: short call > $1 ITM → roll out-and-up for a NET CREDIT only.
+            # Friday-afternoon roll: short call > $1 ITM → roll out-and-up, NET CREDIT only.
             try:
                 q = get_quote(row.underlying); spot = q.get("last") or q.get("ask") or 0
             except Exception:
                 spot = 0
             itm = spot and row.strike and spot - row.strike >= ROLL_ITM_DOLLARS
-            if itm and date.today().weekday() >= WEDNESDAY:
+            if itm and _roll_window():
                 _roll(client, s, row, spot, buyback=(bid, ask, mid), dry_run=dry_run)
         s.commit()
     finally:
@@ -678,12 +783,18 @@ def _enter(client, dry_run: bool = False):
             # Suna's stock-side screener (type/beta/short interest) — first network
             # call in the chain because it rejects the most: ~10% of the pool
             # survives it, so it saves the bars/earnings/chain calls below.
-            ok, why_stock = stock_filters_ok(suna_profile(tkr))
+            profile = suna_profile(tkr)
+            ok, why_stock = stock_filters_ok(profile)
             if not ok:
                 print(f"  ⏭  {tkr}: {why_stock}")
                 continue
-            if already_ripped(tkr):
+            if not _gate("quality", *quality_ok(profile), tkr):
+                continue
+            sig = entry_signals(tkr)          # one bars call → rip + trend + rvol
+            if sig.get("ripped"):
                 print(f"  ⏭  {tkr}: already ripped this week — wait for pullback")
+                continue
+            if not _gate("trend", *trend_ok(sig), tkr):
                 continue
             # Earnings guard (reuse v2's resolver): skip if earnings before our weekly expiry.
             max_exp = earnings_max_expiry(get_next_earnings(tkr))
@@ -711,9 +822,11 @@ def _enter(client, dry_run: bool = False):
                 if structural:
                     print(f"  🚩 {tkr}: structural drop — {why_drop} — skip")
                     continue
+            rvol = sig.get("rvol")
             print(f"  🛒 ENTER {tkr}: buy {lots*100}sh ~${price:.2f} (${cost:,.0f}), "
                   f"sell ${call['strike']:g} call {call['expiry']} "
-                  f"prem=${call['premium']*100*lots:,.0f} ({why}; {why_stock}) [{sector}]")
+                  f"prem=${call['premium']*100*lots:,.0f} ({why}; {why_stock}"
+                  f"{f'; rvol {rvol:.1f}x' if rvol else ''}) [{sector}]")
             if dry_run:
                 sector_counts[sector] += 1; avail -= cost; entered += 1
                 continue
@@ -985,6 +1098,75 @@ def _test():
         assert structural_drop_screen("ERRS_XYZ")[0] is False
     finally:
         _classify_drop = _orig
+
+    # ── Entry signals: SMA/rip/rvol math on stubbed bars (no network) ─────────
+    def bars(closes, vols=None):
+        vols = vols or [1_000_000] * len(closes)
+        return [{"t": f"2026-01-{i%28+1:02d}", "c": c, "v": v}
+                for i, (c, v) in enumerate(zip(closes, vols))]
+
+    assert _sma([1, 2, 3, 4], 2) == 3.5
+    assert _sma([1, 2], 50) is None, "not enough history → None, never a partial SMA"
+
+    # 250 flat sessions at $10, then a close at $12: above both SMAs, and the
+    # 5-TRADING-day rip test (closes[-6]) sees +20% → ripped.
+    flat = [10.0] * 250 + [12.0]
+    orig_get_bars = sys.modules[__name__].get_bars
+    try:
+        sys.modules[__name__].get_bars = lambda *a, **k: bars(flat)
+        sig = entry_signals("STUB")
+        assert sig["ripped"] is True, f"5-day rip not detected: {sig}"
+        assert sig["above_50dma"] is True and sig["above_200dma"] is True
+        assert trend_ok(sig)[0] is True
+
+        # Below both averages → the trend gate rejects, and names both.
+        sys.modules[__name__].get_bars = lambda *a, **k: bars([10.0] * 250 + [7.0])
+        down = entry_signals("STUB2")
+        ok, why = trend_ok(down)
+        assert ok is False and "50DMA" in why and "200DMA" in why, why
+
+        # Short history (recent IPO): no SMA → fail OPEN, don't judge on a rule
+        # that needs 200 sessions.
+        sys.modules[__name__].get_bars = lambda *a, **k: bars([10.0] * 20 + [11.0])
+        short = entry_signals("STUB3")
+        assert short["above_200dma"] is None
+        assert trend_ok(short)[0] is True, "missing history must fail open"
+
+        # rvol: 20 sessions at 1M, today 3M → 3.0x. Logged, never gated.
+        sys.modules[__name__].get_bars = lambda *a, **k: bars(
+            [10.0] * 21 + [10.1], [1_000_000] * 21 + [3_000_000])
+        assert abs(entry_signals("STUB4")["rvol"] - 3.0) < 1e-9
+
+        # Bars unavailable → {} , and every caller treats that as allow.
+        def boom(*a, **k):
+            raise RuntimeError("offline")
+        sys.modules[__name__].get_bars = boom
+        assert entry_signals("STUB5") == {}
+        assert trend_ok({})[0] is True, "no signals must fail open"
+    finally:
+        sys.modules[__name__].get_bars = orig_get_bars
+
+    # ── Shadow gates: log but do not reject; binding gates reject ─────────────
+    assert _gate("trend", False, "below 200DMA", "X") is True, "shadowed gate must allow"
+    assert _gate("nope", False, "some reason", "X") is False, "unshadowed gate must reject"
+    assert _gate("trend", True, "fine", "X") is True
+
+    # ── Junk filter (ours, not Suna's) — fails OPEN on missing data ───────────
+    assert quality_ok({"market_cap": 18e9, "avg_volume": 50e6})[0] is True
+    assert quality_ok({"market_cap": 100e6, "avg_volume": 50e6})[0] is False, "cap floor"
+    assert quality_ok({"market_cap": 18e9, "avg_volume": 100_000})[0] is False, "volume floor"
+    assert quality_ok({})[0] is True, "missing fundamentals must fail open"
+    assert quality_ok({"market_cap": MIN_MARKET_CAP,
+                       "avg_volume": MIN_AVG_VOLUME})[0] is True, "edges inclusive"
+
+    # ── Roll window: Friday afternoon ET only ────────────────────────────────
+    def utc(day, hour):   # 2026-08-03 is a Monday → +day gives the weekday
+        return datetime(2026, 8, 3 + day, hour, tzinfo=timezone.utc)
+    for day in range(7):
+        for hour in (14, 20):          # 10am and 4pm ET
+            want = (day == 4 and hour == 20)
+            assert _roll_window(utc(day, hour)) is want, \
+                f"roll window wrong for weekday {day} at {hour}:00 UTC"
 
     # Lot sizing: fill the $10k cap, bounded by available cash.
     assert position_lots(25.0, 50_000) == 4      # $10k cap → 4 lots
