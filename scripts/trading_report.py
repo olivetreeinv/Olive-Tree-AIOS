@@ -29,7 +29,12 @@ from scripts.trading_data import get_bars, get_account
 from db.connection import Session
 from db.schema import TradingCCPosition, TradingEquityCurve, TradingPosition, TradingSignal
 
-_NOTIFY_TO = os.getenv("NOTIFY_IMESSAGE_TO", "")
+# notify.sh decides its own channels (macOS banner + ntfy push; the iMessage block
+# is commented out). This only asks "is ANY channel configured" — it used to gate
+# on NOTIFY_IMESSAGE_TO alone, so deleting a dead iMessage var from .env would have
+# silenced all 26 desk alerts while NTFY_TOPIC, the channel that actually buzzes the
+# phone, sat there configured and unused.
+_NOTIFY_TO = os.getenv("NTFY_TOPIC", "") or os.getenv("NOTIFY_IMESSAGE_TO", "")
 _NOTIFY_SH = str(Path(__file__).parent / "notify.sh")
 _START_EQUITY = 50_000.0    # Premium Desk paper account (PA371XMPHCE2) starting equity
 # Soft daily profit goal — tracking/visibility only. Does NOT force or block trades
@@ -671,6 +676,11 @@ def _send_session_email(prev: str, new: str, equity: float, daily_pnl: float,
         print(f"  📧 Session email sent to brian@olivetreeinv.io")
     except Exception as e:
         print(f"  ⚠️  Session email failed: {e}")
+        # A dead email channel used to announce itself ONLY to a log nobody reads:
+        # gws credentials lapsed and the close scorecard went missing for 11 straight
+        # sessions (7/16–7/29). Push it instead — "ERROR" in the title keeps
+        # send_alert() off the Alpaca P&L call, which may be why we're failing.
+        send_alert("Trading Desk — ERROR", f"Session email failed: {e}")
 
 
 def _cc_book_summary() -> dict:
