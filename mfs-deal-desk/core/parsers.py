@@ -33,6 +33,28 @@ _T12_SIGNALS = ["operating expenses", "net operating", "vacancy loss", "gross po
 # Row-level scanners (shared by xlsx and csv front-ends)
 # ─────────────────────────────────────────────
 
+def _num(v):
+    """Cell value → float, or None if it isn't a number.
+
+    openpyxl hands back real floats, but csv.reader yields strings for every
+    cell — so a plain float() drops every formatted figure ("$1,200,000") and a
+    CSV T-12 parses to all-None. Also unwraps accounting negatives, "(45,000)".
+    """
+    if isinstance(v, bool) or v is None:
+        return None
+    if isinstance(v, (int, float)):
+        return float(v)
+    s = str(v).strip()
+    neg = s.startswith("(") and s.endswith(")")
+    s = re.sub(r"[\s,$()]", "", s)
+    if not s:
+        return None
+    try:
+        f = float(s)
+    except ValueError:
+        return None
+    return -f if neg else f
+
 def detect_type_rows(rows):
     """'rent-roll' or 't12' from the first 30 rows of cell values."""
     parts = []
@@ -52,14 +74,14 @@ def _scan_t12_rows(rows, result):
         if not row or row[0] is None:
             continue
         label = str(row[0]).lower().strip()
-        nums = []
-        for v in row[1:]:
-            try:
-                f = float(v)
-                if f > 0:
-                    nums.append(f)
-            except (TypeError, ValueError):
-                pass
+        vals = [f for f in (_num(v) for v in row[1:]) if f]
+        # T-12s conventionally print vacancy loss (and sometimes expenses) as
+        # negatives. Flip a row only when EVERY figure is negative, so the
+        # magnitude logic below is untouched for the normal positive layout and
+        # a mixed-sign row still drops its negatives exactly as before.
+        if vals and max(vals) < 0:
+            vals = [-f for f in vals]
+        nums = [f for f in vals if f > 0]
         if not nums:
             continue
         median_val = sorted(nums)[len(nums) // 2]
@@ -106,11 +128,8 @@ def _scan_rent_roll_rows(row_iter, result):
     for row in row_iter:
         if not row or len(row) <= rent_col or row[rent_col] is None:
             continue
-        try:
-            rent_val = float(row[rent_col])
-        except (ValueError, TypeError):
-            continue
-        if rent_val <= 0:
+        rent_val = _num(row[rent_col])
+        if not rent_val or rent_val <= 0:
             continue
         total_gpr += rent_val
         unit_count += 1
@@ -118,12 +137,9 @@ def _scan_rent_roll_rows(row_iter, result):
             bed = str(row[bed_col]).strip()
             unit_rents.setdefault(bed, []).append(rent_val)
             if market_col is not None and len(row) > market_col and row[market_col] is not None:
-                try:
-                    mkt = float(row[market_col])
-                    if mkt > 0:
-                        unit_markets.setdefault(bed, []).append(mkt)
-                except (ValueError, TypeError):
-                    pass
+                mkt = _num(row[market_col])
+                if mkt and mkt > 0:
+                    unit_markets.setdefault(bed, []).append(mkt)
 
     if unit_count == 0:
         return None
@@ -242,8 +258,7 @@ def parse_om_pdf(path):
     with pdfplumber.open(path) as pdf:
         text = "\n".join(page.extract_text() or "" for page in pdf.pages)
 
-    def clean_num(s):
-        return float(re.sub(r'[\s,$]', '', s))
+    clean_num = _num   # same job; one implementation
 
     m = re.search(r'(?:List|Asking|Offer(?:ing)?)\s*Price\s*:\s*[\n\s]*\$?\s*([\d][\d,\s]+\d)', text, re.I)
     if m:
@@ -341,7 +356,11 @@ def classify_filename(name):
         return "t12"
     if any(k in n for k in ("rent roll", "rent_roll", "rentroll", "rr_")):
         return "rent_roll"
-    if any(k in n for k in ("om", "offering", "memorandum", "brochure", "package")):
+    # "om" must match as a whole word, not a substring — plenty of property names
+    # carry those two letters (Thompson, Somerset, Compass, Bloomfield) and would
+    # otherwise route their financials to the OM parser.
+    if "om" in re.split(r"[^a-z0-9]+", n) or \
+            any(k in n for k in ("offering", "memorandum", "brochure", "package")):
         return "om"
     return None
 
