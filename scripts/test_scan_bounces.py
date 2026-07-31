@@ -42,6 +42,13 @@ Action: failed
 Status: 5.5.1
 Diagnostic-Code: smtp; 550 5.5.1 Recipient rejected - ELNK001_403"""
 
+# Policy/reputation block — the mailbox is ALIVE, we're the ones being refused. Soft.
+POLICY_BLOCK = """Delivery Status Notification (Failure)
+Final-Recipient: rfc822; real.investor@corp.com
+Action: failed
+Status: 5.7.1
+Diagnostic-Code: smtp; 550 5.7.1 Recipient rejected by policy filter"""
+
 
 def test_hard_bounce_extracts_and_flags():
     emails, is_hard = parse_bounce(HARD)
@@ -73,10 +80,17 @@ def test_earthlink_recipient_rejected_is_hard():
     assert is_hard is True                                 # 5.5.1 "recipient rejected" → dead
 
 
+def test_policy_block_is_not_hard():
+    emails, is_hard = parse_bounce(POLICY_BLOCK)
+    assert emails == {"real.investor@corp.com"}, emails
+    assert is_hard is False                                # 5.7.1 = our reputation, live mailbox
+
+
 if __name__ == "__main__":
     test_hard_bounce_extracts_and_flags()
     test_soft_bounce_is_kept()
     test_full_mailbox_is_kept()
     test_non_google_hard_bounce_is_caught()
     test_earthlink_recipient_rejected_is_hard()
+    test_policy_block_is_not_hard()
     print("ok")

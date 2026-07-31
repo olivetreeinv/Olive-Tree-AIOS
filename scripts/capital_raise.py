@@ -166,9 +166,25 @@ def cmd_enroll(args):
 # Track subcommand
 # ─────────────────────────────────────────────
 
+def _matching_deals(session, term):
+    """Every deal whose address or name contains `term` (slug dashes → spaces)."""
+    like = f"%{term.replace('-', ' ')}%"
+    return session.query(Deal).filter(Deal.address.ilike(like) | Deal.name.ilike(like)).all()
+
+
 def cmd_track(args):
     session = get_session()
-    commits = session.query(InvestorCommitment).all()
+    # Scope to THIS deal — the tracker prints a per-deal header, so summing every
+    # commitment in the table would let another deal inflate the $400K number.
+    # `in_` not a single id on purpose: 641 has duplicate deal rows (ids 1 and 7).
+    term = getattr(args, "deal", None) or DEAL_SLUG
+    deals = _matching_deals(session, term)
+    if not deals:
+        session.close()
+        raise SystemExit(f"ERROR: no deal matches '{term}' — nothing to track")
+    label = deals[0].address
+    commits = session.query(InvestorCommitment).filter(
+        InvestorCommitment.deal_id.in_([d.id for d in deals])).all()
 
     soft, all_rows = [], []
     total_committed = 0
@@ -186,7 +202,7 @@ def cmd_track(args):
     remaining = max(0, RAISE_TARGET - total_committed)
 
     print(f"\n{'='*50}")
-    print(f"SOFT-COMMIT TRACKER — {DEAL_SLUG}")
+    print(f"SOFT-COMMIT TRACKER — {label}")
     print(f"{'='*50}")
     print(f"  Q3 Raise Target:  ${RAISE_TARGET:,.0f}")
     print(f"  Committed so far: ${total_committed:,.0f}  ({pct:.1f}%)")
@@ -212,9 +228,11 @@ def cmd_track(args):
 def cmd_commit(args):
     session = get_session()
 
-    deals = session.query(Deal).filter(
-        (Deal.address.ilike(f"%{args.deal}%")) | (Deal.name.ilike(f"%{args.deal}%"))
-    ).all()
+    if args.amount <= 0:
+        session.close()
+        raise SystemExit(f"ERROR: amount must be positive, got {args.amount}")
+
+    deals = _matching_deals(session, args.deal)
     if len(deals) != 1:
         session.close()
         if not deals:
@@ -227,11 +245,33 @@ def cmd_commit(args):
 
     investor = session.query(Investor).filter(Investor.name.ilike(args.investor)).first()
     if not investor:
+        # Exact match only — so "Jane R. Doe" would silently become a SECOND Jane Doe
+        # with a split commitment history. Surface near-misses instead of creating one.
+        near = session.query(Investor).filter(
+            Investor.name.ilike(f"%{args.investor.split()[-1]}%")).all()
+        if near and not args.new_investor:
+            # build the listing BEFORE close — i.commitments is a lazy load
+            listing = "\n".join(f"  {i.name} (${sum(c.amount or 0 for c in i.commitments):,.0f} logged)"
+                                for i in near)
+            session.close()
+            raise SystemExit(f"ERROR: no investor named exactly '{args.investor}', but these "
+                             f"look close:\n{listing}\nUse the exact name, or --new-investor "
+                             f"if this really is a different person.")
         investor = Investor(name=args.investor, type=args.type, contact=args.contact,
                              status="Funded" if args.status == "funded" else "Soft Committed")
         session.add(investor)
         session.flush()  # assigns investor.id before the commitment insert
         print(f"New investor: {args.investor}")
+
+    # Idempotency: the ledger has no unique constraint, so a re-run (or a scrolled-up
+    # shell history repeat) would log the same money twice and inflate the Q3 number.
+    dup = session.query(InvestorCommitment).filter_by(
+        investor_id=investor.id, deal_id=deal.id, amount=args.amount).first()
+    if dup and not args.force:
+        session.close()
+        raise SystemExit(f"ERROR: {args.investor} already has a ${args.amount:,.0f} "
+                         f"commitment on this deal (id {dup.id}, {dup.status}). "
+                         f"Pass --force if this is a genuine second commitment.")
 
     deal_address = deal.address  # capture before close — session.close() detaches the row
     session.add(InvestorCommitment(investor_id=investor.id, deal_id=deal.id,
@@ -268,6 +308,10 @@ def main():
     cp.add_argument("--contact", help="New investor's email/phone (only used if creating)")
     cp.add_argument("--type", help="New investor's type — Individual/HNW/Family Office/"
                                     "Institution (only used if creating)")
+    cp.add_argument("--new-investor", action="store_true",
+                     help="Create the investor even if a similar name already exists")
+    cp.add_argument("--force", action="store_true",
+                     help="Log even if an identical commitment already exists")
 
     args = p.parse_args()
     {"audience": cmd_audience, "enroll": cmd_enroll, "track": cmd_track,

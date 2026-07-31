@@ -445,8 +445,10 @@ _HARD_BOUNCE_SIGNALS = (
     "recipient address rejected", "550 5.1.1",
     # non-Google MTAs (Outlook/Exchange, Postfix, qmail)
     "recipnotfound", "recipient not found", "unknown recipient",
-    # EarthLink/Vade (mindspring.com, pipeline.com) — "550 5.5.1 Recipient rejected"
-    "recipient rejected",
+    # EarthLink/Vade (mindspring.com, pipeline.com) — "550 5.5.1 Recipient rejected".
+    # Keep the code in the phrase: a bare "recipient rejected" also appears in 5.7.x
+    # policy/reputation blocks, which are OUR problem to fix, not a dead address.
+    "5.5.1 recipient rejected",
 )
 
 
