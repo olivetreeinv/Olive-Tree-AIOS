@@ -26,6 +26,7 @@ import json
 import os
 import sys
 from datetime import date, datetime, timezone
+from functools import lru_cache
 from pathlib import Path
 from typing import Optional
 
@@ -70,6 +71,22 @@ RIP_5D_PCT = 0.12
 # overreaction, avoid the deteriorating business).
 DROP_SCREEN_PCT = -8.0
 SUNA_MODEL = "claude-haiku-4-5-20251001"
+
+# ── Stock-side selection filters (Suna's screener, wiki/trading-desk/kenneth-suna/
+# how-to-use-screeners-for-covered-calls + covered-call-stocks-under-10) ───────
+# Until 2026-07-31 the desk had NO stock-quality gate at all — only a 30-ticker
+# denylist — so the movers feed filled the pool with leveraged single-stock ETFs
+# (AMZU/AMZG/MSTU/NVD/KORU), bond ETFs (LQD/TLT) and micro-caps. Suna screens on
+# four things before he ever looks at a chain; these are those four.
+#
+# Beta 1-2 and short interest 10-20% are what he states in the screener video.
+# The under-$10 video widens SI to "10-20% or 20-30%, avoid >30%", so the SI
+# ceiling here is 30% (Brian's call, 2026-07-31). The beta band stays at his
+# stated 1-2; the >=3%/wk premium pause is the desk's real volatility ceiling.
+# Measured on the live 242-name pool: EQUITY-only cuts 24, then these bands
+# leave 11 candidates — proportionally in line with Suna's own 1,200 -> 9 demo.
+SUNA_BETA_MIN, SUNA_BETA_MAX = 1.0, 2.0    # below 1 = staples/utilities, no premium
+SUNA_SI_MIN,   SUNA_SI_MAX   = 0.10, 0.30  # short interest as % of float
 
 # Repair ladder: when a lot is underwater, sell a call this many $ above spot so an
 # intraweek pop is unlikely to exercise it (early-assignment guard), stepping the
@@ -180,6 +197,94 @@ def position_lots(price: float, avail: float) -> int:
     if price <= 0:
         return 0
     return int(min(CC_MAX_POSITION_USD, avail) // (price * 100))
+
+
+@lru_cache(maxsize=512)
+def suna_profile(symbol: str) -> dict:
+    """Quote type + beta + short interest + sector for one symbol, in one yfinance
+    call (~0.5s). Everything Suna's screener filters on. `{}` when unavailable —
+    callers treat that as a reject, see stock_filters_ok()."""
+    try:
+        import yfinance as yf
+        i = yf.Ticker(symbol).info
+        p = {"quote_type": i.get("quoteType"), "beta": i.get("beta"),
+             "short_float": i.get("shortPercentOfFloat"), "sector": i.get("sector")}
+        # yfinance has no beta for ~10% of real equities. Compute it from bars
+        # rather than reject the name for a data gap. EQUITY only — an ETF has
+        # no business here regardless of what its beta works out to.
+        if p["beta"] is None and p["quote_type"] == "EQUITY":
+            p["beta"] = beta_from_bars(symbol)
+            p["beta_source"] = "bars"
+        return p
+    except Exception as e:
+        print(f"  ⚠️  profile lookup failed for {symbol}: {e}")
+        return {}
+
+
+def _daily_returns(symbol: str, days: int = 365) -> list[tuple[str, float]]:
+    """(date, close-to-close return) pairs from Alpaca daily bars."""
+    bars = [b for b in get_bars(symbol, days=days, timeframe="1Day") if b.get("c")]
+    return [(bars[i]["t"][:10], bars[i]["c"] / bars[i - 1]["c"] - 1)
+            for i in range(1, len(bars))]
+
+
+@lru_cache(maxsize=1)
+def _spy_returns() -> dict:
+    """Benchmark leg of the beta calc. Cached — one fetch per process."""
+    return dict(_daily_returns("SPY"))
+
+
+BETA_MIN_OVERLAP = 120   # ~6 months of shared trading days before a beta is trustworthy
+
+
+def beta_from_bars(symbol: str) -> Optional[float]:
+    """Beta vs SPY from 1y of daily bars, for the ~10% of real equities where
+    yfinance has no beta field (measured 2026-07-31: 23 of 218, including AAPL,
+    AMZN, RBLX, RIVN). Without this the gate silently rejects them for a data
+    gap rather than a Suna criterion. Alpaca bars are already paid for.
+
+    None when the histories don't overlap enough to be meaningful (new listings,
+    recent IPOs) — the caller treats that as a reject, same as a missing beta.
+    """
+    try:
+        spy = _spy_returns()
+        pairs = [(r, spy[d]) for d, r in _daily_returns(symbol) if d in spy]
+        if len(pairs) < BETA_MIN_OVERLAP:
+            return None
+        n = len(pairs)
+        mx = sum(p[0] for p in pairs) / n
+        my = sum(p[1] for p in pairs) / n
+        var = sum((p[1] - my) ** 2 for p in pairs)
+        if var <= 0:
+            return None
+        return sum((p[0] - mx) * (p[1] - my) for p in pairs) / var
+    except Exception as e:
+        print(f"  ⚠️  beta calc failed for {symbol}: {e}")
+        return None
+
+
+def stock_filters_ok(profile: dict) -> tuple[bool, str]:
+    """Suna's four stock-side screener filters. Returns (passes?, reason).
+
+    Fails CLOSED, unlike already_ripped(): a name whose type/beta/short interest
+    we can't verify is exactly the junk this gate exists to reject, and skipping
+    an entry is free — there are 200+ other names in the pool. Only ETFs and
+    delisted tickers actually return empty here (verified against the live pool:
+    every leveraged/inverse product resolves quoteType=ETF).
+    """
+    if profile.get("quote_type") != "EQUITY":
+        return False, f"not a single-name stock (quoteType={profile.get('quote_type')})"
+    beta = profile.get("beta")
+    if beta is None:
+        return False, "no beta"
+    if not (SUNA_BETA_MIN <= beta <= SUNA_BETA_MAX):
+        return False, f"beta {beta:.2f} outside {SUNA_BETA_MIN}-{SUNA_BETA_MAX}"
+    si = profile.get("short_float")
+    if si is None:
+        return False, "no short interest"
+    if not (SUNA_SI_MIN <= si <= SUNA_SI_MAX):
+        return False, f"short interest {si:.1%} outside {SUNA_SI_MIN:.0%}-{SUNA_SI_MAX:.0%}"
+    return True, f"beta {beta:.2f}, SI {si:.1%}"
 
 
 def already_ripped(symbol: str) -> bool:
@@ -570,6 +675,13 @@ def _enter(client, dry_run: bool = False):
                     price = 0
             if not price or price < 10:
                 continue
+            # Suna's stock-side screener (type/beta/short interest) — first network
+            # call in the chain because it rejects the most: ~10% of the pool
+            # survives it, so it saves the bars/earnings/chain calls below.
+            ok, why_stock = stock_filters_ok(suna_profile(tkr))
+            if not ok:
+                print(f"  ⏭  {tkr}: {why_stock}")
+                continue
             if already_ripped(tkr):
                 print(f"  ⏭  {tkr}: already ripped this week — wait for pullback")
                 continue
@@ -601,7 +713,7 @@ def _enter(client, dry_run: bool = False):
                     continue
             print(f"  🛒 ENTER {tkr}: buy {lots*100}sh ~${price:.2f} (${cost:,.0f}), "
                   f"sell ${call['strike']:g} call {call['expiry']} "
-                  f"prem=${call['premium']*100*lots:,.0f} ({why}) [{sector}]")
+                  f"prem=${call['premium']*100*lots:,.0f} ({why}; {why_stock}) [{sector}]")
             if dry_run:
                 sector_counts[sector] += 1; avail -= cost; entered += 1
                 continue
@@ -779,6 +891,59 @@ def _test():
     assert premium_band_ok(2.00, 56.0)[0] is False            # 3.57% → pause
     ok, why = premium_band_ok(1.50, 56.0)                     # 2.68% → aggressive band (>2.5%, <3%)
     assert ok and "aggressive" in why, f"expected aggressive band: {why}"
+
+    # Suna's stock-side screener. Real profiles, captured from yfinance 2026-07-31.
+    def prof(qt, beta, si, sector=None):
+        return {"quote_type": qt, "beta": beta, "short_float": si, "sector": sector}
+
+    good = prof("EQUITY", 1.94, 0.196, "Technology")          # SMCI — in both bands
+    assert stock_filters_ok(good)[0] is True, "SMCI should pass"
+    # Every leveraged/inverse product resolves ETF with null fundamentals — the
+    # exact junk (AMZU/MSTU/NVD/KORU/LQD) that flooded the pool before this gate.
+    assert stock_filters_ok(prof("ETF", None, None))[0] is False, "ETF must be rejected"
+    assert stock_filters_ok({})[0] is False, "unresolvable symbol must fail CLOSED"
+    # KO: beta 0.35 — the low-vol staple the beta floor exists to reject.
+    passed, why_ko = stock_filters_ok(prof("EQUITY", 0.349, 0.0112, "Consumer Defensive"))
+    assert passed is False and "beta" in why_ko, f"KO should fail on beta: {why_ko}"
+    # SOFI beta 2.15 — just outside the stated band (Brian chose the stated 1-2).
+    assert stock_filters_ok(prof("EQUITY", 2.149, 0.147))[0] is False, "beta ceiling not enforced"
+    # HIMS SI 31.9% — above Suna's "avoid >30%" line, even though beta is fine.
+    passed, why_hims = stock_filters_ok(prof("EQUITY", 1.80, 0.3194))
+    assert passed is False and "short interest" in why_hims, f"HIMS SI: {why_hims}"
+    # ONFO: beta ok, but SI 1.06% — no short pressure, no premium. Floor catches it.
+    assert stock_filters_ok(prof("EQUITY", 2.0, 0.0106))[0] is False, "SI floor not enforced"
+    # Band edges are inclusive on both ends.
+    assert stock_filters_ok(prof("EQUITY", 1.0, 0.10))[0] is True, "lower edges must pass"
+    assert stock_filters_ok(prof("EQUITY", 2.0, 0.30))[0] is True, "upper edges must pass"
+
+    # Beta-from-bars fallback: covariance math, driven offline. A name that moves
+    # exactly 1.5x SPY every day must come back as beta 1.5.
+    # Build SPY as a walk and the stock as exactly 1.5x its daily return.
+    # NOTE: patch via globals(), not `import scripts.trading_suna` — run as a
+    # script this module is __main__, and the imported copy is a different object.
+    spy_px, stk_px = [100.0], [50.0]
+    for i in range(200):
+        r = 0.01 if i % 3 else -0.008
+        spy_px.append(spy_px[-1] * (1 + r))
+        stk_px.append(stk_px[-1] * (1 + 1.5 * r))
+    def _bars(sym, days=365, timeframe="1Day"):
+        px = spy_px if sym == "SPY" else stk_px
+        return [{"t": f"2026-{1 + i // 28:02d}-{1 + i % 28:02d}T00:00:00Z", "c": c}
+                for i, c in enumerate(px)]
+    g = globals()
+    _real_bars = g["get_bars"]
+    g["get_bars"] = _bars
+    _spy_returns.cache_clear()
+    try:
+        b = beta_from_bars("FAKE")
+        assert b is not None and abs(b - 1.5) < 0.02, f"beta-from-bars wrong: {b}"
+        # Too little overlap → None (reject), never a bogus number.
+        g["get_bars"] = lambda sym, days=365, timeframe="1Day": _bars(sym)[:50]
+        _spy_returns.cache_clear()
+        assert beta_from_bars("FAKE") is None, "short history must return None"
+    finally:
+        g["get_bars"] = _real_bars
+        _spy_returns.cache_clear()
 
     # Put pick respects cash cap.
     pexp = exp

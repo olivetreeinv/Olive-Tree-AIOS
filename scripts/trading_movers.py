@@ -6,8 +6,15 @@ Replaces the frozen 38-name blue-chip universe with a pool rebuilt each week fro
 real market movers, mirroring Kenneth Suna's CNBC-movers hunt — but sourced
 natively from Alpaca (our existing data provider, free tier).
 
-Discovery only. Option-based filtering (premium band, liquidity floor, delta pick)
-lives in trading_suna.py, which consumes this module's raw candidate pool.
+Three sources, movers first: top gainers/losers, most-actives, and the S&P 500
+constituents inside the price band (the screener universe — see _sp500_inband).
+
+Discovery only, and deliberately wide — this module applies just symbol/price
+filters. All of Suna's actual selection happens in trading_suna.py: the stock
+screener (single-name only, beta, short interest) in stock_filters_ok(), then
+the option side (premium band, liquidity floor, delta pick). Do not add quality
+filters here; a name rejected at this layer never reaches the screener that is
+supposed to judge it.
 
     from scripts.trading_movers import discover
     pool = discover(top=60)   # -> [{"symbol","price","pct_change","source"}, ...]
@@ -20,7 +27,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from scripts.trading_data import _get, _alpaca_headers, _ALPACA_DATA  # noqa: E402
+from scripts.trading_data import _get, _alpaca_headers, _ALPACA_DATA, EQUITY_UNIVERSE  # noqa: E402
 
 # Suna trades $10–$100 names (100-share lot ≤ the $10k position cap). Wider than a
 # single strategy needs so the premium/liquidity filters downstream do the real work.
@@ -66,6 +73,40 @@ def _most_actives(top: int) -> list[dict]:
             for r in (data.get("most_actives") or [])]
 
 
+def _sp500_inband() -> list[dict]:
+    """S&P 500 constituents inside the price band — the desk's *screener universe*.
+
+    Suna works two sources: CNBC movers (the hunt) and a Schwab screener over a
+    broad optionable universe that he narrows by sector/price/beta/short-interest
+    down to ~9 names. `_movers`/`_most_actives` above are the first; this is a
+    cheap stand-in for the second. It is NOT a quality signal on its own — the
+    selecting is done by stock_filters_ok() in trading_suna, which is what makes
+    a broad universe safe to pour in here.
+
+    Measured 2026-07-31: of 11 names clearing Suna's full filter stack, 7 came
+    from this source and 4 from the movers feed. Without it the desk screens ~68
+    names/week against a screener designed for thousands, and starves.
+
+    Cost: one bulk price call per 200 symbols; the per-name walk in
+    trading_suna._enter is self-limiting — it stops once the book is full.
+    """
+    syms = [s for s in EQUITY_UNIVERSE if "." not in s and s not in _DENY]
+    out = []
+    for i in range(0, len(syms), 200):
+        chunk = ",".join(syms[i:i + 200])
+        try:
+            data = _get(f"{_ALPACA_DATA}/v2/stocks/trades/latest?symbols={chunk}", _alpaca_headers()) or {}
+        except Exception as e:
+            print(f"  ⚠️  S&P price fetch failed ({e}) — movers-only pool this cycle")
+            continue  # fail-open: degrade to the movers-only pool, never block discovery
+        for sym, trade in (data.get("trades") or {}).items():
+            price = _f(trade.get("p"))
+            if price and MOVERS_PRICE_MIN <= price <= MOVERS_PRICE_MAX:
+                out.append({"symbol": sym.upper(), "price": price,
+                            "pct_change": None, "source": "sp500"})
+    return out
+
+
 def _f(v):
     try:
         return float(v)
@@ -98,6 +139,7 @@ def discover(top: int = 60, include_actives: bool = True) -> list[dict]:
     rows = _movers(top)
     if include_actives:
         rows += _most_actives(top)
+    rows += _sp500_inband()   # appended last → sorts behind the movers (stable sort, pct=None)
     rows = _dedup_priority(rows)
     pool = [r for r in rows
             if r["symbol"] not in _DENY
@@ -135,6 +177,21 @@ def _test():
     # MSFT (unknown price) survives for downstream price resolution
     assert _price_ok(None) is True
     assert _price_ok(9.0) is False and _price_ok(150.0) is False
+
+    # S&P breadth source: ranks BEHIND the movers (pct_change=None sinks to the
+    # bottom), and a mover row wins dedup so source/pct_change survive for the
+    # structural-drop screen in trading_suna._enter.
+    mixed = _dedup_priority([
+        {"symbol": "HIMS", "price": 56.0, "pct_change": -9.0, "source": "losers"},
+        {"symbol": "NKE",  "price": 41.0, "pct_change": None, "source": "active"},
+        {"symbol": "HIMS", "price": 56.0, "pct_change": None, "source": "sp500"},  # dup, loses
+        {"symbol": "SLB",  "price": 49.0, "pct_change": None, "source": "sp500"},
+    ])
+    mixed.sort(key=lambda r: abs(r["pct_change"]) if r["pct_change"] is not None else -1,
+               reverse=True)
+    assert mixed[0]["symbol"] == "HIMS", "movers must rank ahead of the S&P breadth source"
+    assert mixed[0]["source"] == "losers", "dedup dropped the mover row's source/pct_change"
+    assert [r["symbol"] for r in mixed[1:]] == ["NKE", "SLB"], "insertion order not preserved"
     print("✅ trading_movers self-check passed")
 
 

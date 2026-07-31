@@ -60,9 +60,11 @@ _PAPER = True  # hard-coded — never flip without explicit Brian approval
 
 # ── Config: book + sizing ─────────────────────────────────────────────────────
 CC_BOOK_USD         = 50_000
-CC_MAX_UNDERLYINGS  = 16          # raised 12→16 (2026-07-26, full-deployment push): with the
-                                   # $1.2k entry floor, tail entries are $1-3k lots, so filling
-                                   # the book takes more names than 12 ($50k / 12 = $4.2k avg)
+CC_MAX_UNDERLYINGS  = 8           # 16→8 (2026-07-31): Suna runs 3-4 concurrent names on ~$26k;
+                                   # 8 scales that to our $50k at the same $10k/position cap. The
+                                   # old 16 was unreachable anyway — $50k / $10k = 5 funded
+                                   # positions — and it existed to paper over a pool with no
+                                   # stock-quality gate. See SUNA_BETA_* in trading_suna.py.
 CC_MAX_POSITION_USD = 10_000      # <=20% of book per underlying (100sh lot <= $100/share)
 CC_MAX_PER_SECTOR   = 2           # max underlyings per SECTOR bucket (see trading_screener.SECTOR)
 CC_CASH_BUFFER      = 0.02        # keep >=2% of book in cash (was 5%; v3 rolls are net-credit
