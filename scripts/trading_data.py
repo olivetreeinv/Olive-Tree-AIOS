@@ -25,6 +25,7 @@ Usage:
 
 import argparse
 import os
+import re
 import sys
 import json
 import time
@@ -41,7 +42,8 @@ from dotenv import load_dotenv
 load_dotenv(Path(__file__).parent.parent / ".env")
 
 # ── Equity + ETF universe (NYSE/NASDAQ, traded during market hours) ─────────
-_SP500_FILE = Path(__file__).parent.parent / "data" / "sp500.txt"
+_DATA_DIR   = Path(__file__).parent.parent / "data"
+_SP500_FILE = _DATA_DIR / "sp500.txt"
 
 def _load_sp500() -> list[str]:
     # SPY + QQQ are ETFs (not S&P 500 members) but kept as market anchors
@@ -57,6 +59,47 @@ def _load_sp500() -> list[str]:
     ]
 
 EQUITY_UNIVERSE = _load_sp500()  # S&P 500 constituents + SPY/QQQ anchors; refresh with --refresh-sp500
+
+# ── Index membership refresh ─────────────────────────────────────────────────
+# Both constituent files were hand-built from Wikipedia's tables; these flags
+# re-scrape the same source so they stop rotting. Verified 2026-07-31: the
+# parser reproduces data/sp500.txt (503) and data/sp400.txt (400) exactly, with
+# zero drift since the 6/30 snapshot. The 400 lives in trading_movers but is
+# refreshed here — one index concept, one place.
+#   python3 scripts/trading_data.py --refresh-sp500 --refresh-sp400
+_INDEX_WIKI = {
+    "sp500": ("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies", 480),
+    "sp400": ("https://en.wikipedia.org/wiki/List_of_S%26P_400_companies", 380),
+}
+
+
+def _wiki_tickers(html: str) -> list[str]:
+    """Ticker column (first cell of each row) of the page's first wikitable."""
+    tbl = re.search(r"<table[^>]*wikitable.*?>(.*?)</table>", html, re.S)
+    if not tbl:
+        return []
+    out = []
+    for row in re.findall(r"<tr[^>]*>(.*?)</tr>", tbl.group(1), re.S):
+        cells = re.findall(r"<t[dh][^>]*>(.*?)</t[dh]>", row, re.S)
+        if not cells:
+            continue
+        sym = re.sub(r"<[^>]+>", "", cells[0]).strip()
+        if re.fullmatch(r"[A-Z][A-Z.\-]{0,6}", sym):
+            out.append(sym)
+    return out
+
+
+def refresh_index(name: str) -> int:
+    """Re-scrape data/<name>.txt. Fails CLOSED — a Wikipedia layout change that
+    parses short leaves the existing file alone rather than silently shrinking
+    the desk's universe to whatever survived the regex."""
+    url, floor = _INDEX_WIKI[name]
+    html = requests.get(url, headers={"User-Agent": "olive-tree-desk/1.0"}, timeout=20).text
+    syms = sorted(set(_wiki_tickers(html)))
+    if len(syms) < floor:
+        raise RuntimeError(f"{name}: parsed {len(syms)} tickers (< {floor}) — file left alone")
+    (_DATA_DIR / f"{name}.txt").write_text("\n".join(syms) + "\n")
+    return len(syms)
 
 # ── Top-rated ETFs — always evaluated alongside the day's S&P movers ─────────
 # Only the 6 that clear the walk-forward gate on a 730d window (verified 2026-07-01):
@@ -462,11 +505,35 @@ def get_afterhours_movers(symbols: list[str], n: int = 15) -> list[str]:
 
 
 # ── CLI smoke test ────────────────────────────────────────────────────────────
+def _test():
+    """Offline check on the one piece of non-trivial parsing here."""
+    html = ('<table class="wikitable sortable"><tr><th>Symbol</th><th>Name</th></tr>'
+            '<tr><td><a href="/x">MMM</a></td><td>3M</td></tr>'
+            '<tr><td><a href="/y">BRK.B</a></td><td>Berkshire</td></tr>'
+            '<tr><td>not a ticker</td><td>skipped</td></tr></table>'
+            '<table class="wikitable"><tr><td>ZZZZ</td></tr></table>')
+    assert _wiki_tickers(html) == ["MMM", "BRK.B"], _wiki_tickers(html)
+    assert _wiki_tickers("<p>no table here</p>") == []
+    print("✅ trading_data self-check passed")
+
+
 def main():
     ap = argparse.ArgumentParser(description="Trading data layer smoke test")
     ap.add_argument("--symbol", default=None, help="Single symbol to test bars for")
     ap.add_argument("--days",   type=int, default=10)
+    ap.add_argument("--refresh-sp500", action="store_true", help="Re-scrape data/sp500.txt")
+    ap.add_argument("--refresh-sp400", action="store_true", help="Re-scrape data/sp400.txt")
+    ap.add_argument("--test", action="store_true", help="Offline self-check, no network")
     args = ap.parse_args()
+
+    if args.test:
+        return _test()
+    if args.refresh_sp500 or args.refresh_sp400:
+        for idx in ("sp500", "sp400"):
+            if getattr(args, f"refresh_{idx}"):
+                print(f"  ✅ {idx}: {refresh_index(idx)} tickers → data/{idx}.txt")
+        print("  ↻ desk restart picks up the new universe next cycle")
+        return
 
     print("── Alpaca paper account ─────────────────────")
     acct = get_account()

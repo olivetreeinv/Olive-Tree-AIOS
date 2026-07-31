@@ -64,9 +64,19 @@ PREM_PAUSE = 0.030   # >3%/wk → ultra-volatile, Kenneth pauses; we skip entrie
 LIQ_MAX_SPREAD_PCT = 0.10   # bid/ask spread as % of mid
 LIQ_MIN_BID        = 0.05   # a real two-sided market, not a $0.00 bid
 
-# Entry-timing filter: skip names that already ripped this week (Suna: wait for the
-# pullback/consolidation, don't chase). 5-day return above this = "already surged".
-RIP_5D_PCT = 0.12
+# Entry-timing filters. The CONCEPT is his, in two forms; both numbers are OURS.
+#
+# 1. Don't chase a run: "it has had a monster run up over the last couple of days,
+#    and then it consolidates" — he waits out the pop (Sf5_PcOCqcM.txt). He never
+#    names a size or window, so 12% over 5 sessions is Brian's read, not his rule.
+# 2. Don't buy at the highs: "I didn't want to buy it while it was at all-time
+#    highs, so I pulled back on Enphase" (GumGpGQ8yc8.txt); "at all-time highs or
+#    52-week highs, indicating to me that there could be a rather large pullback"
+#    (HC_pTLCERto.txt). This is the more specific of the two and it was MISSING —
+#    a name can sit at a 52-week high on a slow grind and clear the 5-day rip test
+#    untouched. The 5% band around the high is ours; the line itself is his.
+RIP_5D_PCT   = 0.12
+NEAR_HIGH_PCT = 0.05   # within 5% of the 52-week high = "at the highs"
 
 # Structural-drop screen: a name down at least this much (daily % from the movers feed)
 # gets the Haiku "structural vs transient" read before we buy the dip (Suna: buy the
@@ -101,10 +111,11 @@ MIN_MARKET_CAP = 500_000_000
 MIN_AVG_VOLUME = 500_000
 
 # Gates named here COMPUTE AND LOG their verdict but do not reject. Remove a name
-# to make it binding. Both start advisory: `trend` because it can intersect the
-# downtrend-first pool at near-zero candidates, `quality` because its numbers are
-# ours and the log should prove what they'd cut before they cut anything.
-SHADOW_GATES = {"trend", "quality"}
+# to make it binding. All three start advisory: `trend` because it can intersect
+# the downtrend-first pool at near-zero candidates, `quality` and `highs` because
+# their numbers are ours and the log should prove what they'd cut before they cut
+# anything. Review the counts after a week and record the call in decisions/log.md.
+SHADOW_GATES = {"trend", "quality", "highs"}
 
 # Repair ladder: when a lot is underwater, sell a call this many $ above spot so an
 # intraweek pop is unlikely to exercise it (early-assignment guard), stepping the
@@ -347,14 +358,16 @@ def entry_signals(symbol: str) -> dict:
     the rip test alone; 320 calendar days ≈ 200 trading days, the window
     trading_orchestrator._get_regime already uses).
 
-        {"ripped": bool, "above_50dma": bool|None, "above_200dma": bool|None,
-         "rvol": float|None}
+        {"ripped": bool, "near_high": bool|None, "above_50dma": bool|None,
+         "above_200dma": bool|None, "rvol": float|None}
 
     Fail-open on any error → `{}`, and callers treat missing keys as "allow",
     matching the old already_ripped() behaviour.
     """
     try:
-        bars = get_bars(symbol, days=320, timeframe="1Day")
+        # 400 calendar days ≈ 270 sessions — a genuine 52-week high needs 252,
+        # which the old 320d window (~220) could not supply.
+        bars = get_bars(symbol, days=400, timeframe="1Day")
     except Exception:
         return {}
     closes = [b["c"] for b in bars if b.get("c")]
@@ -367,6 +380,10 @@ def entry_signals(symbol: str) -> dict:
     # more names, so this loosens the filter slightly toward its stated intent.
     sig: dict = {"ripped": (last - closes[-6]) / closes[-6] >= RIP_5D_PCT
                  if len(closes) >= 6 else False}
+    # 52-week high off the same bars. None (→ fail open) until there's a year of
+    # history: a 6-month-old listing is at its "52-week high" by construction.
+    year = closes[-252:]
+    sig["near_high"] = last >= max(year) * (1 - NEAR_HIGH_PCT) if len(year) >= 252 else None
     for period, key in ((50, "above_50dma"), (200, "above_200dma")):
         sma = _sma(closes, period)
         sig[key] = None if sma is None else last > sma
@@ -393,6 +410,14 @@ def trend_ok(sig: dict) -> tuple[bool, str]:
     if below:
         return False, f"below {' and '.join(below)}"
     return True, "above 50/200DMA"
+
+
+def highs_ok(sig: dict) -> tuple[bool, str]:
+    """His other stated entry veto — don't buy into the highs (see NEAR_HIGH_PCT).
+    Fail-open without a full year of closes, same as trend_ok()."""
+    if sig.get("near_high"):
+        return False, f"within {NEAR_HIGH_PCT:.0%} of its 52-week high"
+    return True, "off the highs"
 
 
 _DROP_CACHE: dict[str, tuple[bool, str]] = {}
@@ -874,6 +899,8 @@ def _enter(client, dry_run: bool = False):
             if sig.get("ripped"):
                 print(f"  ⏭  {tkr}: already ripped this week — wait for pullback")
                 continue
+            if not _gate("highs", *highs_ok(sig), tkr):
+                continue
             if not _gate("trend", *trend_ok(sig), tkr):
                 continue
             # Earnings guard (reuse v2's resolver): skip if earnings before our weekly expiry.
@@ -1214,9 +1241,9 @@ def _test():
     assert _sma([1, 2, 3, 4], 2) == 3.5
     assert _sma([1, 2], 50) is None, "not enough history → None, never a partial SMA"
 
-    # 250 flat sessions at $10, then a close at $12: above both SMAs, and the
-    # 5-TRADING-day rip test (closes[-6]) sees +20% → ripped.
-    flat = [10.0] * 250 + [12.0]
+    # 260 flat sessions at $10, then a close at $12: above both SMAs, at the top
+    # of the 52-week range, and the 5-TRADING-day rip test (closes[-6]) sees +20%.
+    flat = [10.0] * 260 + [12.0]
     orig_get_bars = sys.modules[__name__].get_bars
     try:
         sys.modules[__name__].get_bars = lambda *a, **k: bars(flat)
@@ -1224,6 +1251,22 @@ def _test():
         assert sig["ripped"] is True, f"5-day rip not detected: {sig}"
         assert sig["above_50dma"] is True and sig["above_200dma"] is True
         assert trend_ok(sig)[0] is True
+        assert sig["near_high"] is True, "close at the top of the year = at the highs"
+        assert highs_ok(sig)[0] is False
+
+        # A year of $20 closes, now $10 — 50% off the high, nowhere near it.
+        sys.modules[__name__].get_bars = lambda *a, **k: bars([20.0] * 260 + [10.0])
+        assert highs_ok(entry_signals("STUB1A"))[0] is True
+
+        # Exactly on the 5% line is still "at the highs" (>= band edge).
+        sys.modules[__name__].get_bars = lambda *a, **k: bars([100.0] * 260 + [95.0])
+        assert entry_signals("STUB1B")["near_high"] is True
+
+        # Under a year of history → None → fail open (a young listing is at its
+        # "52-week high" by construction).
+        sys.modules[__name__].get_bars = lambda *a, **k: bars([10.0] * 200 + [12.0])
+        assert entry_signals("STUB1C")["near_high"] is None
+        assert highs_ok(entry_signals("STUB1C"))[0] is True
 
         # Below both averages → the trend gate rejects, and names both.
         sys.modules[__name__].get_bars = lambda *a, **k: bars([10.0] * 250 + [7.0])

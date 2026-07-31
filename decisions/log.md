@@ -757,3 +757,21 @@ Alpaca offers **no naked options at any level**; Level 1 already permits both co
 **Root cause 2 — covered-call coverage.** A call is "covered" against the **broker's** position book, not ours. `_fill_or_cancel()` confirms the buy ORDER filled, which is not the same event as the position becoming visible — sell into that gap and the call reads as naked. The DB can also be *behind* Alpaca (lot already assigned away) and `_cover()` would still try. Fixed with one shared precondition rather than a patch per caller: `broker_shares()` reads Alpaca's actual count, `await_shares()` polls up to 15s after an entry fill, and `_sell_call_row()` skips with a clear line when the broker shows fewer shares than contracts require. Entry defers the cover to the next cycle instead of firing a doomed order; `_cover()` picks it up.
 
 Neither fix is verifiable end-to-end until an order actually fills — market closed 16:00 ET, next open Monday 2026-08-03 09:30. The pure sizing/coverage logic is covered by asserts in `trading_suna.py --test`, including the live QCOM numbers ($170 spot, $1,166 collateral → max strike $11.66, so the $165 put is correctly never attempted).
+
+## 2026-07-31 — Pre-Monday close-out: index refresh built, and the entry filter was measuring the wrong thing
+
+Three open items from the handoff. Two closed, one genuinely has to wait for Monday.
+
+**1. Frozen index snapshots — built the refresh.** `trading_data.py` documented a `--refresh-sp500` flag that did not exist. It exists now, plus `--refresh-sp400`, both scraping Wikipedia's constituent tables — the same source the files were hand-built from. Stdlib `re` over the first wikitable; no new dependency (pandas can't `read_html` here, `lxml` isn't installed). Fails **closed**: a layout change that parses short (<480 / <380 names) raises and leaves the file alone rather than silently shrinking the desk's universe. Verified by running it: reproduces `data/sp500.txt` (503) and `data/sp400.txt` (400) **byte-for-byte**, and there has been **zero membership drift since the 6/30 snapshot** — so the staleness risk was small, but the chore is gone and the comment is no longer a lie.
+
+**2. The rip filter — 12%/5d is ours, and it was missing his actual rule.** Asked what `RIP_5D_PCT = 0.12` was sourced from. Grepping the 52 transcripts: **no percentage, no window, anywhere.** The *concept* is his in two distinct forms, and the desk had only implemented one of them:
+- "monster run up over the last couple of days, and then it consolidates" (`Sf5_PcOCqcM`) → the 5-day rip test. 12% is Brian's number, now labeled as ours in the code.
+- "I didn't want to buy it while it was at all-time highs, so I pulled back on Enphase" (`GumGpGQ8yc8`); "at all-time highs or 52-week highs, indicating to me that there could be a rather large pullback" (`HC_pTLCERto`) → **this was not implemented at all.** A name can grind to a 52-week high and clear the 5-day rip test untouched.
+
+Added `near_high` to `entry_signals()` (free — same bars call, window widened 320d→400d because a real 52-week high needs 252 sessions and ~220 was all the old window returned) and a `highs_ok()` gate. **Shadow, per the existing convention** — the 5% band around the high is ours, so it logs what it would cut before it cuts anything. Live pool: **6 would-be rejections**, none of them names that entered.
+
+**3. `trend` gate — still open, and it should be.** Needs Monday's live counts. Reviewing `trend` and `highs` together after a week.
+
+**Correction to Friday's Monday-morning checklist: the wheel cannot fire Monday.** The checklist called a `🎡 Wheel` line the first real test of the CSP fix. But `_wheel()` only runs on rows with `status="assigned"`, and the book is **flat — 8 closed rows, zero assigned, zero open**. A CSP first becomes possible after Monday's entries get assigned at a Friday expiry, so the earliest real test of the collateral fix is **the week of Aug 7**, not Monday. Monday tests the entry + cover path only.
+
+Also: the after-hours dry-run produced 1 entry (RIVN) vs. Friday's 3 (HPQ, MP, GME). Not a regression — **26 of HPQ's 35 weekly calls fail the 10%-spread liquidity floor after the close**, and MP's premium reads 4.06%/wk into the ≥3% pause band on stale quotes. Both resolve when the market opens.
