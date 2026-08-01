@@ -811,3 +811,41 @@ feature has a landing spot that beats what's running. No skills archived — eve
 skill has a run inside the window.
 
 **Not done:** no third audit email (the 9:05am launchd run already emailed twice).
+
+## 2026-08-01 — Phone control of the AIOS: native Remote Control, no new code
+
+Brian wanted to run prompts and skills from his phone against the real Mac. Chose
+Claude Code's built-in **Remote Control** (shipped Feb 2026, available on Pro) over
+the two things we would otherwise have built.
+
+**Declined — an ntfy command topic.** `scripts/notify.sh` already publishes to ntfy,
+and a listener piping messages into `claude -p` would have been ~15 lines. Killed it
+on the trust boundary: free ntfy.sh topics are world-writable to anyone who guesses
+the name, so a channel that executes on this Mac would have needed a shared secret
+and a command allowlist. Remote Control authenticates through claude.ai and opens no
+inbound port — outbound HTTPS only.
+
+**Declined — Tailscale + SSH.** A VPN on two devices plus Remote Login, to get worse
+typing on a phone. Revisit only if full shell access from away is ever needed.
+
+**Built:** `com.olivetree.remote-control` LaunchAgent → `scripts/remote_control_run.py`,
+`RunAtLoad` + `KeepAlive` (covers the documented ~10-min network timeout and reboots),
+`caffeinate -i` to hold off idle sleep. `olive-rc` restarts it.
+
+**Two traps hit, both worth remembering:**
+1. `claude` as the launchd program arg0 dies **EPERM** — no Documents TCC grant in
+   launchd context. Same wall `usage_audit_run.py` hit; same fix, spawn it from the
+   venv python3. That is now two jobs on this lane.
+2. First run asks `Enable Remote Control? (y/n)` on a TTY that launchd does not
+   provide, so the job sat at `state = running` and silently never connected. The
+   answer persists (`~/.claude.json` `remoteDialogSeen`), but the shim pipes `y`
+   anyway — a hang with a healthy-looking state is worse than a crash.
+
+**Also on:** `agentPushNotifEnabled: true` for phone push when a long task finishes.
+ntfy stays the channel for launchd routines (heartbeat, goal-watch, trading desk);
+native push covers Remote Control sessions only.
+
+**Dispatch** (Claude Desktop, Cowork tab) is paired as a second surface for quick
+asks with no terminal. Caveat: Cowork sources skills from the claude.ai account
+config, not `.claude/skills/`, so Olive skills are not reliably reachable there.
+Anything that runs `/heartbeat`, `/deal-search`, `/loi` goes through Remote Control.

@@ -47,6 +47,7 @@ EXPECTED_JOBS = {
     "com.olivetree.morning-deal-scan": ("calendar", "Morning deal scan (Crexi buy-box + broker replies, 8am)"),
     "com.olivetree.goal-watch": ("calendar", "Goal Watch (12:30pm judge)"),
     "com.olivetree.drip": ("calendar", "Drip worker (9am)"),
+    "com.olivetree.remote-control": ("keepalive", "Remote Control (phone session)"),
 }
 
 
