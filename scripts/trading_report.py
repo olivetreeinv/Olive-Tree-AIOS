@@ -37,7 +37,7 @@ _NOTIFY_SH = str(Path(__file__).parent / "notify.sh")
 _START_EQUITY = 50_000.0    # Premium Desk paper account (PA371XMPHCE2) starting equity
 # Soft daily profit goal — tracking/visibility only. Does NOT force or block trades
 # (the -2% daily halt is the only hard daily rule). Override via env.
-_DAILY_TARGET = float(os.getenv("DAILY_TARGET_USD", "1000"))
+_DAILY_TARGET = float(os.getenv("DAILY_TARGET_USD", "100"))  # daily analog of the $500/wk target (2026-08-01)
 _DESK_START = "2026-08-01"  # first equity-curve row of the v2 account — SPY comparisons anchor here
 
 

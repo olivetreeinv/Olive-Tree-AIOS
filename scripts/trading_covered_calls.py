@@ -1100,7 +1100,7 @@ def cc_premium_stats() -> dict:
 
 
 def _print_status():
-    """Print CC book positions + premium vs the $1,000/week target + annualized yield-on-book."""
+    """Print CC book positions + premium vs the weekly target (CC_WEEKLY_TARGET_USD) + annualized yield-on-book."""
     s = Session()
     try:
         open_rows = s.query(TradingCCPosition).filter_by(status="open").all()
@@ -1129,7 +1129,8 @@ def _print_status():
     annualized_yield = (premium_mtd / CC_BOOK_USD) * (365 / days_elapsed) if days_elapsed else 0
     print(f"\n  Premium WTD: ${premium_wtd:.2f} / ${CC_WEEKLY_TARGET_USD:.0f} weekly target ({wk_pct:.0%})")
     print(f"  Premium MTD: ${premium_mtd:.2f} / ${CC_MONTHLY_TARGET_USD:.0f} ({mo_pct:.0%})")
-    print(f"  Annualized yield-on-book: {annualized_yield:.1%} (target ~104%)")
+    print(f"  Annualized yield-on-book: {annualized_yield:.1%} "
+          f"(target ~{CC_WEEKLY_TARGET_USD * 52 / CC_BOOK_USD:.0%})")
     print(f"  Realized P&L MTD: ${realized_pnl:+.2f}")
     from scripts.trading_data import get_quote
     book_value = 0.0
