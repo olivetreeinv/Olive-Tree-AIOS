@@ -30,6 +30,13 @@ from scripts import trading_covered_calls as cc     # noqa: E402
 
 def _seed():
     """One lot closed 2026-07-31: inside the Jul 27 week, outside the Aug month."""
+    # This function WRITES. If db.connection was imported before the env var
+    # above was set — say a runner imported another module first — the engine
+    # is still bound to data/olive.db and the seed row lands in production.
+    # Refuse rather than pollute the real book.
+    from db.connection import DATABASE_URL
+    assert str(_tmpdb) in DATABASE_URL, \
+        f"refusing to seed: engine is bound to {DATABASE_URL}, not the temp DB"
     init_db()
     s = Session()
     try:
