@@ -782,3 +782,32 @@ Brian asked whether Suna's method is the best way to trade covered calls and wha
 **Applied (moderate tier):** (1) `PREM_MIN` 0.8%→1.2% — across July's 15 real call fills a 1.2% floor forgoes only $117 of $1,992 premium (XLE, BAC) vs $390 at 1.5% and $828 (42%) at proposal A2's 2.0%, which now runs as a 👻 shadow counter instead. (2) Earnings-window guard fixed at the root: entry expiry is now capped BEFORE earnings via `dte_cap` → `pick_weekly_call(dte_max=…)` (old check let a 7-DTE pick straddle a day-5 earnings date), and `_wheel()` got the same guard — it previously had none (no CSP across earnings, Suna's rule + proposal #8). (3) 👻 shadow counters for proposals A2 (2% gate), A4 (stable/high-IV tier), A5 (30Δ-alternative premium) log on every entry; review with `trend`/`highs`/`quality` after the first live week (Aug 3–7). (4) **Target restated $1k/wk → $500/wk** (`CC_WEEKLY_TARGET_USD`, goal-registry, SKILL.md): $1k/wk was ~104% annualized — nothing documented sustains it; $500 sits between actual pace (~$440/wk gross premium) and the measured ~$640 ceiling. (5) The five 7/10 `_trading-upgrades.md` files finally ruled: etf-education + kenneth-suna RESOLVED (adopted/shadow/already-live per item), etfs/investing-by-age/site-links DECLINED (1-of-N coverage, off-mandate). (6) SKILL.md drift fixed — frontmatter + cycle line described retired v2 (IV rank, CSP-first, 21-DTE, Wed roll).
 
 **Explicitly not doing:** monthly cadence (drops to the 10–15% yield class), CSP-first flip (CBOE PUT edge is real but Suna's capital-efficiency objection stands on $50k; revisit only if the fixed wheel leg proves itself — first possible fill week of Aug 7), intraweek rotation (medium confidence, complex). Shadow-gate ruling (trend/quality/highs) deliberately deferred to live-week counts per the code's own convention — no live 👻 lines existed yet at decision time.
+
+## 2026-08-01 — Aug usage audit: two delivery failures fixed, trading desk stays open
+
+Audit verdict: **off goal** on all three Q3 targets. 31 days = 118 sessions, 543
+messages. Deal workup/underwriting — the binding constraint — finished 5th at 25
+messages, behind trading desk (56), social/marketing (44), ops (38), broker (34),
+and status-check questions (31). 18 of 61 commits were trading-desk.
+
+Both root causes were **delivery failures, not coverage gaps** — the machinery
+existed and the last hop was missing:
+
+1. `heartbeat.py` printed the Mon/Fri cadence nudge but never appended it to the
+   `summary` string that ntfy sends. `/q3-scoreboard` ran 1 of 5 Fridays in July.
+2. The 641 raise had 275 contacts in an outbound drip and no inbound catcher.
+   `deal_inbox.py` scanned broker mail only, so investor replies never reached
+   `capital_raise.py commit`. $0 of $400K, empty pipeline. New
+   `scan_investor_replies()` runs in the weekday 8am morning scan. First live run
+   found 4 replies over 30 days — including **Josh Irby (7/29, "Would like to hear
+   more")**, a warm lead that sat 3 days unanswered.
+
+**Proposed and declined:** freezing trading-desk feature work through Q3. Brian's
+call — the desk keeps running and stays open to changes. The attention skew is
+recorded as a measurement, not an action item.
+
+**Platform scan:** nothing to adopt. On 2.1.220, current release; no 2.1.219
+feature has a landing spot that beats what's running. No skills archived — every
+skill has a run inside the window.
+
+**Not done:** no third audit email (the 9:05am launchd run already emailed twice).
