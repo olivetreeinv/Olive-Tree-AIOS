@@ -36,6 +36,7 @@ Brian Norton is the founder and CEO of Olive Tree Investments — a Georgia-base
 - `/pitch-deck [deal name]` — Build a deal-specific LP pitch deck in Canva after a go. Clones the 641 Powder Springs deck (`DAHIppfBwgs`), writes the deal's content into the slides via the Canva editing API, exports PDF to the property's deal folder. Uses `scripts/canva_api.py` + Canva MCP.
 - `/capital-raise` — LP capital raise for a specific deal: GHL audience sizing, drip enrollment (nothing sends without `--send`), soft-commit tracking vs. the $400K Q3 target. LIVE since 2026-06-19 (first raise: 641 Powder Springs). Uses `scripts/capital_raise.py`.
 - `/heartbeat` — One-shot ops health check: launchd jobs, trading desk, Morning Brief delivery, olive.db, new deal drops, top loose ends. Runs weekdays 7:45am via launchd + ntfy push. Answer any "is X running / did Y send" question by running `scripts/heartbeat.py` first.
+- **Remote Control (phone)** — not a skill; an always-on `claude remote-control` server session run by launchd (`com.olivetree.remote-control` → `scripts/remote_control_run.py`). Open the Claude mobile app → **Code** tab → **Olive AIOS** to run any prompt or skill against the real Mac: local scripts, `olive.db`, `.env` creds, Drive/Gmail MCP. Tool approvals happen on the phone. Restart with `olive-rc`. Distinct from cloud routines, which run in Anthropic's sandbox with no local state.
 - `/goal-watch` — Midday goal judge: is each routine/skill *meeting its goal*, not just running. Judges registry targets + last-24h skill runs via one claude -p call; ntfy push with a fix when off-goal. Weekdays 12:30pm launchd. Uses `scripts/goal_watch.py` + `references/goal-registry.json`.
 - `/loose-ends` — Harvest every pending/blocked/deferred item from decisions log + memory into one actionable list. Top 3 appear in each heartbeat. Uses `scripts/loose_ends.py`.
 - `/q3-scoreboard` — Friday scorecard vs. the three Q3 goals (deal under contract, $400K commits, broker flow), with a #1 action for next week. Run every Friday.
@@ -94,6 +95,7 @@ Match the register in `references/voice.md`. Direct. Short sentences. Numbers up
 | Docs / Files / Notes | Google Drive | mcp — connected |
 | DMs | Apple Messages | not yet connected |
 | Design / Content | Canva | key+ref — OAuth tokens in `.env`, `scripts/canva_api.py` |
+| Phone / Remote | Claude Code Remote Control | live — always-on launchd session, drive the AIOS from the Claude mobile app |
 
 Run `/usage-audit` for the monthly usage + coverage retro.
 
