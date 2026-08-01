@@ -1,0 +1,23 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth Suna demonstrates rolling covered calls and evaluates whether to sell cash-secured puts on HIMS stock. He decides against rolling (to avoid eating into the $25 premium) and against selling a cash-secured put (gap risk too high relative to $188 premium), instead planning to repurchase shares Monday and sell a new covered call at a higher strike.",
+  "takeaways": [
+    "Rolling a covered call means buying back the contract and selling a new one for a later week\u2014use this when you want to keep shares and have a low cost basis with big tax consequences",
+    "A cash-secured put requires capital equal to 100 shares \u00d7 strike price (e.g., $5,700 for a $57 strike on HIMS at $63)",
+    "Put premium is typically lower than call premium on the same stock at similar strikes",
+    "Gap risk at market open (stock could open well below strike over a weekend) can erase multiple weeks of premium\u2014skip the trade if the risk-to-reward doesn't justify it",
+    "When assignment is likely on a covered call, compare the net profit (strike gain + premium) versus opportunity cost if stock rallies past strike",
+    "For a $50k portfolio targeting $1,250/mo premium, prioritize high-probability near-the-money strikes over long-shot out-of-the-money strikes with low premium"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Skip cash-secured puts with gap risk unless premium is \u22650.5% of required capital per week; on HIMS example, $188 on $5,700 cash = 3.3% weekly\u2014too low given weekend risk",
+      "evidence": "Kenneth explicitly rejects the $61 put on HIMS despite $188 premium because 'gap risk' at market open could force him to buy at $61 when stock opens at $51, turning the trade into a loss. He states: 'I would rather miss out on the hundred bucks' rather than take that risk. This suggests a rule: premium must justify the capital lock and event risk."
+    }
+  ],
+  "id": "18mo5UwZkq0",
+  "title": "Part 3.5: How to Roll Covered Calls and Sell Cash Secured Puts",
+  "duration": 444
+}

@@ -1,0 +1,49 @@
+{
+  "conversation": {
+    "id": "76zSpLxpcrC2beKRMeBG",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249934000,
+    "dateUpdated": 1750249934000,
+    "lastMessageDate": 1750249934001,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "E03lkdsySOaiqDyFcyCa",
+    "fullName": "Allyssa Berardi",
+    "contactName": "Allyssa Berardi",
+    "companyName": null,
+    "email": "allyssaberardi@yahoo.com",
+    "tags": [],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "phone": null,
+    "attributed": null,
+    "sort": [
+      1750249934001
+    ]
+  },
+  "messages": [
+    {
+      "id": "yaYVUAmdzgKK3Fvx4Yt7",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "E03lkdsySOaiqDyFcyCa",
+      "conversationId": "76zSpLxpcrC2beKRMeBG",
+      "dateAdded": "2025-06-18T12:31:20.517Z",
+      "dateUpdated": "2025-06-18T12:33:47.731Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "V0n91UhevbAnrCGzSfyS"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

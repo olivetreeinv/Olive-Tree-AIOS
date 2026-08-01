@@ -1,0 +1,86 @@
+{
+  "conversation": {
+    "id": "OLw4PGm1RkCX2EOdc1Mc",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906027602,
+    "dateUpdated": 1783364592502,
+    "lastMessageDate": 1783364592498,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Geoffrey, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906028471,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "XAR7gzqtJ2SUKO16w5Cy",
+    "fullName": "Geoffrey Norton",
+    "contactName": "Geoffrey Norton",
+    "companyName": null,
+    "phone": "+14049090506",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "profilePhoto": null,
+    "attributed": null,
+    "email": null,
+    "sort": [
+      1783364592498
+    ]
+  },
+  "messages": [
+    {
+      "id": "thEZ6WURWGpPWXUC1pzX",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Geoffrey, a copy of the pitch deck has been sent to your email.",
+      "contactId": "XAR7gzqtJ2SUKO16w5Cy",
+      "contentType": "text/plain",
+      "conversationId": "OLw4PGm1RkCX2EOdc1Mc",
+      "dateAdded": "2026-07-06T19:03:12.043Z",
+      "dateUpdated": "2026-07-06T19:03:15.641Z",
+      "source": "workflow",
+      "altId": "SM084353ac5f772cd40ed85472c03d22e6",
+      "from": "+16789712411",
+      "to": "+14049090506",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "jBavNNPNiBxAmj2BqjrF",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Geoffrey, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "XAR7gzqtJ2SUKO16w5Cy",
+      "contentType": "text/plain",
+      "conversationId": "OLw4PGm1RkCX2EOdc1Mc",
+      "dateAdded": "2026-06-19T21:53:47.827Z",
+      "dateUpdated": "2026-06-19T21:53:49.125Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+14049090506",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

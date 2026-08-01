@@ -1,0 +1,15 @@
+{
+  "trading_relevant": "no",
+  "strategy": "market-analysis",
+  "summary": "Kenneth Suna compares QQQ and VGT tech ETFs by analyzing share price, growth rates, assets under management, dividend yields, expense ratios, and holdings composition. The video provides educational framework for choosing between two similar tech-heavy ETFs but contains no options selling strategies, premium generation tactics, or techniques applicable to Brian Norton's covered call and cash-secured put Premium Desk.",
+  "takeaways": [
+    "QQQ: $426/share, 0.20% expense ratio, 51% tech allocation, 102 total holdings, 10.55% dividend growth in 5 years",
+    "VGT: $56/share, lower expense ratio than QQQ, 99% tech allocation, 315 total holdings",
+    "QQQ and VGT have similar 1-5 year growth but diverge significantly over 10-year periods",
+    "Tech ETF dividends are secondary to growth as investment thesis"
+  ],
+  "strategy_candidates": [],
+  "id": "g_YCQjF0egQ",
+  "title": "QQQ vs VGT which tech etf is better",
+  "duration": 141
+}

@@ -1,0 +1,129 @@
+{
+  "conversation": {
+    "id": "HmCnDLf7eNYJj7JIpEzz",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249897374,
+    "dateUpdated": 1783364521139,
+    "lastMessageDate": 1783364521135,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Rob, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781961159321,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "wDFO8pUGCIR7BrFF4rwI",
+    "fullName": "Rob Deraney",
+    "contactName": "Rob Deraney",
+    "companyName": null,
+    "email": "rcderaney@gmail.com",
+    "phone": "+14043886673",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "profilePhoto": null,
+    "sort": [
+      1783364521135
+    ]
+  },
+  "messages": [
+    {
+      "id": "mmh3iVVnDCbVts71pNqx",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Rob, a copy of the pitch deck has been sent to your email.",
+      "contactId": "wDFO8pUGCIR7BrFF4rwI",
+      "contentType": "text/plain",
+      "conversationId": "HmCnDLf7eNYJj7JIpEzz",
+      "dateAdded": "2026-07-06T19:02:00.453Z",
+      "dateUpdated": "2026-07-06T19:02:03.824Z",
+      "source": "workflow",
+      "altId": "SM75258f768e04b6d3b0e5896c031b9a74",
+      "from": "+16789712411",
+      "to": "+14043886673",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "ko87nh9vNyruUzpVphb6",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Rob, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "wDFO8pUGCIR7BrFF4rwI",
+      "contentType": "text/plain",
+      "conversationId": "HmCnDLf7eNYJj7JIpEzz",
+      "dateAdded": "2026-06-20T13:12:38.619Z",
+      "dateUpdated": "2026-06-20T13:12:40.325Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+14043886673",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "pbDvvJj9kp722zrD9t5w",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "wDFO8pUGCIR7BrFF4rwI",
+      "conversationId": "HmCnDLf7eNYJj7JIpEzz",
+      "dateAdded": "2025-06-18T16:24:27.790Z",
+      "dateUpdated": "2025-06-18T16:24:27.809Z",
+      "from": "+14043886673",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "Email"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "KETyNCBd5egZCxqYtkJ2",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "wDFO8pUGCIR7BrFF4rwI",
+      "conversationId": "HmCnDLf7eNYJj7JIpEzz",
+      "dateAdded": "2025-06-18T12:31:01.279Z",
+      "dateUpdated": "2025-06-18T12:31:37.959Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "EsuFRlvLxfmuaBinVcFV"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

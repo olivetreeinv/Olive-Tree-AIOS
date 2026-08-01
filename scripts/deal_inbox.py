@@ -15,6 +15,7 @@ Usage:
 import argparse
 import base64
 import re
+import shlex
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta
@@ -22,6 +23,11 @@ from datetime import date, datetime, timedelta
 import requests
 from bs4 import BeautifulSoup
 from gws_auth import get_token
+from pathlib import Path
+
+# Brian's branded Gmail signature ("Sig V2") — appended raw in _to_html; no plain-text "-Brian".
+_SIG_FILE = Path(__file__).resolve().parent.parent / "templates" / "signature.html"
+SIGNATURE_HTML = _SIG_FILE.read_text().strip() if _SIG_FILE.exists() else ""
 
 # ─────────────────────────────────────────────
 # Config
@@ -31,14 +37,20 @@ SPREADSHEET_ID = "1VxOlof56s8GosrWkSctL-FMm7AoJKJ6YtM3GllMKVH4"
 SHEETS_BASE    = "https://sheets.googleapis.com/v4/spreadsheets"
 GMAIL_BASE     = "https://gmail.googleapis.com/gmail/v1/users/me"
 
+# keep in sync with references/buy-box.md
 BUY_BOX = {
     "30341": "Chamblee, GA",
+    "30340": "Doraville, GA",
+    "30360": "Doraville, GA",
     "30080": "Smyrna, GA",
     "30005": "Alpharetta, GA",
     "37207": "North Nashville, TN",
     "37115": "Madison, TN",
     "37408": "Chattanooga Southside, TN",
     "37087": "Lebanon, TN",
+    "37918": "Knoxville, TN",
+    "37804": "Maryville, TN",
+    "37615": "Johnson City, TN",
     "35801": "Huntsville Core, AL",
     "35205": "Birmingham Urban, AL",
     "35806": "Huntsville Growth, AL",
@@ -49,6 +61,15 @@ DEAL_QUERIES = [
     '(subject:"offering memorandum" OR subject:" OM " OR subject:"multifamily" OR subject:"apartment" OR subject:"for sale") -from:me -from:crexi.com -from:loopnet.com',
     '("rent roll" OR "T-12" OR "T12" OR "cap rate" OR "asking price" OR "NOI") -from:me -from:crexi.com -from:loopnet.com',
 ]
+
+# Investor-language filter for replies from people sitting in an email drip.
+# Outbound drips had no inbound catcher until 2026-08-01 — a "send me the deck"
+# reply landed unflagged and never reached capital_raise.py commit.
+INVESTOR_REPLY_QUERY = (
+    '("interested" OR "the deck" OR "pitch deck" OR "invest" OR "investing" '
+    'OR "commitment" OR "commit" OR "accredited" OR "wire" OR "subscription" '
+    'OR "how much" OR "minimum") -from:me'
+)
 
 # ─────────────────────────────────────────────
 # Auth
@@ -65,14 +86,24 @@ def auth_headers(token):
 def search_messages(token, query, days):
     after = (datetime.now() - timedelta(days=days)).strftime("%Y/%m/%d")
     full_query = f"{query} after:{after}"
-    r = requests.get(
-        f"{GMAIL_BASE}/messages",
-        headers=auth_headers(token),
-        params={"q": full_query, "maxResults": 50},
-        timeout=30,
-    )
-    r.raise_for_status()
-    return r.json().get("messages", [])
+    messages, page_token = [], None
+    while True:  # paginate — an active inbox can exceed one page and silently drop deals
+        params = {"q": full_query, "maxResults": 100}
+        if page_token:
+            params["pageToken"] = page_token
+        r = requests.get(
+            f"{GMAIL_BASE}/messages",
+            headers=auth_headers(token),
+            params=params,
+            timeout=30,
+        )
+        r.raise_for_status()
+        data = r.json()
+        messages.extend(data.get("messages", []))
+        page_token = data.get("nextPageToken")
+        if not page_token:
+            break
+    return messages
 
 
 def get_message_full(token, msg_id):
@@ -291,6 +322,99 @@ def print_results(results):
 
 
 # ─────────────────────────────────────────────
+# Investor drip replies
+# ─────────────────────────────────────────────
+
+def get_drip_contacts():
+    """email -> (display name, drip_name) for everyone sitting in an active drip."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+    from db.connection import get_session
+    from db.schema import Contact, DripEnrollment
+
+    session = get_session()
+    try:
+        rows = (session.query(Contact.email, Contact.first_name, Contact.last_name,
+                              DripEnrollment.drip_name)
+                .join(DripEnrollment, DripEnrollment.contact_id == Contact.id)
+                .filter(DripEnrollment.status == "active")
+                .all())
+    finally:
+        session.close()
+
+    out = {}
+    for email, first, last, drip in rows:
+        if not email:
+            continue
+        name = " ".join(p for p in (first, last) if p).strip() or email
+        out.setdefault(email.strip().lower(), (name, drip))
+    return out
+
+
+def scan_investor_replies(token, days):
+    """Gmail replies matching investor language, narrowed to active drip enrollees."""
+    try:
+        drip_contacts = get_drip_contacts()
+    except Exception as e:
+        # Type only, never str(e): a SQLAlchemy connection error embeds DATABASE_URL,
+        # which carries a password once this moves off sqlite to Postgres.
+        print(f"  investor replies: drip lookup failed ({type(e).__name__})")
+        return []
+    if not drip_contacts:
+        return []
+
+    found = search_messages(token, INVESTOR_REPLY_QUERY, days)
+    msg_ids = [m["id"] for m in found][:30]
+    if len(found) > len(msg_ids):
+        print(f"  investor replies: {len(found)} matches, only the newest {len(msg_ids)} read "
+              f"— narrow with --days")
+    if not msg_ids:
+        return []
+
+    def _fetch(msg_id):
+        try:
+            return get_message_full(token, msg_id)
+        except Exception:
+            return None
+
+    replies = []
+    with ThreadPoolExecutor(max_workers=8) as executor:
+        for msg in executor.map(_fetch, msg_ids):
+            if msg is None:
+                continue
+            _, sender_email = parse_sender(extract_header(msg, "From"))
+            match = drip_contacts.get((sender_email or "").strip().lower())
+            if not match:   # investor language from someone not in a drip — not ours
+                continue
+            name, drip = match
+            replies.append({
+                "name":    name,
+                "email":   sender_email,
+                "drip":    drip,
+                "subject": extract_header(msg, "Subject"),
+                "date":    extract_header(msg, "Date"),
+                "preview": extract_body_preview(msg),
+            })
+    return replies
+
+
+def print_investor_replies(replies, deal="641 Powder Springs"):
+    if not replies:
+        return
+    print(f"\n💰 Investor Replies — {len(replies)} from active drip contacts\n")
+    for i, r in enumerate(replies):
+        print(f"  {i+1}. {r['name']} <{r['email']}>  [drip: {r['drip']}]")
+        print(f"     Subject: {r['subject']}")
+        print(f"     Date: {r['date']}")
+        print(f"     Preview: {r['preview']}")
+        # shlex.quote so O'Brien / D'Angelo paste as a working command
+        print(f"     Log it: python3 scripts/capital_raise.py commit "
+              f"--investor {shlex.quote(r['name'])} --amount [$] "
+              f"--deal {shlex.quote(deal)} --status soft")
+        print()
+    print("  Nothing is logged automatically — confirm the amount, then run the command.\n")
+
+
+# ─────────────────────────────────────────────
 # Doc request
 # ─────────────────────────────────────────────
 
@@ -322,8 +446,7 @@ def draft_doc_request(result):
         f"- Offering memorandum\n"
         f"- T-12 (trailing 12-month P&L)\n"
         f"- Current rent roll\n\n"
-        f"We're active in {market} buying 15–50 unit value-add deals and can move quickly.\n\n"
-        f"-Brian"
+        f"We're active in {market} buying 15–50 unit value-add deals and can move quickly."
     )
     return {
         "to_name":  from_name,
@@ -337,11 +460,12 @@ def _to_html(text):
     """Convert plain text + markdown links to HTML for Gmail rendering."""
     import html
     import re
-    body = html.escape(text)
+    body = html.escape(text.rstrip())
     body = re.sub(r'\[([^\]]+)\]\((https?://[^\)]+)\)',
                   r'<a href="\2">\1</a>', body)
     body = body.replace("\n", "<br>\n")
-    return f"<html><body style='font-family:sans-serif;font-size:14px'>{body}</body></html>"
+    sig = f"<br><br>{SIGNATURE_HTML}" if SIGNATURE_HTML else ""
+    return f"<html><body style='font-family:sans-serif;font-size:14px'>{body}{sig}</body></html>"
 
 
 def send_doc_request(token, draft):
@@ -732,6 +856,7 @@ def main():
 
     results = scan_inbox(token, args.days, args.dry_run)
     print_results(results)
+    print_investor_replies(scan_investor_replies(token, args.days))
 
     if args.extract_brokers:
         extract_and_add_brokers(token, results, args.dry_run,

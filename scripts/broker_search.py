@@ -25,6 +25,7 @@ import base64
 import os
 import re
 import time
+from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta
 
 import requests
@@ -235,9 +236,22 @@ def fetch_email_brokers(broker_store, token, source, days=7):
     print(f"  {source.upper()} (email fallback): {len(messages)} alert email(s) found")
 
     parsed, skipped = 0, 0
-    for msg_meta in messages:
+
+    def _fetch(m):
         try:
-            msg = _get_message(token, msg_meta["id"])
+            return _get_message(token, m["id"])
+        except Exception as e:
+            return e
+
+    # Fetch in parallel; parse/merge stay on the main thread (shared broker_store).
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        fetched = list(pool.map(_fetch, messages))
+    for msg_meta, msg in zip(messages, fetched):
+        if isinstance(msg, Exception):
+            print(f"    ⚠️ skipped {msg_meta['id']}: {msg}")
+            skipped += 1
+            continue
+        try:
             plain, html = _extract_body(msg)
             text = _html_to_text(html) if html else plain
 

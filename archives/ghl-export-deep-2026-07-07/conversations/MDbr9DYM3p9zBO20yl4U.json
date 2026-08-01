@@ -1,0 +1,54 @@
+{
+  "conversation": {
+    "id": "MDbr9DYM3p9zBO20yl4U",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249897292,
+    "dateUpdated": 1750249897292,
+    "lastMessageDate": 1750249897292,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "pPEjE7aMsCQfafIQYJS8",
+    "fullName": "Sarah Mampel",
+    "contactName": "Sarah Mampel",
+    "companyName": null,
+    "email": "sarahleedanny@ymail.com",
+    "tags": [
+      "friend",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "phone": null,
+    "attributed": null,
+    "profilePhoto": null,
+    "sort": [
+      1750249897292
+    ]
+  },
+  "messages": [
+    {
+      "id": "kpqpsVzw7vot54VmnnWc",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "pPEjE7aMsCQfafIQYJS8",
+      "conversationId": "MDbr9DYM3p9zBO20yl4U",
+      "dateAdded": "2025-06-18T12:30:59.615Z",
+      "dateUpdated": "2025-06-18T12:33:16.763Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "Y2SI0ZvPhqj6j3fqpvhv"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

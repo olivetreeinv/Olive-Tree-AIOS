@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+node_modules/
+web/dist/
+tmp/
+dealdesk.db
+dealdesk.db-*
+.env
+.DS_Store

@@ -15,6 +15,8 @@ Standard wholesaling finds a deal then hunts a buyer. We invert it:
 
 Why it wins: you know the deal has a buyer before you contact a single seller. One email and it's done.
 
+**Finding builders.** The original Carson & Jackson method eyeballed **Zillow** for everything. We split it: **county GIS / ReportAll** replaced Zillow on the *seller* side (it has the owner mailing addresses Zillow doesn't), but **Zillow/Realtor.com "new construction" still drives the *builder* side** — it shows which builders are actively building each target zip (your call list) and the retail $/acre comp (the **Avg $/Acre** column). Prioritize Tier-A regional scattered-spec builders; see `land-cold-call-scripts.md` §1 for the call/email/portal outreach.
+
 **Transparency pitch to sellers:** tell them you work with builders, you'll pass it on in 4–6 weeks, and you make 8–10% in between. You guarantee their price, no realtor fees, no closing costs, ~3-week close. Often nets the seller as much as a 6-month MLS listing minus commissions.
 
 ---

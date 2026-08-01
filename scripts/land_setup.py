@@ -37,9 +37,10 @@ TABS = {
         "FMLS Median $/Acre",
     ],
     "Land Builders": [
-        "Name", "Company", "Phone", "Email", "Markets/Zips", "Lot Size Min",
-        "Lot Size Max", "Price Per Lot", "Volume/Mo", "Conditions",
-        "Close Timeline", "Tier", "Deals Done", "Last Contact", "Notes",
+        "Name", "Company", "State", "City", "Phone", "Email", "Markets/Zips",
+        "Avg $/Acre (Comp)", "Lot Size Min", "Lot Size Max", "Price Per Lot",
+        "Volume/Mo", "Conditions", "Close Timeline", "Tier", "Deals Done",
+        "Last Contact", "Notes", "Intake Portal",
     ],
     "Land Sellers": [
         "Parcel ID", "Situs Address", "Zip", "Subdivision", "Acres",

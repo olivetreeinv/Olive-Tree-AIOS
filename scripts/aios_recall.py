@@ -108,7 +108,11 @@ def _embed_query(text: str) -> list[float]:
     global _embed_model
     if _embed_model is None:
         from fastembed import TextEmbedding
-        _embed_model = TextEmbedding("sentence-transformers/all-MiniLM-L6-v2")
+        # persistent cache: the default /var/folders temp cache gets purged by macOS
+        _embed_model = TextEmbedding(
+            "sentence-transformers/all-MiniLM-L6-v2",
+            cache_dir=str(Path.home() / ".cache" / "fastembed"),
+        )
     return list(next(_embed_model.embed([text])))
 
 

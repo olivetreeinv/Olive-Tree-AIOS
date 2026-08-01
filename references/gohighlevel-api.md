@@ -350,3 +350,34 @@ Resources not covered above but available in GHL API v2:
 Blogs, Brand Boards, Businesses, Campaigns, Companies, Conversation AI, Custom Fields, Custom Menus, Custom Values, Emails, Forms, Funnels, Invoices, Knowledge Base, Marketplace, Media, Objects, Payments, Products, Proposals, Users, Voice AI, Workflows, Webhooks (50+ event types), Agent Studio, Associations
 
 Full docs: [keith-wohnv/GHL-API-Docs](https://github.com/keith-wohnv/GHL-API-Docs) | [carlosgits/ghl-api-docs](https://github.com/carlosgits/ghl-api-docs)
+
+---
+
+## Account Footprint — verified live 2026-07-07 (deep export)
+
+Every endpoint family probed with the Private Integration token. What Brian's location (SLq7B2pldVzfQLKjGpvw) actually contains:
+
+| Family | Endpoint (services.leadconnectorhq.com) | Version header | In use |
+|---|---|---|---|
+| Contacts | `GET /contacts/?locationId=&limit=100` → follow `meta.nextPageUrl` | 2021-07-28 | 804 |
+| Tags | `GET /locations/{loc}/tags` | 2021-07-28 | 21 |
+| Custom fields | `GET /locations/{loc}/customFields` | 2021-07-28 | 13 |
+| Workflows | `GET /workflows/?locationId=` — **names/status only; step content is NOT in any public API** | 2021-07-28 | 4 |
+| Email campaigns | `GET /emails/schedule?locationId=&limit=100` — each record has `downloadUrl` (rendered HTML) + `templateDataDownloadUrl` (builder JSON), public Firebase URLs, no auth | 2021-07-28 | 20 |
+| Email builder | `GET /emails/builder?locationId=&limit=100` | 2021-07-28 | 1 |
+| Forms | `GET /forms/?locationId=` + `GET /forms/submissions?limit=100` | 2021-07-28 | 4 / 3 subs |
+| Surveys | `GET /surveys/?locationId=` | 2021-07-28 | 2 / 0 subs |
+| Funnels | `GET /funnels/funnel/list?locationId=` + `GET /funnels/page?funnelId=&locationId=&limit=20` (limit max 20; max 50 for blog posts) | 2021-07-28 | 5 funnels / 25 pages |
+| Blogs | `GET /blogs/site/all?locationId=&limit=100&skip=0&searchTerm=` + `GET /blogs/posts/all?blogId=&limit=50` | 2021-07-28 | 1 site / 0 posts |
+| Media | `GET /medias/files?altType=location&altId=&limit=100&offset=` | 2021-07-28 | 169 files |
+| Calendars | `GET /calendars/?locationId=` | 2021-04-15 | 2 |
+| Conversations | `GET /conversations/search?locationId=&limit=100` | 2021-04-15 | 705 |
+| Pipelines | `GET /opportunities/pipelines?locationId=` | 2021-07-28 | 2 (0 opportunities) |
+| Users | `GET /users/?locationId=` | 2021-07-28 | 5 |
+| Unused (0 records) | products, invoices, payments/orders, businesses, trigger links, custom values, social accounts, calendar groups, legacy campaigns | — | — |
+
+Gotchas learned:
+- `/emails/schedule/{id}/stats` exists but 401s under `emails/schedule.readonly` — campaign-level stats need a scope the Private Integration wasn't granted.
+- `/funnels/page` rejects `limit>20` with 422; `/blogs/posts/all` rejects `limit>50`.
+- Workflow step content (email/SMS bodies, delays): internal SPA backend only (`backend.leadconnectorhq.com`, `token-id` header) — see `scripts/ghl_workflow_export.py`.
+- Full export archives: `archives/ghl-export-deep-2026-07-07/` (JSON + 40 email payloads), `archives/ghl-media-2026-07-07/` (169 files + manifest).

@@ -1,0 +1,77 @@
+{
+  "conversation": {
+    "id": "jqrdMjQxbj50TL2GQrb2",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249979991,
+    "dateUpdated": 1750249979991,
+    "lastMessageDate": 1750249979991,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "GHqYWXO3WIUEbemmIzBc",
+    "fullName": "Alex Rodrigues",
+    "contactName": "Alex Rodrigues",
+    "companyName": "Chick-fil-a Owner",
+    "email": "arod6363@gmail.com",
+    "tags": [
+      "friend",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "phone": null,
+    "attributed": null,
+    "profilePhoto": null,
+    "sort": [
+      1750249979991
+    ]
+  },
+  "messages": [
+    {
+      "id": "TEYGb72hyxxQ2SyuMhpH",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "GHqYWXO3WIUEbemmIzBc",
+      "conversationId": "jqrdMjQxbj50TL2GQrb2",
+      "dateAdded": "2025-06-18T14:19:21.701Z",
+      "dateUpdated": "2025-06-18T14:19:21.732Z",
+      "from": "Alex Rodrigues",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "Email"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "2LaQ0Ao0txo5pybyJpZt",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "GHqYWXO3WIUEbemmIzBc",
+      "conversationId": "jqrdMjQxbj50TL2GQrb2",
+      "dateAdded": "2025-06-18T12:31:21.281Z",
+      "dateUpdated": "2025-06-18T12:33:00.480Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "u27hbBJBIfL1H1IInBS4"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

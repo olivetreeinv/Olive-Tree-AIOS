@@ -226,7 +226,11 @@ def _get_embed_model():
     global _embed_model
     if _embed_model is None:
         from fastembed import TextEmbedding
-        _embed_model = TextEmbedding("sentence-transformers/all-MiniLM-L6-v2")
+        # persistent cache: the default /var/folders temp cache gets purged by macOS
+        _embed_model = TextEmbedding(
+            "sentence-transformers/all-MiniLM-L6-v2",
+            cache_dir=str(Path.home() / ".cache" / "fastembed"),
+        )
     return _embed_model
 
 

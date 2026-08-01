@@ -1,0 +1,207 @@
+{
+  "conversation": {
+    "id": "tX2AM9a9GNJa6vs9Qpg2",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781905894053,
+    "dateUpdated": 1783364798228,
+    "lastMessageDate": 1783364798225,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Let me know what you think!",
+    "lastOutboundMessageAction": "manual",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1783364798225,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "bsEwd4l03OyVkQzFCECt",
+    "fullName": "Jerimiah Reese",
+    "contactName": "Jerimiah Reese",
+    "companyName": "Simon Home Group",
+    "email": "jerimiahreese26@gmail.com",
+    "phone": "+13179953969",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "pitchdeck",
+      "raise-641-enrolled"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": true,
+    "messageTypes": [
+      2,
+      3
+    ],
+    "sort": [
+      1783364798225
+    ]
+  },
+  "messages": [
+    {
+      "id": "pokpSc9glKbX2NPfEk4b",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Let me know what you think!",
+      "contactId": "bsEwd4l03OyVkQzFCECt",
+      "contentType": "text/plain",
+      "conversationId": "tX2AM9a9GNJa6vs9Qpg2",
+      "dateAdded": "2026-07-06T19:06:37.584Z",
+      "dateUpdated": "2026-07-06T19:06:38.619Z",
+      "userId": "2DmTJ7IvCjSM8ql83oiZ",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+13179953969",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "y9fJk5reYUUQ4YmTX9AC",
+      "direction": "inbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "I got it! Thanks",
+      "contactId": "bsEwd4l03OyVkQzFCECt",
+      "contentType": "text/plain",
+      "conversationId": "tX2AM9a9GNJa6vs9Qpg2",
+      "dateAdded": "2026-07-06T18:59:52.591Z",
+      "dateUpdated": "2026-07-06T18:59:52.591Z",
+      "altId": "SM7d303151c0d2472e9afa62003c2fede4",
+      "from": "+13179953969",
+      "to": "+16789712411",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "6Bw1oRFbbq6tEX66AG6P",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Jerimiah, a copy of the pitch deck has been sent to your email.",
+      "contactId": "bsEwd4l03OyVkQzFCECt",
+      "contentType": "text/plain",
+      "conversationId": "tX2AM9a9GNJa6vs9Qpg2",
+      "dateAdded": "2026-07-06T18:59:04.725Z",
+      "dateUpdated": "2026-07-06T18:59:07.905Z",
+      "source": "workflow",
+      "altId": "SM5e29bce1a7a88025fd7c7418f2a0bca3",
+      "from": "+16789712411",
+      "to": "+13179953969",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "AYIiHnKxVYKAqz3hPl8N",
+      "direction": "outbound",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "Hello Jerimiah, Here's your copy of the pitch deck you requested. We will reach out and discuss shortly\n\nBrian Norton\n\nOlive Tree Investments\n\n\nIf you no longer wish to receive these emails you may unsubscribe\n[https://services.msgsndr.com/emails/builder/unsubscribe-view/SLq7B2pldVzfQLKjGpvw/bsEwd4l03OyVkQzFCECt?email=jerimiahreese26%40gmail.com&message_id=da77sPYUOTEKPEr61E9p&time_stamp=1783364343670]",
+      "contactId": "bsEwd4l03OyVkQzFCECt",
+      "contentType": "text/html",
+      "conversationId": "tX2AM9a9GNJa6vs9Qpg2",
+      "dateAdded": "2026-07-06T18:59:03.717Z",
+      "dateUpdated": "2026-07-06T18:59:03.949Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "da77sPYUOTEKPEr61E9p"
+          ],
+          "direction": "outbound",
+          "subject": "Here Is Your Pitch Deck"
+        }
+      },
+      "source": "workflow",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "PTU8VXvoPSOBH6kYYaM6",
+      "direction": "inbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Brian it looks like an awesome opportunity, I just had a few question. Are you free sometime tomorrow?",
+      "contactId": "bsEwd4l03OyVkQzFCECt",
+      "contentType": "text/plain",
+      "conversationId": "tX2AM9a9GNJa6vs9Qpg2",
+      "dateAdded": "2026-06-19T23:26:14.724Z",
+      "dateUpdated": "2026-06-19T23:26:14.724Z",
+      "altId": "SMde59c4bc7f1b63c73e7709ca6258d570",
+      "from": "+13179953969",
+      "to": "+16789712411",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "iLXgwooopUjOXQVQO09e",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Jerimiah, a copy of the pitch deck has been sent to your email.",
+      "contactId": "bsEwd4l03OyVkQzFCECt",
+      "contentType": "text/plain",
+      "conversationId": "tX2AM9a9GNJa6vs9Qpg2",
+      "dateAdded": "2026-06-19T23:13:00.247Z",
+      "dateUpdated": "2026-06-19T23:13:00.247Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+13179953969",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "yCvqcG5ovO82WlLjSSot",
+      "direction": "outbound",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "Hello Jerimiah, Here's your copy of the pitch deck you requested. We will reach out and discuss shortly\n\nBrian Norton\n\nOlive Tree Investments\n\n\nIf you no longer wish to receive these emails you may unsubscribe\n[https://services.msgsndr.com/emails/builder/unsubscribe-view/SLq7B2pldVzfQLKjGpvw/bsEwd4l03OyVkQzFCECt?email=jerimiahreese26%40gmail.com&message_id=KoZiEhIGtAN2kHwFh1s1&time_stamp=1781910779313]",
+      "contactId": "bsEwd4l03OyVkQzFCECt",
+      "contentType": "text/html",
+      "conversationId": "tX2AM9a9GNJa6vs9Qpg2",
+      "dateAdded": "2026-06-19T23:12:59.364Z",
+      "dateUpdated": "2026-06-19T23:12:59.570Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "KoZiEhIGtAN2kHwFh1s1"
+          ],
+          "direction": "outbound",
+          "subject": "Here Is Your Pitch Deck"
+        }
+      },
+      "source": "workflow",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "0QsAWQVZbfGA78SIWH1N",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Jerimiah, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "bsEwd4l03OyVkQzFCECt",
+      "contentType": "text/plain",
+      "conversationId": "tX2AM9a9GNJa6vs9Qpg2",
+      "dateAdded": "2026-06-19T21:51:34.349Z",
+      "dateUpdated": "2026-06-19T21:51:38.675Z",
+      "source": "app",
+      "altId": "SM45d8ede0bb8def361452d155dacd2f34",
+      "from": "+16789712411",
+      "to": "+13179953969",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

@@ -168,3 +168,15 @@ Append-only. Managed by `scripts/wiki_ingest.py` and `scripts/wiki_govcon_sync.p
 - 2026-06-23 clientclub-ingest: 46 course videos, 45 deal-relevant, product 41f274ef…
 
 - 2026-06-23 youtube-ingest: 92 videos, 92 deal-relevant, classes/classes
+
+- 2026-07-10 youtube-ingest: 0 videos, 0 trading-relevant, trading-desk/kenneth-suna
+
+- 2026-07-10 youtube-ingest: 5 videos, 5 trading-relevant, trading-desk/kenneth-suna
+
+- 2026-07-10 youtube-ingest: 52 videos, 51 trading-relevant, trading-desk/kenneth-suna-etf-education
+
+- 2026-07-10 youtube-ingest: 30 videos, 1 trading-relevant, trading-desk/kenneth-suna-etfs
+
+- 2026-07-10 youtube-ingest: 21 videos, 2 trading-relevant, trading-desk/kenneth-suna-investing-by-age
+
+- 2026-07-10 youtube-ingest: 16 videos, 3 trading-relevant, trading-desk/kenneth-suna-site-links

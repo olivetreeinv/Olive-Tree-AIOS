@@ -27,7 +27,7 @@ Plus the seller-side test we added from live data:
 
 | Market | County | Zips | Flavor | Seller band | Status |
 |---|---|---|---|---|---|
-| **Cartersville** | Bartow, GA | 30120, 30121 | Rural/exurban absentee acreage | **1–10 ac** | **LAUNCH** |
+| **Cartersville** | Bartow, GA | 30120, 30121 | Smaller buildable lots + rural/exurban absentee acreage | **0.25–10 ac** | **LAUNCH** |
 | White | Bartow, GA | 30184 | Same, thinner | 1–10 ac | Watch |
 | Emerson | Bartow, GA | 30137 | Same, thinner | 1–10 ac | Watch |
 
@@ -48,8 +48,9 @@ Validated against live Bartow County parcel data (`bartow-ga` in `scripts/land_p
 ### Seller filter (what `/land-sellers` pulls)
 - Vacant (no structure: `BuildingValue = 0`)
 - Out-of-state owner (`Mailing_State ≠ GA`)
-- **1–10 acres** (drop sub-0.5 ac — mostly HOA common areas; handle 10+ ac as one-off larger plays)
-- Exclude owners that are HOAs / `ASSOC` / `C/O` management cos.
+- **0.25–10 acres** — spans smaller buildable SFR lots (0.25–1 ac) up through rural acreage. Floor at 0.25 ac drops sub-lot noise (railroad/utility easements, HOA common areas, which cluster at ~0 ac); handle 10+ ac as one-off larger plays.
+- Exclude owners that are HOAs / `ASSOC` / `C/O` mgmt cos / railroads / utilities (`CSX`, `BELLSOUTH`, `TELEPHONE`, `ELECTRIC`).
+- **Lot must be buildable + uniform + flat.** Hard exclusions, verified per-parcel at the deal stage (`/land-deal` deal-killer checklist — these are geometry checks, not in parcel attributes): **flood zone** (FEMA A/AE), **swamp/wetlands** (aerial: gray/dead trees = standing water), **on/abutting active rail line**, and **steep slope** (county GIS elevation). Seller lists are split into **buildable (0.25–1 ac)** and **acreage (1–10 ac)** tiers so each mail cohort is size-uniform.
 
 ### Offer math
 `offer = builder/developer price per acre × acres × (1 − spread)`, spread **10–20%**.

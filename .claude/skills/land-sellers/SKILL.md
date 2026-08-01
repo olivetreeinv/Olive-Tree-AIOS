@@ -38,11 +38,14 @@ python3 scripts/land_sellers.py --zip 30120
 # Preview without writing; override price + spread
 python3 scripts/land_sellers.py --zip 30120 --builder-price 8000 --spread 0.15 --dry-run
 
-# Different county / acreage band
+# Different county / acreage band (wired ArcGIS counties)
 python3 scripts/land_sellers.py --county forsyth-ga --zip 30040 --min-acres 0.1 --max-acres 2
+
+# Any unwired SE county via ReportAll (nationwide — requires REPORTALL_API_KEY)
+python3 scripts/land_sellers.py --zip 30506 --county hall-ga --source reportall --state GA --builder-price 9000 --cap 2000
 ```
 
-Re-running is safe — only new parcels are appended (deduped on parcel id).
+`--source reportall` works for any zip/county not wired to ArcGIS. `--cap` limits parcels pulled (billing guard; default 4000). Re-running is safe — only new parcels are appended (deduped on parcel id).
 
 ## Output columns (Land Sellers tab)
 

@@ -85,10 +85,17 @@ def slugify(s: str) -> str:
 # ---- stage 1: enumerate -----------------------------------------------------
 def enumerate_channel(channel: str, min_seconds: int = MIN_SECONDS) -> list[dict]:
     print(f"[enumerate] {channel}")
-    r = subprocess.run(
-        ["yt-dlp", "--flat-playlist", "--print", "%(duration)s\t%(title)s\t%(id)s", channel],
-        capture_output=True, text=True,
-    )
+    try:
+        r = subprocess.run(
+            ["yt-dlp", "--flat-playlist", "--print", "%(duration)s\t%(title)s\t%(id)s", channel],
+            capture_output=True, text=True, timeout=300,
+        )
+    except subprocess.TimeoutExpired:
+        print(f"[enumerate] TIMED OUT after 300s: {channel}")
+        return []
+    if r.returncode != 0:
+        print(f"[enumerate] FAILED (exit {r.returncode}): {r.stderr.strip()[:300]}")
+        return []
     vids = []
     for line in r.stdout.splitlines():
         parts = line.split("\t")
@@ -125,12 +132,17 @@ def fetch_transcript(vid: str, raw: Path) -> str | None:
     dest = raw / f"{vid}.txt"
     if dest.exists() and dest.stat().st_size > 500:
         return dest.read_text()
-    subprocess.run(
-        ["yt-dlp", "--skip-download", "--write-auto-sub", "--sub-lang", "en.*",
-         "--sub-format", "vtt", "-o", str(raw / "%(id)s.%(ext)s"),
-         f"https://www.youtube.com/watch?v={vid}"],
-        capture_output=True, text=True,
-    )
+    try:
+        r = subprocess.run(
+            ["yt-dlp", "--skip-download", "--write-auto-sub", "--sub-lang", "en.*",
+             "--sub-format", "vtt", "-o", str(raw / "%(id)s.%(ext)s"),
+             f"https://www.youtube.com/watch?v={vid}"],
+            capture_output=True, text=True, timeout=600,
+        )
+        if r.returncode != 0:
+            print(f"[transcript] FAILED {vid} (exit {r.returncode}): {r.stderr.strip()[:300]}")
+    except subprocess.TimeoutExpired:
+        print(f"[transcript] TIMED OUT after 600s: {vid}")
     # yt-dlp may emit en.vtt, en-US.vtt, en-orig.vtt, etc. — match any.
     subs = sorted(raw.glob(f"{vid}*.vtt"))
     if not subs:

@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth demonstrates a $1,900 weekly return using covered calls across multiple stocks (HIMS, D-Wave, SoundHound, Marin, APLD), emphasizing that the strategy's goal is capturing some premium rather than maximizing directional gains. He illustrates disciplined position management, including handling assignment and redeploying capital.",
+  "takeaways": [
+    "The covered call goal is to make some of the money, not all of it\u2014accept partial profits rather than chase full upside",
+    "Minimum capital requirement is $10,000 to buy 100 shares of a $100 stock to sell 1 covered call contract",
+    "Weekly covered call returns of $454\u2013$631 per position are achievable on $17,000\u2013$40,000 deployments (roughly 1.1%\u20134.3% per week)",
+    "When shares are assigned, immediately redeploy capital to new covered call positions the following trading day",
+    "Even significant unexpected upside (MARIN from $40 to $50) can coexist with successful covered call execution if strike is set below the spike",
+    "Do not try to predict or time explosive stock moves; focus on consistent premium collection across multiple positions",
+    "Holding losing positions (QuantumCape from $11.40 to $7) and selling covered calls against them can recover losses when stock rebounds"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Implement a minimum premium capture target of 3\u20134% per week across the portfolio by selecting strike prices and expirations that balance assignment risk and consistent income",
+      "evidence": "Kenneth achieved 4.3% on the full $43,478 portfolio in one week; his per-position returns ranged from 1.1% to 2.7%, suggesting a 3\u20134% portfolio-level target is realistic and aligns with the Premium Desk goal of $1,250/month (~2.5% on $50k)"
+    }
+  ],
+  "id": "kLzqXd3p-T8",
+  "title": "Part 17: 9/22-9/26 -  I made $1900 in ONE WEEK Trading Covered Calls. Here's How.",
+  "duration": 301
+}

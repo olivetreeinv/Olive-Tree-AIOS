@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "AICjxQgLLB7HebD9Jl0p",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906456877,
+    "dateUpdated": 1783365072136,
+    "lastMessageDate": 1783365072131,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Kirt, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906457850,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "30GoDD899rwi0rTdTZRp",
+    "fullName": "Kirt Ronig",
+    "contactName": "Kirt Ronig",
+    "companyName": null,
+    "phone": "+16788574974",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783365072131
+    ]
+  },
+  "messages": [
+    {
+      "id": "m1I62YWCiuqLVcXZaPsx",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Kirt, a copy of the pitch deck has been sent to your email.",
+      "contactId": "30GoDD899rwi0rTdTZRp",
+      "contentType": "text/plain",
+      "conversationId": "AICjxQgLLB7HebD9Jl0p",
+      "dateAdded": "2026-07-06T19:11:01.681Z",
+      "dateUpdated": "2026-07-06T19:11:01.681Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+16788574974",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "CTG7hUeZJxmcI9TvpEUk",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Kirt, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "30GoDD899rwi0rTdTZRp",
+      "contentType": "text/plain",
+      "conversationId": "AICjxQgLLB7HebD9Jl0p",
+      "dateAdded": "2026-06-19T22:00:57.175Z",
+      "dateUpdated": "2026-06-19T22:00:58.679Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+16788574974",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

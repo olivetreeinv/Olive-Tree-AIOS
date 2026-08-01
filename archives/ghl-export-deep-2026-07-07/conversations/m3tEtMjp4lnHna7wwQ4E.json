@@ -1,0 +1,49 @@
+{
+  "conversation": {
+    "id": "m3tEtMjp4lnHna7wwQ4E",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249933346,
+    "dateUpdated": 1750249933346,
+    "lastMessageDate": 1750249933346,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "YisnEx3q4Enyajvy4NrD",
+    "fullName": "Kelly Garcia",
+    "contactName": "Kelly Garcia",
+    "companyName": null,
+    "email": "kellygarcia32@yahoo.com",
+    "tags": [],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "phone": null,
+    "attributed": null,
+    "sort": [
+      1750249933346
+    ]
+  },
+  "messages": [
+    {
+      "id": "ppS2SXL98ZmefT3dLEbh",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "YisnEx3q4Enyajvy4NrD",
+      "conversationId": "m3tEtMjp4lnHna7wwQ4E",
+      "dateAdded": "2025-06-18T12:31:19.035Z",
+      "dateUpdated": "2025-06-18T12:33:16.503Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "J0E8oP7EAedm3m7qPspU"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "conversation": {
+    "id": "EjHgI7RvtlIA8BdAM4Aj",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781905983674,
+    "dateUpdated": 1783364527525,
+    "lastMessageDate": 1783364527521,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Hersh, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781905984566,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "E2U5kQv7scDJWGPbYZTf",
+    "fullName": "Hersh Shah",
+    "contactName": "Hersh Shah",
+    "companyName": "Real Estate Agent - Bigger Pockets",
+    "phone": "+14047212550",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "profilePhoto": null,
+    "attributed": null,
+    "email": null,
+    "sort": [
+      1783364527521
+    ]
+  },
+  "messages": [
+    {
+      "id": "S0wheJBdJzGua1ZWVeSK",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hersh, a copy of the pitch deck has been sent to your email.",
+      "contactId": "E2U5kQv7scDJWGPbYZTf",
+      "contentType": "text/plain",
+      "conversationId": "EjHgI7RvtlIA8BdAM4Aj",
+      "dateAdded": "2026-07-06T19:02:06.840Z",
+      "dateUpdated": "2026-07-06T19:02:11.971Z",
+      "source": "workflow",
+      "altId": "SM9a8b436d0fdba3a44c41107c3bfdce0c",
+      "from": "+16789712411",
+      "to": "+14047212550",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "Jh2uurzsZAd8N3DEtlhi",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Hersh, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "E2U5kQv7scDJWGPbYZTf",
+      "contentType": "text/plain",
+      "conversationId": "EjHgI7RvtlIA8BdAM4Aj",
+      "dateAdded": "2026-06-19T21:53:03.913Z",
+      "dateUpdated": "2026-06-19T21:53:05.668Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+14047212550",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "conversation": {
+    "id": "iHWPYux84wvPy820rJuN",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249914944,
+    "dateUpdated": 1750249914944,
+    "lastMessageDate": 1750249914944,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "4sbN6C88rCg007RtOYFH",
+    "fullName": "Kevin Turner",
+    "contactName": "Kevin Turner",
+    "companyName": "Clear Path Mortgage",
+    "email": "kevin@co.mortgage",
+    "phone": "+17704000097",
+    "tags": [],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "sort": [
+      1750249914944
+    ]
+  },
+  "messages": [
+    {
+      "id": "XmoyrhMTy3IE7IqAGA1H",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "4sbN6C88rCg007RtOYFH",
+      "conversationId": "iHWPYux84wvPy820rJuN",
+      "dateAdded": "2025-06-18T12:31:20.145Z",
+      "dateUpdated": "2025-06-18T12:34:38.843Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "8KWgnupwGbHbqisWb51Y"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

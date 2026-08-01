@@ -22,8 +22,8 @@ All active Claude Code skills for the Olive Tree AIOS. Trigger with `/skill-name
 | Skill | What it does | Cadence |
 |---|---|---|
 | [[skills/daily-brief]] | Morning intelligence pull — calendar + email + #1 action | Every weekday AM |
-| [[skills/level-up]] | [removed framework] interview — find and ship one automation | Weekly (Friday) |
-| [[skills/audit]] | [removed framework] AIOS health check — score + top 3 gaps | Weekly |
+| [[skills/level-up]] | RETIRED — scope check absorbed into usage-audit | — |
+| [[skills/audit]] | RETIRED — replaced by usage-audit | — |
 
 ## Content
 | Skill | What it does | Cadence |

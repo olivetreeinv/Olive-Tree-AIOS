@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth Suna compares covered call premiums across stocks of varying volatility, demonstrating that stable dividend-paying stocks (Coca-Cola, JNJ, McDonald's) generate 1-1.86% weekly premiums but require large capital outlays, while riskier stocks like HIMS generate 4.4% weekly premiums. He emphasizes understanding individual risk tolerance and warns that early assignment on dividend stocks can cause investors to miss dividend payments.",
+  "takeaways": [
+    "Stable stocks like Coca-Cola yield ~1.24% premium per week on $6,900-$7,000 capital",
+    "HIMS generates 4.4% weekly premium but carries elevated volatility risk",
+    "Johnson & Johnson pays only ~0.6% premium on $16,000 capital required",
+    "Waste Management yields 1.86% monthly (not weekly) on $22,586 capital",
+    "McDonald's yields ~0.9% weekly on ~$30,000 capital",
+    "Monitor X-dividend dates closely when selling covered calls; early assignment forfeits dividend rights",
+    "Higher premiums correlate directly with stock volatility; stable stocks = lower premiums but more predictable risk"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Apply volatility-tiering to Premium Desk: allocate 60% capital to stable dividend stocks (target 1-1.5% weekly, $600-750/mo) and 40% to higher-volatility names (target 3.5-4.5% weekly, $500-600/mo) to reach $1,250/mo target with managed risk",
+      "evidence": "Kenneth demonstrates $600/week achievable with volatile stocks ($15-20k deployed) but shows stable stocks (KO, JNJ, MCD) are predictable 1-1.86% generators; combining both tiers mathematically reaches Brian's $1,250/mo goal while reducing concentration risk"
+    }
+  ],
+  "id": "tqHoXmj1E4w",
+  "title": "Covered Calls and Dividends ",
+  "duration": 317
+}

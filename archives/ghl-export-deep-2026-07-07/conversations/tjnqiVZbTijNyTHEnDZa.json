@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "tjnqiVZbTijNyTHEnDZa",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906083397,
+    "dateUpdated": 1783364690627,
+    "lastMessageDate": 1783364690619,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Elaine, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906084246,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "yrzeu8s0BdBkJGeb2bYA",
+    "fullName": "Elaine Ingram",
+    "contactName": "Elaine Ingram",
+    "companyName": "Cathy Pasqual's Mom",
+    "phone": "+14046803366",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364690619
+    ]
+  },
+  "messages": [
+    {
+      "id": "Z7kLiuYagmsQIjNMnoej",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Elaine, a copy of the pitch deck has been sent to your email.",
+      "contactId": "yrzeu8s0BdBkJGeb2bYA",
+      "contentType": "text/plain",
+      "conversationId": "tjnqiVZbTijNyTHEnDZa",
+      "dateAdded": "2026-07-06T19:04:49.615Z",
+      "dateUpdated": "2026-07-06T19:04:49.615Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+14046803366",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "0A8P08gB9DPX0Y98ohoe",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Elaine, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "yrzeu8s0BdBkJGeb2bYA",
+      "contentType": "text/plain",
+      "conversationId": "tjnqiVZbTijNyTHEnDZa",
+      "dateAdded": "2026-06-19T21:54:43.624Z",
+      "dateUpdated": "2026-06-19T21:54:45.064Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+14046803366",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

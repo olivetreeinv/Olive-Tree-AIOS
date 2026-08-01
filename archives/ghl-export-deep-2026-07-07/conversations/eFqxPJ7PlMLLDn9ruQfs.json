@@ -1,0 +1,86 @@
+{
+  "conversation": {
+    "id": "eFqxPJ7PlMLLDn9ruQfs",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906079140,
+    "dateUpdated": 1783364676683,
+    "lastMessageDate": 1783364676680,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Elle, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906080067,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "68xhvdJr9DosuRJFoois",
+    "fullName": "Elle Dodd",
+    "contactName": "Elle Dodd",
+    "companyName": "Noble & Main Coffee - On Fire Catholic",
+    "phone": "+17064098593",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "profilePhoto": null,
+    "email": null,
+    "sort": [
+      1783364676680
+    ]
+  },
+  "messages": [
+    {
+      "id": "edRgUQ8nV4956sX5HfwQ",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Elle, a copy of the pitch deck has been sent to your email.",
+      "contactId": "68xhvdJr9DosuRJFoois",
+      "contentType": "text/plain",
+      "conversationId": "eFqxPJ7PlMLLDn9ruQfs",
+      "dateAdded": "2026-07-06T19:04:36.037Z",
+      "dateUpdated": "2026-07-06T19:04:36.037Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+17064098593",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "muRYgIwL5zSiegGevRYl",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Elle, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "68xhvdJr9DosuRJFoois",
+      "contentType": "text/plain",
+      "conversationId": "eFqxPJ7PlMLLDn9ruQfs",
+      "dateAdded": "2026-06-19T21:54:39.409Z",
+      "dateUpdated": "2026-06-19T21:54:41.124Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+17064098593",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

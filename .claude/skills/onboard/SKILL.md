@@ -7,12 +7,12 @@ description: Use on Day 1 of an AIS-OS install, when someone says "set me up", "
 
 Single combined wizard. Reads or writes `aios-intake.md` (the canonical intake), conducts the 7-question interview if the file isn't filled, then scaffolds the Day-1 file set inline at the end of the run. No separate `/scaffold-from-intake` skill — this is one flow.
 
-**The wow moment:** at the end, suggest the closing prompt *"Try this — ask me: what should I focus on this week?"* The user runs it once. That's the wow. There's no `/today` skill to save — the prompt itself plants the Mindset framework ([removed]) for them to internalize.
+**The wow moment:** at the end, suggest the closing prompt *"Try this — ask me: what should I focus on this week?"* The user runs it once. That's the wow. There's no `/today` skill to save — the prompt itself plants the ask-AI-first habit for them to internalize.
 
 ## When NOT to run this
 
 - If the user has already onboarded and wants to refresh: still run, but skip questions already answered (idempotent).
-- If the user wants to add a new connection: that's not onboarding — point them at `connections.md` to edit directly, or schedule a `/level-up` Phase 2 walk.
+- If the user wants to add a new connection: that's not onboarding — point them at `connections.md` to edit directly, or scope it in the next `/usage-audit`.
 
 ## Execution
 
@@ -51,7 +51,7 @@ Email (Gmail/Outlook), Slack/Teams/Discord, DMs. Map to Domains 2 + 4.
 Map to Domains 6 + 7.
 
 **Q7 — What's the one task that eats your week, and where do you currently track work?**
-Capture top_pain (used by `/level-up` Day-14) + Domain 5 (tasks).
+Capture top_pain (used by `/usage-audit`'s automation scan) + Domain 5 (tasks).
 
 Domain 3 (Calendar) is auto-inferred from Q5: Gmail → Google Cal; Outlook → Outlook Cal. Confirm in Step 3.
 
@@ -81,9 +81,9 @@ Day 7: run /audit to see your score.
 When the user runs the closing prompt ("what should I focus on this week?"), respond using only the new context files. Hit:
 - 3-bullet priority list, in their voice register from Q2
 - Each bullet ties back to a stated 90-day priority from Q3
-- Final line: *"If I had to pick one thing for Monday, it'd be [X], because [reason from priorities]. Want me to draft the first email? And — where could the [removed] apply here? To what extent could AI be leveraged on this task?"*
+- Final line: *"If I had to pick one thing for Monday, it'd be [X], because [reason from priorities]. Want me to draft the first email? And — to what extent could AI be leveraged on this task?"*
 
-The [removed] question seeds the Mindset framework before `/level-up` formally introduces it on Day 14.
+The AI-leverage question seeds the habit that `/usage-audit`'s scope check reinforces monthly.
 
 ## Critical implementation rules
 
@@ -92,9 +92,8 @@ The [removed] question seeds the Mindset framework before `/level-up` formally i
 3. **One-shot scaffold.** After Step 2 ends, write Step 3 files in a single batch. No multi-turn confirmation. The user iterates by editing `aios-intake.md` and re-running.
 4. **Idempotent.** Re-running with an edited intake refreshes context files; backs up originals to `archives/intake-{ts}/`. Skips questions already answered unless the user wants to revise.
 5. **Closing screen is three lines.** Not a menu.
-6. **No extra skills generated.** Don't scaffold `/today`, `/draft`, `/connect`, etc. The kit ships 3 skills; the user authors more via `/level-up`.
-7. **Read-only on `references/removed-framework.md`.** It already ships in the kit. Don't overwrite.
-8. **No `.env` writes.** Don't ask for API keys on Day 1. Connections come Day 2.
+6. **No extra skills generated.** Don't scaffold `/today`, `/draft`, `/connect`, etc. The kit ships 3 skills; the user authors more via `/usage-audit`'s TOP 3 CHANGES.
+7. **No `.env` writes.** Don't ask for API keys on Day 1. Connections come Day 2.
 
 ## Verification (for the implementer)
 
@@ -102,4 +101,3 @@ The [removed] question seeds the Mindset framework before `/level-up` formally i
 - Idempotency: re-run `/onboard` with one Q3 priority changed. Expected: only `context/priorities.md` and `CLAUDE.md`'s priority section update; backup created in `archives/intake-{ts}/`.
 - Voice rejection: type a sample mid-chat. Expected: skill refuses, asks for paste.
 
-> *Adapted from The [removed framework] © 2026 [removed]. The Mindset language used in the closing screen comes from `references/removed-framework.md`.*

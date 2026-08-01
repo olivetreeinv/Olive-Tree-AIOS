@@ -1,0 +1,816 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Jarvis — AIOS Knowledge Galaxy</title>
+<script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+<script src="https://unpkg.com/3d-force-graph@1.73.3/dist/3d-force-graph.min.js"></script>
+<script src="https://unpkg.com/three-spritetext@1.8.2/dist/three-spritetext.min.js"></script>
+<style>
+  html, body { margin:0; padding:0; width:100%; height:100%; background:#000; overflow:hidden;
+    font-family: -apple-system, "SF Pro Text", "Helvetica Neue", sans-serif; color:#cfe8ff; }
+
+  #backdrop, #backdrop2 { position:fixed; inset:0; width:100%; height:100%; object-fit:cover; z-index:0;
+    filter: saturate(.55) brightness(.65); transition: opacity 1s linear; }
+  #backdrop2 { opacity:0; }
+  #veil { position:fixed; inset:0; background:rgba(2,6,14,.6); z-index:1; pointer-events:none; }
+  #graph { position:absolute; inset:0; z-index:2; }
+
+  .glass {
+    background:rgba(6,14,22,.8); border:1px solid rgba(95,208,255,.35);
+    border-radius:10px; backdrop-filter: blur(6px);
+    box-shadow:0 0 30px rgba(0,0,0,.5), 0 0 20px rgba(95,208,255,.08) inset;
+  }
+
+  #sidebar {
+    position:absolute; top:20px; left:20px; width:300px; max-height:calc(100vh - 140px);
+    z-index:6; overflow-y:auto; padding:16px 18px;
+  }
+  #app-title { font-size:15px; letter-spacing:4px; text-transform:uppercase; color:#5fd0ff;
+    text-shadow:0 0 12px rgba(95,208,255,.6); }
+  #corpus-counts { font-size:11px; color:#5a7a90; margin-top:4px; letter-spacing:1px; }
+
+  #search {
+    width:100%; box-sizing:border-box; margin-top:14px; background:rgba(255,255,255,.04);
+    border:1px solid rgba(95,208,255,.25); border-radius:8px; padding:8px 10px;
+    color:#e5f6ff; font-size:12.5px; font-family:inherit; outline:none;
+  }
+  #search::placeholder { color:#4a6b80; }
+  #search-results { margin-top:6px; }
+  .sres { padding:6px 4px; font-size:12px; color:#b9d6e8; border-bottom:1px solid rgba(95,208,255,.08);
+    cursor:pointer; }
+  .sres:hover { color:#8fe8ff; }
+  .sres .g { font-size:9px; text-transform:uppercase; letter-spacing:1.5px; color:#4a6b80; }
+
+  #inspector { margin-top:16px; }
+  #inspector-hint { font-size:11.5px; line-height:1.5; color:#5a7a90; }
+  #insp-title { margin:0 0 4px; font-size:14px; color:#8fe8ff; letter-spacing:.5px; }
+  #insp-group { font-size:10px; text-transform:uppercase; letter-spacing:2px; color:#4a6b80; margin-bottom:6px; }
+  #insp-deg { font-size:11px; color:#5fd0ff; margin-bottom:8px; }
+  #insp-excerpt { font-size:12.5px; line-height:1.55; color:#b9d6e8; white-space:pre-wrap; }
+
+  #hubs { margin-top:18px; }
+  .side-h { font-size:10px; text-transform:uppercase; letter-spacing:2px; color:#4a6b80; margin-bottom:8px; }
+  .hub-row { display:flex; align-items:center; gap:8px; padding:4px 2px; font-size:12px;
+    color:#b9d6e8; cursor:pointer; }
+  .hub-row:hover { color:#8fe8ff; }
+  .hub-row .dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .hub-row .lbl { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .hub-row .cnt { color:#4a6b80; font-size:10.5px; }
+
+  #filters {
+    position:absolute; top:20px; right:20px; width:190px; z-index:6; padding:14px 16px;
+  }
+  .frow { display:flex; align-items:center; gap:8px; cursor:pointer; padding:4px 0; font-size:12px; }
+  .frow.off { opacity:.3; }
+  .frow .dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+  .frow .lbl { flex:1; }
+  .frow .cnt { color:#4a6b80; font-size:10.5px; }
+
+  #reactor-wrap { position:absolute; right:20px; top:260px; width:190px; text-align:center; z-index:6; }
+  #reactor { position:relative; width:90px; height:90px; margin:0 auto; }
+  #reactor .ring { position:absolute; inset:0; border-radius:50%; }
+  #reactor .r1 { border:1px dashed rgba(95,208,255,.5); animation: spin 6s linear infinite; }
+  #reactor .r2 { inset:10px; border:1px dashed rgba(95,208,255,.3); animation: spinRev 9s linear infinite; }
+  #reactor .core {
+    position:absolute; top:50%; left:50%; width:34px; height:34px; margin:-17px 0 0 -17px;
+    border-radius:50%; background:radial-gradient(circle at 35% 30%, #6fe0ff, #0a3550);
+    box-shadow:0 0 18px rgba(95,208,255,.4); transition:box-shadow .3s;
+  }
+  #reactor.speaking .r1 { animation-duration:1.2s; }
+  #reactor.speaking .r2 { animation-duration:1.8s; }
+  #reactor.speaking .core {
+    box-shadow:0 0 40px rgba(95,208,255,.9), 0 0 80px rgba(95,208,255,.5);
+    animation: pulseCore .8s infinite;
+  }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  @keyframes spinRev { to { transform:rotate(-360deg); } }
+  @keyframes pulseCore { 0%,100% { transform:scale(1); } 50% { transform:scale(1.12); } }
+
+  #model-badge {
+    display:inline-block; margin-top:12px; font-size:10px; letter-spacing:3px; text-transform:uppercase;
+    color:#5fd0ff; border:1px solid rgba(95,208,255,.35); border-radius:20px; padding:3px 10px;
+  }
+  #reactor-status { margin-top:8px; font-size:10.5px; letter-spacing:1.5px; color:#5a7a90; text-transform:uppercase; }
+
+  #chatlog {
+    position:absolute; left:340px; bottom:90px; width:400px; max-height:34vh;
+    overflow-y:auto; z-index:5; display:flex; flex-direction:column; gap:8px;
+  }
+  .bubble { background:rgba(10,20,30,.72); border:1px solid rgba(95,208,255,.2);
+    border-radius:8px; padding:9px 12px; font-size:12.5px; line-height:1.5; color:#cfe8ff;
+    align-self:flex-start; max-width:100%; }
+  .bubble.me { border-color:rgba(255,255,255,.15); color:#8fa8b8; }
+
+  #dock {
+    position:absolute; bottom:22px; left:50%; transform:translateX(-50%);
+    width:min(720px, 90vw); display:flex; flex-direction:column; gap:8px;
+    z-index:6;
+  }
+  #chips { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; }
+  .chip {
+    font-size:11px; padding:5px 12px; border-radius:20px; border:1px solid rgba(95,208,255,.3);
+    background:rgba(6,14,22,.7); color:#7cc8ea; cursor:pointer; user-select:none;
+  }
+  .chip:hover { color:#8fe8ff; border-color:rgba(95,208,255,.6); }
+
+  #dock-row {
+    display:flex; align-items:center; gap:10px;
+    background:rgba(6,14,22,.85); border:1px solid rgba(95,208,255,.3);
+    border-radius:30px; padding:8px 10px 8px 18px;
+    box-shadow:0 0 40px rgba(0,0,0,.6), 0 0 24px rgba(95,208,255,.08) inset;
+  }
+  #textin {
+    flex:1; background:transparent; border:none; outline:none; color:#e5f6ff;
+    font-size:13.5px; font-family:inherit;
+  }
+  #textin::placeholder { color:#4a6b80; }
+  #talk {
+    width:42px; height:42px; border-radius:50%; border:1px solid rgba(95,208,255,.5);
+    background:radial-gradient(circle at 35% 30%, #123047, #04121c);
+    color:#8fe8ff; font-size:16px; cursor:pointer; user-select:none;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 0 14px rgba(95,208,255,.25); flex-shrink:0;
+  }
+  #talk.live { background:radial-gradient(circle at 35% 30%, #3a1010, #1c0404);
+    border-color:#ff6b6b; box-shadow:0 0 22px rgba(255,80,80,.5); color:#ffb3b3; }
+
+  #status {
+    position:absolute; bottom:130px; left:50%; transform:translateX(-50%);
+    font-size:11px; letter-spacing:1.5px; color:#5fd0ff; text-shadow:0 0 8px rgba(95,208,255,.6);
+    z-index:6; opacity:0; transition:opacity .2s;
+  }
+  #status.show { opacity:1; }
+
+  #gate {
+    position:absolute; inset:0; z-index:20; background:radial-gradient(ellipse at center, #0a1420 0%, #010306 75%);
+    display:flex; align-items:center; justify-content:center; flex-direction:column; gap:22px;
+    transition:opacity .5s ease; cursor:pointer;
+  }
+  #gate.hidden { opacity:0; pointer-events:none; }
+  #gate-ring {
+    width:120px; height:120px; border-radius:50%; border:1px solid rgba(95,208,255,.4);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 0 40px rgba(95,208,255,.25), 0 0 90px rgba(95,208,255,.12) inset;
+    animation: pulse 2.6s ease-in-out infinite;
+  }
+  #gate-ring::before {
+    content:''; width:70px; height:70px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #1a3d57, #030a10);
+    border:1px solid rgba(95,208,255,.5);
+  }
+  @keyframes pulse { 0%,100% { box-shadow:0 0 40px rgba(95,208,255,.25), 0 0 90px rgba(95,208,255,.12) inset; }
+    50% { box-shadow:0 0 60px rgba(95,208,255,.45), 0 0 110px rgba(95,208,255,.2) inset; } }
+  #gate-text { font-size:12px; letter-spacing:4px; text-transform:uppercase; color:#5fd0ff;
+    text-shadow:0 0 12px rgba(95,208,255,.6); }
+  #gate-sub { font-size:11px; color:#4a6b80; letter-spacing:1px; margin-top:-14px; }
+
+  #bootvid { position:fixed; inset:0; width:100%; height:100%; object-fit:cover; z-index:30;
+    background:#000; display:none; transition:opacity .8s; }
+
+  ::-webkit-scrollbar { width:6px; }
+  ::-webkit-scrollbar-thumb { background:rgba(95,208,255,.25); border-radius:3px; }
+</style>
+</head>
+<body>
+
+<video id="backdrop" src="assets/backdrop.mp4" autoplay muted playsinline></video>
+<video id="backdrop2" src="assets/backdrop.mp4" muted playsinline></video>
+<div id="veil"></div>
+<div id="graph"></div>
+
+<div id="sidebar" class="glass">
+  <div id="app-title">OLIVE AIOS</div>
+  <div id="corpus-counts"></div>
+  <input id="search" type="text" placeholder="Search the brain...">
+  <div id="search-results"></div>
+  <div id="inspector">
+    <div id="inspector-hint">Click a node to focus it — only it and its connections light up. Shift-click a second node to trace the path.</div>
+    <h3 id="insp-title"></h3>
+    <div id="insp-group"></div>
+    <div id="insp-deg"></div>
+    <div id="insp-excerpt"></div>
+  </div>
+  <div id="hubs"><div class="side-h">TOP HUBS</div></div>
+</div>
+
+<div id="filters" class="glass"></div>
+
+<div id="reactor-wrap">
+  <div id="reactor">
+    <div class="ring r1"></div>
+    <div class="ring r2"></div>
+    <div class="core"></div>
+  </div>
+  <div id="model-badge"></div>
+  <div id="reactor-status">IDLE</div>
+</div>
+
+<div id="gate">
+  <div id="gate-ring"></div>
+  <div id="gate-text">Engage Jarvis</div>
+  <div id="gate-sub">click anywhere — voice needs your permission first</div>
+</div>
+
+<video id="bootvid" src="assets/boot.mp4" playsinline></video>
+
+<div id="chatlog"></div>
+
+<div id="status"></div>
+
+<div id="dock">
+  <div id="chips"></div>
+  <div id="dock-row">
+    <input id="textin" type="text" placeholder="Ask Jarvis, or type 'remember that...'" />
+    <div id="talk">●</div>
+  </div>
+</div>
+
+<script>
+const GROUP_COLORS = {
+  wiki: '#5fd0ff', references: '#ffb454', context: '#7cff8a',
+  decisions: '#ff6b9d', memory: '#c792ea', default: '#8fa8b8'
+};
+function colorFor(g) { return GROUP_COLORS[g] || GROUP_COLORS.default; }
+
+let Graph, graphData = { nodes: [], links: [] };
+const nodeById = {};
+const deg = {};
+const adj = {};
+
+// ---------- state ----------
+let focusSet = null;
+let pathSet = null;
+let pathLinkSet = null;
+let searchSet = null;
+const hiddenGroups = new Set();
+let lastFocusedId = null;
+let ttsAvailable = false;
+
+function loadGraphScript() {
+  return new Promise((resolve) => {
+    const s = document.createElement('script');
+    s.src = 'graph-data.js?_=' + Date.now();
+    s.onload = () => resolve(window.GRAPH);
+    s.onerror = () => resolve(null);
+    document.body.appendChild(s);
+  });
+}
+
+function starTexture() {
+  const c = document.createElement('canvas'); c.width = c.height = 64;
+  const ctx = c.getContext('2d');
+  const g = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+  g.addColorStop(0, 'rgba(255,255,255,1)');
+  g.addColorStop(0.4, 'rgba(190,220,255,0.75)');
+  g.addColorStop(1, 'rgba(190,220,255,0)');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, 64, 64);
+  return new THREE.CanvasTexture(c);
+}
+
+function starLayer(scene, count, size, opacity) {
+  const positions = new Float32Array(count * 3);
+  for (let i = 0; i < count; i++) {
+    const r = 2000 + Math.random() * 2000;
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.acos(2 * Math.random() - 1);
+    positions[i * 3]     = r * Math.sin(phi) * Math.cos(theta);
+    positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+    positions[i * 3 + 2] = r * Math.cos(phi);
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const mat = new THREE.PointsMaterial({
+    size, map: starTexture(), transparent: true, depthWrite: false,
+    blending: THREE.AdditiveBlending, opacity, sizeAttenuation: false,
+  });
+  scene.add(new THREE.Points(geo, mat));
+}
+
+function buildAdjacency() {
+  graphData.links.forEach(l => {
+    const a = l.source.id ?? l.source;
+    const b = l.target.id ?? l.target;
+    (adj[a] || (adj[a] = new Set())).add(b);
+    (adj[b] || (adj[b] = new Set())).add(a);
+  });
+}
+
+function nodeColorFn(n) {
+  const activeUnion = focusSet || pathSet || searchSet;
+  if (activeUnion && !activeUnion.has(n.id)) return 'rgba(70,90,105,0.15)';
+  return colorFor(n.group);
+}
+
+function linkColorFn(l) {
+  const a = l.source.id ?? l.source;
+  const b = l.target.id ?? l.target;
+  if (pathLinkSet) {
+    const key = [a, b].sort().join('-');
+    if (pathLinkSet.has(key)) return '#7cff8a';
+  }
+  if (focusSet && focusSet.has(a) && focusSet.has(b)) return '#a8ffd0';
+  const activeUnion = focusSet || pathSet || searchSet;
+  if (activeUnion) return 'rgba(60,80,95,0.25)';
+  return '#6fd6a0';
+}
+
+function repaint() {
+  if (!Graph) return;
+  Graph.nodeColor(Graph.nodeColor());
+  Graph.linkColor(Graph.linkColor());
+}
+
+async function initGraph() {
+  const g = await loadGraphScript();
+  graphData = g || { nodes: [], links: [] };
+  graphData.nodes.forEach(n => nodeById[n.id] = n);
+
+  graphData.links.forEach(l => {
+    const a = l.source.id ?? l.source;
+    const b = l.target.id ?? l.target;
+    deg[a] = (deg[a] || 0) + 1;
+    deg[b] = (deg[b] || 0) + 1;
+  });
+
+  // rank-based hub/label/particle sets — degree distribution is nearly flat,
+  // so absolute thresholds don't work; always take the top N by rank.
+  const hubRank = [...graphData.nodes].sort((a, b) => (deg[b.id] || 0) - (deg[a.id] || 0));
+  const glowSet = new Set(hubRank.slice(0, 30).map(n => n.id));
+  const labelSet = new Set(hubRank.slice(0, 20).map(n => n.id));
+  const hotSet = new Set(hubRank.slice(0, 60).map(n => n.id));
+
+  // links must be tagged before .graphData() mutates source/target into node refs
+  graphData.links.forEach(l => { if (hotSet.has(l.source) && hotSet.has(l.target)) l.hot = true; });
+
+  const sharedGlowTex = starTexture();
+
+  Graph = ForceGraph3D({ controlType: 'orbit' })(document.getElementById('graph'))
+    .backgroundColor('rgba(0,0,0,0)')
+    .nodeLabel(n => `${n.label} (${n.group})`)
+    .nodeColor(nodeColorFn)
+    .nodeVal(n => 1 + (deg[n.id] || 0) / 4)
+    .nodeResolution(12)
+    .nodeOpacity(1)
+    .nodeVisibility(n => !hiddenGroups.has(n.group))
+    .linkVisibility(l => !hiddenGroups.has((l.source.group ?? l.source)) && !hiddenGroups.has((l.target.group ?? l.target)))
+    .linkColor(linkColorFn)
+    .linkOpacity(0.18)
+    .linkWidth(0)
+    .linkDirectionalParticles(l => l.hot ? 2 : 0)
+    .linkDirectionalParticleWidth(1.8)
+    .linkDirectionalParticleSpeed(0.006)
+    .linkDirectionalParticleColor(() => '#b8ffd9')
+    .linkDirectionalParticleResolution(4)
+    .nodeThreeObjectExtend(true)
+    .nodeThreeObject(n => {
+      if (!glowSet.has(n.id)) return undefined;
+      const group = new THREE.Group();
+      const radius = 4 * Math.cbrt(1 + (deg[n.id] || 0) / 4);
+      const sprite = new THREE.Sprite(new THREE.SpriteMaterial({
+        map: sharedGlowTex, color: colorFor(n.group), transparent: true,
+        depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0.55
+      }));
+      const s = 3 * radius;
+      sprite.scale.set(s, s, 1);
+      group.add(sprite);
+      if (labelSet.has(n.id)) {
+        const t = new SpriteText(n.label, 4, '#cfe8ff');
+        t.material.depthWrite = false;
+        t.position.y = radius + 6;
+        group.add(t);
+      }
+      return group;
+    })
+    .onNodeClick(onNodeClick)
+    .onNodeHover(n => { document.body.style.cursor = n ? 'pointer' : 'default'; })
+    .onBackgroundClick(() => {
+      focusSet = null; pathSet = null; pathLinkSet = null; searchSet = null;
+      repaint();
+      clearInspector();
+    })
+    .warmupTicks(100)
+    .cooldownTime(8000)
+    .showNavInfo(false)
+    .graphData(graphData);
+
+  Graph.d3Force('charge').strength(-50);
+  Graph.d3Force('link').distance(35);
+
+  buildAdjacency();
+  starLayer(Graph.scene(), 1500, 1.8, 0.4);
+
+  try {
+    Graph.renderer().setClearColor(0x000000, 0);
+  } catch (e) {}
+
+  const controls = Graph.controls();
+  controls.autoRotate = true;
+  controls.autoRotateSpeed = 0.4;
+  controls.addEventListener('start', () => { controls.autoRotate = false; });
+
+  renderFilters();
+  renderHubs();
+
+  (function animate() {
+    requestAnimationFrame(animate);
+    Graph.controls().update();
+  })();
+}
+
+function flyTo(node) {
+  if (!node) return;
+  Graph.controls().autoRotate = false;
+  const distRatio = 1 + 90 / Math.hypot(node.x||1, node.y||1, node.z||1);
+  Graph.cameraPosition(
+    { x: (node.x||0) * distRatio, y: (node.y||0) * distRatio, z: (node.z||0) * distRatio },
+    node, 1400
+  );
+}
+
+// ---------- inspector ----------
+function showInspector(node) {
+  document.getElementById('inspector-hint').style.display = 'none';
+  document.getElementById('insp-title').textContent = node.label;
+  document.getElementById('insp-group').textContent = node.group;
+  document.getElementById('insp-deg').textContent = (deg[node.id] || 0) + ' connections';
+  document.getElementById('insp-excerpt').textContent = node.excerpt || '';
+}
+function clearInspector() {
+  document.getElementById('inspector-hint').style.display = '';
+  document.getElementById('inspector-hint').textContent =
+    'Click a node to focus it — only it and its connections light up. Shift-click a second node to trace the path.';
+  document.getElementById('insp-title').textContent = '';
+  document.getElementById('insp-group').textContent = '';
+  document.getElementById('insp-deg').textContent = '';
+  document.getElementById('insp-excerpt').textContent = '';
+}
+
+// fly-to-source on chat answers: 1-3 cited notes = dive to the top one;
+// 4+ = light the whole cluster via focusSet without moving the camera
+function focusOnAnswer(ids) {
+  if (!ids || !ids.length) return;
+  if (ids.length >= 4) {
+    focusSet = new Set(ids);
+    pathSet = null; pathLinkSet = null;
+    repaint();
+    return;
+  }
+  const node = nodeById[ids[0]];
+  if (node) { flyTo(node); focusNode(node); }
+}
+
+function focusNode(node) {
+  focusSet = new Set([node.id, ...(adj[node.id] || [])]);
+  pathSet = null;
+  pathLinkSet = null;
+  repaint();
+  showInspector(node);
+  lastFocusedId = node.id;
+}
+
+function tracePath(a, b) {
+  const prev = { [a]: null };
+  const queue = [a];
+  let found = false;
+  while (queue.length) {
+    const cur = queue.shift();
+    if (cur === b) { found = true; break; }
+    for (const nxt of (adj[cur] || [])) {
+      if (!(nxt in prev)) { prev[nxt] = cur; queue.push(nxt); }
+    }
+  }
+  const hint = document.getElementById('inspector-hint');
+  hint.style.display = '';
+  document.getElementById('insp-title').textContent = '';
+  document.getElementById('insp-group').textContent = '';
+  document.getElementById('insp-deg').textContent = '';
+  document.getElementById('insp-excerpt').textContent = '';
+
+  if (!found) {
+    pathSet = null; pathLinkSet = null;
+    hint.textContent = 'No path.';
+    repaint();
+    return;
+  }
+  const chain = [];
+  let cur = b;
+  while (cur !== null && cur !== undefined) { chain.unshift(cur); cur = prev[cur]; }
+  pathSet = new Set(chain);
+  pathLinkSet = new Set();
+  for (let i = 0; i < chain.length - 1; i++) {
+    pathLinkSet.add([chain[i], chain[i + 1]].sort().join('-'));
+  }
+  const labels = chain.map(id => (nodeById[id] ? nodeById[id].label : id));
+  hint.textContent = `Path: ${labels[0]} → … → ${labels[labels.length - 1]} (${chain.length - 1} hops)`;
+  repaint();
+}
+
+let shiftHeld = false;
+window.addEventListener('keydown', (e) => { if (e.key === 'Shift') shiftHeld = true; });
+window.addEventListener('keyup', (e) => { if (e.key === 'Shift') shiftHeld = false; });
+
+function onNodeClick(node, event) {
+  const shift = event ? !!event.shiftKey : shiftHeld;
+  if (shift && lastFocusedId != null && lastFocusedId !== node.id) {
+    tracePath(lastFocusedId, node.id);
+  } else {
+    flyTo(node);
+    focusNode(node);
+  }
+}
+
+// ---------- filters ----------
+function renderFilters() {
+  const counts = {};
+  graphData.nodes.forEach(n => { counts[n.group] = (counts[n.group] || 0) + 1; });
+  const el = document.getElementById('filters');
+  el.innerHTML = '';
+  Object.keys(counts).sort().forEach(g => {
+    const row = document.createElement('div');
+    row.className = 'frow';
+    row.innerHTML = `<span class="dot" style="background:${colorFor(g)}"></span><span class="lbl">${g}</span><span class="cnt">${counts[g]}</span>`;
+    row.addEventListener('click', () => {
+      if (hiddenGroups.has(g)) hiddenGroups.delete(g); else hiddenGroups.add(g);
+      row.classList.toggle('off', hiddenGroups.has(g));
+      Graph.nodeVisibility(Graph.nodeVisibility());
+      Graph.linkVisibility(Graph.linkVisibility());
+    });
+    el.appendChild(row);
+  });
+}
+
+// ---------- hubs ----------
+function renderHubs() {
+  const el = document.getElementById('hubs');
+  el.innerHTML = '<div class="side-h">TOP HUBS</div>';
+  const top = graphData.nodes
+    .slice()
+    .sort((a, b) => (deg[b.id] || 0) - (deg[a.id] || 0))
+    .slice(0, 8);
+  top.forEach(n => {
+    const row = document.createElement('div');
+    row.className = 'hub-row';
+    row.innerHTML = `<span class="dot" style="background:${colorFor(n.group)}"></span><span class="lbl">${n.label}</span><span class="cnt">${deg[n.id] || 0}</span>`;
+    row.addEventListener('click', () => { flyTo(n); focusNode(n); });
+    el.appendChild(row);
+  });
+}
+
+// ---------- search ----------
+let searchTimer = null;
+document.getElementById('search').addEventListener('input', (e) => {
+  clearTimeout(searchTimer);
+  const q = e.target.value.trim().toLowerCase();
+  searchTimer = setTimeout(() => {
+    const resultsEl = document.getElementById('search-results');
+    if (!q) {
+      searchSet = null;
+      resultsEl.innerHTML = '';
+      repaint();
+      return;
+    }
+    const matches = graphData.nodes.filter(n =>
+      (n.label && n.label.toLowerCase().includes(q)) ||
+      (n.excerpt && n.excerpt.toLowerCase().includes(q))
+    );
+    searchSet = new Set(matches.map(n => n.id));
+    repaint();
+    resultsEl.innerHTML = '';
+    matches.slice(0, 8).forEach(n => {
+      const row = document.createElement('div');
+      row.className = 'sres';
+      row.innerHTML = `<div class="g">${n.group}</div>${n.label}`;
+      row.addEventListener('click', () => { flyTo(n); focusNode(n); });
+      resultsEl.appendChild(row);
+    });
+  }, 150);
+});
+
+// ---------- reactor ----------
+function setOrb(state) {
+  const reactor = document.getElementById('reactor');
+  document.getElementById('reactor-status').textContent = state.toUpperCase();
+  reactor.classList.toggle('speaking', state === 'speaking');
+}
+
+// ---------- chat ----------
+const chatlog = document.getElementById('chatlog');
+const history = [];
+
+function addBubble(text, mine) {
+  const b = document.createElement('div');
+  b.className = 'bubble' + (mine ? ' me' : '');
+  b.textContent = text;
+  chatlog.appendChild(b);
+  chatlog.scrollTop = chatlog.scrollHeight;
+  while (chatlog.children.length > 8) chatlog.removeChild(chatlog.firstChild);
+}
+
+function setStatus(text) {
+  const el = document.getElementById('status');
+  el.textContent = text;
+  el.classList.toggle('show', !!text);
+}
+
+function waitForVoices() {
+  return new Promise(resolve => {
+    const v = speechSynthesis.getVoices();
+    if (v.length) return resolve(v);
+    speechSynthesis.onvoiceschanged = () => resolve(speechSynthesis.getVoices());
+    setTimeout(() => resolve(speechSynthesis.getVoices()), 300);
+  });
+}
+
+const audioEl = new Audio();
+audioEl.onplay = () => setOrb('speaking');
+audioEl.onended = audioEl.onerror = () => setOrb('idle');
+
+async function speak(text) {
+  if (ttsAvailable) {
+    try {
+      const r = await fetch('/tts', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text })
+      });
+      if (r.ok) {
+        audioEl.src = URL.createObjectURL(await r.blob());
+        await audioEl.play();
+        return;
+      }
+      if (r.status === 503) ttsAvailable = false;
+    } catch (e) {}
+  }
+  if (!('speechSynthesis' in window)) return;
+  speechSynthesis.resume();
+  const voices = await waitForVoices();
+  const u = new SpeechSynthesisUtterance(text);
+  const gb = voices.find(v => /en-GB/i.test(v.lang));
+  u.voice = gb || voices[0];
+  u.rate = 1.0;
+  u.onstart = () => setOrb('speaking');
+  u.onend = u.onerror = () => setOrb('idle');
+  speechSynthesis.speak(u);
+}
+
+async function ask(question) {
+  if (!question.trim()) return;
+  addBubble(question, true);
+  setStatus('● thinking…');
+  setOrb('thinking');
+  try {
+    const res = await fetch('/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question, history })
+    });
+    const data = await res.json();
+    addBubble(data.answer, false);
+    speak(data.answer);
+    focusOnAnswer(data.nodes);
+    history.push({ question, answer: data.answer });
+    if (history.length > 3) history.shift();
+  } catch (e) {
+    addBubble('Connection trouble, sir.', false);
+    setOrb('idle');
+  } finally {
+    setStatus('');
+  }
+}
+
+document.getElementById('textin').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    const v = e.target.value;
+    e.target.value = '';
+    ask(v);
+  }
+});
+
+// ---------- chips ----------
+const CHIPS = ['good morning', 'any new deals?', 'remember that…', 'show me the buy box', 'status check'];
+function renderChips() {
+  const el = document.getElementById('chips');
+  CHIPS.forEach(text => {
+    const chip = document.createElement('div');
+    chip.className = 'chip';
+    chip.textContent = text;
+    chip.addEventListener('click', () => {
+      const input = document.getElementById('textin');
+      if (text === 'remember that…') {
+        input.value = 'remember that ';
+        input.focus();
+        return;
+      }
+      input.value = text;
+      ask(text);
+      input.value = '';
+    });
+    el.appendChild(chip);
+  });
+}
+renderChips();
+
+// ---------- push to talk ----------
+let recognition = null;
+if ('webkitSpeechRecognition' in window) {
+  recognition = new webkitSpeechRecognition();
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  recognition.lang = 'en-US';
+  recognition.onresult = (e) => {
+    const text = e.results[0][0].transcript;
+    setStatus('');
+    ask(text);
+  };
+  recognition.onerror = () => setStatus('');
+  recognition.onend = () => document.getElementById('talk').classList.remove('live');
+}
+
+const talkBtn = document.getElementById('talk');
+function startTalk() {
+  if (!recognition) { setStatus('Voice needs Chrome, sir.'); return; }
+  talkBtn.classList.add('live');
+  setStatus('● listening…');
+  setOrb('listening');
+  try { recognition.start(); } catch (e) {}
+}
+function stopTalk() {
+  talkBtn.classList.remove('live');
+  if (recognition) { try { recognition.stop(); } catch (e) {} }
+}
+talkBtn.addEventListener('mousedown', startTalk);
+talkBtn.addEventListener('mouseup', stopTalk);
+talkBtn.addEventListener('mouseleave', stopTalk);
+talkBtn.addEventListener('touchstart', (e) => { e.preventDefault(); startTalk(); });
+talkBtn.addEventListener('touchend', (e) => { e.preventDefault(); stopTalk(); });
+
+// ---------- backdrop video: seamless loop via dual-video crossfade ----------
+(function () {
+  const vids = [document.getElementById('backdrop'), document.getElementById('backdrop2')];
+  vids.forEach(v => v.addEventListener('error', () => vids.forEach(x => x.style.display = 'none')));
+  const FADE = 1.2; // seconds before the end to start the crossfade
+  let active = 0, fading = false;
+  function tick() {
+    const cur = vids[active];
+    if (!fading && cur.duration && cur.currentTime > cur.duration - FADE) {
+      fading = true;
+      const nxt = vids[1 - active];
+      nxt.currentTime = 0;
+      nxt.play().catch(() => {});
+      nxt.style.opacity = 1;
+      cur.style.opacity = 0;
+      setTimeout(() => { cur.pause(); fading = false; }, 1300);
+      active = 1 - active;
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+
+// ---------- boot ----------
+async function boot() {
+  await Promise.allSettled([
+    initGraph().catch(e => console.error('initGraph failed', e)),
+    (async () => {
+      try {
+        const res = await fetch('/meta');
+        const data = await res.json();
+        document.getElementById('model-badge').textContent = data.model;
+        document.getElementById('corpus-counts').textContent =
+          `${data.nodes} notes · ${data.links.toLocaleString()} connections`;
+        ttsAvailable = !!data.tts;
+      } catch (e) {}
+    })(),
+    (async () => {
+      try {
+        const res = await fetch('/boot');
+        const data = await res.json();
+        addBubble(data.greeting, false);
+        await speak(data.greeting);
+      } catch (e) {
+        addBubble('Systems online. Awaiting your command, sir.', false);
+      }
+    })()
+  ]);
+}
+
+// Chrome silently drops speechSynthesis calls made outside a user gesture.
+// Gate the whole boot sequence behind one real click so audio actually plays.
+document.getElementById('gate').addEventListener('click', () => {
+  document.getElementById('gate').classList.add('hidden');
+  const bootvid = document.getElementById('bootvid');
+  const fadeOutBoot = () => {
+    bootvid.style.opacity = '0';
+    setTimeout(() => { bootvid.style.display = 'none'; }, 800);
+  };
+  bootvid.style.display = 'block';
+  bootvid.style.opacity = '1';
+  bootvid.addEventListener('ended', fadeOutBoot, { once: true });
+  bootvid.addEventListener('error', fadeOutBoot, { once: true });
+  bootvid.addEventListener('click', fadeOutBoot, { once: true });
+  bootvid.play().catch(() => {});
+  boot();
+}, { once: true });
+</script>
+</body>
+</html>

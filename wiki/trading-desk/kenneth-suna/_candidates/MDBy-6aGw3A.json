@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth documents a challenging week executing his $180/week covered call income strategy on HIMS, resulting in a 3% return ($365 profit) after being forced to hold significant capital in losing positions. The video emphasizes risk management lessons learned from blind copiers and demonstrates how assignment on underwater cash-secured puts can freeze capital and derail premium collection.",
+  "takeaways": [
+    "Selling weekly covered calls carries substantial risk and requires high risk tolerance, significant capital, and experience",
+    "Do not copy trades blindly without understanding the full risk profile and position management",
+    "When assigned on cash-secured puts at a loss (bought HIMS at $52 when stock at $47), hold as unrealized loss only if technical analysis supports recovery",
+    "Use 50-day and 200-day moving average crossovers as bullish indicators for timing covered call re-entry",
+    "Capital tied up in losing positions ($20k HIMS + $5k QuantumCape) prevents execution of income strategy elsewhere",
+    "Assignment on OTM covered calls frees capital back for redeployment ($20k returned from SoFi/Rivian/Nphase assignments)",
+    "Accept that some weeks yield only 3% returns when capital is constrained by underwater long stock positions"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Establish a maximum capital allocation rule for cash-secured puts (e.g., no more than 30% of portfolio) to preserve liquidity for ongoing covered call income generation on target positions",
+      "evidence": "Kenneth had to hold $17k-$15k across two cash-secured put contracts while executing the income strategy, which constrained his ability to sell covered calls weekly and reduced his profit to $365 (3%) instead of the target $1,250/mo; he explicitly stated this frozen capital prevented him from reaching his income goals"
+    }
+  ],
+  "id": "MDBy-6aGw3A",
+  "title": "Part 12: 8/22/25 - $180 per week from HIMS fail ",
+  "duration": 438
+}

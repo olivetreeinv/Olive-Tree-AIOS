@@ -1,0 +1,56 @@
+{
+  "conversation": {
+    "id": "YY9ugNdg5V5pcFkqnpbp",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364120974,
+    "dateUpdated": 1783364121759,
+    "lastMessageDate": 1783364121755,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Walter, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "q7CaK8XpdpoudJvMc67w",
+    "fullName": "Walter Curtis",
+    "contactName": "Walter Curtis",
+    "companyName": "USHUD Referral",
+    "phone": "+14704799945",
+    "tags": [
+      "retail buyer",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364121755
+    ]
+  },
+  "messages": [
+    {
+      "id": "y6XY3pIogewEIu06pZQ4",
+      "direction": "outbound",
+      "status": "sent",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Walter, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "q7CaK8XpdpoudJvMc67w",
+      "contentType": "text/plain",
+      "conversationId": "YY9ugNdg5V5pcFkqnpbp",
+      "dateAdded": "2026-07-06T18:55:21.024Z",
+      "dateUpdated": "2026-07-06T18:55:24.506Z",
+      "source": "workflow",
+      "altId": "SMadc74ec035806584d79b02531545d1fd",
+      "from": "+16789712411",
+      "to": "+14704799945",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

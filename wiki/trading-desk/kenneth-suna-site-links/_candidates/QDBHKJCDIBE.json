@@ -1,0 +1,16 @@
+{
+  "trading_relevant": "no",
+  "strategy": "market-analysis",
+  "summary": "Kenneth Suna teaches a stock screening technique using sector ETF top-10 holdings to identify individual stocks across sectors, bypassing the need to buy entire ETFs. This is foundational market research with no direct application to options selling strategies like covered calls, cash-secured puts, or the wheel.",
+  "takeaways": [
+    "Use Seeking Alpha to search 'sector name + ETF' to find relevant sector ETFs",
+    "Review the top 10 holdings of sector ETFs to identify candidate stocks (e.g., XRT retail ETF, MOO agricultural ETF, ICLN clean energy ETF)",
+    "Sector ETF expense ratios under 1% are considered low (XRT 0.35%, MOO 0.53%, ICLN higher)",
+    "Rather than buying entire ETFs, selectively buy 1\u20132 stocks from each sector's top holdings for portfolio diversification",
+    "ETF top 10 holdings reflect the largest institutional investor positions and signal where sophisticated capital is allocated"
+  ],
+  "strategy_candidates": [],
+  "id": "QDBHKJCDIBE",
+  "title": "How to Find the TOP STOCKS in Every Sector! #stockmarket #investingforbeginners #howtoinvest",
+  "duration": 233
+}

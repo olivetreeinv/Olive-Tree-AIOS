@@ -1,0 +1,16 @@
+{
+  "trading_relevant": "no",
+  "strategy": "other",
+  "summary": "Kenneth Suna critiques the popular \"7 ETFs\" investment recommendation and explains why portfolio overlap through overlap-by-weight analysis leads to unnecessary redundancy. He advocates for streamlined portfolio construction using just 3 ETFs (VOO, FTEC, SCHD) with manageable overlap rather than collecting multiple funds with similar holdings.",
+  "takeaways": [
+    "Overlap-by-weight of 0-20% is good, 20-40% is moderate, 40-60% is high, 60%+ is very high/unnecessary",
+    "VOO vs QQQM vs VUG vs VGT all have 48-88% overlap\u2014too much redundancy",
+    "Recommended portfolio: VOO (8% overlap with SCHD), FTEC (37% overlap with VOO, 3% overlap with SCHD), and SCHD",
+    "International ETF exposure is largely redundant because US large-cap companies generate substantial overseas revenue",
+    "Focus on understanding where your money is actually deployed rather than collecting ticker symbols"
+  ],
+  "strategy_candidates": [],
+  "id": "WG0RPUIKjwU",
+  "title": "You need 7 ETFs!! ",
+  "duration": 241
+}

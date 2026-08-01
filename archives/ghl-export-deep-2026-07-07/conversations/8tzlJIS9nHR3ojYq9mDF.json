@@ -1,0 +1,56 @@
+{
+  "conversation": {
+    "id": "8tzlJIS9nHR3ojYq9mDF",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364472839,
+    "dateUpdated": 1783364473546,
+    "lastMessageDate": 1783364473541,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Jamie, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "PlqNfmgJPknzLUhCvrlk",
+    "fullName": "Jamie Sanders",
+    "contactName": "Jamie Sanders",
+    "companyName": "Investor / Flipper",
+    "phone": "+17708755948",
+    "tags": [
+      "flipper",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364473541
+    ]
+  },
+  "messages": [
+    {
+      "id": "m1DFRYJjoSyyruR2uS4Z",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Jamie, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "PlqNfmgJPknzLUhCvrlk",
+      "contentType": "text/plain",
+      "conversationId": "8tzlJIS9nHR3ojYq9mDF",
+      "dateAdded": "2026-07-06T19:01:12.888Z",
+      "dateUpdated": "2026-07-06T19:01:21.687Z",
+      "source": "workflow",
+      "altId": "SM09ef67c2409045e76089d2c6ad87bc36",
+      "from": "+16789712411",
+      "to": "+17708755948",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

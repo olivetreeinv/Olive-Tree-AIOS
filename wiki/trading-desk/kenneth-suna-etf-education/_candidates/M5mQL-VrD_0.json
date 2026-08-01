@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth Suna explains when and how to sell covered calls, emphasizing the importance of timing based on chart patterns and stock price movements. He demonstrates the mechanics using thinkorSwim with Carnival Cruise Lines as an example, showing how to execute one-week-out covered calls and manage the risk of assignment.",
+  "takeaways": [
+    "Sell covered calls one week out (expire Friday)",
+    "Sell covered calls after stocks have risen significantly, not during downtrends",
+    "Strike selection: pick strikes one price level out from current price (e.g., $27.50 strike when stock at $27)",
+    "Only sell covered calls on stocks you're willing to sell away or just recently purchased",
+    "Each contract = 100 shares, so you need 100+ shares per contract sold",
+    "You can close out the options contract early if stock rallies and you want to keep shares, though you'll lose money on the option",
+    "Consider using lower-priced index funds like SPLG vs SPY/VOO to accumulate 100-share lots faster for selling multiple covered calls"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Establish a systematic one-week covered call selling schedule on portfolio positions that have had significant recent appreciation, targeting consistent $25-50 premium per contract weekly to accelerate $1,250/month premium target",
+      "evidence": "Kenneth explicitly states he sells covered calls 'one week out' with specificity about Friday expiration dates, and demonstrates Carnival example where he made $29-58 per contract. This structured weekly rhythm on appreciated positions could generate predictable premium income aligned with the Premium Desk $1,250/mo goal."
+    }
+  ],
+  "id": "M5mQL-VrD_0",
+  "title": "Covered call walkthrough",
+  "duration": 398
+}

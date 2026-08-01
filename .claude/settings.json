@@ -1,5 +1,19 @@
 {
   "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=$(jq -r '.tool_input.file_path // empty'); case \"$f\" in *\"/Olive AIOS/wiki/\"*|*\"/Olive AIOS/references/\"*|*\"/Olive AIOS/context/\"*|*\"/Olive AIOS/decisions/\"*) cd \"/Users/olivetree/Documents/Olive AIOS\" && .venv/bin/python3 scripts/aios_index.py >/dev/null 2>&1 || true;; esac",
+            "timeout": 300,
+            "async": true,
+            "statusMessage": "Reindexing knowledge base..."
+          }
+        ]
+      }
+    ],
     "UserPromptSubmit": [
       {
         "hooks": [

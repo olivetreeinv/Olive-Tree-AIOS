@@ -1,0 +1,56 @@
+{
+  "conversation": {
+    "id": "q3xPKBmXFASTmfOuvt17",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364383935,
+    "dateUpdated": 1783364384612,
+    "lastMessageDate": 1783364384608,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Shaun, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "rltaZx8fNYJGzOyKpJja",
+    "fullName": "Shaun Harner",
+    "contactName": "Shaun Harner",
+    "companyName": "Builder / Flipper",
+    "phone": "+16782017504",
+    "tags": [
+      "flipper",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364384608
+    ]
+  },
+  "messages": [
+    {
+      "id": "kw7MiHNHodehKaU3BhPd",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Shaun, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "rltaZx8fNYJGzOyKpJja",
+      "contentType": "text/plain",
+      "conversationId": "q3xPKBmXFASTmfOuvt17",
+      "dateAdded": "2026-07-06T18:59:43.982Z",
+      "dateUpdated": "2026-07-06T18:59:48.224Z",
+      "source": "workflow",
+      "altId": "SM321b5cd7c46a47b8a602d980e0f2caeb",
+      "from": "+16789712411",
+      "to": "+16782017504",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

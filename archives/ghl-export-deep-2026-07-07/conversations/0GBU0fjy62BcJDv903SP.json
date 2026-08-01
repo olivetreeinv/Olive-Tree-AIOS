@@ -1,0 +1,149 @@
+{
+  "conversation": {
+    "id": "0GBU0fjy62BcJDv903SP",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249986826,
+    "dateUpdated": 1783364585332,
+    "lastMessageDate": 1783364585329,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Philip, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781961177020,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "PPs1GsExehHGqtKNkvmW",
+    "fullName": "Philip Sharp",
+    "contactName": "Philip Sharp",
+    "companyName": null,
+    "email": "psharp@nloans.net",
+    "phone": "+14047237516",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "profilePhoto": null,
+    "sort": [
+      1783364585329
+    ]
+  },
+  "messages": [
+    {
+      "id": "dh2a25LUbn5sdiGWQ5T7",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Philip, a copy of the pitch deck has been sent to your email.",
+      "contactId": "PPs1GsExehHGqtKNkvmW",
+      "contentType": "text/plain",
+      "conversationId": "0GBU0fjy62BcJDv903SP",
+      "dateAdded": "2026-07-06T19:03:04.661Z",
+      "dateUpdated": "2026-07-06T19:03:09.717Z",
+      "source": "workflow",
+      "altId": "SM12d61bc252fcd69832b3920152b98d6d",
+      "from": "+16789712411",
+      "to": "+14047237516",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "e2SsKl8BNGpqGoqEEWIe",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Philip, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "PPs1GsExehHGqtKNkvmW",
+      "contentType": "text/plain",
+      "conversationId": "0GBU0fjy62BcJDv903SP",
+      "dateAdded": "2026-06-20T13:12:56.372Z",
+      "dateUpdated": "2026-06-20T13:12:57.416Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+14047237516",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "mbmlYsK8lFTtkavkDA4G",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "PPs1GsExehHGqtKNkvmW",
+      "conversationId": "0GBU0fjy62BcJDv903SP",
+      "dateAdded": "2025-07-22T14:17:11.469Z",
+      "dateUpdated": "2025-07-22T14:17:11.493Z",
+      "from": "+14047237516",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "Email"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "V4fdvrzzscJoQViFEUee",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "PPs1GsExehHGqtKNkvmW",
+      "conversationId": "0GBU0fjy62BcJDv903SP",
+      "dateAdded": "2025-07-22T14:11:23.965Z",
+      "dateUpdated": "2025-07-22T14:11:39.967Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "DX208nrnZIX0G8jRTd0T"
+          ],
+          "direction": "outbound",
+          "subject": "Real Estate Tax & Rate Shifts You Can\u2019t Ignore"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "96z9kpdVneDs00cpBDQu",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "PPs1GsExehHGqtKNkvmW",
+      "conversationId": "0GBU0fjy62BcJDv903SP",
+      "dateAdded": "2025-06-18T12:31:23.309Z",
+      "dateUpdated": "2025-06-18T12:33:07.576Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "OpPhJmRlvfUP0nHV06uk"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

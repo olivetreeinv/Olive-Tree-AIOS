@@ -1,0 +1,113 @@
+{
+  "_readme": "Goal-aware monitor registry for /goal-watch (scripts/goal_watch.py). Each target: name, kind (launchd|artifact|pace), goal (plain-English rubric the judge grades against), evidence (shell commands run from repo root, output fed to the judge), enabled. launchd-kind targets add a launchd `label` and mostly rely on a deterministic launchctl-list check for pass/fail (parsed the same way scripts/heartbeat.py does), with a log-tail command included as extra judge context. Add a target by appending here; goal_watch.py needs no code change for a new evidence-only target.",
+  "targets": [
+    {
+      "name": "trading-desk",
+      "kind": "launchd",
+      "label": "com.olivetree.trading-desk",
+      "goal": "Paper-trading loop stays alive continuously (KeepAlive job) and keeps cycling \u2014 a live pid with recent log writes, not wedged or crashed.",
+      "evidence": [
+        "tail -15 ~/Library/Logs/trading-desk.log"
+      ],
+      "enabled": true
+    },
+    {
+      "name": "morning-deal-scan",
+      "kind": "launchd",
+      "label": "com.olivetree.morning-deal-scan",
+      "goal": "Runs weekdays 8am, scans buy-box Crexi listings + broker email replies; log fresh within 24h on weekdays.",
+      "evidence": [
+        "tail -15 ~/Library/Logs/morning-deal-scan.log"
+      ],
+      "enabled": true
+    },
+    {
+      "name": "heartbeat",
+      "kind": "launchd",
+      "label": "com.olivetree.heartbeat",
+      "goal": "Runs weekdays 7:45am, prints the ops health report, and ntfy-pushes the summary; last run should have exited clean.",
+      "evidence": [
+        "tail -15 ~/Library/Logs/olive-heartbeat.log"
+      ],
+      "enabled": true
+    },
+    {
+      "name": "aios-autocommit",
+      "kind": "launchd",
+      "label": "com.olivetree.aios-autocommit",
+      "goal": "Runs daily 9pm and commits any uncommitted repo changes as a git backup; last run should have exited clean.",
+      "evidence": [
+        "tail -15 ~/Library/Logs/aios-autocommit.log"
+      ],
+      "enabled": true
+    },
+    {
+      "name": "usage-audit",
+      "kind": "launchd",
+      "label": "com.olivetree.usage-audit",
+      "goal": "Runs the 1st of each month at 9:05am, mines the last month of sessions, and emails the usage-audit report; last run should have exited clean (only meaningful once/month \u2014 a stale last-exit outside day 1 is not itself a failure signal).",
+      "evidence": [
+        "tail -20 ~/Library/Logs/usage-audit.log 2>/dev/null || echo \"no log yet \u2014 job may not have run since setup\""
+      ],
+      "enabled": true
+    },
+    {
+      "name": "drip",
+      "kind": "launchd",
+      "label": "com.olivetree.drip",
+      "goal": "Runs daily 9am and sends any due drip-campaign emails without errors; last run should have exited clean.",
+      "evidence": [
+        "tail -20 logs/drip.log"
+      ],
+      "enabled": true
+    },
+    {
+      "name": "morning-brief",
+      "kind": "artifact",
+      "goal": "The 8am cloud routine delivers the Morning Brief email to Brian's inbox every weekday.",
+      "evidence": [
+        "python3 -c \"from scripts.heartbeat import check_morning_brief; print(check_morning_brief())\""
+      ],
+      "enabled": true
+    },
+    {
+      "name": "weekly-cloud-sync",
+      "kind": "artifact",
+      "goal": "The Friday cloud routines (loom-sync 5pm, pitch-deck-archive 6pm, deal-index/loi-archive 7pm) each write a wiki note and commit to GitHub main. Only meaningful to judge Saturday through Monday \u2014 say NO DATA the rest of the week, not OFF GOAL, since these routines simply haven't run yet mid-week.",
+      "evidence": [
+        "git fetch origin main --quiet 2>/dev/null; git log origin/main --since='8 days ago' --oneline -- wiki/ | head -20"
+      ],
+      "enabled": true
+    },
+    {
+      "name": "trading-desk-pace",
+      "kind": "pace",
+      "goal": "Sell covered-call premium at >= $500/week pace on the $50k paper book (CC_WEEKLY_TARGET_USD); no halt flag active. Judge weekly pace, not a single day \u2014 a slow Monday isn't a failure. ($500/wk is the honest stretch: desk ceiling ~$640/wk at normal 1.3% fills; the old $1k/wk was ~104% annualized.)",
+      "evidence": [
+        "tail -30 ~/Library/Logs/trading-desk.log",
+        "python3 -c \"from scripts.trading_covered_calls import cc_premium_stats; print(cc_premium_stats())\"",
+        "cat data/trading_halt.json 2>/dev/null || echo \"no halt flag\""
+      ],
+      "enabled": true
+    },
+    {
+      "name": "capital-raise-pace",
+      "kind": "pace",
+      "goal": "$400K in soft LP commitments by end of Q3 2026 (RAISE_TARGET in scripts/capital_raise.py). Judge pace toward the quarter deadline, not a single day.",
+      "evidence": [
+        "sqlite3 data/olive.db \"select coalesce(sum(amount),0) as committed, count(*) as n from investor_commitments where lower(status) in ('soft','funded');\"",
+        "sqlite3 data/olive.db \"select count(*) from drip_enrollments;\""
+      ],
+      "enabled": true
+    },
+    {
+      "name": "drip-flow",
+      "kind": "pace",
+      "goal": "The daily drip worker sends due emails without errors \u2014 an empty log on a day with nothing due is fine, an error is not.",
+      "evidence": [
+        "tail -20 logs/drip.log"
+      ],
+      "enabled": true
+    }
+  ]
+}

@@ -40,6 +40,7 @@ Notes:
 
 import argparse
 import json
+import os
 import statistics
 import sys
 import time
@@ -113,6 +114,60 @@ ZIP_BBOX = {
 }
 
 ARCGIS_PAGE = 1000  # max records per ArcGIS query page
+
+
+# ─────────────────────────────────────────────
+# ReportAllUSA parcel API — multi-state source (6-state Southeast expansion)
+# ─────────────────────────────────────────────
+# STUB, inert until REPORTALL_API_KEY is set (trial keys pending — see decisions/log
+# 2026-06-29). One nationwide API replaces per-county ArcGIS scrapers for GA/AL/NC/SC/
+# TN/KY, where most counties run qPublic/Schneider (unreachable) or geometry-only AGO
+# layers. Output is the SAME canonical record as query_parcels(), so the whole downstream
+# pipeline (apply_filters / acre_stats / is_vacant / is_out_of_state) works unchanged.
+#
+# Field names verified against ReportAll's standard API data dictionary (2026-06-30):
+# https://reportallusa.com/product-docs/api/api-standard-data-dictionary
+# Standard schema includes owner mailing (incl. state) — no premium tier. The only
+# trial-time confirm left is the query-param syntax for server-side filtering (below).
+REPORTALL_API = "https://reportallusa.com/api/parcels"
+REPORTALL_VERSION = 9
+REPORTALL_RPP = 1000  # rows per page (API max)
+
+# MapServer endpoint — supports real WHERE clause; bills only rows returned (not total scanned).
+# Use this path for seller pulls (vacant + out-of-state server-side) to avoid paying for houses.
+# ponytail: key embedded in URL per ReportAll's own pattern (no separate auth header)
+REPORTALL_MAPSERVER = "https://reportallusa.com/api/rest_services/client={key}/Parcels/MapServer/0/query"
+
+# FIPS county_id values required by the MapServer WHERE clause for SE expansion markets.
+# county_id = 5-digit FIPS (leading zeros dropped by the API).
+REPORTALL_FIPS = {
+    "bartow-ga":    (13015, "GA"),
+    "forsyth-ga":   (13117, "GA"),
+    "hall-ga":      (13139, "GA"),
+    "jackson-ga":   (13157, "GA"),
+    "paulding-ga":  (13223, "GA"),
+    "maury-tn":     (47119, "TN"),
+    "limestone-al": (1083,  "AL"),
+    "johnston-nc":  (37101, "NC"),
+    "york-sc":      (45091, "SC"),
+    "lee-fl":       (12071, "FL"),
+    "horry-sc":     (45051, "SC"),
+}
+
+REPORTALL_FIELD_MAP = {
+    "parcel_id":    "parcel_id",
+    "site_address": "address",        # assembled situs address
+    "site_zip":     "addr_zip",
+    "acres":        "acreage_calc",   # GIS-calc acres; deeded ("acreage") fallback in fetch
+    "land_use":     "land_use_code",
+    "bldg_area":    "mkt_val_bldg",   # improvement value; 0/blank => vacant land
+    "owner_name":   "owner",
+    "owner_addr":   "mail_address1",
+    "owner_city":   "mail_placename",
+    "owner_state":  "mail_statename", # absentee filter keys on this — verified
+    "owner_zip":    "mail_zipcode",
+    "land_value":   "mkt_val_land",   # offer anchor
+}
 
 
 # ─────────────────────────────────────────────
@@ -228,6 +283,126 @@ def query_parcels(county, where="1=1", bbox=None, zip_code=None,
             break
         for ft in feats:
             records.append(_normalize(ft["attributes"], cfg["field_map"]))
+            if max_records and len(records) >= max_records:
+                return records
+        if not data.get("exceededTransferLimit"):
+            break
+        offset += len(feats)
+    return records
+
+
+def query_parcels_reportall(region=None, zip_code=None, county_id=None,
+                            vacant_only=False, min_acres=None, max_acres=None,
+                            max_records=None, api_key=None, timeout=30):
+    """
+    Query ReportAllUSA for a region -> canonical records (same shape as query_parcels).
+
+    Geography (one required, the "region clause"):
+      region    — "County, ST" or "ST" (e.g. "Lancaster, SC")
+      zip_code  — postal code
+      county_id — numeric FIPS55
+
+    Server-side attribute filters (the API requires ≥1, and you're only charged
+    for parcels RETURNED — so filter hard to conserve credits):
+      vacant_only        -> mkt_val_bldg_max=0
+      min_acres/max_acres -> acreage_min/acreage_max
+
+    Out-of-state ownership has NO server param — apply it Python-side via
+    apply_filters(out_of_state=...) after the pull.
+
+    Verified live 2026-06-30 (Lancaster SC). Two data wrinkles:
+      • The deeded `acreage` field carries placeholder 1.0000 values on data-poor
+        subdivision slivers; we map acres to `acreage_calc` (reliable) and the
+        server band filters deeded acreage — so refine on acreage_calc with
+        apply_filters(min_acres/max_acres) after the pull.
+      • Some counties (e.g. Lancaster SC) return mkt_val_land=0; the offer anchor
+        comes from the builder price, so a 0 land value is non-fatal.
+    """
+    api_key = api_key or os.environ.get("REPORTALL_API_KEY")
+    if not api_key:
+        raise RuntimeError("REPORTALL_API_KEY not set — add it to .env.")
+    if not (region or zip_code or county_id):
+        raise ValueError("Need a region clause: region, zip_code, or county_id.")
+
+    geo = {}
+    if region:    geo["region"] = region
+    if zip_code:  geo["zip_code"] = zip_code
+    if county_id: geo["county_id"] = county_id
+
+    attrs_q = {}
+    if vacant_only:        attrs_q["mkt_val_bldg_max"] = 0
+    if min_acres is not None: attrs_q["acreage_min"] = min_acres
+    if max_acres is not None: attrs_q["acreage_max"] = max_acres
+    if not attrs_q:        # API demands ≥1 attribute clause alongside the region
+        attrs_q["acreage_min"] = 0.01
+
+    # Credit safety: you're billed per parcel RETURNED, so never request more per
+    # page than max_records — otherwise a 1000-row page bills 1000 even if we stop
+    # reading at 12.
+    rpp = min(REPORTALL_RPP, max_records) if max_records else REPORTALL_RPP
+
+    records, page = [], 1
+    while True:
+        params = {"client": api_key, "v": REPORTALL_VERSION,
+                  "rpp": rpp, "page": page, **geo, **attrs_q}
+        data = _get_json(REPORTALL_API, params, timeout=timeout)
+        if data.get("status") not in (None, "OK"):
+            raise RuntimeError(f"ReportAll error: {data.get('message', data)}")
+        rows = data.get("results", [])
+        if not rows:
+            break
+        for a in rows:
+            rec = _normalize(a, REPORTALL_FIELD_MAP)
+            if rec["acres"] is None:                       # acreage_calc blank
+                rec["acres"] = _to_float(a.get("acreage"))  # deeded fallback
+            records.append(rec)
+            if max_records and len(records) >= max_records:
+                return records
+        if len(rows) < REPORTALL_RPP:                      # last page
+            break
+        page += 1
+    return records
+
+
+def query_sellers_mapserver(county, zip_code, home_state, min_acres, max_acres,
+                            api_key=None, max_records=None, timeout=30):
+    """Pull ONLY vacant + out-of-state sellers via the ReportAll MapServer WHERE clause.
+
+    Costs credits = rows returned (sellers only, not all parcels). Use instead of
+    query_parcels_reportall for any county in REPORTALL_FIPS — ~12x more efficient
+    because houses are excluded server-side.
+
+    Returns canonical records (same shape as query_parcels / query_parcels_reportall).
+    """
+    api_key = api_key or os.environ.get("REPORTALL_API_KEY")
+    if not api_key:
+        raise RuntimeError("REPORTALL_API_KEY not set — add it to .env.")
+    if county not in REPORTALL_FIPS:
+        raise ValueError(f"No FIPS entry for '{county}'. Add it to REPORTALL_FIPS.")
+
+    cid, _ = REPORTALL_FIPS[county]
+    where = (
+        f"county_id={cid} AND addr_zip='{zip_code}'"
+        f" AND acreage_calc>={min_acres} AND acreage_calc<={max_acres}"
+        f" AND (buildings=0 OR buildings IS NULL)"
+        f" AND mail_statename<>'{home_state}' AND mail_statename IS NOT NULL"
+    )
+    url = REPORTALL_MAPSERVER.format(key=api_key)
+    out_fields = ",".join(REPORTALL_FIELD_MAP.values()) + ",buildings"
+
+    records, offset = [], 0
+    while True:
+        params = {"where": where, "f": "json", "returnGeometry": "false",
+                  "outFields": out_fields, "resultOffset": offset,
+                  "resultRecordCount": 1000}
+        data = _get_json(url, params, timeout=timeout)
+        feats = data.get("features", [])
+        for ft in feats:
+            a = ft["attributes"]
+            rec = _normalize(a, REPORTALL_FIELD_MAP)
+            if rec["acres"] is None:
+                rec["acres"] = _to_float(a.get("acreage"))
+            records.append(rec)
             if max_records and len(records) >= max_records:
                 return records
         if not data.get("exceededTransferLimit"):

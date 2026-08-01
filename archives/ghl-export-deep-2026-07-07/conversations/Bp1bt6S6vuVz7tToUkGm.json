@@ -1,0 +1,88 @@
+{
+  "conversation": {
+    "id": "Bp1bt6S6vuVz7tToUkGm",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781905884908,
+    "dateUpdated": 1781905885845,
+    "lastMessageDate": 1781905885842,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Hey Jessica, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.",
+    "lastOutboundMessageAction": "manual",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781905885842,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "lwKacvbhVqGk4ScWOAuo",
+    "fullName": "Jessica Espinoza",
+    "contactName": "Jessica Espinoza",
+    "companyName": "TCA Cleaning",
+    "phone": "+17705724445",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "profilePhoto": null,
+    "attributed": null,
+    "email": null,
+    "sort": [
+      1781905885842
+    ]
+  },
+  "messages": [
+    {
+      "id": "FXIvZnx8vmUL6ghszS9O",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "lwKacvbhVqGk4ScWOAuo",
+      "conversationId": "Bp1bt6S6vuVz7tToUkGm",
+      "dateAdded": "2026-06-19T21:51:28.407Z",
+      "dateUpdated": "2026-06-19T21:51:28.407Z",
+      "from": "+17705724445",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "SMS"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "DwlphPzH4myWcRm5Uqf8",
+      "direction": "outbound",
+      "status": "undelivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Jessica, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "lwKacvbhVqGk4ScWOAuo",
+      "contentType": "text/plain",
+      "conversationId": "Bp1bt6S6vuVz7tToUkGm",
+      "dateAdded": "2026-06-19T21:51:25.159Z",
+      "dateUpdated": "2026-06-19T21:51:28.141Z",
+      "source": "app",
+      "altId": "SMfd1b4b76678cf4c8f0efc4a2fc87efa2",
+      "from": "+16789712411",
+      "to": "+17705724445",
+      "error": "Error 30005 - The recipient's number is inactive or does not exist.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

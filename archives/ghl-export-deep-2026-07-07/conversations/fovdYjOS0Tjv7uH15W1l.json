@@ -1,0 +1,92 @@
+{
+  "conversation": {
+    "id": "fovdYjOS0Tjv7uH15W1l",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249898074,
+    "dateUpdated": 1750249898074,
+    "lastMessageDate": 1750249898074,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "x7jQyHTG9k9JthoNeL73",
+    "fullName": "Kamsi",
+    "contactName": "Kamsi",
+    "companyName": "Riverstone - Operations Director",
+    "email": "kamsi@riverstoneonline.org",
+    "phone": "+19083071322",
+    "tags": [],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "sort": [
+      1750249898074
+    ]
+  },
+  "messages": [
+    {
+      "id": "HP03ntoV1OZwXPKljSyH",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "x7jQyHTG9k9JthoNeL73",
+      "conversationId": "fovdYjOS0Tjv7uH15W1l",
+      "dateAdded": "2025-07-22T14:17:14.339Z",
+      "dateUpdated": "2025-07-22T14:17:14.353Z",
+      "from": "+19083071322",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "Email"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "Fa0XvoanxRqu6JZkzARf",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "x7jQyHTG9k9JthoNeL73",
+      "conversationId": "fovdYjOS0Tjv7uH15W1l",
+      "dateAdded": "2025-07-22T14:11:57.574Z",
+      "dateUpdated": "2025-07-22T14:12:10.966Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "cx08gdA91XJksrm0yXLn"
+          ],
+          "direction": "outbound",
+          "subject": "Real Estate Tax & Rate Shifts You Can\u2019t Ignore"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "O9Xn6Qjj36yOuSBxbqru",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "x7jQyHTG9k9JthoNeL73",
+      "conversationId": "fovdYjOS0Tjv7uH15W1l",
+      "dateAdded": "2025-06-18T12:31:22.231Z",
+      "dateUpdated": "2025-06-18T12:31:38.579Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "aVkouyYRAEKDCIAvgjaW"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

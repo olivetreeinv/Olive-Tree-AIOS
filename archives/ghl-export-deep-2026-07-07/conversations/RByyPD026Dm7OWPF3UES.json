@@ -1,0 +1,86 @@
+{
+  "conversation": {
+    "id": "RByyPD026Dm7OWPF3UES",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906006587,
+    "dateUpdated": 1783364565321,
+    "lastMessageDate": 1783364565313,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Raegan, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906008283,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "QfjXkr61lXJID3XFmFIl",
+    "fullName": "Raegan Carlson",
+    "contactName": "Raegan Carlson",
+    "companyName": "Cumberland Counceling Center",
+    "phone": "+14048848247",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "profilePhoto": null,
+    "attributed": null,
+    "email": null,
+    "sort": [
+      1783364565313
+    ]
+  },
+  "messages": [
+    {
+      "id": "us9G2YHSuFMC1AKXhvFM",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Raegan, a copy of the pitch deck has been sent to your email.",
+      "contactId": "QfjXkr61lXJID3XFmFIl",
+      "contentType": "text/plain",
+      "conversationId": "RByyPD026Dm7OWPF3UES",
+      "dateAdded": "2026-07-06T19:02:44.547Z",
+      "dateUpdated": "2026-07-06T19:02:48.278Z",
+      "source": "workflow",
+      "altId": "SM5b8d18bed5cf5edbd77dbce0668eff2f",
+      "from": "+16789712411",
+      "to": "+14048848247",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "3JHwE6JE1yriQT1z4zBR",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Raegan, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "QfjXkr61lXJID3XFmFIl",
+      "contentType": "text/plain",
+      "conversationId": "RByyPD026Dm7OWPF3UES",
+      "dateAdded": "2026-06-19T21:53:27.611Z",
+      "dateUpdated": "2026-06-19T21:53:28.683Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+14048848247",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

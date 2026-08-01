@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "partial",
+  "strategy": "covered-calls",
+  "summary": "Kenneth Suna analyzes YieldMax covered call ETFs, specifically the MicroStrategy fund claiming 149% annual yield. He explains that trailing 12-month dividend yields are misleading, NAV consistently declines (down 42% YTD for MSTY), and covered calls cap upside while dividend payouts fluctuate wildly ($38 to $442). The video warns that high fees (~1%) and principal erosion make these products inferior to owning underlying stock directly, though acknowledges they may suit investors unable to afford 100-share minimum for individual covered calls.",
+  "takeaways": [
+    "Trailing 12-month (TTM) dividend yields are backward-looking and unreliable for projecting future income; YieldMax MSTY dividend history shows wild swings from $0.38 to $4.42 monthly",
+    "NAV (net asset value) constantly erodes; MSTY down 42% over 1 year and 23% YTD while underlying MicroStrategy stock up 121% and 30% respectively",
+    "Covered call ETFs cap upside potential and don't protect against losses\u2014if stock rallies, shares called away at strike",
+    "100 shares required for covered calls costs $37,510 for MicroStrategy stock, pricing out most retail investors from direct covered call writing",
+    "ETF fee structure is ~1% annually, a meaningful drag on net returns",
+    "Dividend payouts change drastically month-to-month, making consistent income projections impossible",
+    "Individual investor goals differ: some prioritize monthly cash flow over principal preservation; others benefit more from capital appreciation of underlying stock"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Avoid high-fee covered call ETFs; instead, focus covered call wheel strategy on lower-priced, high-volatility stocks where 100-share positions are affordable and NAV erosion is not a structural headwind",
+      "evidence": "Kenneth demonstrates that YieldMax ETFs with ~1% fees and structural NAV decay underperform buying stock + selling calls directly. Brian's $50k Premium Desk can allocate to stocks where 100 shares cost $5k\u2013$15k, avoiding the fee drag and principal loss inherent in overleveraged covered call ETFs like MSTY."
+    }
+  ],
+  "id": "wb17wPdxzfg",
+  "title": "Make 139% a year? Too good to be true or \u2026",
+  "duration": 246
+}

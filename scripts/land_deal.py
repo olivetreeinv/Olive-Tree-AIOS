@@ -79,6 +79,7 @@ DEAL_KILLERS = [
     ("slope",      "County GIS elevation layer; ask builder's slope tolerance. Big in hilly NW GA."),
     ("utilities",  "County records: are water/sewer/electric at the street? Well-septic ok?"),
     ("flood",      "FEMA / county GIS: flood zone A or AE = lender/buyer risk."),
+    ("railroad",   "Aerial/GIS: on or abutting an active rail line = noise/vibration; builders pass."),
     ("main-road",  "Check any map: main-road frontage reduces demand from builders and buyers."),
     ("title",      "Title search: open liens, back taxes, heirs/estate issues, break in chain."),
     ("back-taxes", "County tax records: past-due taxes? Cleared at closing, but affects net."),

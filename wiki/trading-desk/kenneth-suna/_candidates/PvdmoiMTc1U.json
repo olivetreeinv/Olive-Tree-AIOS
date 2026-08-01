@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth Suna demonstrates how to sell covered calls for beginners using Rivian as an example, walking through buying 100 shares ($1,218) and immediately selling a weekly call contract to generate premium income (~$16 per week, or 1.5% weekly return). The video covers the mechanics of the trade, including assignment risks, capped upside, downside exposure, and tax implications.",
+  "takeaways": [
+    "Sell weekly contracts for consistent income generation",
+    "Buy 100 shares first (one contract = 100 shares)",
+    "Strike selection: use strikes where assignment occurs if stock closes at or above strike price on expiration",
+    "Premium collected is kept regardless of assignment outcome",
+    "Expect ~1.5% weekly return on capital as realistic for lower-priced stocks like Rivian (~$12)",
+    "Cap profits at strike price (e.g., $12.50 strike = $16 max profit on $1,218 investment)",
+    "Short-term capital gains tax treatment applies to premium; consult accountant on tax reserve requirements"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Scale Rivian covered calls from $16/week example to portfolio level: with 3-4 concurrent positions on lower-priced stocks ($12-15 range), target $50-75/week baseline while building capital for higher-premium positions",
+      "evidence": "Kenneth demonstrates $16/week is achievable on ~$1,200 capital; Brian's $50k desk could run multiple concurrent Rivian-style plays (~$1,200-1,500 each) plus higher-premium names to reach $1,250/mo target ($288/week), filling gaps between higher-premium assignments"
+    }
+  ],
+  "id": "PvdmoiMTc1U",
+  "title": "How to sell covered calls for beginners ",
+  "duration": 285
+}

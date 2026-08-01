@@ -1,0 +1,114 @@
+{
+  "conversation": {
+    "id": "31yXQHvCYkxX08yi5evY",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249932185,
+    "dateUpdated": 1750249932185,
+    "lastMessageDate": 1750249932185,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "NxmmJoqZgB0WdrGIrrZI",
+    "fullName": "Mike Goddard",
+    "contactName": "Mike Goddard",
+    "companyName": null,
+    "email": "mggoddard@ymail.com",
+    "tags": [
+      "friend",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "phone": null,
+    "attributed": null,
+    "profilePhoto": null,
+    "sort": [
+      1750249932185
+    ]
+  },
+  "messages": [
+    {
+      "id": "z0EI3s53NNtunZXBsF4N",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "NxmmJoqZgB0WdrGIrrZI",
+      "conversationId": "31yXQHvCYkxX08yi5evY",
+      "dateAdded": "2025-09-23T14:11:53.546Z",
+      "dateUpdated": "2025-09-23T14:12:56.617Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "2sLFNHHDvBAt6WzCtNYt"
+          ],
+          "direction": "outbound",
+          "subject": "While Others Wait, Smart Money Moves"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "zCalZXXrrNW1CNh0yFpp",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "NxmmJoqZgB0WdrGIrrZI",
+      "conversationId": "31yXQHvCYkxX08yi5evY",
+      "dateAdded": "2025-08-19T14:07:16.423Z",
+      "dateUpdated": "2025-08-19T14:07:16.423Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "G7ReJ5EsZUgzsfOMAjIR"
+          ],
+          "direction": "outbound",
+          "subject": "Why 6.6% rates aren't stopping smart buyers"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "Atbm80Kpq9db8jNhJUIs",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "NxmmJoqZgB0WdrGIrrZI",
+      "conversationId": "31yXQHvCYkxX08yi5evY",
+      "dateAdded": "2025-07-22T14:11:30.355Z",
+      "dateUpdated": "2025-07-22T14:11:43.406Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "Mszj6X3DWJ8EK2nhJZ0C"
+          ],
+          "direction": "outbound",
+          "subject": "Real Estate Tax & Rate Shifts You Can\u2019t Ignore"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "h6Vk3iuW2tq9K3qB9Dg8",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "NxmmJoqZgB0WdrGIrrZI",
+      "conversationId": "31yXQHvCYkxX08yi5evY",
+      "dateAdded": "2025-06-18T12:31:21.147Z",
+      "dateUpdated": "2025-06-18T12:32:12.726Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "Uym51sWDF1ElKyNfRrrZ"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

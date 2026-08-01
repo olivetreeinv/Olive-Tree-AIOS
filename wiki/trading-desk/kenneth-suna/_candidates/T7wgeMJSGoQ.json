@@ -1,0 +1,23 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "cash-secured-puts",
+  "summary": "Kenneth Suna demonstrates the risks of selling cash-secured puts into earnings using a HIMS trade that went against him. He illustrates the decision framework when assignment is at risk: either buy back the contract and exit for a loss, or hold for assignment at the original strike price.",
+  "takeaways": [
+    "Never trade into earnings volatility\u2014too risky and unpredictable",
+    "When selling cash-secured puts, you must reserve the full strike price \u00d7 shares in cash (e.g., $17,100 for 300 shares at $57 strike)",
+    "If assigned, you're forced to buy at strike price regardless of current market price\u2014if HIMS is $51 but you sold $57 puts, you buy at $57",
+    "Buying back an options contract to exit early locks in losses but may be worth it if conviction changes or downside risk is severe",
+    "Assignment losses can exceed premium collected\u2014he collected $814 but could lose $17,100 in capital if assigned and stock continues falling",
+    "The wheel strategy (covered calls + cash-secured puts) is not risk-free and experienced traders make mistakes trading into earnings"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Skip Premium Desk income targets during earnings week\u2014pause selling covered calls or cash-secured puts to preserve capital and avoid forced assignment/buyback losses",
+      "evidence": "Kenneth explicitly states: 'I probably shouldn't have done this. I probably just should have sat out this week' and demonstrates how trading HIMS into earnings created $786+ realized loss scenario and potential $17,100 assignment loss, directly undermining the consistent $1,250/month premium goal for safety."
+    }
+  ],
+  "id": "T7wgeMJSGoQ",
+  "title": "I made a huge covered call mistake! Read the description for more",
+  "duration": 358
+}

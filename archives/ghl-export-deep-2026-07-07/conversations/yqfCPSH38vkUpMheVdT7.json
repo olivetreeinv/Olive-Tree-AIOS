@@ -1,0 +1,86 @@
+{
+  "conversation": {
+    "id": "yqfCPSH38vkUpMheVdT7",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906035426,
+    "dateUpdated": 1783364607064,
+    "lastMessageDate": 1783364607059,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Gavin, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906036689,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "oarXOPDd0GPPIQkHZalF",
+    "fullName": "Gavin Rosenblum",
+    "contactName": "Gavin Rosenblum",
+    "companyName": null,
+    "phone": "+16784519545",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "profilePhoto": null,
+    "attributed": null,
+    "email": null,
+    "sort": [
+      1783364607059
+    ]
+  },
+  "messages": [
+    {
+      "id": "MzL96Rv5O2imBYCKX90I",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Gavin, a copy of the pitch deck has been sent to your email.",
+      "contactId": "oarXOPDd0GPPIQkHZalF",
+      "contentType": "text/plain",
+      "conversationId": "yqfCPSH38vkUpMheVdT7",
+      "dateAdded": "2026-07-06T19:03:25.553Z",
+      "dateUpdated": "2026-07-06T19:03:33.482Z",
+      "source": "workflow",
+      "altId": "SMd00371138a40ed5210468d29ccbe5a21",
+      "from": "+16789712411",
+      "to": "+16784519545",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "T5H6XFNGWQnyjyTHoRCV",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Gavin, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "oarXOPDd0GPPIQkHZalF",
+      "contentType": "text/plain",
+      "conversationId": "yqfCPSH38vkUpMheVdT7",
+      "dateAdded": "2026-06-19T21:53:55.729Z",
+      "dateUpdated": "2026-06-19T21:53:57.390Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+16784519545",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

@@ -93,7 +93,7 @@ class CallbackHandler(http.server.BaseHTTPRequestHandler):
             },
         )
         try:
-            with urllib.request.urlopen(req) as resp:
+            with urllib.request.urlopen(req, timeout=30) as resp:
                 tokens = json.loads(resp.read())
         except urllib.error.HTTPError as e:
             err = e.read().decode()
@@ -140,10 +140,18 @@ def main():
         print("Timed out or failed — no tokens captured.")
         return
 
+    # Keep the refresh token out of terminal scrollback — write it to a 0600 file.
+    out = pathlib.Path(__file__).parent.parent / ".qb_tokens"
+    out.write_text(
+        f"QUICKBOOKS_REFRESH_TOKEN={result['refresh_token']}\n"
+        f"QUICKBOOKS_REALM_ID={result['realm_id']}\n"
+    )
+    out.chmod(0o600)
+    tok = result["refresh_token"] or ""
     print("\n--- PRODUCTION TOKENS ---")
-    print(f"QUICKBOOKS_REFRESH_TOKEN={result['refresh_token']}")
+    print(f"QUICKBOOKS_REFRESH_TOKEN={tok[:6]}…{tok[-4:]} (full value in {out.name})")
     print(f"QUICKBOOKS_REALM_ID={result['realm_id']}")
-    print("\nPaste these into .mcp.json and set QUICKBOOKS_ENVIRONMENT=production")
+    print(f"\nFull tokens saved to {out} — paste into .mcp.json, set QUICKBOOKS_ENVIRONMENT=production, then delete the file.")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,106 @@
+{
+  "conversation": {
+    "id": "qnriShSBv5JJNMfZ9bqD",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781905828211,
+    "dateUpdated": 1782054705982,
+    "lastMessageDate": 1782054705954,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Stop",
+    "lastOutboundMessageAction": "manual",
+    "lastMessageDirection": "inbound",
+    "inbox": true,
+    "unreadCount": 1,
+    "lastManualMessageDate": 1782054705954,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "Uu8IhAGTdrvMwC33RXof",
+    "fullName": "Todd",
+    "contactName": "Todd",
+    "companyName": "Home River Prop Mgr",
+    "phone": "+17708236276",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "profilePhoto": null,
+    "email": null,
+    "sort": [
+      1782054705954
+    ]
+  },
+  "messages": [
+    {
+      "id": "dBHzd7iltT6wijA7WxS8",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "Uu8IhAGTdrvMwC33RXof",
+      "conversationId": "qnriShSBv5JJNMfZ9bqD",
+      "dateAdded": "2026-06-21T15:11:47.487Z",
+      "dateUpdated": "2026-06-21T15:11:47.487Z",
+      "from": "+17708236276",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "RCS",
+            "SMS"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "OWxIFCKPjgMcEcdbrULQ",
+      "direction": "inbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Stop",
+      "contactId": "Uu8IhAGTdrvMwC33RXof",
+      "contentType": "text/plain",
+      "conversationId": "qnriShSBv5JJNMfZ9bqD",
+      "dateAdded": "2026-06-21T15:11:46.030Z",
+      "dateUpdated": "2026-06-21T15:11:46.030Z",
+      "altId": "SM20b658447af086ac90664c2e2043cdc6",
+      "from": "+17708236276",
+      "to": "+16789712411",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "02BRJDmU3xpzfpuFCzEQ",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Todd, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "Uu8IhAGTdrvMwC33RXof",
+      "contentType": "text/plain",
+      "conversationId": "qnriShSBv5JJNMfZ9bqD",
+      "dateAdded": "2026-06-19T21:50:28.492Z",
+      "dateUpdated": "2026-06-19T21:50:33.644Z",
+      "source": "app",
+      "altId": "SMdbbd8518d63f2f84f6aea7967be0493f",
+      "from": "+16789712411",
+      "to": "+17708236276",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

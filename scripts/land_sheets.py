@@ -75,4 +75,47 @@ def upsert_row(token, tab, key_col_index, key_value, row):
     return "appended"
 
 
-__all__ = ["get_token", "sheet_id", "read_rows", "append_rows", "upsert_row"]
+def bulk_upsert(token, tab, key_col_index, items):
+    """
+    Upsert many rows in one pass: reads the tab once, then issues one
+    values.batchUpdate for existing-row overwrites and one append for new
+    rows. Use this instead of looping upsert_row() over N items — that
+    pattern re-reads the whole tab (A1:Z100000) before every single row.
+
+    items: list of (key_value, row) tuples. Returns {"updated": n, "appended": n}.
+    """
+    existing = read_rows(token, tab)
+    key_to_row_idx = {}
+    for i, r in enumerate(existing):
+        if i == 0:
+            continue  # header
+        if len(r) > key_col_index:
+            key_to_row_idx[r[key_col_index]] = i
+
+    data = []
+    to_append = []
+    pending_idx = {}  # key_value -> index in to_append, dedupes new keys within this batch
+    for key_value, row in items:
+        key_str = str(key_value)
+        if key_str in key_to_row_idx:
+            # range lives in the JSON body here, not the URL path — no quoting
+            data.append({"range": f"{tab}!A{key_to_row_idx[key_str] + 1}", "values": [row]})
+        elif key_str in pending_idx:
+            to_append[pending_idx[key_str]] = row
+        else:
+            pending_idx[key_str] = len(to_append)
+            to_append.append(row)
+
+    if data:
+        r = requests.post(
+            f"{SHEETS_BASE}/{sheet_id()}/values:batchUpdate",
+            headers=_headers(token),
+            json={"valueInputOption": "RAW", "data": data}, timeout=30)
+        r.raise_for_status()
+    if to_append:
+        append_rows(token, tab, to_append)
+
+    return {"updated": len(data), "appended": len(to_append)}
+
+
+__all__ = ["get_token", "sheet_id", "read_rows", "append_rows", "upsert_row", "bulk_upsert"]

@@ -1,0 +1,23 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "cash-secured-puts",
+  "summary": "Kenneth argues that cash-secured puts don't always make sense as part of the wheel strategy, using Joby Aviation as a case study where poor premium-to-capital-ratio and unfavorable risk/reward profiles make alternative capital deployment more efficient for income generation.",
+  "takeaways": [
+    "Don't sell cash-secured puts when premium-to-capital ratio is poor (e.g., $3,600 capital for $10-20 premium)",
+    "Use Fibonacci retracements to identify potential downside targets before committing to cash-secured puts",
+    "If selling 2 cash-secured puts at a strike yields only $90 premium on $3,600 capital, redeploy that capital to covered calls on higher-premium opportunities",
+    "Avoid cash-secured puts on stocks with massive runups (high volatility/retracement risk) when premium doesn't justify the capital lockup",
+    "Time the market: wait for stocks to drop to Fibonacci support levels, then buy shares and sell covered calls instead of selling puts preemptively",
+    "Premium threshold rule: $90 on $3,600 (2.5% return) is not a good use of capital\u2014seek higher-return opportunities"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Add capital-efficiency filter: require minimum 3%+ monthly return (in line with $1,250/mo target on $50k = 2.5%) before deploying capital to cash-secured puts; otherwise redeploy to covered calls on stocks in Fibonacci support zones",
+      "evidence": "Kenneth explicitly rejected $90 premium on $3,600 capital (2.5% return) for JOBY and showed buying at $15.51 support + selling Friday covered calls yields 'way more money' than pre-assigned puts"
+    }
+  ],
+  "id": "7UFks7QD7mc",
+  "title": "Why cash secured puts aren\u2019t always an option ",
+  "duration": 258
+}

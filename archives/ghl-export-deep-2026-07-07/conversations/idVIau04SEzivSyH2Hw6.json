@@ -1,0 +1,56 @@
+{
+  "conversation": {
+    "id": "idVIau04SEzivSyH2Hw6",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364294738,
+    "dateUpdated": 1783364295473,
+    "lastMessageDate": 1783364295459,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Joe, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "j9IMvVtOmGTVqmScNh69",
+    "fullName": "Joe 18 Cassville Rd",
+    "contactName": "Joe 18 Cassville Rd",
+    "companyName": null,
+    "phone": "+14048678122",
+    "tags": [
+      "retail seller",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364295459
+    ]
+  },
+  "messages": [
+    {
+      "id": "0pYHKIx5VCOqU9rYOXdm",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Joe, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "j9IMvVtOmGTVqmScNh69",
+      "contentType": "text/plain",
+      "conversationId": "idVIau04SEzivSyH2Hw6",
+      "dateAdded": "2026-07-06T18:58:14.782Z",
+      "dateUpdated": "2026-07-06T18:58:18.268Z",
+      "source": "workflow",
+      "altId": "SMd08654110bec75df270f89d44831dc6f",
+      "from": "+16789712411",
+      "to": "+14048678122",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

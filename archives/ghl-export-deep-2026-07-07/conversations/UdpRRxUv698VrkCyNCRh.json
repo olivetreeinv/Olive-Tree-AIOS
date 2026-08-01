@@ -1,0 +1,140 @@
+{
+  "conversation": {
+    "id": "UdpRRxUv698VrkCyNCRh",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781905932632,
+    "dateUpdated": 1783365287788,
+    "lastMessageDate": 1783365287777,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Hi Sean, This is Brian Norton. These days, I'm in the apartment syndication game. I buy apartments with investors, and they get a return. --I use this number to send out the deals. If you know someone who might be interested. Let them know! --Take a look and let me know what you think about the presentation... I worked hard on that bad boy :D",
+    "lastOutboundMessageAction": "manual",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1783365287777,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "OkeGvzvRtOriqzdN7HSw",
+    "fullName": "Sean Rosekrans",
+    "contactName": "Sean Rosekrans",
+    "companyName": "PAINTER",
+    "phone": "+14043045976",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783365287777
+    ]
+  },
+  "messages": [
+    {
+      "id": "C1RbZ5hyT6agl3wSWE9d",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hi Sean, This is Brian Norton. These days, I'm in the apartment syndication game. I buy apartments with investors, and they get a return. --I use this number to send out the deals. If you know someone who might be interested. Let them know! --Take a look and let me know what you think about the presentation... I worked hard on that bad boy :D",
+      "contactId": "OkeGvzvRtOriqzdN7HSw",
+      "contentType": "text/plain",
+      "conversationId": "UdpRRxUv698VrkCyNCRh",
+      "dateAdded": "2026-07-06T19:14:47.123Z",
+      "dateUpdated": "2026-07-06T19:14:48.202Z",
+      "userId": "2DmTJ7IvCjSM8ql83oiZ",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+14043045976",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "uQwcZpZx6LbnVhtGvplU",
+      "direction": "inbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Who is this",
+      "contactId": "OkeGvzvRtOriqzdN7HSw",
+      "contentType": "text/plain",
+      "conversationId": "UdpRRxUv698VrkCyNCRh",
+      "dateAdded": "2026-07-06T19:06:47.642Z",
+      "dateUpdated": "2026-07-06T19:06:47.642Z",
+      "altId": "SM21580c60bf7cbd90b19931f26edca06b",
+      "from": "+14043045976",
+      "to": "+16789712411",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "edaNwUJS4OJ7HN28ZUtF",
+      "direction": "inbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "?",
+      "contactId": "OkeGvzvRtOriqzdN7HSw",
+      "contentType": "text/plain",
+      "conversationId": "UdpRRxUv698VrkCyNCRh",
+      "dateAdded": "2026-07-06T19:06:34.620Z",
+      "dateUpdated": "2026-07-06T19:06:34.620Z",
+      "altId": "SM88827affdcae4421531dd85a7136a3ec",
+      "from": "+14043045976",
+      "to": "+16789712411",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "1s3q9RPTtHwuw3M6snnM",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Sean, a copy of the pitch deck has been sent to your email.",
+      "contactId": "OkeGvzvRtOriqzdN7HSw",
+      "contentType": "text/plain",
+      "conversationId": "UdpRRxUv698VrkCyNCRh",
+      "dateAdded": "2026-07-06T19:00:26.157Z",
+      "dateUpdated": "2026-07-06T19:00:31.319Z",
+      "source": "workflow",
+      "altId": "SM8d54e0da3f3c4ddff40cc2ddaa9e483d",
+      "from": "+16789712411",
+      "to": "+14043045976",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "T0cdWLwAFhAQbpI0ywLk",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Sean, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "OkeGvzvRtOriqzdN7HSw",
+      "contentType": "text/plain",
+      "conversationId": "UdpRRxUv698VrkCyNCRh",
+      "dateAdded": "2026-06-19T21:52:12.857Z",
+      "dateUpdated": "2026-06-19T21:52:17.003Z",
+      "source": "app",
+      "altId": "SM9c4646a491597c1900ed96b401908bea",
+      "from": "+16789712411",
+      "to": "+14043045976",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

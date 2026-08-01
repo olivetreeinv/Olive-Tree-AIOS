@@ -84,6 +84,26 @@ Env overrides:
 This satisfies the standing rule in memory: *always Codex-review new/edited
 scripts for speed, efficiency, and Python best practices before closing.*
 
+**Enforcement (added 2026-07-07):** `scripts/heartbeat.py` flags any
+`scripts/*.py` modified after the newest `.codex-review/*.md` report, so
+missed reviews surface in the daily 7:45am heartbeat instead of rotting.
+
+**Repo context:** `AGENTS.md` at the repo root carries the review guidelines
+(financial-calc rules, send/delete flags, domain rules). Codex reads it
+automatically in review contexts — CLI, the Claude Code plugin, or GitHub.
+
+**Optional upgrade:** OpenAI's official Claude Code plugin
+([openai/codex-plugin-cc](https://github.com/openai/codex-plugin-cc)) adds
+`/codex:review` and `/codex:adversarial-review` inside Claude Code — findings
+land directly in Claude's context, no markdown handoff. Install (uses the
+existing ChatGPT auth):
+
+```
+/plugin marketplace add openai/codex-plugin-cc
+/plugin install codex@openai-codex
+/codex:setup
+```
+
 ---
 
 ## Review criteria (baked into the wrapper)

@@ -1,0 +1,10 @@
+{
+  "success": true,
+  "statusCode": 200,
+  "message": "Fetched Accounts",
+  "results": {
+    "accounts": [],
+    "groups": []
+  },
+  "traceId": "b48aecff-8155-4f38-b9eb-dc94cf470b1c"
+}

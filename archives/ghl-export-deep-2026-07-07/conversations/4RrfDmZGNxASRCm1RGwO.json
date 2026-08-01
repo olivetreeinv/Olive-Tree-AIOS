@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "4RrfDmZGNxASRCm1RGwO",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781905817661,
+    "dateUpdated": 1783364198371,
+    "lastMessageDate": 1783364198367,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Tom, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781905819070,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "zoGmimrExzbFhJr8VbRM",
+    "fullName": "Tom Eaton",
+    "contactName": "Tom Eaton",
+    "companyName": "Next Door Neighbor (Dog: Ray)",
+    "phone": "+17702988302",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364198367
+    ]
+  },
+  "messages": [
+    {
+      "id": "EIMVODdg9vIRuavz4wvP",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Tom, a copy of the pitch deck has been sent to your email.",
+      "contactId": "zoGmimrExzbFhJr8VbRM",
+      "contentType": "text/plain",
+      "conversationId": "4RrfDmZGNxASRCm1RGwO",
+      "dateAdded": "2026-07-06T18:56:37.729Z",
+      "dateUpdated": "2026-07-06T18:56:40.219Z",
+      "source": "workflow",
+      "altId": "SM8a7796525e86a768e1c77710362a9f0e",
+      "from": "+16789712411",
+      "to": "+17702988302",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "Wk5aNgwy5JwQaWrmXCHS",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Tom, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "zoGmimrExzbFhJr8VbRM",
+      "contentType": "text/plain",
+      "conversationId": "4RrfDmZGNxASRCm1RGwO",
+      "dateAdded": "2026-06-19T21:50:18.385Z",
+      "dateUpdated": "2026-06-19T21:50:22.448Z",
+      "source": "app",
+      "altId": "SM8ac0cb6a6bb16ce01746985849b5c80b",
+      "from": "+16789712411",
+      "to": "+17702988302",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

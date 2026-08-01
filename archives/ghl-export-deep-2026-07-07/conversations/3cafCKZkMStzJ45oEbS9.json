@@ -1,0 +1,54 @@
+{
+  "conversation": {
+    "id": "3cafCKZkMStzJ45oEbS9",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249879580,
+    "dateUpdated": 1750249879580,
+    "lastMessageDate": 1750249879580,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "1CriabfrK1FRboIflXYX",
+    "fullName": "Jean King",
+    "contactName": "Jean King",
+    "companyName": null,
+    "email": "wefourkings4@aol.com",
+    "tags": [
+      "friend",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "phone": null,
+    "attributed": null,
+    "profilePhoto": null,
+    "sort": [
+      1750249879580
+    ]
+  },
+  "messages": [
+    {
+      "id": "ese7r7JHhfESHjfvnfQ1",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "1CriabfrK1FRboIflXYX",
+      "conversationId": "3cafCKZkMStzJ45oEbS9",
+      "dateAdded": "2025-06-18T12:31:01.099Z",
+      "dateUpdated": "2025-06-18T12:33:34.934Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "JaJ1zn4rOZX5UuPLPr7c"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

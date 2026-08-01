@@ -1,0 +1,34 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth explains his covered call strategy on HIMS stock, buying additional 100-share lots to protect long-term positions from assignment while selling weekly calls. He details the LIFO vs FIFO lot selection method on Charles Schwab to ensure newer positions get called away instead of profitable older positions.",
+  "takeaways": [
+    "Sell covered calls one strike price out of the money to cap upside but generate premium",
+    "Use LIFO (Last In First Out) lot selection instead of default FIFO to protect oldest, most profitable positions from assignment",
+    "Expects $170/week per covered call contract on HIMS in current high-volatility environment (~$600-700/month potential)",
+    "If assigned, repurchase shares immediately and resume weekly covered call selling on same stock",
+    "Recognize covered call upside is capped at strike price; if stock rallies above strike, shares are called away at that level",
+    "Monitor volatility: premium generation ($170/week) depends on high volatility; when volatility drops, premiums may fall to $50/week or less",
+    "Can buy back options contract early if stock skyrockets to avoid unwanted assignment, though may incur loss on the contract"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Implement LIFO lot selection method across all covered call positions to protect high-conviction, high-profit holdings from forced assignment",
+      "evidence": "Kenneth demonstrates Charles Schwab profile > cost basis method setup to change default to LIFO, explicitly stating he avoids FIFO because his oldest 180% profit position would otherwise be called away first"
+    },
+    {
+      "strategy": "trading-desk",
+      "change": "Establish volatility threshold rule: pause or reduce covered call frequency when implied volatility drops below threshold where weekly premium falls below target ($170+ per contract)",
+      "evidence": "Kenneth notes strategy 'might not work anymore' when volatility cools, with premiums potentially dropping from $170 to $50/week, suggesting a volatility-dependent on/off switch should guide position sizing"
+    },
+    {
+      "strategy": "trading-desk",
+      "change": "Use one-strike-out-of-the-money call sales as standard rule rather than at-the-money to consistently generate premium while retaining shares below strike",
+      "evidence": "Kenneth demonstrates selling $57 calls when stock at $56, netting $170 premium while keeping shares if stock stays below $57, and planning to roll to $58 weekly if assigned"
+    }
+  ],
+  "id": "m-c_EHk1tok",
+  "title": "PART 1 Why did I buy ANOTHER 100 shares of HIMS? Also: LIFO and FIFO explained",
+  "duration": 323
+}

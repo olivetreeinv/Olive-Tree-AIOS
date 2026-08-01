@@ -1,0 +1,97 @@
+{
+  "conversation": {
+    "id": "Z7x0je2OA0vxmjzV8PLM",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249903169,
+    "dateUpdated": 1750249903169,
+    "lastMessageDate": 1750249903169,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "IkCqarJCaIEpVTou4XD7",
+    "fullName": "John Gillis",
+    "contactName": "John Gillis",
+    "companyName": "PT Solutions",
+    "email": "jonathan.gillis@ptsolutions.com",
+    "tags": [
+      "friend",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "phone": null,
+    "attributed": null,
+    "profilePhoto": null,
+    "sort": [
+      1750249903169
+    ]
+  },
+  "messages": [
+    {
+      "id": "jLRtlauzr9tl9W9EgG2Z",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "IkCqarJCaIEpVTou4XD7",
+      "conversationId": "Z7x0je2OA0vxmjzV8PLM",
+      "dateAdded": "2025-07-22T14:16:09.884Z",
+      "dateUpdated": "2025-07-22T14:16:09.897Z",
+      "from": "John Gillis",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "Email"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "3Q0YwxWGepga0mcRd5Jm",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "IkCqarJCaIEpVTou4XD7",
+      "conversationId": "Z7x0je2OA0vxmjzV8PLM",
+      "dateAdded": "2025-07-22T14:10:31.009Z",
+      "dateUpdated": "2025-07-22T14:10:42.800Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "olPECdfn7ez3MoPW0s1K"
+          ],
+          "direction": "outbound",
+          "subject": "Real Estate Tax & Rate Shifts You Can\u2019t Ignore"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "xzIaYfU53U6ns15G2TFc",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "IkCqarJCaIEpVTou4XD7",
+      "conversationId": "Z7x0je2OA0vxmjzV8PLM",
+      "dateAdded": "2025-06-18T12:31:05.890Z",
+      "dateUpdated": "2025-06-18T12:31:43.683Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "TyzrgpSrUPBI3wNbejxX"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

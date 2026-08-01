@@ -1,0 +1,102 @@
+{
+  "conversation": {
+    "id": "7RdOcNJtXiqulTpn8D2U",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781905838338,
+    "dateUpdated": 1783371109971,
+    "lastMessageDate": 1783371109946,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "?",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "inbound",
+    "inbox": true,
+    "unreadCount": 1,
+    "lastManualMessageDate": 1783371109946,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "abVas77VpKklYwxxPFx1",
+    "fullName": "Jordan Randell",
+    "contactName": "Jordan Randell",
+    "companyName": "Blancco",
+    "phone": "+14085408450",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783371109946
+    ]
+  },
+  "messages": [
+    {
+      "id": "SMW3wh9Xh1fs0TxV6Qb5",
+      "direction": "inbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "?",
+      "contactId": "abVas77VpKklYwxxPFx1",
+      "contentType": "text/plain",
+      "conversationId": "7RdOcNJtXiqulTpn8D2U",
+      "dateAdded": "2026-07-06T20:51:50.027Z",
+      "dateUpdated": "2026-07-06T20:51:50.027Z",
+      "altId": "SM4e8383241caf42ad15dadca734b80479",
+      "from": "+14085408450",
+      "to": "+16789712411",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "LDyCnrQw8V2UzFpr4J1H",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Jordan, a copy of the pitch deck has been sent to your email.",
+      "contactId": "abVas77VpKklYwxxPFx1",
+      "contentType": "text/plain",
+      "conversationId": "7RdOcNJtXiqulTpn8D2U",
+      "dateAdded": "2026-07-06T18:57:16.923Z",
+      "dateUpdated": "2026-07-06T18:57:21.594Z",
+      "source": "workflow",
+      "altId": "SM5bf918d81cf642294d125629ec89e855",
+      "from": "+16789712411",
+      "to": "+14085408450",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "UZSeRqfksO0Kv087g2XO",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Jordan, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "abVas77VpKklYwxxPFx1",
+      "contentType": "text/plain",
+      "conversationId": "7RdOcNJtXiqulTpn8D2U",
+      "dateAdded": "2026-06-19T21:50:38.623Z",
+      "dateUpdated": "2026-06-19T21:50:43.776Z",
+      "source": "app",
+      "altId": "SMcdfa423bcb06668c3d6281d6f8f8a414",
+      "from": "+16789712411",
+      "to": "+14085408450",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

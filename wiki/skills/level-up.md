@@ -2,11 +2,13 @@
 type: skill
 name: level-up
 trigger: /level-up
-status: active
+status: retired
 ---
 
 ## What it does
-Weekly [removed framework] interview to find and ship one new automation. Walks Mindset (find the candidate) → Method (scope it) → Machine (build it). One run = one shipped artifact.
+**RETIRED 2026-07-07** — absorbed into [[skills/usage-audit]]: the scope check (eliminate-first, lowest autonomy, ship boring, tie to a KPI) now runs inside the monthly audit's Step 2.5. Skill file archived at `archives/skills/level-up/`.
+
+Was a weekly interview to find and ship one new automation. Retired; only the four scope-check filters survive, inside usage-audit.
 
 ## Trigger phrases
 - `/level-up`
@@ -25,7 +27,6 @@ Weekly [removed framework] interview to find and ship one new automation. Walks 
 - `context/priorities.md` — what matters
 - `context/about-me.md` — top pain, role
 - `connections.md` — what's reachable
-- `references/removed-framework.md` — the framework
 - `decisions/log.md` — what's already shipped
 - `.claude/skills/*/SKILL.md` frontmatter — existing capabilities
 - `audits/audit-{date}.md` — recent audit results
@@ -37,4 +38,3 @@ One shipped artifact: a new script, skill, hook, or automation.
 - **Not `/audit`** — audit is structural, level-up is functional. Run audit first if structure is messy.
 - First run: Day 14 (after ≥1 MCP connected and audit run once).
 - Cadence: weekly, Friday afternoon. Review the week, surface one automation, ship Monday.
-- Framework: *The [removed framework] — trademark of [removed]. © 2026.*

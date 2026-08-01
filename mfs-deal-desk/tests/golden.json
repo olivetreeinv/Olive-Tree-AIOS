@@ -1,0 +1,423 @@
+{
+ "buy_box": {
+  "30341": {
+   "market": "Chamblee, GA",
+   "ppu_min": 90000,
+   "ppu_max": 140000
+  },
+  "30080": {
+   "market": "Smyrna, GA",
+   "ppu_min": 110000,
+   "ppu_max": 160000
+  },
+  "30005": {
+   "market": "Alpharetta, GA",
+   "ppu_min": 140000,
+   "ppu_max": 250000
+  },
+  "37207": {
+   "market": "North Nashville, TN",
+   "ppu_min": 0,
+   "ppu_max": 999999
+  },
+  "37115": {
+   "market": "Madison, TN",
+   "ppu_min": 0,
+   "ppu_max": 999999
+  },
+  "37408": {
+   "market": "Chattanooga Southside, TN",
+   "ppu_min": 0,
+   "ppu_max": 999999
+  },
+  "35801": {
+   "market": "Huntsville Core, AL",
+   "ppu_min": 0,
+   "ppu_max": 999999
+  },
+  "35205": {
+   "market": "Birmingham Urban, AL",
+   "ppu_min": 0,
+   "ppu_max": 999999
+  },
+  "35806": {
+   "market": "Huntsville Growth, AL",
+   "ppu_min": 0,
+   "ppu_max": 999999
+  },
+  "37087": {
+   "market": "Lebanon, TN",
+   "ppu_min": 0,
+   "ppu_max": 999999
+  },
+  "37918": {
+   "market": "Knoxville, TN",
+   "ppu_min": 0,
+   "ppu_max": 999999
+  },
+  "37804": {
+   "market": "Maryville, TN",
+   "ppu_min": 0,
+   "ppu_max": 999999
+  },
+  "37615": {
+   "market": "Johnson City, TN",
+   "ppu_min": 0,
+   "ppu_max": 999999
+  }
+ },
+ "thresholds": {
+  "coc_yr3": 0.06,
+  "irr": 0.16,
+  "equity_multiple": 1.8,
+  "dscr": 1.25,
+  "rule_75_pct": 0.75,
+  "min_units": 5
+ },
+ "deals": {
+  "maple_terrace": {
+   "inputs": {
+    "asking": 2800000,
+    "units": 24,
+    "zip": "30341",
+    "repair": 240000,
+    "current_gpr": 22000,
+    "market_gpr": 26000,
+    "current_opex": 11000,
+    "vintage": 1975
+   },
+   "metrics": {
+    "asking": 2800000,
+    "offer": 2800000,
+    "units": 24,
+    "ppu": 116666.66666666667,
+    "repair": 240000,
+    "all_in": 3208000.0,
+    "loan_amount": 1959999.9999999998,
+    "equity_invested": 1248000.0,
+    "annual_debt_svc": 132300.0,
+    "io_pmt_annual": 132300.0,
+    "pi_pmt_annual": 162502.3907300146,
+    "current_noi": 105600.0,
+    "stabilized_noi": 105600.0,
+    "entry_cap": 3.7714285714285714,
+    "exit_cap": 4.271428571428571,
+    "stabilized_value": 2472240.8026755853,
+    "sale_price": 3987055.032706355,
+    "loan_at_sale": 1821751.8961798209,
+    "net_sale_proceeds": 1965950.3848912162,
+    "annual_noi": [
+     105600.0,
+     146160.0,
+     151891.2,
+     157821.26399999997,
+     163956.69648,
+     170304.20782560002
+    ],
+    "annual_cf": [
+     -26700.0,
+     13860.0,
+     -10611.190730014583,
+     -4681.126730014628,
+     1454.3057499854185,
+     7801.817095585429
+    ],
+    "annual_ds": [
+     132300.0,
+     132300.0,
+     162502.3907300146,
+     162502.3907300146,
+     162502.3907300146,
+     162502.3907300146
+    ],
+    "levered_cfs": [
+     -1248000.0,
+     -26700.0,
+     13860.0,
+     -10611.190730014583,
+     -4681.126730014628,
+     1454.3057499854185,
+     1973752.2019868016
+    ],
+    "dscr": 0.6498365933301645,
+    "dscr_io": 0.7981859410430839,
+    "dscr_amortized": 0.6498365933301645,
+    "coc_yr1": -0.02139423076923077,
+    "coc_yr3": -0.008502556674691172,
+    "equity_multiple": 1.5601556011832995,
+    "irr_estimate": 0.07599375567742402,
+    "rule_75_ratio": 1.297608225108225,
+    "rule_75_pass": false,
+    "rule_1pct_ratio": 0.007857142857142856,
+    "rule_1pct_pass": false,
+    "rule_10x_noi": 26.515151515151516,
+    "rule_10x_pass": false,
+    "ppu_in_range": true,
+    "yr1_gpr": 264000,
+    "yr2_gpr": 312000,
+    "vintage": 1975,
+    "vacancy_pct": 0.1,
+    "expense_ratio": 0.5555555555555556,
+    "ltv": 0.7,
+    "loan_rate": 0.0675,
+    "amort_years": 25,
+    "io_years": 2,
+    "go_price": 1455633.9690595686,
+    "go_price_sweep": [
+     {
+      "rate": 0.0675,
+      "price": 1455633.9690595686
+     },
+     {
+      "rate": 0.0575,
+      "price": 1598639.4063728116
+     },
+     {
+      "rate": 0.0625,
+      "price": 1524573.2464998146
+     }
+    ]
+   },
+   "rec": "PASS",
+   "passes": [],
+   "fails": [
+    "DSCR: 65.0% (threshold: 1.25x)",
+    "Cash-on-Cash Yr3: -0.9% (threshold: 6.0%)",
+    "IRR (est.): 7.6% (threshold: 16.0%)",
+    "Equity Multiple: 1.56x (threshold: 1.80x)",
+    "75% Rule: 129.8% all-in/stabilized (threshold: <75%)",
+    "1% Rule: 0.786% rent/PPU (threshold: \u22651%)"
+   ],
+   "warnings": [
+    "10x NOI Rule: 26.5x offer/NOI (threshold: \u226410x)",
+    "Expense ratio 55.6% above MFS band 45%-55% for vintage 1975 \u2014 verify opex assumptions"
+   ]
+  },
+  "open_market": {
+   "inputs": {
+    "asking": 1850000,
+    "units": 18,
+    "zip": "37207",
+    "current_gpr": 17000,
+    "entry_cap": 5.5,
+    "exit_cap": 6.0
+   },
+   "metrics": {
+    "asking": 1850000,
+    "offer": 1850000,
+    "units": 18,
+    "ppu": 102777.77777777778,
+    "repair": 0,
+    "all_in": 1961000.0,
+    "loan_amount": 1295000.0,
+    "equity_invested": 666000.0000000001,
+    "annual_debt_svc": 87412.5,
+    "io_pmt_annual": 87412.5,
+    "pi_pmt_annual": 107367.65101804538,
+    "current_noi": null,
+    "stabilized_noi": 106488.0,
+    "entry_cap": 5.5,
+    "exit_cap": 6.0,
+    "stabilized_value": 1774800.0,
+    "sale_price": 2025092.3103273602,
+    "loan_at_sale": 1203657.5028330958,
+    "net_sale_proceeds": 720180.1919778963,
+    "annual_noi": [
+     106488.0,
+     104945.76,
+     108880.6752,
+     112949.36870399998,
+     117156.16847808001,
+     121505.53861964161
+    ],
+    "annual_cf": [
+     19075.5,
+     17533.259999999995,
+     1513.0241819546209,
+     5581.717685954602,
+     9788.517460034636,
+     14137.88760159623
+    ],
+    "annual_ds": [
+     87412.5,
+     87412.5,
+     107367.65101804538,
+     107367.65101804538,
+     107367.65101804538,
+     107367.65101804538
+    ],
+    "levered_cfs": [
+     -666000.0000000001,
+     19075.5,
+     17533.259999999995,
+     1513.0241819546209,
+     5581.717685954602,
+     9788.517460034636,
+     734318.0795794924
+    ],
+    "dscr": 0.9918071131322642,
+    "dscr_io": 1.2182239382239382,
+    "dscr_amortized": 0.9918071131322642,
+    "coc_yr1": 0.028641891891891886,
+    "coc_yr3": 0.002271808081012944,
+    "equity_multiple": 1.1828980464075618,
+    "irr_estimate": 0.02967954772335389,
+    "rule_75_ratio": 1.10491322965968,
+    "rule_75_pass": false,
+    "rule_1pct_ratio": 0.009189189189189189,
+    "rule_1pct_pass": false,
+    "rule_10x_noi": null,
+    "rule_10x_pass": null,
+    "ppu_in_range": true,
+    "yr1_gpr": 204000,
+    "yr2_gpr": 204000,
+    "vintage": null,
+    "vacancy_pct": 0.1,
+    "expense_ratio": 0.42,
+    "ltv": 0.7,
+    "loan_rate": 0.0675,
+    "amort_years": 25,
+    "io_years": 2,
+    "go_price": 1467874.5274357512,
+    "go_price_sweep": [
+     {
+      "rate": 0.0675,
+      "price": 1467874.5274357512
+     },
+     {
+      "rate": 0.0575,
+      "price": 1612082.510471856
+     },
+     {
+      "rate": 0.0625,
+      "price": 1537393.5215271993
+     }
+    ]
+   },
+   "rec": "PASS",
+   "passes": [],
+   "fails": [
+    "DSCR: 99.2% (threshold: 1.25x)",
+    "Cash-on-Cash Yr3: 0.2% (threshold: 6.0%)",
+    "IRR (est.): 3.0% (threshold: 16.0%)",
+    "Equity Multiple: 1.18x (threshold: 1.80x)",
+    "75% Rule: 110.5% all-in/stabilized (threshold: <75%)",
+    "1% Rule: 0.919% rent/PPU (threshold: \u22651%)"
+   ],
+   "warnings": []
+  },
+  "minimal": {
+   "inputs": {
+    "asking": 900000,
+    "units": 8,
+    "current_gpr": 9500
+   },
+   "metrics": {
+    "asking": 900000,
+    "offer": 900000,
+    "units": 8,
+    "ppu": 112500.0,
+    "repair": 0,
+    "all_in": 954000.0,
+    "loan_amount": 630000.0,
+    "equity_invested": 324000.00000000006,
+    "annual_debt_svc": 42525.0,
+    "io_pmt_annual": 42525.0,
+    "pi_pmt_annual": 52232.91130607612,
+    "current_noi": null,
+    "stabilized_noi": 59508.0,
+    "entry_cap": null,
+    "exit_cap": null,
+    "stabilized_value": null,
+    "sale_price": null,
+    "loan_at_sale": null,
+    "net_sale_proceeds": null,
+    "annual_noi": [
+     59508.0,
+     58646.159999999996,
+     60845.0832,
+     63118.76486399999,
+     65469.62356128,
+     67900.15393450561
+    ],
+    "annual_cf": [
+     16983.0,
+     16121.159999999996,
+     8612.171893923878,
+     10885.853557923867,
+     13236.712255203878,
+     15667.242628429485
+    ],
+    "annual_ds": [
+     42525.0,
+     42525.0,
+     52232.91130607612,
+     52232.91130607612,
+     52232.91130607612,
+     52232.91130607612
+    ],
+    "levered_cfs": [
+     -324000.00000000006,
+     16983.0,
+     16121.159999999996,
+     8612.171893923878,
+     10885.853557923867,
+     13236.712255203878,
+     15667.242628429485
+    ],
+    "dscr": 1.1392817002156566,
+    "dscr_io": 1.3993650793650794,
+    "dscr_amortized": 1.1392817002156566,
+    "coc_yr1": 0.05241666666666666,
+    "coc_yr3": 0.026580777450382335,
+    "equity_multiple": null,
+    "irr_estimate": -0.292710120156186,
+    "rule_75_ratio": null,
+    "rule_75_pass": null,
+    "rule_1pct_ratio": 0.010555555555555556,
+    "rule_1pct_pass": true,
+    "rule_10x_noi": null,
+    "rule_10x_pass": null,
+    "ppu_in_range": null,
+    "yr1_gpr": 114000,
+    "yr2_gpr": 114000,
+    "vintage": null,
+    "vacancy_pct": 0.1,
+    "expense_ratio": 0.42,
+    "ltv": 0.7,
+    "loan_rate": 0.0675,
+    "amort_years": 25,
+    "io_years": 2,
+    "go_price": 820282.8241552727,
+    "go_price_sweep": [
+     {
+      "rate": 0.0675,
+      "price": 820282.8241552727
+     },
+     {
+      "rate": 0.0575,
+      "price": 900869.6382048607
+     },
+     {
+      "rate": 0.0625,
+      "price": 859131.6737946115
+     }
+    ]
+   },
+   "rec": "PASS",
+   "passes": [
+    "1% Rule: 1.056% rent/PPU (threshold: \u22651%)"
+   ],
+   "fails": [
+    "DSCR: 1.14x (threshold: 1.25x)",
+    "Cash-on-Cash Yr3: 2.7% (threshold: 6.0%)",
+    "IRR (est.): -29.3% (threshold: 16.0%)"
+   ],
+   "warnings": [
+    "Equity Multiple: N/A (missing data)",
+    "75% Rule: N/A (need stabilized value estimate)",
+    "Unit count 8 below 15\u201350 buy-box preference (OK to analyze)"
+   ]
+  }
+ }
+}

@@ -19,9 +19,15 @@ import argparse
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta
+from pathlib import Path
 
 import requests
 from gws_auth import get_token
+
+# Brian's branded Gmail signature ("Sig V2"), mirrors settings.sendAs. Appended raw
+# to every draft/send in _to_html; bodies carry no plain-text "-Brian" (the card has its own).
+_SIG_FILE = Path(__file__).resolve().parent.parent / "templates" / "signature.html"
+SIGNATURE_HTML = _SIG_FILE.read_text().strip() if _SIG_FILE.exists() else ""
 
 # ─────────────────────────────────────────────
 # Config
@@ -35,9 +41,11 @@ TODAY_STR      = TODAY.strftime("%m/%d/%Y")
 FOLLOW_UP_INTERVAL_DAYS = 7
 MAX_FOLLOW_UPS = 3
 
+# keep in sync with references/buy-box.md
 MARKETS_BY_STATE = {
     "GA": [
         {"zip": "30341", "name": "Chamblee",   "strategy": "Value-add",            "price": "$90K–$140K/unit"},
+        {"zip": "30340", "name": "Doraville",  "strategy": "Value-add",            "price": "$80K–$130K/unit"},
         {"zip": "30080", "name": "Smyrna",     "strategy": "Stabilized w/ upside", "price": "$110K–$160K/unit"},
         {"zip": "30005", "name": "Alpharetta", "strategy": "Long-term hold",        "price": "$140K–$200K+/unit"},
     ],
@@ -46,6 +54,9 @@ MARKETS_BY_STATE = {
         {"zip": "37115", "name": "Madison",               "strategy": "Cash flow",            "price": None},
         {"zip": "37408", "name": "Chattanooga Southside", "strategy": "Selective/Off-market", "price": None},
         {"zip": "37087", "name": "Lebanon",               "strategy": "Value-add/Emerging",   "price": None},
+        {"zip": "37918", "name": "Knoxville",             "strategy": "Value-add/Emerging",   "price": None},
+        {"zip": "37804", "name": "Maryville",             "strategy": "Value-add/Emerging",   "price": None},
+        {"zip": "37615", "name": "Johnson City",          "strategy": "Value-add/Emerging",   "price": None},
     ],
     "AL": [
         {"zip": "35801", "name": "Huntsville Core",            "strategy": "Quality + upside", "price": None},
@@ -168,8 +179,9 @@ def draft_followup_email(broker_data):
     last_name    = name.split()[-1] if name else ""
     market_str   = markets if markets else "your markets"
     market_block = build_market_block(markets)
-    signature    = "-Brian"
-    sig_full     = "-Brian\nBrian Norton | Olive Tree Investments\nbrian@olivetreeinv.io | 404-643-2356"
+    # No plain-text sign-off — the branded signature (Sig V2) is appended in _to_html.
+    signature    = ""
+    sig_full     = ""
 
     # ── Tier A — casual (known relationship, no formal intro) ──
     if tier == "A":
@@ -281,12 +293,13 @@ def _to_html(text):
     """Convert plain text + markdown links to HTML for Gmail rendering."""
     import html
     import re
-    body = html.escape(text)
+    body = html.escape(text.rstrip())  # rstrip: bodies now end at the CTA, not a sign-off
     # Convert [label](url) → <a href="url">label</a>
     body = re.sub(r'\[([^\]]+)\]\((https?://[^\)]+)\)',
                   r'<a href="\2">\1</a>', body)
     body = body.replace("\n", "<br>\n")
-    return f"<html><body style='font-family:sans-serif;font-size:14px'>{body}</body></html>"
+    sig = f"<br><br>{SIGNATURE_HTML}" if SIGNATURE_HTML else ""
+    return f"<html><body style='font-family:sans-serif;font-size:14px'>{body}{sig}</body></html>"
 
 
 def send_email(token, draft):
@@ -304,6 +317,27 @@ def send_email(token, draft):
         f"{GMAIL_BASE}/messages/send",
         headers=auth_headers(token),
         json={"raw": raw},
+        timeout=30,
+    )
+    r.raise_for_status()
+    return r.json()
+
+
+def create_gmail_draft(token, draft):
+    import base64
+    from email.header import Header
+    from email.mime.text import MIMEText
+
+    msg = MIMEText(_to_html(draft["body"]), "html", "utf-8")
+    msg["to"]      = draft["to_email"]
+    msg["from"]    = "brian@olivetreeinv.io"
+    msg["subject"] = str(Header(draft["subject"], "utf-8"))
+    raw = base64.urlsafe_b64encode(msg.as_bytes()).decode()
+
+    r = requests.post(
+        f"{GMAIL_BASE}/drafts",
+        headers=auth_headers(token),
+        json={"message": {"raw": raw}},
         timeout=30,
     )
     r.raise_for_status()
@@ -351,12 +385,13 @@ def main():
     parser.add_argument("--draft",      action="store_true", help="Generate email drafts for overdue brokers")
     parser.add_argument("--send",       type=int, metavar="INDEX", help="Send draft at given index (0-based)")
     parser.add_argument("--send-all",   action="store_true", help="Send all overdue brokers with valid emails")
+    parser.add_argument("--gmail-drafts", action="store_true", help="Save all overdue follow-ups as Gmail drafts (no send, no sheet update)")
     parser.add_argument("--dry-run",    action="store_true", help="Sandbox: show what would be sent without sending or updating sheet")
     parser.add_argument("--exclude",    type=str, metavar="ROWS", help="Comma-separated sheet row numbers to skip (e.g. 16,23)")
     parser.add_argument("--mark-sent",  type=int, metavar="ROW",   help="Mark sheet row as sent (sheet row number)")
     args = parser.parse_args()
 
-    if not any([args.check, args.draft, args.send is not None, args.send_all, args.mark_sent is not None]):
+    if not any([args.check, args.draft, args.send is not None, args.send_all, args.gmail_drafts, args.mark_sent is not None]):
         parser.print_help()
         sys.exit(0)
 
@@ -386,6 +421,23 @@ def main():
             sent     = d[COL["deals_sent"]] or "0"
             print(f"  Row {b['row']}: {name} ({brokerage}) | {markets} | Last: {last} | Sent: {sent}")
         print()
+        return
+
+    if args.gmail_drafts:
+        drafts = [draft_followup_email(b["data"]) for b in overdue]
+        if not drafts:
+            print("✅ No overdue follow-ups.")
+            return
+        saved, skipped = 0, 0
+        for d in drafts:
+            if not d["to_email"]:
+                print(f"⚠️  Skipped {d['to_name']} — no email on file.")
+                skipped += 1
+                continue
+            create_gmail_draft(token, d)
+            print(f"📝 Draft saved: {d['to_name']} <{d['to_email']}> — {d['subject']}")
+            saved += 1
+        print(f"\n✅ {saved} draft(s) saved to Gmail · {skipped} skipped")
         return
 
     if args.draft or args.send is not None or args.send_all:

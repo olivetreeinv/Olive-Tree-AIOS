@@ -1,0 +1,79 @@
+{
+  "conversation": {
+    "id": "OhyanuUIBthKYAm2VtTk",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364122936,
+    "dateUpdated": 1783364123586,
+    "lastMessageDate": 1783364123583,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Vincent, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "hMoCokjj4oMRFVz1xkXj",
+    "fullName": "Vincent",
+    "contactName": "Vincent",
+    "companyName": "Capital Fund 1 (Hard Money)",
+    "phone": "+14806318378",
+    "tags": [
+      "hard money",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364123583
+    ]
+  },
+  "messages": [
+    {
+      "id": "SpPFabH1ft9yuf9x8XeE",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "hMoCokjj4oMRFVz1xkXj",
+      "conversationId": "OhyanuUIBthKYAm2VtTk",
+      "dateAdded": "2026-07-06T18:55:24.671Z",
+      "dateUpdated": "2026-07-06T18:55:24.671Z",
+      "from": "+14806318378",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "SMS"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "9mkqZaoxTQ6tCrIea6a9",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Vincent, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "hMoCokjj4oMRFVz1xkXj",
+      "contentType": "text/plain",
+      "conversationId": "OhyanuUIBthKYAm2VtTk",
+      "dateAdded": "2026-07-06T18:55:22.985Z",
+      "dateUpdated": "2026-07-06T18:55:22.985Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+14806318378",
+      "error": "Error 30006 - Landline or non-mobile number. Cannot receive SMS.",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

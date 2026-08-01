@@ -1,0 +1,56 @@
+{
+  "conversation": {
+    "id": "1ThNdV9Q5gpYFVQiozHK",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364118425,
+    "dateUpdated": 1783364118993,
+    "lastMessageDate": 1783364118989,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Wayne, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "NSY50txQSRdNnOcaU4GQ",
+    "fullName": "Wayne Barrett",
+    "contactName": "Wayne Barrett",
+    "companyName": "Deal Finder",
+    "phone": "+13475984147",
+    "tags": [
+      "wholesaler",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364118989
+    ]
+  },
+  "messages": [
+    {
+      "id": "XD4gEqa6nfcqkwYFIH0s",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Wayne, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "NSY50txQSRdNnOcaU4GQ",
+      "contentType": "text/plain",
+      "conversationId": "1ThNdV9Q5gpYFVQiozHK",
+      "dateAdded": "2026-07-06T18:55:18.484Z",
+      "dateUpdated": "2026-07-06T18:55:21.417Z",
+      "source": "workflow",
+      "altId": "SM34dbaf7807a68dba0b81e7b7ba1d242e",
+      "from": "+16789712411",
+      "to": "+13475984147",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "conversation": {
+    "id": "t3TWuR4Z7WZu78jUH3Zw",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249897741,
+    "dateUpdated": 1750249897741,
+    "lastMessageDate": 1750249897741,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "GsBX7KZ1Hes6hUshYHY0",
+    "fullName": "Ryan Lewis",
+    "contactName": "Ryan Lewis",
+    "companyName": "Lpt Realty",
+    "email": "ryanl@livian.com",
+    "tags": [
+      "agent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "phone": null,
+    "attributed": null,
+    "profilePhoto": null,
+    "sort": [
+      1750249897741
+    ]
+  },
+  "messages": [
+    {
+      "id": "C6FBVTF0IAIhNsbQ955F",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "GsBX7KZ1Hes6hUshYHY0",
+      "conversationId": "t3TWuR4Z7WZu78jUH3Zw",
+      "dateAdded": "2025-06-18T12:31:01.664Z",
+      "dateUpdated": "2025-06-18T12:33:20.934Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "1CmzZcxFrKb1wYz5XEg2"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

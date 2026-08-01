@@ -37,10 +37,26 @@ python3 scripts/land_mail.py --zip 30120 --status all
 
 # Subset — just the top 20 by offer size (sellers script already ranks them)
 python3 scripts/land_mail.py --zip 30120 --limit 20
+
+# Source-of-truth method: enclose a pre-filled SIGNABLE PSA with each letter
+python3 scripts/land_mail.py --zip 30120 --with-contract --dry-run --limit 1
 ```
 
 Set `BRIAN_PHONE` in `.env` so the letter footer uses your real number instead of
 the placeholder. `BRIAN_EMAIL` defaults to `brian@olivetreeinv.io`.
+
+### `--with-contract` (letter + signable mail-back contract)
+
+Merges the assignable PSA (`templates/land-psa-template.md`) per parcel and writes
+a `NNN-<parcel>-CONTRACT.txt` beside each letter, plus a `_all_contracts.txt` batch.
+Stuff one letter + one matching contract (same `NNN-` prefix) per envelope; the
+seller signs and mails it back. The §4 feasibility contingency lets you terminate
+anytime before closing, so their signature binds them, not you.
+
+⚠️ **GA attorney review of the PSA template is required before mailing any of
+these** — a signed return is a binding contract. PSA constants are env-overridable:
+`BUYER_LEGAL_NAME` (default `Olive Tree Investments, LLC`), `LAND_EMD` (default `$10`),
+`LAND_CLOSE_DAYS` (default `30`).
 
 ## Output
 

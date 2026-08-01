@@ -1,0 +1,17 @@
+{
+  "trading_relevant": "partial",
+  "strategy": "covered-calls",
+  "summary": "Kenneth Suna explains covered call ETFs (JEPI, QYLD) as passive income vehicles for investors who want covered call exposure without actively managing positions. The video compares dividend yields and costs of major covered call ETFs but focuses on education rather than actionable trading rules for an active premium desk operation.",
+  "takeaways": [
+    "Covered call ETFs sell calls monthly to generate income; shares can be called away limiting upside growth",
+    "JEPI pays $6/share dividend (11.3% yield) at $53/share cost; QYLD pays $2.09/share (13.3% yield) at $15.87/share cost",
+    "To generate $1,000/year from JEPI requires 166 shares ($8,930 capital); from QYLD requires 478 shares ($7,500 capital)",
+    "To generate $20,000/year from JEPI requires ~3,546 shares costing ~$191,000",
+    "Covered call ETFs won't see explosive growth but provide consistent monthly dividend income",
+    "Some covered call ETFs use hybrid approach: sell some calls while buying/holding for potential growth vs pure call-selling ETFs"
+  ],
+  "strategy_candidates": [],
+  "id": "6osVJnU09Ws",
+  "title": "COVERED CALL ETFs EXPLAINED",
+  "duration": 184
+}

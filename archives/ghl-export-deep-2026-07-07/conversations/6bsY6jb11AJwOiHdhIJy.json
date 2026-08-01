@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "6bsY6jb11AJwOiHdhIJy",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906404128,
+    "dateUpdated": 1783364981091,
+    "lastMessageDate": 1783364981082,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Leighton, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906405109,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "TKqkkB6izFSiBR7FUo2P",
+    "fullName": "Leighton Graham",
+    "contactName": "Leighton Graham",
+    "companyName": null,
+    "phone": "+14702810437",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364981082
+    ]
+  },
+  "messages": [
+    {
+      "id": "5URiMFoqua2boh3w0KXe",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Leighton, a copy of the pitch deck has been sent to your email.",
+      "contactId": "TKqkkB6izFSiBR7FUo2P",
+      "contentType": "text/plain",
+      "conversationId": "6bsY6jb11AJwOiHdhIJy",
+      "dateAdded": "2026-07-06T19:09:40.538Z",
+      "dateUpdated": "2026-07-06T19:09:40.538Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+14702810437",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "FiksmPs49vDqVz7CjQ0U",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Leighton, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "TKqkkB6izFSiBR7FUo2P",
+      "contentType": "text/plain",
+      "conversationId": "6bsY6jb11AJwOiHdhIJy",
+      "dateAdded": "2026-06-19T22:00:04.402Z",
+      "dateUpdated": "2026-06-19T22:00:05.804Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+14702810437",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

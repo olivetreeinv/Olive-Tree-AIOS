@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "Lq7oBF9edpwHmpQYitcX",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906473943,
+    "dateUpdated": 1783365094868,
+    "lastMessageDate": 1783365094864,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Arturo, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906474898,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "HmDK7nSysgFjFhkGcScR",
+    "fullName": "Arturo Lacruz",
+    "contactName": "Arturo LaCruz",
+    "companyName": null,
+    "phone": "+14049379433",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783365094864
+    ]
+  },
+  "messages": [
+    {
+      "id": "XYIyh4Wtsca3jQVQt7tS",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Arturo, a copy of the pitch deck has been sent to your email.",
+      "contactId": "HmDK7nSysgFjFhkGcScR",
+      "contentType": "text/plain",
+      "conversationId": "Lq7oBF9edpwHmpQYitcX",
+      "dateAdded": "2026-07-06T19:11:21.601Z",
+      "dateUpdated": "2026-07-06T19:11:21.601Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+14049379433",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "jti4fdW9FHwvVGsgv4pq",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Arturo, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "HmDK7nSysgFjFhkGcScR",
+      "contentType": "text/plain",
+      "conversationId": "Lq7oBF9edpwHmpQYitcX",
+      "dateAdded": "2026-06-19T22:01:14.212Z",
+      "dateUpdated": "2026-06-19T22:01:15.357Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+14049379433",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

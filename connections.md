@@ -6,7 +6,7 @@ Registry of every system your AIOS can reach. Filled by `/onboard` from Q4-Q7 an
 |---|---|---|---|---|---|
 | 1 | Revenue / Financials | QuickBooks | not yet connected | — | — |
 | 1 | Revenue / Financials | Bluevine (Business Banking) | not yet connected | — | — |
-| 2 | Customer / Investor interactions | GoHighLevel CRM | api | Private Integration Token — .env GHL_API_KEY | 2026-05-27 |
+| 2 | Customer / Investor interactions | GoHighLevel CRM | migrating → local CRM | 804 contacts mirrored in data/olive.db via ghl_export.py; GHL being decommissioned; use scripts/crm.py | 2026-07-06 |
 | 3 | Calendar | Google Calendar (Google Workspace) | gws cli | OAuth — gws auth login | 2026-05-28 |
 | 4 | Communication — Email | Gmail (Google Workspace) | gws cli | OAuth — gws auth login | 2026-05-28 |
 | 4 | Communication — DMs | Apple Messages | not yet connected | — | — |

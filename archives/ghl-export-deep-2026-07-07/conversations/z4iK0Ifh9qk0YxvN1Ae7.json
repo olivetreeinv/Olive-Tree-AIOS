@@ -1,0 +1,133 @@
+{
+  "conversation": {
+    "id": "z4iK0Ifh9qk0YxvN1Ae7",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249931644,
+    "dateUpdated": 1750249931644,
+    "lastMessageDate": 1750249931644,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "4xSAskQWXUGLgnTkEGlz",
+    "fullName": "Brad Holcomb",
+    "contactName": "Brad Holcomb",
+    "companyName": null,
+    "email": "Brad.Holcomb1@gmail.com",
+    "phone": "+14049511389",
+    "tags": [],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "sort": [
+      1750249931644
+    ]
+  },
+  "messages": [
+    {
+      "id": "7YITz5faz1c71GCLU8Hs",
+      "direction": "outbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by user",
+      "contactId": "4xSAskQWXUGLgnTkEGlz",
+      "conversationId": "z4iK0Ifh9qk0YxvN1Ae7",
+      "dateAdded": "2025-09-23T14:10:11.131Z",
+      "dateUpdated": "2025-09-23T14:10:11.131Z",
+      "source": "app",
+      "from": "Brian Norton",
+      "to": "+14049511389",
+      "activity": {
+        "data": {
+          "channel": [
+            "Email"
+          ]
+        },
+        "title": "DND enabled by user",
+        "type": "user_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "raq97CXt4ngmFynmIL2A",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "4xSAskQWXUGLgnTkEGlz",
+      "conversationId": "z4iK0Ifh9qk0YxvN1Ae7",
+      "dateAdded": "2025-09-23T14:08:17.446Z",
+      "dateUpdated": "2025-09-23T14:10:11.097Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "cEfvJj8VlnieeQjpN70y"
+          ],
+          "direction": "outbound",
+          "subject": "While Others Wait, Smart Money Moves"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "M25rs6Awb0xWibC0XAmj",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "4xSAskQWXUGLgnTkEGlz",
+      "conversationId": "z4iK0Ifh9qk0YxvN1Ae7",
+      "dateAdded": "2025-08-19T14:07:59.996Z",
+      "dateUpdated": "2025-08-19T14:08:10.065Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "x04B6WZRL5CVKJ9oPaQx"
+          ],
+          "direction": "outbound",
+          "subject": "Why 6.6% rates aren't stopping smart buyers"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "edvYaux6pOxackj1SDs2",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "4xSAskQWXUGLgnTkEGlz",
+      "conversationId": "z4iK0Ifh9qk0YxvN1Ae7",
+      "dateAdded": "2025-07-22T14:12:17.765Z",
+      "dateUpdated": "2025-07-22T14:12:45.984Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "LTkcteu8j9TbbfLAtUXz"
+          ],
+          "direction": "outbound",
+          "subject": "Real Estate Tax & Rate Shifts You Can\u2019t Ignore"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "3HQL9mfjT7bJwBlwGJBu",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "4xSAskQWXUGLgnTkEGlz",
+      "conversationId": "z4iK0Ifh9qk0YxvN1Ae7",
+      "dateAdded": "2025-06-18T12:31:19.316Z",
+      "dateUpdated": "2025-06-18T12:33:51.971Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "5ZgOLOh95WeISyLdXqx7"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

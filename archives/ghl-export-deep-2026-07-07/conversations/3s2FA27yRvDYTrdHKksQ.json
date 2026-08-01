@@ -1,0 +1,56 @@
+{
+  "conversation": {
+    "id": "3s2FA27yRvDYTrdHKksQ",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364242582,
+    "dateUpdated": 1783364243292,
+    "lastMessageDate": 1783364243289,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Jordan, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "3fEkGGPSgOw91hsJI6Ky",
+    "fullName": "Jordan Amazon Guy",
+    "contactName": "Jordan Amazon Guy",
+    "companyName": "Bird Dog (Flips)",
+    "phone": "+19176531175",
+    "tags": [
+      "wholesaler",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364243289
+    ]
+  },
+  "messages": [
+    {
+      "id": "LwRi6EmQwtWtvNYXXrAV",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Jordan, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "3fEkGGPSgOw91hsJI6Ky",
+      "contentType": "text/plain",
+      "conversationId": "3s2FA27yRvDYTrdHKksQ",
+      "dateAdded": "2026-07-06T18:57:22.629Z",
+      "dateUpdated": "2026-07-06T18:57:26.203Z",
+      "source": "workflow",
+      "altId": "SM9943e3c619408ca9f53bb5873faef1aa",
+      "from": "+16789712411",
+      "to": "+19176531175",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "conversation": {
+    "id": "dKnWGOveIakFOtxJ7i4Z",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364172245,
+    "dateUpdated": 1783364172877,
+    "lastMessageDate": 1783364172873,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Tom, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "ie4CGspl0YAymNxf0o8e",
+    "fullName": "Tom Scuffle",
+    "contactName": "Tom Scuffle",
+    "companyName": null,
+    "phone": "+15022996005",
+    "tags": [
+      "family",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364172873
+    ]
+  },
+  "messages": [
+    {
+      "id": "4lRw8ZNdFRHJ2cOqG77d",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Tom, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "ie4CGspl0YAymNxf0o8e",
+      "contentType": "text/plain",
+      "conversationId": "dKnWGOveIakFOtxJ7i4Z",
+      "dateAdded": "2026-07-06T18:56:12.309Z",
+      "dateUpdated": "2026-07-06T18:56:17.876Z",
+      "source": "workflow",
+      "altId": "SMadc5e3b78eec16651ee85147c205ff8e",
+      "from": "+16789712411",
+      "to": "+15022996005",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "location": {
+    "id": "SLq7B2pldVzfQLKjGpvw",
+    "brandId": "QQxbNbOwSiBxQHiiQcsH",
+    "companyId": "etFEpuKKLwVQ4AMNOaLs",
+    "name": "Brian Norton",
+    "address": "269 Market Place Blvd Suite 126",
+    "city": "Cartersville",
+    "state": "Georgia",
+    "country": "US",
+    "postalCode": "30121",
+    "website": "https://olivetreeinv.io",
+    "timezone": "US/Eastern",
+    "firstName": "Brian",
+    "lastName": "Norton",
+    "email": "brian@olivetreeinv.io",
+    "phone": "+14046432356",
+    "logoUrl": "https://msgsndr-private.storage.googleapis.com/locationPhotos/27283919-02d5-4fc1-ae73-c3ead24ae114.png",
+    "automaticMobileAppInvite": false,
+    "business": {
+      "name": "Brian Norton",
+      "address": "269 Market Place Blvd Suite 126",
+      "city": "Cartersville",
+      "state": "Georgia",
+      "country": "US",
+      "postalCode": "30121",
+      "website": "https://olivetreeinv.io",
+      "timezone": "US/Eastern",
+      "logoUrl": "https://msgsndr-private.storage.googleapis.com/locationPhotos/27283919-02d5-4fc1-ae73-c3ead24ae114.png",
+      "email": "brian@olivetreeinv.io"
+    },
+    "social": {
+      "facebookUrl": "https://www.facebook.com/521657387705369",
+      "googlePlus": "",
+      "linkedIn": "",
+      "foursquare": "",
+      "twitter": "",
+      "yelp": "",
+      "instagram": "",
+      "youtube": "",
+      "pinterest": "",
+      "blogRss": "",
+      "googlePlacesId": ""
+    },
+    "settings": {
+      "allowDuplicateContact": false,
+      "allowDuplicateOpportunity": false,
+      "allowFacebookNameMerge": false,
+      "disableContactTimezone": false,
+      "contactUniqueIdentifiers": [
+        "email",
+        "phone"
+      ],
+      "crmSettings": {
+        "deSyncOwners": true,
+        "syncFollowers": {
+          "contact": true,
+          "opportunity": true
+        }
+      },
+      "saasSettings": {
+        "saasMode": "not_activated",
+        "twilioRebilling": {
+          "markup": 10,
+          "enabled": false
+        }
+      }
+    },
+    "dateAdded": "2025-02-05T22:22:11.384Z",
+    "domain": "",
+    "currency": "",
+    "isAgencySubAccount": false,
+    "defaultEmailService": "",
+    "permissions": {
+      "dashboardStatsEnabled": true,
+      "funnelsEnabled": true,
+      "phoneCallEnabled": true,
+      "formsEnabled": true,
+      "textToPayEnabled": true,
+      "gmbMessagingEnabled": true,
+      "htmlBuilderEnabled": true,
+      "contactsEnabled": true,
+      "tagsEnabled": true,
+      "botServiceEnabled": true,
+      "websitesEnabled": true,
+      "appointmentsEnabled": true,
+      "proposalsEnabled": true,
+      "webChatEnabled": true,
+      "facebookMessengerEnabled": true,
+      "affiliateManagerEnabled": true,
+      "gmbCallTrackingEnabled": true,
+      "marketingEnabled": true,
+      "emailBuilderEnabled": true,
+      "attributionsReportingEnabled": true,
+      "triggerLinksEnabled": true,
+      "membershipEnabled": true,
+      "settingsEnabled": true,
+      "surveysEnabled": true,
+      "opportunitiesEnabled": true,
+      "reviewsEnabled": true,
+      "smsEmailTemplatesEnabled": true,
+      "facebookAdsReportingEnabled": true,
+      "adManagerEnabled": true,
+      "bloggingEnabled": true,
+      "workflowsEnabled": true,
+      "campaignsEnabled": true,
+      "conversationsEnabled": true,
+      "adwordsReportingEnabled": true,
+      "bulkRequestsEnabled": true,
+      "agentReportingEnabled": true,
+      "triggersEnabled": true
+    },
+    "snapshotId": "6YODtO8twoqjG66H2ehE"
+  },
+  "traceId": "0331bd74-d204-4776-b98e-b244679a664c"
+}

@@ -330,8 +330,9 @@ def cmd_send(args):
 def format_war_room(data: dict) -> str:
     """Format pipeline fetch JSON into the Monday War Room email body."""
     lines = [
-        f"Monday War Room — {data.get('date', 'Today')}",
-        "=" * 50,
+        "Monday War Room",
+        data.get("date", "Today"),
+        "─" * 24,  # ponytail: short rule so it stays one line on a phone
         "",
     ]
 
@@ -374,7 +375,7 @@ def format_war_room(data: dict) -> str:
     lines.append("")
 
     lines += [
-        "─" * 50,
+        "─" * 24,
         "Drafts ready. Nothing sent. Run /lets-get-to-work to action this.",
         "",
         "-Olive",

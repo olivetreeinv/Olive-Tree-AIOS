@@ -12,3 +12,4 @@ playwright
 PyYAML
 beautifulsoup4
 requests
+yfinance

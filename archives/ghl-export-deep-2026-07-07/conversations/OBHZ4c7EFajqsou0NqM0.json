@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "OBHZ4c7EFajqsou0NqM0",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906179950,
+    "dateUpdated": 1783364861186,
+    "lastMessageDate": 1783364861182,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Dad, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906181003,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "vLzGlQ6gpLhL5x78vsZY",
+    "fullName": "Dad",
+    "contactName": "Dad",
+    "companyName": null,
+    "phone": "+17708750989",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364861182
+    ]
+  },
+  "messages": [
+    {
+      "id": "OIyeasBIMJsMnStTJeNO",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Dad, a copy of the pitch deck has been sent to your email.",
+      "contactId": "vLzGlQ6gpLhL5x78vsZY",
+      "contentType": "text/plain",
+      "conversationId": "OBHZ4c7EFajqsou0NqM0",
+      "dateAdded": "2026-07-06T19:07:40.325Z",
+      "dateUpdated": "2026-07-06T19:07:40.326Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+17708750989",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "JyQ4VD9dsHDkvVA1oTix",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Dad, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "vLzGlQ6gpLhL5x78vsZY",
+      "contentType": "text/plain",
+      "conversationId": "OBHZ4c7EFajqsou0NqM0",
+      "dateAdded": "2026-06-19T21:56:20.401Z",
+      "dateUpdated": "2026-06-19T21:56:22.157Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+17708750989",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

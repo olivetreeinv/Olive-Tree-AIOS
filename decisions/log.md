@@ -20,6 +20,20 @@ Keep it terse. Future-you will thank present-you for capturing the *why*, not ju
 
 ---
 
+## 2026-07-03 — SE land-flip 12-zip pull: still quota-blocked; wired seller path + one-button scout
+
+**Decision:** Ship the SE-expansion data pull as push-button, blocked only on vendor quota. Brian emailed Scott at ReportAll directly for a quota bump.
+
+**State:** The `.env` key (`in09INjjWJ`) is the *same* trial key that hit its **1000-request all-time cap** on 2026-07-01 — still 429ing ("exceeded alltime quota limit of 1000 requests"). One verification call slipped through as the last request under the cap; all 12 candidate scouts then 429'd (0 logged). Not spending more until Scott bumps it or a new client id lands in `.env`.
+
+**Shipped (free, ready for when quota clears):**
+- `land_sellers.py` now takes `--source reportall --state XX --cap N` (was ArcGIS-only, 2 wired GA counties) — any unwired SE county builds a seller list by zip. Guard message if you forget `--source` on an unwired county. Skill doc updated.
+- `scripts/scout_se_candidates.py` — one command runs all 12 ranked candidates (7 STRAT-A acreage + 5 STRAT-B small-lot), logs each to Land Markets, prints a verdict table. cap=500/zip (~12 requests).
+
+**Next when unblocked:** swap the new key into `.env` → `python3 scripts/scout_se_candidates.py`.
+
+**Owner:** Brian Norton
+
 ## 2026-05-28 — Added Lebanon TN (37087) to buy box
 
 **Decision:** Lebanon, TN zip 37087 added as active market #10. Strategy: Value-add/Emerging.
@@ -246,3 +260,554 @@ Every deal gets a **property folder** named by full street address inside *Olive
 **Alternatives considered:** (1) Zillow/portal scraping per the doc — rejected, blocked + ToS-hostile + wrong source. (2) Forsyth as launch market (Brian's first pick by familiarity) — rejected on the data (no absentee seller pool). (3) Out-of-state honey-hole (Lehigh Acres FL) — deferred; Bartow keeps it in-state and the model works there. (4) Paid stack (PropStream/Buyer Bridge/bulk SMS) from day one — deferred until deals validate the model.
 
 **Owner:** Brian Norton
+
+
+## 2026-06-24 — LOI Submitted: 641 Powder Springs St, Smyrna GA
+
+**Offer:** $910,000 ($65K/unit) vs $1,500,000 ask
+**Rationale:** DSCR-anchored ceiling. Stabilized IRR 23.3%, EM 3.21x at $910K. Property is 57% occupied (43% vacant, 1 delinquent unit). Bridge financing required. Offer is $590K below ask — Andy Lundsberg price-check call recommended before sending. Turnover corrected to JB standard ($5,250/yr); expense ratio 45% — within range for 1965 vintage.
+**Special condition added:** T-12 within 3 days of acceptance + rent roll warranty at closing.
+**LOI Doc:** https://docs.google.com/document/d/1pthPLPpcpeasv_JwAsF2NvfnMRddQSDV4p2pHaZhgSs/edit
+**PDF:** https://drive.google.com/file/d/1JvCObDVqzS9QP4Li5fc0gwKrTKGEGFEM/view?usp=drivesdk
+
+---
+
+## 2026-06-24 — Side deal (personal): Dempsey estate auction flip analysis
+
+**Decision:** Worked up a full flip analysis for the Richard Cole Estate absolute auction (Dempsey Auction, Cartersville/Bartow GA, Thu 6/25/26). For every lot: current bid, max hammer (walk-away), marketplace + viable sale price, time-to-sell, and margin at the low value estimate. Deliverables on Desktop: dempsey-auction-MASTER-workup.md + .pdf.
+
+**Why:** Personal side hustle, NOT Olive Tree multifamily pipeline. Method: max hammer anchored to conservative (low-end) resale, then ~65–70% buffer, then back out 10% buyer's premium + 7% tax (GATE card exempts farm items). Confirmed specs: Ram 3500 = diesel; CAT 420 = 264 hrs (near-new); JD 5115M = 458 hrs; JD 333G = 290 hrs. Low hours made the CAT 420 the top play (+$8,800 margin at low est.), followed by 333G, 5115M, CLS63, Ram diesel.
+
+**Alternatives considered:** Facebook Marketplace for everything — rejected for watches (Chrono24/r/Watchexchange net more) and firearms (FB-banned → GunBroker/Armslist/FFL). Most common firearms already bid past flip-viable; money is in 6 Browning/Benelli/S&W sleepers.
+
+**Owner:** Brian Norton (personal)
+
+---
+
+## 2026-06-26 — Launched Multi-Agent Paper Trading Desk
+
+**Decision:** Built a 5-agent paper-trading system inside the AIOS as a new vertical. Paper-only until a strategy survives walk-forward backtest + sustained paper performance + Brian's explicit go-ahead.
+
+**Stack:**
+- Broker: Alpaca paper (`paper-api.alpaca.markets`) — free, stocks + crypto
+- Data: Polygon (equities history) + Alpaca (crypto + live quotes)
+- Backtest: vectorbt walk-forward (70% IS / 30% OOS)
+- Research: Claude Haiku (~$0.01–0.03/cycle) → ranked JSON theses
+- Alerts: iMessage via existing `notify.sh` (no Twilio)
+- Uptime: `caffeinate -i` wraps loop cycles (no daemon)
+
+**Risk ceiling (Conservative):** −1% stop per position, −2% daily portfolio halt, 5% max position size, 5 max concurrent positions.
+
+**Universe:** ~20 liquid US large-caps/ETFs (SPY, QQQ, AAPL, MSFT, NVDA, AMZN, GOOGL, META, TSLA + 12 more) + BTC/USD, ETH/USD overnight.
+
+**Agent pipeline:** Research → Quant gate → Risk veto → Execution → Equity snapshot.
+
+**Entry point:** `python3 scripts/trading_orchestrator.py --once --dry-run` (dry run), `--once` (live paper), `caffeinate -i python3 scripts/trading_orchestrator.py --loop` (continuous).
+
+**Why:** Stocks + crypto is a 24/7 income stream candidate that reuses existing AIOS infrastructure (Anthropic key, Polygon key, SQLAlchemy DB, notify.sh, skill pattern). Paper-first policy prevents any real capital risk during POC. Walk-forward gate is the anti-overfitting defense — a strategy must pass OOS before it ever touches execution.
+
+**Real money checklist (do NOT skip):** 2+ weeks sustained paper performance (Sharpe > 0.5, max DD < 10%) + walk-forward confirmed + risk ceiling re-approved + live Alpaca keys generated + `_PAPER = True` changed in `trading_execution.py` + Brian explicitly says go.
+
+**Owner:** Brian Norton
+
+## 2026-06-29 — Evaluating Paid Parcel Data for Multi-County Land Expansion
+
+**Decision:** Pursue a paid parcel-data API to scale land wholesaling beyond Bartow — **ReportAllUSA first**, Regrid as fallback. Both free 30-day trials; sales-question drafts staged in Gmail (not sent).
+
+**Why:** Ranked GA exurban land-flip markets by builder demand + cheap basis + absentee pool: top new adds are Carroll (30180), Paulding (30157), Barrow (30680), Spalding. But none are auto-scoutable — their ArcGIS Online parcel layers are geometry-only (Paulding/Barrow) or wrong state (the only "Carroll" AGO layer is Carroll County MD). Owner/mailing/value data for these counties lives in Schneider/qPublic, which `land_parcels.py` can't reach. Bartow works only because its ParcelInfo layer bundles CAMA inline.
+
+**Cost picture:**
+- Regrid Data Store (per-record ~$0.15/parcel): ~$4.5K–$11K per full county — dead on arrival.
+- Regrid API: $500–$2K/mo flat, nationwide; owner mailing = premium (~$1K+/mo). 30-day free trial, no card.
+- ReportAllUSA API: unpublished/sales-quoted but historically the budget option; owner mailing is STANDARD (not paywalled), queries by county FIPS + spatial filter (matches our zip pipeline). 30-day free trial.
+
+**Plan:** Run ReportAll's free trial → pull vacant + out-of-state + 1–10 ac for the 4 counties, cache to olive.db, cancel before billing. Fall back to Regrid only if ReportAll's GA data is thin. Wiring lift ≈ 40 lines: a REGRID/REPORTALL source path in `land_parcels.py` feeding the existing normalize/filter pipeline.
+
+**Interim (free, today):** Stay in Bartow, widen to the buy-box "Watch" zips 30184 (White) + 30137 (Emerson) — same reachable GIS.
+
+**Owner:** Brian Norton
+
+## 2026-06-29 — Land Wholesaling: 6-State Southeast Expansion Target List
+
+**Decision:** Expand the land-wholesaling vertical beyond GA to a 6-state Southeast footprint (GA, AL, NC, SC, TN, KY). Researched and ranked top exurban counties by the buy-box test: cheap rural 1-10 ac + active builder demand + out-of-state absentee pool. Updated both parcel-data vendor drafts (Regrid, ReportAll) to this multi-state scope.
+
+**Target counties (~19, by state):**
+- GA: Carroll (30180), Paulding (30157/30132), Barrow (30680), Spalding (30223/30224)
+- AL: Baldwin inland (36567/36576/36580/36551) ⭐, Autauga (36067/36066/36068) ⭐
+- NC: Stanly (28001/28127/28071) ⭐, Rowan (28147/28144/28023/28039), Franklin
+- SC: Lancaster ⭐, Cherokee (Gaffney), Berkeley (Moncks Corner)
+- TN: Wilson (37090/37087/37184), Rutherford (37128/37130/37060)
+- KY: Bullitt (40165/40047), Nelson (40004/40013) ⭐, Warren (Bowling Green), Scott (Lexington)
+
+**Cheapest basis (⭐ = best wholesale spread, $8-20K/ac):** AL Baldwin inland, AL Autauga, NC Stanly, SC Lancaster, KY Nelson. Pull these first on trial day-one. TN is solid but pricier ($15-30K/ac) → thinner spreads, lower priority.
+
+**Why this strengthens the paid-data decision:** ~19 counties across 6 states is unmanageable via per-county ArcGIS scrapers (most use qPublic/Schneider = unreachable; the few AGO layers are geometry-only, already proven with GA Carroll/Paulding/Barrow). ONE Regrid or ReportAll subscription covers all 6 states nationwide. Free 30-day trial validates at $0 before paying. Wiring lift unchanged: one normalize path in land_parcels.py feeds the existing filter pipeline.
+
+**Source:** Perplexity sonar-pro market research (builder demand + land pricing + absentee patterns), 2026-06-29. None GIS-confirmed yet — trial data settles final per-county viability.
+
+**Owner:** Brian Norton
+
+## 2026-06-29 — Trading desk: dedup + stop-loss fixes
+- **Bug 1 (concentration):** orchestrator re-bought the same symbol every cycle (6× Visa) because the MAX_POSITIONS check counts Alpaca positions, and Alpaca nets repeat buys into one. Fix: skip any thesis whose symbol is already an open position in our DB (`trading_orchestrator.py`).
+- **Bug 2 (inverted stops):** `sync_fills` only recomputed entry/stop on a status-string change, and `get_orders()` returned open-only — so stops went stale vs. the real fill and landed above entry on down-moves. Fix: status=ALL + recompute entry/stop from fill on every sync (`trading_execution.py`).
+- Repaired 2 live inverted stops (positions #6, #8 V) to entry×0.99.
+- Open question: trim the 6-deep Visa stack (~$30K concentrated)? Pending Brian.
+
+## 2026-06-29 — Quant gate: minimum-trades floor
+- Added MIN_OOS_TRADES=5 to the quant gate (`trading_quant.py`). A backtest that made only 1-2 trades (rode one trend, 100% win, huge CAGR) is luck, not signal — it can no longer pass.
+- Factored pass logic into `passes_gate()` + added `--test` self-check (fluke rejected, valid sample passes).
+- Cleared phantom 1-share SPY DB row (#1, never in Alpaca).
+- Watchlist re-test: SOXL (3x, 28% DD) and DTCR now correctly fail. Survivors: AMAT, LRCX, MRVL, MU, UFO.
+
+## 2026-06-29 — Trading desk: stops were never sent to Alpaca + win-rate visibility
+- **Trigger:** Added backtest-vs-realized win-rate reporting (`trading_report.py --win-rates`, also in `--print`) with plain-English metric definitions. It immediately exposed a 70% backtest win rate vs 20% realized, profit factor 0.06.
+- **Diagnosis:** The 5 "losses" were not a strategy failure — they were ONE over-concentration in Visa (5 long V entries, one per hourly cycle on 6/29), all dumped at once by a manual trim at 20:45 (price 342.0). Win-rate table was an artifact of that single bad decision split across 5 rows.
+- **Bug A (concentration):** Already fixed — `held_symbols` guard at `trading_orchestrator.py:117` skips any symbol already held. The 5 V trades predate it.
+- **Bug B (stop never enforced) — THE REAL FIX:** `submit_order` only sent a market entry; the −1% stop was computed, stored in the DB, and printed, but **no stop order was ever submitted to Alpaca.** That's why V rode 350→342 (−2.29%) past a 346.5 "stop." Fix: `sync_fills()` now places a working GTC stop order on Alpaca once the real fill price is known (`_ensure_stop_order`, idempotent, equities only). Losses are now capped at −1% server-side instead of running unbounded.
+- **Key reframe:** the strategy edge was never disproven — the execution/risk layer was leaking. Surfacing win rates before adding any new strategy (chose this over Fibonacci/more indicators) is what found it.
+- **Open follow-ups:** (1) crypto stops — Alpaca rejects stop orders for crypto; those need monitor-based exits. (2) Reconcile stop fills → auto-mark position closed + compute P&L (currently relies on manual trim). (3) Re-judge realized win rate after a real sample of stop-protected trades accumulates.
+- **Owner:** Brian Norton
+
+## 2026-06-29 — Trading desk: stop-fill reconciliation + crypto stops shipped
+Closed the three follow-ups from the stop-loss fix:
+- **(2) Stop-fill reconciliation:** `sync_fills()` now closes a position when its stop order fills — `_close_position()` records exit price, time, and realized P&L via the pure, tested `_compute_pnl()` (`--check-pnl` self-check). Also fixed a latent bug: the entry-reconcile block ran for *every* filled order, so a stop fill would have overwritten `entry_price`; it's now gated to `order_type="market"`.
+- **(1) Crypto stops:** Alpaca rejects resting stop orders for crypto, so `check_crypto_stops()` checks live price vs the stored stop each cycle and fires a market exit if breached (tagged `order_type="stop"`, idempotent). Wired into `run_cycle()` before `sync_fills()`, so both equity resting-stop hits and crypto synthetic exits close through the same reconcile path.
+- **(3) Re-judge win rate:** no code — run `trading_report.py --win-rates` once stop-protected trades accumulate a real sample.
+- Verified: imports clean, both self-checks pass, crypto monitor runs clean against live DB (0 open positions).
+- **Owner:** Brian Norton
+
+## 2026-06-29 — Trading desk was live but running 2-day-old broken code
+- **Runtime:** launchd `com.olivetree.trading-desk` (KeepAlive + RunAtLoad + caffeinate -i) runs the orchestrator loop continuously — but only while this Mac is on/awake. Cloud blocks market-data APIs, so it can't move off this machine.
+- **Found:** the live process (PID 99110) started Jun 27 and was running stale code — none of the 6/29 stop/reconcile fixes were loaded — and erroring every crypto cycle with `invalid crypto time_in_force`. Root cause: entry order hardcoded `TimeInForce.DAY`; Alpaca requires GTC for crypto. Fixed `submit_order` to use GTC for `/`-symbols (`trading_execution.py`). Verified directly: DAY rejected, GTC accepted.
+- Reloaded the launchd job → fresh process (PID 37777) now runs today's code at the plist's intended 300s interval (was stale at 3600s).
+- **Owner:** Brian Norton
+
+## 2026-06-29 — Trading desk: holiday-aware sessions, live logging, unified stops
+- **Holiday-aware market hours:** `is_market_open()` now reads Alpaca's `/v2/clock` (knows holidays + half-days) with the old weekday-window kept as a network-failure fallback (`trading_data.py`). Fixes the latent bug where Fri Jul 3 2026 (NYSE closed for Jul 4) would have switched to equities and rejected every order all day. Verified: clock returns is_open=False overnight, next_open next weekday 09:30 ET.
+- **Live log visibility:** added `PYTHONUNBUFFERED=1` to the plist so cycles stream to the log instead of block-buffering (looked empty between cycles before).
+- **Stops reworked — resting stops don't work for this book.** Watching a live cycle caught `fractional orders must be DAY orders`: Alpaca won't hold resting stop orders for crypto OR fractional-share equities, and the risk sizer produces fractional qty. Replaced the resting-stop path (`_ensure_stop_order`, deleted) with one unified `check_stops()` — monitor-based for ALL positions: compare live price to stored stop each cycle, fire a market exit on breach (DAY for equities, GTC for crypto). Called each cycle before `sync_fills()`.
+- **Known ceiling (documented in code):** monitor stops protect per-cycle (~5 min) and only while the desk runs; a between-cycle gap or a sleeping Mac leaves positions unguarded until the next check. Equity exits fill only in market hours; after-hours breaches retry until open.
+- Session-switch confirmed: `--market-session auto` re-evaluates every cycle, so it flips equities↔crypto automatically at 09:30/16:00 ET.
+- Verified: imports clean, `--check-pnl` passes, live cycle runs clean (no fractional-stop error), open V/SPY stops monitored without firing.
+- **Owner:** Brian Norton
+
+## 2026-06-29 — Trading desk: 60s stops (cost-decoupled) + session-close reports
+- **60s stops without 5× cost:** each cycle calls Claude Haiku (research) + Polygon data, so running the whole loop at 60s would 5× LLM/data spend (~$19→~$95/mo on Haiku) and risk Polygon rate limits. Instead split the loop: research/quant stays at `--interval 300`, stops enforced every `--stop-interval 60` in between (just one quote per open position, ~free). `sync_fills()` only runs when a stop actually fires. One process, no new files, no DB concurrency. Net: 5-min → 60-sec stop protection, LLM cost unchanged.
+- **Session-close/switch reports:** none existed (alerts were only HALT/per-order/ERROR). Added `send_session_report()` — on every equities↔crypto flip (market open 09:30 / close 16:00 ET) it texts equity, today's P&L, trades closed today (count/wins/net $), and open positions. Wired into the loop via last-session tracking.
+- **Crypto trade texts:** confirmed already working — the per-order `send_alert` is session-agnostic, fires on any filled order incl. crypto. Sent a test iMessage to confirm the channel is live.
+- Verified: imports clean, live loop runs `research=300s, stops=60s`, inner stop loop error-free past 60s.
+- **Owner:** Brian Norton
+
+## 2026-06-30 — Land builders: Google Places over BBB for lead discovery
+- **Question:** scrape the Better Business Bureau to auto-populate viable builders (full contact + into the sheet)?
+- **Decision:** No BBB. Built `--discover-builders [zip]` on the **Google Places API (New)** instead.
+- **Why BBB lost:** (1) no email published — BBB gives name/phone/address/site only, so it never delivered "full contact info" anyway; (2) Cloudflare anti-bot 403s the sandbox (same class as Crexi/LoopNet/Zillow) → needs a paid proxy to run reliably; (3) ToS prohibits automated collection. Google Places is an official API — no 403 games, official quota, returns the same fields BBB would minus the accreditation badge.
+- **Cost:** $200/mo free credit, ~2 calls/zip → effectively $0/mo. Key in `.env` as `GOOGLE_MAPS_API_KEY`; Places API (New) enabled on GCP project 693920842531.
+- **Scope kept lazy:** discovery only feeds *leads* (name/phone/city/website) as `Tier=unverified` rows. Buy-box fields (price/acre, lot band, conditions) stay blank — those come from the call, so `/land-sellers` and `--price-for` ignore unverified rows. Dedups by phone (one builder, not one row per community). Verified live on 30120: 20 clean leads after phone-dedup + no-phone filter.
+- **Skipped, add when needed:** county building-permit discovery (higher signal = *active* permit-pullers, but per-county parsing); email enrichment (no clean free source).
+- **Owner:** Brian Norton
+
+---
+
+## 2026-07-01 — SE land-flip re-evaluation: 12 candidates logged; data-scout blocked on vendor quota
+
+**Decision:** Re-ranked the top Southeast land-flipping zips (full 6-state+FL scope) and logged 12 as `CANDIDATE` rows to the Land Markets tab. Two distinct strategies surfaced and are tagged per row:
+- **STRAT-A** — exurban acreage (1–10 ac), the proven Bartow model: Hall/30506, Maury-TN/38401, Jackson-GA/30549, Limestone-AL/35611, Johnston-NC/27520, Paulding/30157, York-SC/29730.
+- **STRAT-B** — uniform platted small-lot (0.2–0.5 ac), highest-volume land-flip meccas: Marion-FL/34472 (Ocala), Lee-FL/33972 (Lehigh Acres), Charlotte-FL/33948 (Port Charlotte), Citrus-FL/34434. Horry-SC/29526 (Conway) straddles both.
+
+**Blocker (external, not code):** Data-verified scouting (real vacant/absentee counts) is blocked — the **ReportAll free trial hit its all-time 1000-request quota**. Regrid has no key/trial started. Free ArcGIS reaches only ~3 GA counties, all geometry-only (no owner/mailing → can't compute the absentee pool). Every path to finish now costs money.
+
+**Brian's call:** Pause the data spend — the 12 ranked candidates are enough for now. Revisit a paid parcel feed later.
+
+**Shipped anyway (free, push-button for when quota returns):** Wired a `--source reportall` path into `land_markets.py` (`screen_zip_reportall`) so any unwired SE county scouts by zip via ReportAll, reusing the existing normalize/filter/stats pipeline. Bills per parcel returned → `--cap` guards it (default 2000); Total/Vacant counts left blank (no free count-only endpoint); `Vacant Out-of-State` is the capped in-band pool (a floor if cap is hit). Offline mapping test passes; dispatch verified to route correctly (dies only at the 429 quota boundary). Doc updated in `land-scout/SKILL.md`.
+
+**Next when unblocked:** email support@reportallusa.com for a quota bump / paid quote, then run the 12 zips with one command each.
+
+**Owner:** Brian Norton
+
+---
+
+## 2026-07-01 — Trading Desk: 15 positions @ 4%, add 6 ETFs on a 730d gate
+
+**Decision:** Raised the paper trading desk's concurrent-position cap from 5 → 15 and cut per-position size from 5% → 4% of equity (15 × 4% = 60% max deployed, 40% cash buffer). Added a top-rated ETF set — IWM, VTI, SCHD, VUG, XLK, GLD — evaluated every equities cycle alongside the day's top-15 S&P movers. ETFs run the quant walk-forward on a 730d window (vs 365d for stocks); theses are conviction-sorted so the best fill the 15 slots. Stops (−1%) and daily halt (−2%) unchanged.
+
+**Why:** Brian wanted broader coverage (S&P + top ETFs) and more names held, with size dropped to stay manageable. At the default 365d window 0/12 candidate ETFs cleared the gate — not on quality (Sharpe 3–4) but on trade count (1–4 trades < the 5-trade sample floor), same issue crypto hit on daily bars. A 730d window fires enough trades: 6/12 pass. Kept only those 6.
+
+**Alternatives considered:** (a) Diversifiers only (GLD + SCHD) — leaner, less redundant beta; (b) drop ETFs entirely. Brian chose all 6 that pass at 730d for max coverage. Noted risks: the 6 passes are regime-favorable (fail at a 3yr window / through 2022) and 4 of them (IWM/VTI/VUG/XLK) are equity beta overlapping the S&P names — GLD is the one true diversifier. Rejected lowering MIN_OOS_TRADES (would defeat the significance guard).
+
+**Owner:** Brian Norton
+
+## 2026-07-06 — Trading desk split into two $50k books + covered-call trader shipped
+
+**Decision:** Split the $100k paper account into two $50k books on the same Alpaca account: (1) the momentum desk, now sizing off `min(equity, $50k)`, and (2) a new covered-call income book (`scripts/trading_covered_calls.py`) — pure rules, no LLM cost.
+
+**Covered-call rules (best-practice consensus):** 100-share lots of quality names (20-name universe, 100 shares ≤ $25k), sell 30–45 DTE calls at ~0.25Δ (0.20–0.30 band, 4% OTM fallback), min 10% annualized premium yield, max 3 underlyings, 10% cash buffer. Close at 70% profit captured; roll at ≤21 DTE net-credit-only; NEVER sell a strike below cost basis; wheel via ~0.25Δ cash-secured puts on assignment. Income target $500+/mo. Runs inside the orchestrator equities loop at most every 4h (`--no-cc` to disable).
+
+**Momentum upgrades (aimed at the realized-win-rate gap):** ATR(14)×1.5 stops clamped 1–3% (replaces the fixed −1% whipsaw stop), breakeven at +1R then high-water trailing (ratchet-only), SPY 200d-SMA regime filter (fail-flat on data errors — no new entries either direction).
+
+**Book isolation:** symbol-partitioned; each book excludes the other's live Alpaca positions + open orders (option orders block their underlying via OCC parse). Daily −2% halt stays whole-account.
+
+**Process:** designed on Fable, built by a Sonnet subagent, money-path review by an Opus subagent (9 findings: 3 HIGH — fill-confirmation before DB writes, per-leg crash recovery, P&L booked at mid vs ask — all fixed and re-verified). All order legs now confirm fills via poll→cancel→recheck before any DB/ledger write.
+
+**Verified:** risk tests 7/7, CC self-checks 5/5, dry-run cycles clean, `_PAPER=True` everywhere. launchd job restarted 2026-07-06 12:33 ET on the new code — first cycle logged the book split + RISK-ON regime.
+
+## 2026-07-06 — underwriting-reviewer first run: CHALLENGE on 641 Powder Springs narrative (price stands)
+
+**Trigger:** First live run of the new `underwriting-reviewer` subagent, on the 641 Powder Springs GO (LOI out at $910K; 633 investors enrolled today).
+
+**Verdict: CHALLENGE — the $910K offer is defensible; the internal numbers used to sell it don't reproduce.**
+1. **Cap rate mislabeled:** "7.85% on offer" is actually the cap on the $1.5M ASK. Real going-in on the $910K offer = 12.95%.
+2. **Stabilized NOI overstated ~8%:** stated $117,850; recomputes to $108,108 from its own inputs (14u × $1,300 × 12, 10% vacancy, 45% expenses); ~$104K at the KB's 12–15% economic-loss floor.
+3. **Exit cap never stressed:** single-point 6.5% exit vs 12.95% going-in — ~645bps of unstressed compression; KB requires +50bps minimum stress.
+4. **Tax proforma used the banned scale-to-price method** ($16,000); correct = $12,554 × 1.03 ≈ $12,930 (violation was conservative in direction, still a process miss).
+5. **Buy-box misfit:** 43% vacant, 1965, bridge-only, $65K/unit — hits Smyrna's own "stabilized" red flags; profile is distressed value-add, not the bucket it was screened in.
+
+**Funnel exposure checked:** live drip first-touch quotes fund-level targets (6% pref, ~18.21% ROI, 2.09x), NOT the challenged 23.3%/3.21x — no misrepresentation in flight. Pitch deck + Loom in the funnel still need a spot-check for deal-specific return claims.
+
+**Open (Brian to green-light):** rebuild the Analyzer at $104–108K NOI, rerun returns off $910K, stress exit 7.0–7.5%, reclassify the deal value-add, spot-check the deck/Loom.
+
+**Owner:** Brian Norton
+
+## 2026-07-06 — Platform upgrades: Sonnet 5 everywhere, /usage-audit monthly, /audit retired
+
+**Decision:** Adopted the June 2026 Claude releases across the AIOS, retired `/audit` (moved to `archives/skills/audit/`), and replaced it with `/usage-audit` — a monthly retro that mines the past month's sessions AND scans Claude's latest releases, modeled on the 2026-07-06 91-session review.
+
+**Shipped:**
+- Claude Code CLI 2.1.190 → 2.1.201 (background sessions survive sleep/wake; subagent partial-work recovery).
+- All 5 active cloud routines (Daily Brief, Deal Docs, Pitch Deck Archive, Loom Sync, Weekly Docs Sync) switched `claude-sonnet-4-6` → `claude-sonnet-5` (released 6/30, promo pricing through Aug 31; headless-verified the model ID).
+- `fallbackModel: ["claude-sonnet-5"]` in user settings — model hiccups degrade instead of failing.
+- PostToolUse hook (project settings): any Write/Edit under wiki/, references/, context/, decisions/ auto-runs `scripts/aios_index.py` (async) — the recall index stays fresh without remembering to reindex. Pipe-tested + jq-validated.
+- **Root-cause fix found by the hook's pipe-test:** fastembed's model cache lived in macOS's purgeable `/var/folders` temp dir and had been wiped — `aios_index.py`/`aios_recall.py` were BOTH broken. Now pinned to `~/.cache/fastembed`.
+- First custom subagent: `.claude/agents/underwriting-reviewer.md` — fresh-context second pass on every deal verdict (Sonnet 5, read-only tools).
+- `/usage-audit` (skill + `scripts/usage_audit.py`) scheduled via launchd `com.olivetree.usage-audit`, 1st of month 9:05am, headless `claude -p`, emails the report; added to heartbeat's watchlist. Chosen over session cron (7-day expiry) and cloud routine (can't read local session transcripts).
+
+**Also today:** 641 Powder Springs drip enrollment ran — **633 enrolled, 0 errors** (`raise-641-enrolled` tag set; GHL "Deal Funnel Pitch Deck" workflow now driving email/SMS/Loom follow-up).
+
+**Skipped:** Claude Code Artifacts (Team/Enterprise plan gate); effortLevel left at medium (speed-first preference — flip to high per-session for underwriting).
+
+**Owner:** Brian Norton
+
+## 2026-07-06 — Ops cadence layer: /heartbeat, /loose-ends, /q3-scoreboard, /deal-intake
+
+**Trigger:** Session-history review of all 91 sessions (Jun 2–Jul 6) found: 47 manual status-check questions ("is the trading desk running?", "didn't get daily brief"), loose ends rotting for weeks (GOOGLE_* cloud vars, Metricool link), cadence skills built but not run (/level-up 1×, /lets-get-to-work ~3×), and session time skewed to side books while the $400K capital-raise goal got ~2 sessions.
+
+**Decision:** Ship an ops-cadence layer instead of new capability:
+- `/heartbeat` (`scripts/heartbeat.py`) — weekday 7:45am launchd job (`com.olivetree.heartbeat`) + ntfy push. Checks launchd jobs, trading-desk log freshness (<20 min), daily scan, Morning Brief arrival (Gmail via gws keyring, .env GOOGLE_* fallback), olive.db, new deal drops, top-3 loose ends, Mon/Fri cadence nudges. Kills the status-polling tax.
+- `/loose-ends` (`scripts/loose_ends.py`) — harvests pending/blocked/deferred lines from decisions log (60d) + memory; `--done` suppress list in `data/loose_ends_done.txt`.
+- `/q3-scoreboard` — Friday scorecard vs the 3 Q3 goals; pulls `capital_raise.py track` for the $400K line; ends with one #1 action.
+- `/deal-intake` (`scripts/deal_intake.py`) — scans ~/Downloads for OM/T-12/Rent-Roll drops, prints ready-to-paste workup commands; wired into /lets-get-to-work Phase 0 + heartbeat. First scan surfaced 5 waiting deal folders.
+
+**Also:** `/capital-raise` was marked DRAFT in CLAUDE.md but has been LIVE since 6/19 — fixed. The "Monday cloud pre-scan" idea already exists (`pipeline_cloud.py` + unified 5am Morning Brief) and was verified delivering (Jul 2, 3, 6 at 5:12am) — the gap was delivery *verification*, which heartbeat now owns.
+
+**Verified:** heartbeat 8/8 green live, ntfy push received, launchd job loaded, /code-review warnings fixed (monitor can't be killed by aux sections; notify failure can't crash it; intake walk capped).
+
+**Owner:** Brian Norton
+
+## 2026-07-06 — SPY core sweep + conviction-weighted sizing (cash-drag fix)
+
+**Trigger:** Bottom Line showed the desk behind SPY by ~$1,800 over 10 days with ~$32k (32%) idle cash — structural drag, not strategy failure.
+
+**Decision:** (1) `scripts/trading_core.py` — idle cash above a $3,000 floor auto-sweeps into fractional SPY at the end of each equities cycle; books call `release_core()` to sell SPY back when they need capital. Core SPY has no stop, no gates — it is the benchmark, making "match the S&P" the default and the momentum/CC books pure overlay. (2) Momentum sizing now scales 4%→8% of the $50k book linearly with conviction (0.60→1.00), with a 90% book-deployment veto. Reviewed the netting risk: stop exits sell the DB row's qty only, so the legacy 6.78-share momentum SPY lot and core SPY can't liquidate each other; SPY is excluded from new momentum theses once core exists.
+
+**Honest framing:** consistently beating SPY is a bar most funds miss. Realistic goal = match it in up markets (core), add CC income, lose less in down markets (stops/regime/premium). The 30-day Bottom Line verdict is the judge.
+
+**Verified:** risk tests 10/10 (incl. conviction sizing + deployment cap), core self-checks pass, dry-runs clean. First live sweep ≈ $29.4k → SPY on the next equities cycle after daemon restart.
+
+## 2026-07-06 — Covered calls: monthly → weekly + two-stage fills + hourly cycles
+
+**Trigger:** All 3 call sells (INTC/QCOM/CSCO) failed — limit at mid, 45s timeout, cancelled; the 4h retry throttle pushed the next attempt past the close. Lots sat naked earning nothing. Brian also wants the income concept proven faster.
+
+**Decision:** (1) Weekly options: DTE window 30–45 → 4–10 (next-Friday weeklys), profit-close 70% → 60%, roll rule 21-DTE → manage at ≤1 DTE (ITM → roll next week for net credit; OTM → let expire, premium banks, re-sell). ~4x more premium events per month = faster proof + higher gross yield, at the cost of more assignment churn and gamma risk near expiry. (2) Two-stage fill pricing: mid for 45s, then bid — floored at the price where annualized yield stays ≥10% (skip if bid is below floor). Mirrored for buy-to-close (mid → ask). (3) CC cycle throttle 4h → 1h.
+
+**Known ceiling:** no earnings-date filter — weeklys will occasionally straddle an earnings print (INTC/QCOM late July). Acceptable in paper; wire an earnings calendar before real money.
+
+## 2026-07-07 — Carousel hero art: Higgsfield → kie.ai (GPT Image 2 + Veo 3 Fast)
+
+**Trigger:** Optimizing the marketing/social-media skills for non-slop carousels + quote posts. Higgsfield was the paid hero-image path (and Brian is out of Higgsfield credits). Evaluated Luma, Higgsfield, and kie.ai.
+
+**Decision:** Replace Higgsfield with kie.ai (`scripts/kie_hero.py`, `KIE_API_KEY` in `.env`) — one pay-per-generation API for both steps. Image = GPT Image 2 (`gpt-image-2-text-to-image`, `/api/v1/jobs/createTask`, ~6 credits ≈ $0.03/image, default aspect `4:3` to match the cover band). Motion = Veo 3 Fast (`veo3_fast`, its own `/api/v1/veo/generate` endpoint, ~$0.40/8s) — chosen over Sora 2 on price, per Brian.
+
+**Why kie over Luma/Higgsfield:** at ~2 posts/week, pay-per-use (~$3–5/mo) beats a flat subscription (Luma Plus $30, Higgsfield $15–39). kie is ~30–70% under official API rates and matches the existing scripted CLI workflow.
+
+**Honest constraints:** (1) kie does NOT carry Luma — so "Luma for movement" is off the table; Veo 3 Fast is the substitute. (2) Video is the cost driver: ~$0.005/credit, so images are pennies but one Veo clip ≈ 80 credits — a funded balance is required (Brian topping up). (3) CapCut has no official automation API — stays a manual final-polish step. (4) Metricool needs a public MP4 URL for motion covers; hosting not yet wired, so motion is download-and-post-manually until confirmed.
+
+**Verified:** image path tested live end-to-end (auth → GPT Image 2 hero → rendered as branded cover slide). Motion path coded + endpoint confirmed live on the key, but untested pending credit top-up (balance ~$0.34 < ~$0.40/clip).
+
+**Also shipped:** local brand fonts (Outfit + Fraunces) embedded in `carousel_render_html.py` (Google Fonts @import was silently failing → every prior carousel rendered in Helvetica); new `quote` slide type for typography-only inspirational-quote posts.
+
+## 2026-07-07 — Replace GoHighLevel with local CRM stack (cancel sub after cutover)
+
+**Trigger:** Brian asked to "clone GHL locally." Live-API audit showed the paid sub was used for only a slice: 804 contacts + tags, the monthly newsletter, 4 workflows, SMS blasts, calendar booking, and website hosting (www.olivetreeinv.io → sites.ludicrous.cloud). Opportunities/pipelines empty; Social Planner unused (Metricool owns it).
+
+**Decision:** Rebuild the used slice locally — SQLite (`data/olive.db`) + Gmail API + launchd (moving to the Mac mini M4) — then cancel GHL (~$97–297/mo saved). Email via Gmail Workspace (SES is the fallback if deliverability degrades). SMS dropped in v1 (no Twilio wiring; revisit if a raise needs blasts). Website rebuilt static → Cloudflare Pages; only Olive Tree site + 641 landing survive; Find My House + Investment funnels archived as PDFs and retired.
+
+**Shipped:** `ghl_export.py` (full export → archives/ghl-export-2026-07-06/ + db import, 804/804), `crm.py` + /crm skill, `newsletter.py` (build/test-send/send/scan-unsubs, resume-safe, CAN-SPAM unsub), `drip.py` + 3 drips + `drip_worker.py` (launchd com.olivetree.drip, daily 9am), `capital_raise.py` rewired off GHL, `ghl_workflow_export.py` (Playwright, pending Brian session), `site/` static rebuild (5 pages, footer typo fixed), full page archive (10 pages PDF+HTML+assets). Code-reviewed; 3 criticals fixed (token in argv, double-send race, tag-strip on interrupted import).
+
+**Open before cancel:** newsletter smart-list audience → `newsletter` tag (GHL tag had 0 contacts — sends went to a smart list); Playwright workflow-copy pull; Web3Forms access key; Cloudflare Pages deploy + apex/www DNS repoint; GCal appointment-schedule link (replaces booking widget — note: only 394/804 contacts have email).
+
+## 2026-07-07 — Code-review stack: keep two-model setup, fix enforcement, adopt free upgrades
+
+**Trigger:** Brian asked whether the Codex-as-second-reviewer setup could be improved. Research finding: the tooling was fine but the routine wasn't running — last Codex review was June 8 with ~25 scripts landed since, and the CI review only fires on PRs to main (rare in this workflow).
+
+**Decision:** Keep the two-subscription stack (Codex + Claude), skip paid third-party bots (CodeRabbit $24/mo, Greptile $30/mo — PR-centric team tools, wrong shape for a solo local-script workflow). Reserve `/code-review ultra` ($5–20/run) for merges touching money paths (capital raise, drips, financial calcs). Fix the compliance gap with automation, not memory.
+
+**Shipped:** (1) heartbeat now flags scripts modified after the newest `.codex-review` report — daily 7:45am enforcement; (2) `AGENTS.md` at repo root so every Codex review (CLI/plugin/GitHub) gets repo context: financial-calc rules, send/delete always-flags, tax-reassessment + expense-sourcing domain rules; (3) full backlog sweep — 83 scripts, 67 clean, 2 HIGH fixed (qb_auth refresh token printed to stdout → 0600 file + masked; wiki_clientclub `verify=False` → TLS re-enabled), broker_search Gmail fetch parallelized (Monday interactive path). Deliberately skipped 13 "parallelize" MEDs in background launchd/cloud jobs — regression risk in working automation, zero felt latency benefit.
+
+**Pending Brian:** install OpenAI's official Claude Code plugin (`/plugin marketplace add openai/codex-plugin-cc` → `/plugin install codex@openai-codex` → `/codex:setup`) — adds `/codex:review` + `/codex:adversarial-review` in-session, $0 (existing ChatGPT auth). Optional: enable Codex automatic GitHub PR reviews (also $0) for a second lens on PRs to main.
+
+## 2026-07-07 — Retire /level-up; fold the scope check into /usage-audit
+
+**Trigger:** Brian asked to delete /level-up and keep what's useful inside /usage-audit. The weekly interview never became a ritual, and its one recurring output (find + scope one automation) overlapped with the monthly audit's "TOP 3 CHANGES".
+
+**Decision:** One recurring thinking skill instead of two. /usage-audit gains Step 2.5 — before any new automation makes TOP 3 CHANGES it must pass the [removed framework] filters: EAD (eliminate first, don't automate waste), lowest autonomy level that works, ship-boring build order (prompt → deterministic → AI-assisted → agent), and a KPI bucket + metric. 
+
+**Shipped:** skill moved to `archives/skills/level-up/` (house rule — never delete); usage-audit SKILL.md updated; CLAUDE.md, README, EXPANSIONS, onboard skill, and removed-framework reference all repointed; wiki notes for level-up AND audit marked retired (audit's wiki note was never updated when it retired in June — fixed).
+
+## 2026-07-07 — Strip all third-party framework content; add first-principles pass to /usage-audit
+
+**Trigger:** Brian: "Don't want anything from the kit author preserved — remove it." Then: add first-principles thinking to how the audit evaluates the system.
+
+**Decision:** All third-party framework branding, attribution, and trademark notices removed from live files (CLAUDE.md, usage-audit + onboard skills, wiki notes). The kit README and framework reference moved to `archives/` (never-delete rule; git history keeps copies regardless — Brian can order a hard purge). The four scope-check filters survive in usage-audit Step 2.6 as plain unbranded principles. New Step 2.5: a first-principles pass on the system itself — name the quarter's fundamentals, surface the assumption under each big time/money consumer, zero-base rebuild ("would this get rebuilt from scratch today?"), and compare workflow cost to what the outcome fundamentally requires. Max 2 findings feed the report; no manufactured churn.
+
+**Hard purge executed (same day):** Brian ordered the full purge. All third-party framework files (kit README, framework reference, level-up + audit skills) stripped from every commit in git history via git-filter-repo (--invert-paths on 8 paths + string redaction in remaining blobs); all 7 branches force-pushed to GitHub. Verified: zero matching blobs in any reachable commit, working tree clean, uncommitted work preserved via snapshot-commit-then-reset. Note: GitHub may retain orphaned pre-rewrite objects server-side until its GC runs — a support ticket or repo delete/recreate is the only way to force that. Any other clone of this repo (Mac mini) must be re-cloned, not pulled.
+
+## 2026-07-07 — Trading desk redesign: Premium Desk v2 (CC/wheel-primary, momentum retired), Alpaca-only data, new paper account + equity anomaly breaker
+
+**Trigger:** Polygon vs Alpaca A/B (started 2026-06-26, tracked in the `data-feed-comparison-experiment` memory) finished: 0.4bps average price diff, 100% quant-gate pass/fail agreement across the comparison window. Separately, the momentum book's walk-forward gate kept passing on small OOS sample sizes — noise, not edge. Separately again: the paper account's equity dropped from ~$100k to ~$3.5k overnight with zero entries in Alpaca's account activities log — an account/data glitch, not a trading loss.
+
+**Decisions:**
+1. **Data:** Polygon canceled. Alpaca (Algo Trader Plus — SIP equities + OPRA options) is now the sole market-data source everywhere in the desk; `trading_data.py` migrated, `POLYGON_API_KEY` no longer read anywhere.
+2. **Strategy:** Redesigned "Premium Desk v2" — the covered-call/wheel book (`trading_covered_calls.py`, rewritten CSP-first, 30–45 DTE entries, 21-DTE management, new `trading_screener.py` for IV-rank/richness + earnings filter + optional Claude event-screen) is now the PRIMARY book. The momentum pipeline (research → quant → risk → execution) and the SPY core sweep are retired as the default path — not deleted, gated behind `--momentum` in `trading_orchestrator.py`. Goal restated: $1,250/mo premium on the $50k book (30% annualized yield-on-book), with an honest 15–25% base case once management drag is netted in — replaces the old $500/mo momentum-era target.
+3. **Account:** the glitched paper account is abandoned (reported to Alpaca, no explanation found on their side or ours). A new Alpaca paper account was created; Brian needs to paste the new key/secret into `.env` before running live cycles.
+4. **New safeguard:** `scripts/trading_guard.py` — an equity anomaly circuit breaker. Every cycle, before any trading: compares Alpaca's `equity` vs `last_equity`; if the gap exceeds 5% and the account activities log can't explain at least 95% of it, the desk HALTS (writes `data/trading_halt.json`, pushes an ntfy/iMessage alert) and stays halted until the flag is manually cleared. Fails open (doesn't halt) on an Alpaca fetch error, so an outage in the breaker itself can't take the desk down. This is the safeguard that would have caught the incident above before it ever reached a sizing decision.
+
+**Shipped:** `trading_orchestrator.py` rewired (CC/wheel-primary default cycle, `--momentum` flag, `--clear-halt`, guard wired in first, both `--once` and `--loop` fail soft on an Alpaca error mid-cycle); `trading_report.py` bottom-line + scorecard updated to the $1,250 target and yield-on-book framing, momentum sections labeled retired; `trading-desk` SKILL.md rewritten for the v2 architecture and risk table; `trading_guard.py --test` self-check passing (6 cases incl. the actual incident's numbers).
+
+## 2026-07-07 — Pass on pxpipe (token-compression proxy)
+
+**Trigger:** Brian asked for a benefit + security review of https://github.com/teamchong/pxpipe — a local proxy that renders bulky Claude Code context (system prompt, tool docs, old history, large tool outputs) as dense PNGs, cutting input tokens ~59–70% on Fable 5.
+
+**Decision:** Pass. Security came back clean (no phone-home, no secret logging, no install scripts; caveats: unauthenticated dashboard — loopback only — and 4xx request bodies persisted to `~/.pxpipe/4xx-bodies/`). Rejected on fit, not safety:
+1. **Silent number confabulation** — its own benchmarks show 13/15 exact-string recall from imaged content on Fable 5, misses are confident wrong values. Deal sessions image exactly the blocks (T-12/rent-roll/OM tool outputs) whose digits flow into offer prices. Worst possible workload for a lossy compressor.
+2. **Savings aren't dollars here** — interactive use is subscription-billed (token cuts = limit headroom only); API-billed scripts run models off its allowlist; cloud routines can't use a local proxy.
+3. **New always-on daemon in the critical path** + PNG-encode latency, against the speed-first priority.
+
+**Revisit trigger:** regularly hitting Max usage limits AND pxpipe ships its verbatim-risk guard (planned, not built) — or Anthropic ships native optical context compression, which supersedes it entirely.
+
+## 2026-07-07 — GHL deep reproduction: full account footprint captured, workflow copy recovered
+
+**Decision:** Ran a live API audit of the entire GoHighLevel account (not assumptions) and recreated every critical piece locally. Probed all endpoint families → 15 in use. Deep-exported everything to `archives/ghl-export-deep-2026-07-07/` (804 contacts, 20 email campaigns w/ rendered HTML + builder JSON, 4 workflows, 25 funnel pages, 4 forms/3 submissions, 2 surveys, 169 media files, 705 conversations/5883 messages, 2 pipelines, 5 users). Media mirrored to `archives/ghl-media-2026-07-07/` (65MB). Cracked the undocumented internal workflow endpoint to recover the actual email/SMS step copy (the public API only returns workflow names).
+
+**What this closed:**
+- Newsletter audience (open cutover item #1): recovered the real recipient list from conversation history (392 ids across 14 monthly sends) and tagged 341 contacts `newsletter` in olive.db (51 skipped DND, 0 no-email). Audience is no longer 0.
+- Drip copy (open item #2): replaced all placeholder drip templates with GHL-exact copy — `welcome/` (2 emails, from "Contact added" workflow), `agent-wholesaler/` (1 email, the buy-box outreach), `pitch-deck/` (1 email, deck delivery; removed 2 locally-invented follow-ups to match GHL). SMS bodies preserved as comments (email-only in v1).
+- Contacts refreshed: 804 upserted, Josh Germon's email backfilled from today's 641 Powder form submission, local-only tags preserved (union-only merge).
+
+**Findings needing Brian:**
+1. `tag-agent-wholesaler` email is Brian's SINGLE-FAMILY/land buy box (3/2, 1500sqft, $350-450k, ARV+200k, metro-Atlanta counties) — not the multifamily buy box. Kept verbatim; confirm it's still the intended outreach.
+2. 18 of 25 funnel pages ("Find My House - Website" + "Investment" funnels) have no domain attached — exist only inside the GHL editor, not publicly exportable. Recoverable via the same internal endpoint if wanted.
+3. site/ fidelity gaps: 641 Powder live page has conflicting return blocks (18%/140% vs 30%/60%); Partner-with-us live page is a bare calendar widget (rebuild added copy). Confirm intended numbers.
+4. Campaign-level email stats (opens/clicks) need a scope the Private Integration wasn't granted (`/emails/schedule/{id}/stats` → 401).
+5. Workflow TRIGGER configs live in a separate Firebase file not yet pulled (step content is complete; triggers inferred from workflow names).
+
+**Why:** Brian's first migration attempt was built off a shallow export and guessed drip copy. This pass verified against the live API end-to-end so the local stack mirrors what GHL actually does before the sub is canceled.
+
+**Reproducibility:** `scripts/ghl_workflow_export.py` fixed (real internal endpoint + full SPA header set) — re-runnable while logged into GHL in Chrome. Endpoint map appended to `references/gohighlevel-api.md`.
+
+## 2026-07-08 — Brand identity locked (logo as-is, Ivory/Olive/Gold/Charcoal)
+
+**Decision:** Olive Tree Investments brand kit finalized around the existing square-framed tree logo — kept as-is as the primary mark, no redesign. Palette locked: Warm Ivory #F5F1E6, Deep Olive #3A4A2E, Muted Gold #C9A968, Charcoal #2B2B26 (dark-mode companion: Midnight Grove #16211A). Type: hybrid — existing bold sans wordmark (flat color, gradients retired) + Playfair Display for headlines/taglines. Tagline: "Rooted in community."
+
+**Assets built (all free/vector except two $0.03 board generations):**
+- Identity board: `output/brandkit/olive-tree-brandkit-v2.png` (draft 01 concept kept alongside)
+- Tiered SVG logo system in `output/brandkit/svg/`: full emblem / simplified / branch mark — companion redraws; original logo file remains primary
+- One-color transparent set (olive/ivory/gold/charcoal), 1080×1080 PNGs with alpha + SVG masters — for Instagram and photo overlays
+- IG tiles (ivory-on-olive, olive-on-ivory, gold-on-midnight) as ready-to-post PNGs
+- Parametric generator: `output/brandkit/svg/make_logos.py` (rendered transparent via headless Chrome; qlmanage flattens alpha)
+- Live kit page: https://claude.ai/code/artifact/c898a17d-1fb6-4d92-aa59-e2c22142ac05
+
+**Open:** if the original vector file (AI/EPS/SVG) of the logo surfaces, swap it into the mono set for exact geometry. Next step: lock palette/fonts/logos into a Canva Brand Kit so decks and drips inherit them.
+
+**Update (same day):** Original logo masters located at `assets/brand/` (2751px, true transparency: `olive-tree-logo.png`, `olive-tree-mark-dark.png`, `olive-tree-mark-white.png`). All mono/IG variants rebuilt pixel-exact from the real mark via `output/brandkit/logo/make_variants.py` (alpha channel = mask, recolored). The SVG approximation is retired to `output/brandkit/_retired-redraw/` — do not use it for brand assets.
+
+---
+
+## 2026-07-10 — Premium Desk v3: Suna-method redesign approved
+
+Redesigning the paper trading desk to run Kenneth Suna's weekly income-wheel method (mined into `wiki/trading-desk/`). Full spec: `wiki/trading-desk/_suna-redesign-spec.md`.
+
+**Decisions locked (Brian):**
+- Goal changed to **$1,000/week** premium (≈$4,333/mo, ~104% annualized on $50k). Was $1,250/mo. Weekly is now the primary reporting unit. Applied in `trading_covered_calls.py` (`CC_WEEKLY_TARGET_USD`) + SKILL.md.
+- **Weekly cadence** (5–7 DTE), **income-first delta** (~0.45Δ, 1-strike-OTM, assignment welcome), **share-first** entry.
+- **Sell-fear vs anomaly breaker** resolved by definition: breaker halts only *unexplained* equity moves (data glitches); a *normal market selloff* is a green light for fear-CSPs.
+- **Stock discovery** switches from the fixed 38-name blue-chip list to a **weekly Alpaca movers scan** (most-actives + gainers/losers) + ~10 vetted core, with an options-liquidity floor and Haiku structural-vs-transient event-screen on droppers — mirroring Suna's CNBC-movers hunt.
+
+**Why:** the old blue-chip universe pays <1%/week and can't reach $1k/week; Suna's edge is high-vol movers bought on the dip. 
+
+**Status:** design approved, not yet built. New code: `trading_suna.py` driver + movers discovery + premium-band rank + entry-timing filter + repair ladder, wired behind `--suna`. Paper-locked; validate via `--test` + `--backtest` + 2wk paper before any real-money discussion.
+
+**Update (2026-07-10 PM — BUILT):** Premium Desk v3 shipped. New `scripts/trading_suna.py` (weekly share-first wheel: SYNC→MANAGE→COVER→ENTER→WHEEL, ~0.45Δ weekly calls, premium-band gate 0.8–2.5% / >3% pause, entry-timing filter, Wed ITM roll, repair ladder) + `scripts/trading_movers.py` (Alpaca most-actives + gainers/losers discovery). `--suna` wired through the orchestrator; launchd plist `com.olivetree.trading-desk` now runs `--loop --suna` (reloaded, PID confirmed). Reuses v2 guard/report/DB/execution untouched. Both `--test` self-checks pass; live `--once --suna` syncs + skips correctly (market closed); starts trading Mon 2026-07-13. Deferred to v3.1: Haiku structural-vs-transient screen on droppers (for now the >3% premium pause + $10–100 band + liquidity floor + earnings filter guard against junk movers). Recommend `/code-review` on the two new scripts before real-money talk.
+
+**Update (2026-07-10 PM — LLM drop-screen + code review):** Added `structural_drop_screen()` (Haiku) to trading_suna.py — meaningful droppers (movers 'losers' or ≤−8%/day) get a structural-vs-transient read before buying the dip; lazy, per-cycle-cached, fail-open. Live-verified (INTC→structural, PLUG→transient). Ran /code-review: APPROVED, 0 critical, 4 warnings. Fixed 3: (1) partial-roll now books the buyback + clears the option before the new sell, so a failed new-sell leaves a clean uncovered lot instead of a stranded marked-covered one; (2) per-sector cap now skips the "Unknown" bucket so off-universe movers aren't throttled to ~2 entries/cycle; (3) `_DROP_CACHE` cleared each cycle so verdicts don't go stale in the multi-day --loop. OPEN (warning #4, Brian's call): `_free_cash` likely double-counts deployed share cost vs Alpaca `cash` (safe-direction/under-trades) — reconcile against buying_power given the shared paper account. launchd restarted with fresh code.
+
+---
+
+## 2026-07-10 — 2026 Brand Kit adopted; old olive/ivory/gold palette retired
+
+Brian's Claude Design brand kit implemented as a local page at `site/brand/index.html` (13 sections: story, logo suite, clear space, misuse, color, type, voice, motif, social kit, applications) and applied across every branded surface.
+
+**The kit (authoritative):**
+- Palette: Forest Night `#1B1E08` (text/dark grounds) · Olive `#505A19` (links/fills) · Sage Leaf `#7D8B3C` (accent) · Brass `#B7965A` (emphasis) · Ink `#26281C` · Stone `#DAD4C5` · Bone `#F5F2E9` · Paper `#FBFAF5`
+- Fonts: Cormorant Garamond (display) + Archivo (text/UI) + Space Mono (labels). Playfair Display, Fraunces, Outfit retired. Georgia stands in for Cormorant inside email.
+- Tagline: "Rooted in patience, grown with purpose." (replaces "Rooted in community")
+- Logo rules: full-color mark on light grounds; Bone mark on Forest/Olive; Forest mark on Brass.
+
+**Applied to:** `templates/newsletter.html` + `scripts/newsletter.py` + `scripts/newsletter_rates.py` (email), `scripts/carousel_render.py` + `scripts/carousel_render_html.py` (social — photo-derived palettes still adapt per cover by design; only the no-photo fallback is brand-fixed), `site/style.css` + self-hosted Cormorant variable woff2s in `site/fonts/` (web), regenerated mark PNGs in `templates/newsletter-assets/` and `site/assets/`.
+
+**Why:** email, social, and web had drifted onto a cousin palette (`#3A4A2E`/`#F5F1E6`/`#C0A060`); one authoritative kit ends the drift. Design-project placeholders (fake NY address, "Eleanor Vance") were replaced with real Olive Tree details during implementation.
+
+**Note:** the Claude Design API caps file downloads at 256KiB, so brand PNGs are regenerated locally from `assets/brand/olive-tree-mark-dark.png` (alpha-mask recolor) rather than downloaded. Supersedes the 2026-07-08 brandkit board (`output/brandkit/`) as the palette source of truth.
+
+**Update (2026-07-10 PM — warning #4 fixed):** Reconciled the Suna cash math. Replaced `_free_cash` (which double-counted deployed share cost against Alpaca `cash`) with `_book_available(open_rows)` = notional $50k book − committed (DB-sourced) − buffer, capped by real Alpaca `buying_power` (shared paper account). Fail-closed on account-read error. Live check: deployed=$11.4k → available=$36.1k (was constrained tighter against `cash`), unblocking ~3–4 more full positions toward the $1k/week goal. Both `--test` pass; launchd restarted. All 4 review warnings now resolved.
+
+## 2026-07-12 — .env GOOGLE_* keys filled + cloud routines unblocked
+Local `.env` GOOGLE_CLIENT_ID/SECRET/REFRESH_TOKEN were empty placeholders; filled from the gws CLI store (`gws auth export --unmasked` = source of truth). Same three values added to cloud env `env_01KRuwLNKnGrHiafdWsRi8Co` and verified end-to-end (Deal Docs routine rebuilt the deal index from cloud). All four Friday cloud routines now unblocked. Deal index updates only via the Friday routine or a local `deal_index.py` run — not per-workup.
+
+## 2026-07-13 — Doraville (30340/30360) added to buy box
+Added as market #14, a Chamblee-corridor extension (same value-add thesis, 1965–1990 vintage, $80K–$130K/unit — Chamblee at a discount). Market research scored it INVESTIGATE (45/100): vacancy 5.6% and compressing, 2026 deliveries at a decade low, Atlanta forecast #2 nationally for 2026 rent growth (4.1%), MHI $67K. Held back from PURSUE by +1% trailing rent growth and the paused Assembly Phase 2 (800 apts/retail/hotels). Rule attached: re-check Assembly Phase 2 before any Doraville LOI; a restart upgrades to PURSUE. Beware annexation-inflated population stats in OMs (14.7%/yr headline vs ~1.2% organic).
+
+## 2026-07-15 — Premium Desk v2 retired, Suna self-check fixed, capital cap raised
+Trading desk was leaving ~76% of the $50k paper book idle in cash — root cause: v2's covered-call entry logic always bought exactly 1 lot (100sh) regardless of price, and Suna v3's multi-lot sizing (`position_lots()`) was uncommitted WIP whose self-check (`trading_suna._test()`) was failing on a date-math bug (fake test expiry could land inside the live DTE filter's dead zone depending on which weekday the test ran — unrelated to the sizing logic itself, confirmed pre-existing on HEAD too). Fixed the test, verified `position_lots()` correctly sizes up to the $10k/position cap bounded by available cash.
+
+Retired v2 (`trading_covered_calls.py`) as a strategy — orchestrator now only runs Suna v3, `--suna` flag removed from `trading_orchestrator.py`. v2 module stays in the repo (marked RETIRED in its docstring) since `trading_suna.py` still imports its order/fill/position primitives (`_two_stage_sell`, `_submit_limit`, `TradingCCPosition`, etc). **Caught in review:** the live launchd job (`com.olivetree.trading-desk.plist`) hardcoded `--loop --suna` — removing the flag without updating the plist would have crash-looped the desk on its next restart. Plist fixed (dropped `--suna`) and reloaded; confirmed clean restart, no crash.
+
+Raised `CC_MAX_UNDERLYINGS` 8 → 12: at $10k/position the 8-slot cap already covered the full $47.5k deployable, so it wasn't the real constraint — the 8 held slots were occupied by legacy 1-lot (small-$) positions from before the sizing fix, blocking new full-sized entries. More slots let new multi-lot entries open alongside the legacy ones instead of waiting for them to roll off. Verified live: a forced entry cycle placed CLSK ($9,513, 700sh) and BAC ($6,167, 100sh) where before it printed "At max 8 underlyings — no entries" with $37.9k sitting idle. Full deployment toward $50k will still take several cycles as legacy small positions get replaced via assignment/wheel — capital use is also gated by how many names pass the entry-timing + premium-band filters each cycle (by design, not a bug).
+
+## 2026-07-26 — Desk reporting truth fixed + pushed to ~98% deployment chasing $1k/week
+Investigated why the Suna desk read "18% annualized / WTD $0 / realized $0" — found the desk was executing correctly but the scoreboard was blind: option legs resell in place on the same DB row (`opened_at` never moves), so every `opened_at`-filtered premium counter missed resold legs. True July pace was ~$1,105 in 2.5 weeks (~31% annualized gross, $456 realized) — already inside the 15–35% honest band. Fixed (commit `b45c0b3`): all option fills now log to the `trading_orders` ledger; one shared `cc_premium_stats()` feeds --status, heartbeat, and the scorecard email; dead-lot escalation (uncovered ≥5 days → ≤14-DTE retry → alert + auto-sell shares); repair gap now 3% of spot ($0.50–$2.00) instead of flat $2; stale-leg guard after sync; v2 roll copy removed. Code-review APPROVED (2 warnings found and fixed pre-commit: ledger-transition undercount, escalation clock cleared on unfilled exit).
+
+Then pushed deployment ~89% → ~98% (commit `56c855e`) after Brian's call that the full $50k should work: entry floor $5k → $1.2k (was skipping entries the tail could fund), cash buffer 5% → 2% (v3 rolls are net-credit only; buying_power is the backstop), underlying cap 12 → 16 (smaller tail entries need more names). Updated ceiling: ~$640/week at normal 1.3% fills, $980–$1,225 in fear-priced weeks — $1,000/week is now inside the book's range, not past it. Odds of a $1k week this week: ~1 in 3, hinging on Monday's assignment churn (XLE/T called away → same-day wheel-backs) and post-selloff IV staying bid. Desk restarted for the first commit; needs one more `launchctl kickstart` for the deployment change.
+
+## 2026-07-27 — /goal-watch shipped: goal-aware monitor above heartbeat
+New midday layer that judges whether each routine/skill is *meeting its goal*, not just running (heartbeat's job). `scripts/goal_watch.py` + `references/goal-registry.json` (12 targets: 7 launchd jobs, morning-brief + weekly-cloud-sync artifacts, 3 pace goals incl. desk $1k/wk and the $400K raise) + mines last-24h skill runs from session transcripts. One `claude -p --model claude-sonnet-5` judge call (subscription, no API key) grades ON GOAL / OFF GOAL / NO DATA with a one-line fix; OFF GOAL → ntfy via notify.sh; daily report in `output/goal-watch/`. launchd `com.olivetree.goal-watch` weekdays 12:30pm (caffeinate + ~/Library/Logs per TCC rule). Heartbeat fixes in passing: stale `SCAN_LOG` repointed to `~/Library/Logs/dailyscan.log`; `com.olivetree.drip` and goal-watch added to EXPECTED_JOBS. Haiku audit found 1 defect (registry-JSON crash path, fixed); code review APPROVED with 3 warnings, all fixed (judge-failure logging, launchctl-fail sentinel, streaming transcript reads).
+
+First run findings (pending action): drip launchd job failing exit 78 (needs the caffeinate/Library-Logs plist fix — blocks the raise drip), weekly cloud sync shows zero wiki commits in 8 days (check Friday routines' auth/push), desk halted by equity-anomaly flag with $0 WTD, drip_enrollments in olive.db reads 1 (was 633 in GHL — likely migration gap, verify source of truth).
+
+## 2026-07-28 — False Monday halt fixed: guard activity window now covers weekend gaps
+Tuesday-morning halt was a false alarm goal-watch had flagged Sunday: Friday 7/24 expiry assigned XLE/T/IBIT (shares called away, +$431 combined P&L, 3 puts expired worthless), flipping the book to 65% cash. Guard compared Tuesday equity ($49.9k) to Alpaca's stale Friday-close last_equity ($53.8k) but only pulled 3 days of activities — Friday-evening OPASN/OPTRD records were 4 days old, fell outside the window, so a real settlement move read as "NO trade activity" → glitch halt. Fix: `ACTIVITIES_LOOKBACK_DAYS` 3 → 5 in trading_guard.py (covers weekend + halted/holiday Monday). All 9 self-checks pass; live replay of the exact numbers now returns "settlement-driven, not halting." Halt cleared, desk kickstarted (code-fresh check green), resumed cycle booked the assignments, profit-closed SOFI ($24 collected, $8 buyback), and is screening entries to redeploy $32.7k. Note: this halt cost Monday's trading day — the wheel-back re-entries planned for Monday open start Tuesday instead.
+
+## 2026-07-28 — Drip launchd job fixed (exit 78) + enrollment gap confirmed
+Applied the standard TCC fix to com.olivetree.drip.plist: arg0 → /usr/bin/caffeinate -i, stdout/stderr → ~/Library/Logs/drip.log (was python3-in-Documents + repo logs — the exact exit-78 pattern in the launchd-tcc-documents note). Reloaded, kickstarted, verified: exit 0, "Nothing due", unsub scan clean; heartbeat now all 13 systems green. Confirmed the "enrollment collapse" goal-watch flagged is a migration gap, not a real drop: local drip_enrollments has only 1 test row (welcome/done); the 633 real 641-drip enrollees live in GHL and were never migrated. OPEN: migrate the 641 audience GHL → local drip before the raise can resume sending (one of the 5 pre-cancellation items in the GHL migration).
+
+## 2026-07-28 — Two-sided daily scan retired (momentum-era vestige)
+Brian asked if the 9:40am longs/shorts scan still matters under the Suna weekly covered-call desk. Traced: it didn't. Its trading_theses writes had no reader (only consumer was the retired --momentum orchestrator path, filtered by its own run_id), and the live Suna pipeline sources candidates entirely from trading_movers.discover() (Alpaca movers screener) — zero shared code or data. Retired: com.olivetree.dailyscan unloaded, plist + scripts/daily_scan.py moved to archives/momentum-era-2026-07/ (RETIRED note in docstring; runs standalone from there if the market-color email is ever wanted back). Cleaned from heartbeat (EXPECTED_JOBS row — which also deletes its wrong "Daily deal scan" label — plus SCAN_LOG and check_daily_scan) and from goal-registry (12 → 11 targets). Saves ~$1/mo Opus API, 122 daily local backtests, and one daily email. trading_research.py/trading_quant.py untouched (still behind the orchestrator's --momentum flag).
+
+## 2026-07-28 — Cloud routine cleanup: brief re-fired, empty docs PRs closed, no-empty-PR rule
+Today's Morning Brief cloud run fired at 5:11am but died mid-session (auth verified fine); manual re-run delivered it. Docs-sync PRs #6/#7 were zero-diff record PRs — closed, not merged. Weekly Docs Sync routine (trig_01S6VDsj5Deo8Qy7D12BCcSY) prompt updated: PR only when doc files actually changed; no-change weeks end with a summary, no branch/commit/PR. Goal-watch's "0 wiki commits" flag was benign: quiet weeks + the empty PRs, not an auth failure.
+
+## 2026-07-29 — Drip worker RED again: transient Google OAuth timeout, retry added to shared gws_auth
+This morning's 9am drip run exited 1 — NOT the launchd/TCC issue (7/28 plist fix is in place and held). Root cause: oauth2.googleapis.com token refresh timed out (10s, no retry) during newsletter.py scan-unsubs; drip.py itself had already finished clean ("Nothing due" — no sends missed). Fix in the shared path all GWS scripts use: scripts/gws_auth.py get_token() now retries 3x with 5s backoff on ConnectionError/Timeout, timeout 10s → 30s; HTTP errors (e.g. revoked refresh token) still fail fast. Verified: worker manual run exit 0, launchd kickstart exit 0, heartbeat will show green tomorrow. gws_auth.py joins the codex-review queue (9 scripts pending).
+
+## 2026-07-29 — 641 raise resumed on the local email drip (GHL → local migration closed)
+Built the investor drip for 641 Powder Springs on the local stack — closes the OPEN item from the 7/28 enrollment-gap note. New deal-specific `templates/drips/641-powder-springs/` with 3 email steps: day 0 (the deal + fund terms + funnel link), +4d (returns + cost-seg/depreciation angle + call CTA), +9d (last-call / soft-commit ask). Fund-level numbers only (6% pref, 70/30, ~18.21% ROI, 2.09x, $25K min — never the deal-level 23.3%/3.21x); opt-out line on each; step 3 deliberately omits the $910K LOI figure (live negotiation). Step 1 opens with Brian's scam-correction reintro ("…sending this and all future deals through my normal email… now in the apartment syndication game"). Brian's real Gmail signature now appended to every drip send: pulled from `settings.sendAs` → `templates/signature.html`, injected in `drip.py._to_html` (body escaped, signature raw); removed the redundant "-Brian" from the 641 steps. Enrolled the `pitchdeck` tag: **324 active**, 309 skipped (no email on file — SMS-only in GHL, no local SMS channel). Self-tested to Brian (render / numbers / link / signature all confirmed). Decision: enroll-now / send-9am — step 1 fires to all 324 at tomorrow's 9:00 `com.olivetree.drip` run (loaded, verified), steps 2–3 auto-follow at +4/+9. Also fixed a latent `drip.py cmd_stop` crash (read `c.email` after `session.close()` → DetachedInstanceError; now captures the id before commit). Soft-commit tracker $0/$400K. OPEN: the 309 no-email contacts are unreachable without an SMS build; signature photo is a Gmail-hosted image (text always renders if a client blocks it).
+
+## 2026-07-29 — Bounce hygiene: `scan-bounces` shipped + first cleanup (807 → 764 contacts)
+Step 1 of the 641 drip sent clean (324 sent, 0 failed). Its bounces surfaced dead addresses, so built list-hygiene to match: new `newsletter.py scan-bounces` (deterministic, twin of `scan-unsubs`, NOT an LLM agent) — Gmail-searches `from:mailer-daemon`, parses the DSN, and acts ONLY on hard bounces (5.x.x / "address not found"); soft/transient 4.x.x (over-quota, greylist) are skipped so a good contact is never removed on a blip. Default "remove" = mark `unsubscribed` + add `bounced` tag (reversible, reuses every sender's existing skip; next drip run auto-stops their sequence). Wired into the daily 9am worker (`drip_worker.py`) alongside scan-unsubs → runs automatically. Parser self-check at `scripts/test_scan_bounces.py`. Brian then asked to hard-delete the bounced set: 43 hard-bounced contacts (grew 17 → 43 as the full send's DSNs arrived) deleted from olive.db with all child rows (tags/notes/email_log/drip_enrollments) — 807 → 764, 0 orphans. Backed up first: full copy `data/olive.db.bak-2026-07-29-precleanup` + `output/deleted-bounced-2026-07-29.csv`. Also trashed the 43 mailer-daemon notifications from Gmail (recoverable 30d). Design boundary: the daily worker FLAGS bounces automatically; DELETION stays manual (a mis-parsed bounce auto-deleting a good contact is the risk we don't automate). Also fixed a latent `drip.py cmd_stop` crash in passing (read `c.email` after `session.close()`). Pending: `/code-review` on newsletter.py + drip.py + drip_worker.py.
+
+## 2026-07-29 — Goal-watch review: found the heartbeat's own false-green bug, shipped commit-logging
+Today's `/goal-watch` flagged morning-brief OFF GOAL and capital-raise-pace OFF GOAL. Dug into both: (1) Morning Brief has now silently failed 2 days running (7/28, 7/29) — confirmed via Gmail no brief has landed since Monday 7/27, and the 7/28 decisions-log claim that a manual re-fire delivered it was wrong (no such email exists). Worse: `heartbeat.py`'s `check_morning_brief()` reported false GREEN both mornings because its Gmail query (`subject:"morning brief" newer_than:1d`) was still matching Monday's 3-day-old email — Gmail's `newer_than:` buckets by calendar day, not a rolling 24h window. Fixed: query now matches the exact `{Weekday} Morning Brief — {Mon} DD` subject the cloud routine sends, no day-window needed; added a format-drift assert using the real 7/27 subject as ground truth. Codex review (scoped to the diff) then caught the *same* fail-open bug in `check_desk_code_fresh()` (`except: return True` swallowed all errors as healthy) — fixed to fail closed. Cloud routine itself is still broken; needs a claude.ai/code trigger-log check or a manual re-run — OPEN. (2) Capital-raise-pace: `investor_commitments` has read a flat $0 for 40+ days despite 328 warm drip leads — root cause, there was no write path at all, `capital_raise.py` only ever had `track` (read-only). Added `capital_raise.py commit --investor --amount --deal [--status soft|funded]`: get-or-creates the investor, requires an unambiguous deal match (surfaced a real data issue in passing — two duplicate "641 Powder Springs" deal rows, id 1 and id 7, need merging), inserts the commitment, prints the updated tracker. Tested end-to-end incl. the ambiguous-deal error path and a DetachedInstanceError caught by the test run itself (same `session.close()`-then-read-attribute bug as the earlier `drip.py cmd_stop` fix) — captured `deal.address` before close. OPEN: no known verbal commitments logged yet — Brian needs to enter any he already has, or the $0 stays real.
+
+## 2026-07-31 — New paper account PA371XMPHCE2; Aug eval fired a day early; "Week so far" → "Week realized"
+Old paper account PA3TCU0QOGVS came back `ACCOUNT_CLOSED_PENDING` ($50,607 equity / $5,540 cash — ~$45k sat in open positions that closed out with the account). Brian opened a fresh one and sent the endpoint; the endpoint was never the change (`_ALPACA_BASE` in trading_data.py already pointed at paper-api.alpaca.markets) — only the key pair was. New keys in `.env`: **PA371XMPHCE2**, $50,000 flat, ACTIVE, options level 3, shorting enabled.
+
+**Fired `trading_eval_autofire._fire()` manually on 7/31 instead of letting it auto-fire Aug 1.** Two reasons, both one-way doors if we'd waited: (1) `maybe_fire_eval()` requires the account be FLAT (`get_open_position_count() > 0` → return False) — the desk had a covered-call run due in ~25 minutes, and a single Friday entry would have blocked the guard indefinitely, so the Aug eval would simply never have started; (2) leaving the desk up meant the next SYNC would compare 16 stale `trading_cc_positions` rows against 0 Alpaca positions and book them all as expired-worthless, inflating July's archived P&L right before it got archived. Firing while flat captured July's real numbers first: 18 equity-curve rows, 17 orders, 16 CC positions → `archives/trading-eval-2026-08/*.json`, tables cleared, Aug-1 $50k baseline seeded, `_DESK_START` → 2026-08-01, sentinel dropped, desk kickstarted onto the new keys. **Consequence Brian approved: the "Aug 1–31" eval window actually begins Friday 7/31 afternoon**, so a half-day of July 31 trading lands in the August bucket. Caveat for the final scorecard: Alpaca's own close-out figures for the dead account will NOT reconcile with the archived ledger — pull the dashboard statement before it fully closes if July's true P&L matters.
+
+**Suna text line rewritten.** Brian asked whether "Week so far" was the week's total realized P&L. It wasn't — it was live equity minus the last snapshot before Monday, i.e. realized *plus* unrealized mark-to-market, so on a share-holding wheel a paper swing in one lot buried the premium actually banked. `_week_pnl_line()` in trading_report.py now reports **`Week realized: +$X  (equity +$Y incl. open)`**: net option premium since Monday from the timestamped `trading_orders` fill ledger, plus the share leg of any lot called away this week via a new `_share_pnl()` helper — `(strike − basis) × shares` only, since the premium half of an assignment already arrives through the original sell fill (adding `row.realized_pnl` there would double-count). Equity change kept in parens because open drawdown still matters, it just isn't banked. Check at `scripts/test_week_pnl.py` (gain, loss, multi-lot, partial lot, null-field cases). Known convention, **Brian's call to keep as is**: premium books when the cash arrives, not at expiry — a call sold Thursday expiring the following Friday counts in the week it was sold.
+
+## 2026-07-31 — Suna fidelity pass: verified the desk against the raw transcripts, cut an invented rule
+Brian asked how the desk now researches the stocks it picks, and whether that matched Suna's method. Audited the live code against all 52 raw transcripts in `wiki/trading-desk/kenneth-suna/_transcripts/` rather than the distilled summaries — which turned out to matter, because **two of the four gaps we were about to build did not exist in his corpus.**
+
+**Killed: the post-selloff CSP.** It was a locked build item in the v3 redesign spec. A grep for selloff/crash/panic/fear/VIX/correction across every transcript returns **zero hits**. The whole thesis traces to one paraphrased bullet in `kenneth-suna-site/covered-calls-explained.md:77`; the "$50 → $38, sell the $37 strike, downside largely done" specifics were the summarizer's illustration, never his words. The corpus argues the opposite — four separate videos on why he skips CSPs (premium too small for the collateral `7UFks7QD7mc`; can't exercise early so you miss the dip `Sf5_PcOCqcM`; weekend gap risk `18mo5UwZkq0`; reserved cash strangling weekly income, which he quantifies at $15k and $17k). His one documented CSP was sold *into earnings near the highs* and produced "I made a huge covered call mistake." That wiki line is now corrected in place with the correction visible, so it stops seeding future work. The CSP rules he *does* state were already live: the token-premium floor in `_wheel()` and the earnings guard.
+
+**Killed: a market-cap floor as "Suna's recognition rule."** His step is "do I recognize any companies here?" — a query against 26 years of memory. There is no market cap, float, or liquidity number anywhere in the corpus. Shipped the floors anyway ($500M cap / 500k avg volume) as a junk filter for the movers feed, labeled in code as **ours, not his**. Measured on the live pool it rejects **zero** names — beta/short-interest already kills the micro-caps — so it's a cheap backstop, not a working filter.
+
+**Three places the desk contradicted his verbatim words, now fixed.** (1) The ITM roll fired Wednesday; he says *"Friday afternoon… you just roll the contract to the next Friday"* (`5nNwGFWO5yU`) — moved to Friday midday ET. More calls will now ride to assignment, which is the point ("my shares will get assigned, which is my goal"). (2) `discover()` sorted by `abs(pct_change)`, putting the biggest **gainer** at the head of the queue — names `already_ripped()` then rejected one by one. He shops the downside: *"I look for stocks that have been in a downtrend."* Sort is now biggest-droppers-first. (3) Entry timing had only the don't-chase-a-rip half. Added his one crisp technical trigger — price back above **both** the 50- and 200-day moving averages (`MDBy-6aGw3A`). Deliberately did **not** add an RVOL threshold: he says "an increase in volume" but never names a baseline, so rvol is computed and logged, never gated.
+
+**Shadow-gate harness (`SHADOW_GATES` in trading_suna.py).** New selection rules log `👻 SHADOW <gate> would reject` and allow, instead of rejecting. First live dry-run justified it immediately: the `trend` gate would have rejected **27 names, including 2 of the 3 actual entries (MP, GME)** — the shop-downtrend / buy-the-cross tension is real and measured, not theoretical. A name that is "way down" is by construction below its moving averages. **Decision: `trend` stays advisory** until a week of counts says otherwise; if it keeps killing most entries it becomes a ranking input, not a gate.
+
+Also: universe now S&P 500 **+ MidCap 400** (`data/sp400.txt`, 400 names, zero overlap) because he explicitly shops mid-cap and away from the Mag 7 — pool 238 → 477. And `already_ripped()`'s window was measuring ~11 trading days against a constant named `RIP_5D_PCT` (`get_bars(days=7)` pads +10 calendar days); `entry_signals()` now measures a genuine 5 trading days, which slightly loosens the filter toward its stated intent. Fidelity now ~85% of his written method, and the unsourced 15% is documented as unsourced rather than built.
+
+## 2026-07-31 — Open-readiness check: two corrections + the wheel has never once filled
+Pre-Monday verification of the Suna desk. Green: launchd `KeepAlive`+`RunAtLoad` (survives sleep/crash/reboot), running process started 16:08:48 with every script mtime ≤15:35 so it holds the committed code, account flat/ACTIVE/unblocked, no halt file, `suna_uncovered.json` empty, next open confirmed 2026-08-03 09:30 ET, idle loop re-checks the session every 60s so it picks up the open within a minute.
+
+**Correction 1 — account number.** This morning's entry names the new paper account as **PA371XMPHCE2**. That account was replaced again at ~14:36 today; the live account is **PA34T7PF1F38** ($49,978.64, options level 3/3, options buying power $49,978.64). `.env.bak-20260731` holds the superseded keys and is now gitignored (`.env.bak*`) — it was untracked but one `git add -A` from being committed.
+
+**Correction 2 — the "options level 3 fixes the naked-sell errors" assumption is wrong.** Tallying every option sell in the desk log by label and checking the next line for a rejection: `cover` 28 ok / 2 rejected, `cover-on-entry` 24 ok / 9 rejected, `repair-cover` 11 ok / 2 rejected, and **`CSP wheel` 0 ok / 8 rejected — the wheel step has never successfully filled a single cash-secured put.** Every attempt comes back `40310000 account not eligible to trade uncovered option contracts`. So the covered-call side works (~73–93% first-try, and `_cover()` re-covers any lot left uncovered on the next cycle, so entries self-heal within the hour), but the wheel-back half of the strategy is dead at the broker and always has been — this is not a consequence of today's account swaps. Cause not yet established: either Alpaca's level 3 doesn't authorize short puts on this account type, or the CSP is being submitted without the cash reservation Alpaca wants to see. **Do not assume the wheel works until one CSP actually fills.** Practical impact is bounded — the desk is share-first, so a failed CSP just leaves an assigned name un-re-entered and returns the capital to the entry pool — but the `assigned → wheeled` transition in `trading_cc_positions` has never legitimately occurred.
+
+## 2026-07-31 — CORRECTION: the wheel never failed on permissions. It was our own collateral math.
+The earlier entry today said the CSP rejections were possibly "Alpaca's level 3 doesn't authorize short puts." **That was wrong**, and the mistake came from grouping two different errors under one HTTP code. Both failure modes return `40310000`, but the messages differ, and only the covered-call one says "not eligible to trade uncovered":
+
+- **13x** `account not eligible to trade uncovered option contracts` — covered-call sells (`cover-on-entry`, `repair-cover`).
+- **8x** `insufficient options buying power for cash-secured put (required: 16190.01, available: 1166.42)` — every CSP the wheel has ever attempted.
+
+Alpaca offers **no naked options at any level**; Level 1 already permits both covered calls and cash-secured puts, and the account is level 3. Approval was never the constraint.
+
+**Root cause 1 — CSP sizing (the 0-for-8).** `_wheel()` bounded the strike with `_book_available()`: book notional, capped by the account's `buying_power`. On this account `buying_power` is **$199,914** — 4x margin on equities — while `options_buying_power`, the pool Alpaca actually checks to secure a put, is **$49,978**. Once the book was deployed, options BP fell to ~$1.1k while `buying_power` still looked like five figures, so the wheel confidently sized a QCOM $165 put needing $16,190 of collateral and got rejected twice per attempt (both `_two_stage_sell` stages). Fixed: `get_account()` in trading_data.py now exposes `options_buying_power`; new `csp_collateral()` (fail-closed to $0 on a read error) and `csp_max_strike(price, book_free, opt_bp)` bound the strike by spot, the per-position cap, book notional **and** broker collateral; a filled CSP now decrements both pools, so one cycle can't queue several puts the account could only secure one of.
+
+**Root cause 2 — covered-call coverage.** A call is "covered" against the **broker's** position book, not ours. `_fill_or_cancel()` confirms the buy ORDER filled, which is not the same event as the position becoming visible — sell into that gap and the call reads as naked. The DB can also be *behind* Alpaca (lot already assigned away) and `_cover()` would still try. Fixed with one shared precondition rather than a patch per caller: `broker_shares()` reads Alpaca's actual count, `await_shares()` polls up to 15s after an entry fill, and `_sell_call_row()` skips with a clear line when the broker shows fewer shares than contracts require. Entry defers the cover to the next cycle instead of firing a doomed order; `_cover()` picks it up.
+
+Neither fix is verifiable end-to-end until an order actually fills — market closed 16:00 ET, next open Monday 2026-08-03 09:30. The pure sizing/coverage logic is covered by asserts in `trading_suna.py --test`, including the live QCOM numbers ($170 spot, $1,166 collateral → max strike $11.66, so the $165 put is correctly never attempted).
+
+## 2026-07-31 — Pre-Monday close-out: index refresh built, and the entry filter was measuring the wrong thing
+
+Three open items from the handoff. Two closed, one genuinely has to wait for Monday.
+
+**1. Frozen index snapshots — built the refresh.** `trading_data.py` documented a `--refresh-sp500` flag that did not exist. It exists now, plus `--refresh-sp400`, both scraping Wikipedia's constituent tables — the same source the files were hand-built from. Stdlib `re` over the first wikitable; no new dependency (pandas can't `read_html` here, `lxml` isn't installed). Fails **closed**: a layout change that parses short (<480 / <380 names) raises and leaves the file alone rather than silently shrinking the desk's universe. Verified by running it: reproduces `data/sp500.txt` (503) and `data/sp400.txt` (400) **byte-for-byte**, and there has been **zero membership drift since the 6/30 snapshot** — so the staleness risk was small, but the chore is gone and the comment is no longer a lie.
+
+**2. The rip filter — 12%/5d is ours, and it was missing his actual rule.** Asked what `RIP_5D_PCT = 0.12` was sourced from. Grepping the 52 transcripts: **no percentage, no window, anywhere.** The *concept* is his in two distinct forms, and the desk had only implemented one of them:
+- "monster run up over the last couple of days, and then it consolidates" (`Sf5_PcOCqcM`) → the 5-day rip test. 12% is Brian's number, now labeled as ours in the code.
+- "I didn't want to buy it while it was at all-time highs, so I pulled back on Enphase" (`GumGpGQ8yc8`); "at all-time highs or 52-week highs, indicating to me that there could be a rather large pullback" (`HC_pTLCERto`) → **this was not implemented at all.** A name can grind to a 52-week high and clear the 5-day rip test untouched.
+
+Added `near_high` to `entry_signals()` (free — same bars call, window widened 320d→400d because a real 52-week high needs 252 sessions and ~220 was all the old window returned) and a `highs_ok()` gate. **Shadow, per the existing convention** — the 5% band around the high is ours, so it logs what it would cut before it cuts anything. Live pool: **6 would-be rejections**, none of them names that entered.
+
+**3. `trend` gate — still open, and it should be.** Needs Monday's live counts. Reviewing `trend` and `highs` together after a week.
+
+**Correction to Friday's Monday-morning checklist: the wheel cannot fire Monday.** The checklist called a `🎡 Wheel` line the first real test of the CSP fix. But `_wheel()` only runs on rows with `status="assigned"`, and the book is **flat — 8 closed rows, zero assigned, zero open**. A CSP first becomes possible after Monday's entries get assigned at a Friday expiry, so the earliest real test of the collateral fix is **the week of Aug 7**, not Monday. Monday tests the entry + cover path only.
+
+Also: the after-hours dry-run produced 1 entry (RIVN) vs. Friday's 3 (HPQ, MP, GME). Not a regression — **26 of HPQ's 35 weekly calls fail the 10%-spread liquidity floor after the close**, and MP's premium reads 4.06%/wk into the ≥3% pause band on stale quotes. Both resolve when the market opens.
+
+## 2026-08-01 — Method comparison: Suna vs the field; moderate tweak tier applied
+Brian asked whether Suna's method is the best way to trade covered calls and what tweaks would raise weekly income on $50k. Researched tastytrade (45 DTE/30Δ/50%-profit, ~10–15% ann.), Ellman/BCI (monthlies, 20%/10% exits), CBOE index studies (PUT beats BXM ~1%/yr), and practitioner wheel data ($400–800/mo on $50k). **Verdict: keep Suna's weekly share-first core** — the case for monthlies is management cost, which automation removes; weekly near-ATM is the higher-yield class and July's true pace (~31% ann., Sharpe 1.56, max DD 1.87%) already beats the practitioner band. Full write-up: `wiki/trading-desk/method-comparison-2026-08.md`.
+
+**Applied (moderate tier):** (1) `PREM_MIN` 0.8%→1.2% — across July's 15 real call fills a 1.2% floor forgoes only $117 of $1,992 premium (XLE, BAC) vs $390 at 1.5% and $828 (42%) at proposal A2's 2.0%, which now runs as a 👻 shadow counter instead. (2) Earnings-window guard fixed at the root: entry expiry is now capped BEFORE earnings via `dte_cap` → `pick_weekly_call(dte_max=…)` (old check let a 7-DTE pick straddle a day-5 earnings date), and `_wheel()` got the same guard — it previously had none (no CSP across earnings, Suna's rule + proposal #8). (3) 👻 shadow counters for proposals A2 (2% gate), A4 (stable/high-IV tier), A5 (30Δ-alternative premium) log on every entry; review with `trend`/`highs`/`quality` after the first live week (Aug 3–7). (4) **Target restated $1k/wk → $500/wk** (`CC_WEEKLY_TARGET_USD`, goal-registry, SKILL.md): $1k/wk was ~104% annualized — nothing documented sustains it; $500 sits between actual pace (~$440/wk gross premium) and the measured ~$640 ceiling. (5) The five 7/10 `_trading-upgrades.md` files finally ruled: etf-education + kenneth-suna RESOLVED (adopted/shadow/already-live per item), etfs/investing-by-age/site-links DECLINED (1-of-N coverage, off-mandate). (6) SKILL.md drift fixed — frontmatter + cycle line described retired v2 (IV rank, CSP-first, 21-DTE, Wed roll).
+
+**Explicitly not doing:** monthly cadence (drops to the 10–15% yield class), CSP-first flip (CBOE PUT edge is real but Suna's capital-efficiency objection stands on $50k; revisit only if the fixed wheel leg proves itself — first possible fill week of Aug 7), intraweek rotation (medium confidence, complex). Shadow-gate ruling (trend/quality/highs) deliberately deferred to live-week counts per the code's own convention — no live 👻 lines existed yet at decision time.
+
+## 2026-08-01 — Aug usage audit: two delivery failures fixed, trading desk stays open
+
+Audit verdict: **off goal** on all three Q3 targets. 31 days = 118 sessions, 543
+messages. Deal workup/underwriting — the binding constraint — finished 5th at 25
+messages, behind trading desk (56), social/marketing (44), ops (38), broker (34),
+and status-check questions (31). 18 of 61 commits were trading-desk.
+
+Both root causes were **delivery failures, not coverage gaps** — the machinery
+existed and the last hop was missing:
+
+1. `heartbeat.py` printed the Mon/Fri cadence nudge but never appended it to the
+   `summary` string that ntfy sends. `/q3-scoreboard` ran 1 of 5 Fridays in July.
+2. The 641 raise had 275 contacts in an outbound drip and no inbound catcher.
+   `deal_inbox.py` scanned broker mail only, so investor replies never reached
+   `capital_raise.py commit`. $0 of $400K, empty pipeline. New
+   `scan_investor_replies()` runs in the weekday 8am morning scan. First live run
+   found 4 replies over 30 days — including **Josh Irby (7/29, "Would like to hear
+   more")**, a warm lead that sat 3 days unanswered.
+
+**Proposed and declined:** freezing trading-desk feature work through Q3. Brian's
+call — the desk keeps running and stays open to changes. The attention skew is
+recorded as a measurement, not an action item.
+
+**Platform scan:** nothing to adopt. On 2.1.220, current release; no 2.1.219
+feature has a landing spot that beats what's running. No skills archived — every
+skill has a run inside the window.
+
+**Not done:** no third audit email (the 9:05am launchd run already emailed twice).

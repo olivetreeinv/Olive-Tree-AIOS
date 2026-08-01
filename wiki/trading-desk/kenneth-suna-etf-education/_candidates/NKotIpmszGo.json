@@ -1,0 +1,22 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth demonstrates a covered call on HIMS that's deep in-the-money (stock at $58.08 vs $49.50 strike). He addresses whether to buy back the contract to avoid assignment, concluding it's not worth the $880/contract cost ($2,600+ loss) and instead accepts assignment as part of the strategy's design, then plans to re-enter via cash-secured puts or re-buying stock.",
+  "takeaways": [
+    "When stock gaps significantly above strike (HIMS $58.08 vs $49.50), buying back costs $880/contract\u2014calculate total loss before deciding to close",
+    "Accept assignment when cost to buyback exceeds acceptable loss threshold; it's built into the covered call strategy",
+    "After assignment, rotate into cash-secured puts or re-establish position the following week rather than fighting the cap",
+    "Covered calls intentionally cap upside\u2014acknowledge this risk upfront; only suitable if you can accept getting called away at strike price",
+    "Covered call wheel strategy requires minimal active management\u2014Kenneth's stated preference despite occasional capped gains"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Establish pre-assignment buyback threshold rule: only repurchase covered calls if cost \u2264 20-30% of premium collected; otherwise accept assignment and redeploy capital into CSP or new CC cycle",
+      "evidence": "Kenneth paid $880 to buyback (losing $2,600+) when premium collected was only $535\u2014video demonstrates mathematical illogic of fighting deep ITM calls; Brian's $1,250/mo target benefits from strict capital redeployment rules rather than emotional buybacks"
+    }
+  ],
+  "id": "NKotIpmszGo",
+  "title": "Should you buy back your covered call if the stock skyrockets?! #shorts",
+  "duration": 129
+}

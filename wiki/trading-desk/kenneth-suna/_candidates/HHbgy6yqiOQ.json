@@ -1,0 +1,29 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "risk-management",
+  "summary": "Kenneth discusses the risks of trading into earnings weeks, using his portfolio as a case study. He demonstrates how major earnings announcements (HIMS, D-Wave, etc.) created significant volatility that hurt several positions, and emphasizes the importance of considering whether to sit out high-volatility earnings weeks rather than blindly entering trades.",
+  "takeaways": [
+    "Avoid or reduce trading activity during major earnings weeks when multiple big-name companies report simultaneously",
+    "Recognize that covered calls can trap you in losing positions\u2014Kenneth has $23,423 stuck in HIMS at $58 cost basis (now $45-46) and cannot sell calls profitably",
+    "When stock drops significantly below your cost basis, covered call premium becomes too small to justify the risk",
+    "Monitor earnings dates on your positions (HIMS Monday, D-Wave Thursday, Oscar Health, etc.) to anticipate volatility spikes",
+    "Consider waiting until mid-week (Tuesday/Wednesday) after earnings volatility settles before selling new covered calls for better premiums",
+    "Earnings can cause sharp directional moves (ELF: $131 to $122, HIMS: $58 to $45-46) that wipe out premium gains",
+    "Accept opportunity cost: liquidity from car sale ($12k) should have stayed in cash or deployed cautiously rather than chasing ELF on an earnings-volatile week"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Implement a 'no-new-entry' rule on Mondays when major earnings are scheduled; preserve dry powder for mid-week entries post-earnings volatility",
+      "evidence": "Kenneth notes that Monday is 'going to be the big earnings week' with multiple companies reporting, then admits he'll make smaller trades Monday and only deployed $18.2k in new capital despite having $55.3k total deployed. Suggests ex-post that sitting out would have been prudent."
+    },
+    {
+      "strategy": "trading-desk",
+      "change": "Set a minimum premium threshold based on delta/moneyness rather than absolute dollar amounts; skip covered call sales on deep OTM positions like Oscar Health ($18 stock, $21.50 strike) where premium is 'going to be very small'",
+      "evidence": "Kenneth explicitly states he may wait until Tuesday/Wednesday when Oscar Health stock recovers so he can 'sell a covered call for' better premium, indicating earnings-driven downside traps low-premium positions that waste capital allocation."
+    }
+  ],
+  "id": "HHbgy6yqiOQ",
+  "title": "Part 21: 10/27-10/31 - risks of trading into earnings ",
+  "duration": 328
+}

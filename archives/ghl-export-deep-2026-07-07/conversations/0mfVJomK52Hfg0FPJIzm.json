@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "0mfVJomK52Hfg0FPJIzm",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906223455,
+    "dateUpdated": 1783364930040,
+    "lastMessageDate": 1783364930035,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Lou, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906224371,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "jQiFY4vjFWPjGH4bSS0p",
+    "fullName": "Lou Dempsey",
+    "contactName": "Lou Dempsey",
+    "companyName": "22 Fossetts Auction",
+    "phone": "+17705462800",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364930035
+    ]
+  },
+  "messages": [
+    {
+      "id": "3UNwayXxYFUMtx2m5gpV",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Lou, a copy of the pitch deck has been sent to your email.",
+      "contactId": "jQiFY4vjFWPjGH4bSS0p",
+      "contentType": "text/plain",
+      "conversationId": "0mfVJomK52Hfg0FPJIzm",
+      "dateAdded": "2026-07-06T19:08:49.409Z",
+      "dateUpdated": "2026-07-06T19:08:49.410Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+17705462800",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "WPBVoGWRtHhYrZMlARyo",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Lou, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "jQiFY4vjFWPjGH4bSS0p",
+      "contentType": "text/plain",
+      "conversationId": "0mfVJomK52Hfg0FPJIzm",
+      "dateAdded": "2026-06-19T21:57:03.759Z",
+      "dateUpdated": "2026-06-19T21:57:05.224Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+17705462800",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

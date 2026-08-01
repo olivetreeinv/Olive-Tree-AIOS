@@ -1,0 +1,80 @@
+{
+  "conversation": {
+    "id": "Y3Hvqzghxblun3MZnBkY",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364393589,
+    "dateUpdated": 1783364394237,
+    "lastMessageDate": 1783364394234,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Jeffrey, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "gYcxJAA6KDeltaG4jVt7",
+    "fullName": "Jeffrey Stanton",
+    "contactName": "Jeffrey Stanton",
+    "companyName": "USAA Mortgage",
+    "phone": "+16237158452",
+    "tags": [
+      "lender",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "attributed": null,
+    "sort": [
+      1783364394234
+    ]
+  },
+  "messages": [
+    {
+      "id": "1i7FKkiDSD3lPeRDg89s",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "gYcxJAA6KDeltaG4jVt7",
+      "conversationId": "Y3Hvqzghxblun3MZnBkY",
+      "dateAdded": "2026-07-06T18:59:55.302Z",
+      "dateUpdated": "2026-07-06T18:59:55.302Z",
+      "from": "+16237158452",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "SMS"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "tgND16BY1KXthAPV5H6y",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Jeffrey, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "gYcxJAA6KDeltaG4jVt7",
+      "contentType": "text/plain",
+      "conversationId": "Y3Hvqzghxblun3MZnBkY",
+      "dateAdded": "2026-07-06T18:59:53.635Z",
+      "dateUpdated": "2026-07-06T18:59:53.635Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+16237158452",
+      "error": "Error 30006 - Landline or non-mobile number. Cannot receive SMS.",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth demonstrates a covered call strategy on Ford stock held since 2008, selling 6 contracts at the $16 strike when implied volatility was elevated after a stock price surge. He earned $302 in premium while retaining shares, planning to repeat the process on any pullbacks until eventual assignment.",
+  "takeaways": [
+    "Sell covered calls when IV is elevated after stock momentum (Ford jumped $12\u2192$16)",
+    "Strike selection: sell at-the-money or slightly out-of-the-money strikes ($16 strike when stock at $16)",
+    "Monitor premium decay week-to-week: $302 in week 1 vs only $120 potential in week 2 after momentum fizzled",
+    "Covered calls allow profit on premium even if stock breaks even or declines slightly",
+    "Plan for eventual assignment but use interim periods to layer additional premium sales",
+    "6 contracts on several-hundred-share position provides reasonable capital efficiency"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Establish IV-based entry triggers for covered call selling (e.g., only sell when IV rank >60%) to maximize premium collection on the wheel",
+      "evidence": "Kenneth explicitly notes he sold covered calls because 'options premiums would be really high' after stock ripped; he avoided selling the following week when premiums degraded to 20 cents, showing IV-dependent premium quality matters significantly to position profitability"
+    }
+  ],
+  "id": "hakKpzx72U0",
+  "title": "Selling ford stock",
+  "duration": 120
+}

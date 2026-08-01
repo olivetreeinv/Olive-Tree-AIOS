@@ -1,0 +1,29 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth demonstrates a systematic covered-call selling approach targeting $180/week premium on individual stocks (HIMS, OLO, JOBY, Oscar Health). He achieved $1,192 in premiums on $25,930 deployed capital (4.6% weekly return) while emphasizing the strategy's income focus, position sizing discipline, and risks around earnings events and assignment.",
+  "takeaways": [
+    "Target $180-200 per week in premium per covered-call position as attainable goal (vs. unsustainable claims of thousands/week)",
+    "Sell the highest premium strike price even if slightly out-of-money (e.g., sold $49.50 strike on HIMS bought at $49.57 for 7-cent loss per share acceptable for premium maximization)",
+    "Scale into new positions smaller initially (e.g., $2,100 on new Oscar Health vs. $15,000 on established HIMS) until familiar with stock behavior",
+    "Use 1-2 week expirations (weekly or monthly) to maintain flexibility and compound premium income",
+    "Avoid wheel strategy on volatile stocks showing pullback risk (e.g., JOBY up to 52-week highs, avoided CSP to prevent capital lockup on $14-15 pullback scenario)",
+    "Do not sell covered calls on stocks you intend to hold long-term; maintain separate core positions without call obligations",
+    "Accept assignment risk and don't buy back calls early unless forced to preserve long-term position, as buyback losses can be significant"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Formalize position-sizing rule: allocate maximum 60% of weekly premium target to single highest-conviction stock (e.g., HIMS at $535), reserve 40% for diversified secondary positions (OLO, JOBY, new plays)",
+      "evidence": "Kenneth scaled HIMS to $15k (58% of capital deployed) while testing OLO, JOBY, Oscar smaller; achieved $1,192 premium on $25,930 capital but noted concentration risk\u2014formalizing allocation would reduce single-stock earnings event impact"
+    },
+    {
+      "strategy": "trading-desk",
+      "change": "Screen and backtest entry timing rule: only initiate new covered-call positions after stock achieves 5+ day consolidation post-breakout, not at 52-week highs",
+      "evidence": "Kenneth explicitly avoided JOBY wheel strategy citing 10-day rip to all-time highs with pullback risk to $14-15; recognized Oscar Health had strong breakout but kept position small due to unfamiliarity\u2014rule codifies this risk assessment into position entry"
+    }
+  ],
+  "id": "HC_pTLCERto",
+  "title": "7/21 part 8: $180 per week from HIMS covered calls? ",
+  "duration": 408
+}

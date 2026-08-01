@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "Xhuy5QK8p81FZVG3VAYz",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781905840391,
+    "dateUpdated": 1783364244954,
+    "lastMessageDate": 1783364244950,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Tiffany, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781905841286,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "JHFDmIrBPl1RSl4d9H7D",
+    "fullName": "Tiffany Jones",
+    "contactName": "Tiffany Jones",
+    "companyName": "5482 Martin's Crossing",
+    "phone": "+14044566604",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364244950
+    ]
+  },
+  "messages": [
+    {
+      "id": "byjVyQQG10yRnaE1bsnT",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Tiffany, a copy of the pitch deck has been sent to your email.",
+      "contactId": "JHFDmIrBPl1RSl4d9H7D",
+      "contentType": "text/plain",
+      "conversationId": "Xhuy5QK8p81FZVG3VAYz",
+      "dateAdded": "2026-07-06T18:57:24.266Z",
+      "dateUpdated": "2026-07-06T18:57:29.061Z",
+      "source": "workflow",
+      "altId": "SMcba0173d577fc965a3368f1fd74ef4ac",
+      "from": "+16789712411",
+      "to": "+14044566604",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "BzR9DcjLLZdDQ1MsQ4su",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Tiffany, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "JHFDmIrBPl1RSl4d9H7D",
+      "contentType": "text/plain",
+      "conversationId": "Xhuy5QK8p81FZVG3VAYz",
+      "dateAdded": "2026-06-19T21:50:40.634Z",
+      "dateUpdated": "2026-06-19T21:50:45.573Z",
+      "source": "app",
+      "altId": "SM71f5b21808c46a0c69a3b65441adcef8",
+      "from": "+16789712411",
+      "to": "+14044566604",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}
