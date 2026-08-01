@@ -1,16 +1,21 @@
 #!/bin/sh
 # notify.sh — reusable local notifier for the Olive AIOS.
 # Usage: notify.sh "Title" "Message body"
-# Fires a macOS banner (always) and an iMessage-to-self (if NOTIFY_IMESSAGE_TO is set).
+# Fires a macOS banner (always) and an ntfy push (if NTFY_TOPIC is set).
 #
-# NOTIFY_IMESSAGE_TO is read from "<repo>/.env" (e.g. NOTIFY_IMESSAGE_TO="+15551234567"
-# or an Apple ID email). Phone/email must be a handle your Messages.app is signed in to.
+# ntfy is the ONLY channel that actually buzzes the phone. Two others were tried
+# and removed 2026-07-31: iMessage-to-self lands silently (no push), and the
+# Twilio SMS leg never had a TWILIO_TO to send to, so it had never once fired.
+# TWILIO_ACCOUNT_SID / TWILIO_AUTH_TOKEN stay in .env on purpose — they are not
+# alerting creds, scripts/rr_leads.py pulls rank-and-rent call logs with them.
+#
+# NTFY_TOPIC is read from "<repo>/.env"; the phone subscribes to the same topic
+# in the ntfy app. No account, carrier, or verification needed.
 
 REPO="/Users/olivetree/Documents/Olive AIOS"
 TITLE="${1:-Olive AIOS}"
 MESSAGE="${2:-(no message)}"
 
-# Pull handles/creds from .env if present.
 # Read a var from .env: strip quotes, inline "# comment", and surrounding whitespace.
 env_val() {
   grep -E "^$1=" "$REPO/.env" | head -1 | cut -d= -f2- \
@@ -18,11 +23,6 @@ env_val() {
     | tr -d '"' | tr -d "'"
 }
 if [ -f "$REPO/.env" ]; then
-  NOTIFY_IMESSAGE_TO=$(env_val NOTIFY_IMESSAGE_TO)
-  TWILIO_ACCOUNT_SID=$(env_val TWILIO_ACCOUNT_SID)
-  TWILIO_AUTH_TOKEN=$(env_val TWILIO_AUTH_TOKEN)
-  TWILIO_FROM=$(env_val TWILIO_FROM)
-  TWILIO_TO=$(env_val TWILIO_TO)
   NTFY_TOPIC=$(env_val NTFY_TOPIC)
 fi
 
@@ -32,29 +32,7 @@ osascript -e 'on run {t, m}' \
           -e 'display notification m with title t sound name "Glass"' \
           -e 'end run' "$TITLE" "$MESSAGE" 2>/dev/null
 
-# 1b) ntfy push — the reliable phone notifier (free, no carrier/verification needed).
+# 2) ntfy push — the phone notifier.
 if [ -n "$NTFY_TOPIC" ]; then
   curl -s -H "Title: $TITLE" -d "$MESSAGE" "https://ntfy.sh/$NTFY_TOPIC" >/dev/null
 fi
-
-# 2) Twilio SMS — arrives as a real inbound text, so the phone actually notifies.
-# (iMessage-to-self lands silently — no push — which is why this channel exists.)
-if [ -n "$TWILIO_ACCOUNT_SID" ] && [ -n "$TWILIO_TO" ]; then
-  curl -s -X POST "https://api.twilio.com/2010-04-01/Accounts/$TWILIO_ACCOUNT_SID/Messages.json" \
-    --data-urlencode "To=$TWILIO_TO" \
-    --data-urlencode "From=$TWILIO_FROM" \
-    --data-urlencode "Body=$TITLE: $MESSAGE" \
-    -u "$TWILIO_ACCOUNT_SID:$TWILIO_AUTH_TOKEN" >/dev/null
-fi
-
-# 3) iMessage to self — disabled; ntfy push covers phone notifications.
-# Restore by uncommenting if you want the Mac Messages thread history back.
-# if [ -n "$NOTIFY_IMESSAGE_TO" ]; then
-#   osascript <<EOF
-# tell application "Messages"
-#     set targetService to 1st service whose service type = iMessage
-#     set targetBuddy to buddy "$NOTIFY_IMESSAGE_TO" of targetService
-#     send "$TITLE: $MESSAGE" to targetBuddy
-# end tell
-# EOF
-# fi

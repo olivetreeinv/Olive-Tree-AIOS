@@ -29,12 +29,10 @@ from scripts.trading_data import get_bars, get_account
 from db.connection import Session
 from db.schema import TradingCCPosition, TradingEquityCurve, TradingPosition, TradingSignal
 
-# notify.sh decides its own channels (macOS banner + ntfy push; the iMessage block
-# is commented out). This only asks "is ANY channel configured" — it used to gate
-# on NOTIFY_IMESSAGE_TO alone, so deleting a dead iMessage var from .env would have
-# silenced all 26 desk alerts while NTFY_TOPIC, the channel that actually buzzes the
-# phone, sat there configured and unused.
-_NOTIFY_TO = os.getenv("NTFY_TOPIC", "") or os.getenv("NOTIFY_IMESSAGE_TO", "")
+# ntfy is the phone channel. This used to gate on NOTIFY_IMESSAGE_TO — a var
+# notify.sh no longer reads — so deleting one dead line from .env would have
+# silenced all 26 desk alerts while NTFY_TOPIC sat there configured and unused.
+_NOTIFY_TO = os.getenv("NTFY_TOPIC", "")
 _NOTIFY_SH = str(Path(__file__).parent / "notify.sh")
 _START_EQUITY = 50_000.0    # Premium Desk paper account (PA371XMPHCE2) starting equity
 # Soft daily profit goal — tracking/visibility only. Does NOT force or block trades
