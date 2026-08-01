@@ -235,10 +235,14 @@ def main():
     except Exception as e:
         print(f"\n  LOOSE ENDS: harvest failed ({e})")
 
-    # Cadence nudges
+    # Cadence nudges. Long form prints to the report; short form rides on the
+    # ntfy push — the nudge is worthless if it only ever lands in a log file.
+    nudge = ""
     if today.weekday() == 0:
+        nudge = "MONDAY: run /lets-get-to-work"
         print("\n  MONDAY: War Room digest is in your inbox — run /lets-get-to-work for the decision half.")
-    if today.weekday() == 4:
+    elif today.weekday() == 4:
+        nudge = "FRIDAY: run /q3-scoreboard"
         print("\n  FRIDAY: run /q3-scoreboard.")
 
     n_ok = len(checks) - len(reds)
@@ -248,6 +252,8 @@ def main():
         summary += f" · {len(new_deals)} new deal folder(s)"
     if stale:
         summary += f" · {len(stale)} unreviewed script(s)"
+    if nudge:
+        summary += f" · {nudge}"
     print(f"\n  SUMMARY: {summary}")
 
     if args.notify:

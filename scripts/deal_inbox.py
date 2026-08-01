@@ -15,6 +15,7 @@ Usage:
 import argparse
 import base64
 import re
+import shlex
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta
@@ -60,6 +61,15 @@ DEAL_QUERIES = [
     '(subject:"offering memorandum" OR subject:" OM " OR subject:"multifamily" OR subject:"apartment" OR subject:"for sale") -from:me -from:crexi.com -from:loopnet.com',
     '("rent roll" OR "T-12" OR "T12" OR "cap rate" OR "asking price" OR "NOI") -from:me -from:crexi.com -from:loopnet.com',
 ]
+
+# Investor-language filter for replies from people sitting in an email drip.
+# Outbound drips had no inbound catcher until 2026-08-01 — a "send me the deck"
+# reply landed unflagged and never reached capital_raise.py commit.
+INVESTOR_REPLY_QUERY = (
+    '("interested" OR "the deck" OR "pitch deck" OR "invest" OR "investing" '
+    'OR "commitment" OR "commit" OR "accredited" OR "wire" OR "subscription" '
+    'OR "how much" OR "minimum") -from:me'
+)
 
 # ─────────────────────────────────────────────
 # Auth
@@ -309,6 +319,99 @@ def print_results(results):
     print("  Actions:")
     print("  - To analyze a deal: python3 scripts/deal_analysis.py --analyze --property '[name]' --asking [price] --units [n] --zip [zip]")
     print("  - For full pipeline: run /lets-get-to-work\n")
+
+
+# ─────────────────────────────────────────────
+# Investor drip replies
+# ─────────────────────────────────────────────
+
+def get_drip_contacts():
+    """email -> (display name, drip_name) for everyone sitting in an active drip."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+    from db.connection import get_session
+    from db.schema import Contact, DripEnrollment
+
+    session = get_session()
+    try:
+        rows = (session.query(Contact.email, Contact.first_name, Contact.last_name,
+                              DripEnrollment.drip_name)
+                .join(DripEnrollment, DripEnrollment.contact_id == Contact.id)
+                .filter(DripEnrollment.status == "active")
+                .all())
+    finally:
+        session.close()
+
+    out = {}
+    for email, first, last, drip in rows:
+        if not email:
+            continue
+        name = " ".join(p for p in (first, last) if p).strip() or email
+        out.setdefault(email.strip().lower(), (name, drip))
+    return out
+
+
+def scan_investor_replies(token, days):
+    """Gmail replies matching investor language, narrowed to active drip enrollees."""
+    try:
+        drip_contacts = get_drip_contacts()
+    except Exception as e:
+        # Type only, never str(e): a SQLAlchemy connection error embeds DATABASE_URL,
+        # which carries a password once this moves off sqlite to Postgres.
+        print(f"  investor replies: drip lookup failed ({type(e).__name__})")
+        return []
+    if not drip_contacts:
+        return []
+
+    found = search_messages(token, INVESTOR_REPLY_QUERY, days)
+    msg_ids = [m["id"] for m in found][:30]
+    if len(found) > len(msg_ids):
+        print(f"  investor replies: {len(found)} matches, only the newest {len(msg_ids)} read "
+              f"— narrow with --days")
+    if not msg_ids:
+        return []
+
+    def _fetch(msg_id):
+        try:
+            return get_message_full(token, msg_id)
+        except Exception:
+            return None
+
+    replies = []
+    with ThreadPoolExecutor(max_workers=8) as executor:
+        for msg in executor.map(_fetch, msg_ids):
+            if msg is None:
+                continue
+            _, sender_email = parse_sender(extract_header(msg, "From"))
+            match = drip_contacts.get((sender_email or "").strip().lower())
+            if not match:   # investor language from someone not in a drip — not ours
+                continue
+            name, drip = match
+            replies.append({
+                "name":    name,
+                "email":   sender_email,
+                "drip":    drip,
+                "subject": extract_header(msg, "Subject"),
+                "date":    extract_header(msg, "Date"),
+                "preview": extract_body_preview(msg),
+            })
+    return replies
+
+
+def print_investor_replies(replies, deal="641 Powder Springs"):
+    if not replies:
+        return
+    print(f"\n💰 Investor Replies — {len(replies)} from active drip contacts\n")
+    for i, r in enumerate(replies):
+        print(f"  {i+1}. {r['name']} <{r['email']}>  [drip: {r['drip']}]")
+        print(f"     Subject: {r['subject']}")
+        print(f"     Date: {r['date']}")
+        print(f"     Preview: {r['preview']}")
+        # shlex.quote so O'Brien / D'Angelo paste as a working command
+        print(f"     Log it: python3 scripts/capital_raise.py commit "
+              f"--investor {shlex.quote(r['name'])} --amount [$] "
+              f"--deal {shlex.quote(deal)} --status soft")
+        print()
+    print("  Nothing is logged automatically — confirm the amount, then run the command.\n")
 
 
 # ─────────────────────────────────────────────
@@ -753,6 +856,7 @@ def main():
 
     results = scan_inbox(token, args.days, args.dry_run)
     print_results(results)
+    print_investor_replies(scan_investor_replies(token, args.days))
 
     if args.extract_brokers:
         extract_and_add_brokers(token, results, args.dry_run,

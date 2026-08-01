@@ -13,6 +13,8 @@ What it does (all deterministic — no LLM, no browser):
      updates / replies needing Brian.
   3. broker_sites curl fetch: stages the server-rendered broker pages to
      output/broker-sites/<date>/ so the interactive @browser sweep is one step.
+  4. deal_inbox investor replies (last 1 day): overnight email from contacts in
+     an active drip whose text reads like investor interest.
 
 What it does NOT do: extract/screen the fetched broker-site HTML (that needs an
 LLM pass) or the JS-app sites (need @browser). The summary flags those as a
@@ -59,6 +61,12 @@ def scan_replies():
     return deals, contacts, replies
 
 
+def scan_investors():
+    """Overnight replies from people sitting in an active investor drip."""
+    from deal_inbox import scan_investor_replies
+    return scan_investor_replies(get_token(), days=1)
+
+
 def stage_broker_sites():
     """Fetch server-rendered broker pages (curl) for the later @browser sweep."""
     r = subprocess.run(
@@ -74,7 +82,7 @@ def stage_broker_sites():
     return fetched, js
 
 
-def build_summary(crexi, replies, sites):
+def build_summary(crexi, replies, sites, investors=()):
     fresh, n_match, n_near = crexi
     deals, contacts, reps = replies
     fetched, js = sites
@@ -96,6 +104,13 @@ def build_summary(crexi, replies, sites):
         lines.append(f"\n📞 {len(contacts)} broker contact update(s) — run broker_replies --apply.")
     if reps:
         lines.append(f"💬 {len(reps)} broker repl(y/ies) to read.")
+
+    # Leads first: this is the $400K goal, and it had no inbound catcher until 8/1.
+    if investors:
+        lines.append(f"\n💰 {len(investors)} INVESTOR repl(y/ies) from the drip:")
+        for r in investors[:4]:
+            lines.append(f"  • {r['name']}: \"{r['subject'][:50]}\"")
+        lines.append("  Log any commitment: scripts/capital_raise.py commit")
 
     lines.append(f"\n🖥️  {fetched} broker site(s) staged; {js} JS-app site(s) need the "
                  f"@browser sweep — open Claude Code + @browser and say "
@@ -122,7 +137,8 @@ def main():
     crexi = _safe(scan_crexi_deals, ([], 0, 0), "crexi", errors)
     replies = _safe(scan_replies, ([], [], []), "replies", errors)
     sites = _safe(stage_broker_sites, (0, 0), "broker-sites", errors)
-    summary = build_summary(crexi, replies, sites)
+    investors = _safe(scan_investors, [], "investor-replies", errors)
+    summary = build_summary(crexi, replies, sites, investors)
     if errors:
         summary += "\n\n⚠️ scan errors: " + "; ".join(errors)
     print(summary)
