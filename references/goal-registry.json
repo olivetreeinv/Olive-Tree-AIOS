@@ -82,7 +82,7 @@
     {
       "name": "trading-desk-pace",
       "kind": "pace",
-      "goal": "Sell covered-call premium at >= $1,000/week pace on the $50k paper book (CC_WEEKLY_TARGET_USD); no halt flag active. Judge weekly pace, not a single day \u2014 a slow Monday isn't a failure.",
+      "goal": "Sell covered-call premium at >= $500/week pace on the $50k paper book (CC_WEEKLY_TARGET_USD); no halt flag active. Judge weekly pace, not a single day \u2014 a slow Monday isn't a failure. ($500/wk is the honest stretch: desk ceiling ~$640/wk at normal 1.3% fills; the old $1k/wk was ~104% annualized.)",
       "evidence": [
         "tail -30 ~/Library/Logs/trading-desk.log",
         "python3 -c \"from scripts.trading_covered_calls import cc_premium_stats; print(cc_premium_stats())\"",

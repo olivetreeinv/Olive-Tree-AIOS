@@ -4,7 +4,7 @@ title: Trading Strategy Upgrade Proposals from Kenneth Suna Videos
 generated: 2026-07-10
 source_videos: 16
 candidates_considered: 1
-status: AWAITING BRIAN'S APPROVAL — no strategies modified
+status: DECLINED 2026-08-01 — 1 of 16 candidates arrived; dividend-safety screen targets a dividend book the desk doesn't run. See decisions/log.md 2026-08-01.
 ---
 
 # Premium Desk Strategy Upgrades — PROPOSAL

@@ -89,8 +89,12 @@ CC_LADDER_SPREAD_DAYS = 7          # spread new-position expiries across ~weekly
 CC_UNIVERSE = CANDIDATE_UNIVERSE
 
 # ── Config: reporting ──────────────────────────────────────────────────────────
-CC_WEEKLY_TARGET_USD  = 1_000.0                          # primary goal: $1k/week premium (Suna weekly cadence)
-CC_MONTHLY_TARGET_USD = CC_WEEKLY_TARGET_USD * 52 / 12   # ≈ $4,333/mo, ~104% annualized on the $50k book
+CC_WEEKLY_TARGET_USD  = 500.0                            # $500/wk gross premium — stretch but honest.
+                                                         # Desk's own measured ceiling: ~$640/wk at normal
+                                                         # 1.3% fills, $980+ only in fear-priced weeks. The
+                                                         # old $1k/wk was ~104% annualized on $50k — no
+                                                         # documented method sustains that (2026-08-01).
+CC_MONTHLY_TARGET_USD = CC_WEEKLY_TARGET_USD * 52 / 12   # ≈ $2,167/mo on the $50k book
 
 # ── Alpaca client ─────────────────────────────────────────────────────────────
 def _client() -> TradingClient:

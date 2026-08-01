@@ -4,7 +4,7 @@ title: Trading Strategy Upgrade Proposals from Kenneth Suna Videos
 generated: 2026-07-10
 source_videos: 5
 candidates_considered: 7
-status: AWAITING BRIAN'S APPROVAL — no strategies modified
+status: RESOLVED 2026-08-01 — superseded by the built v3 redesign + 7/31 fidelity pass (one-strike-OTM, Friday roll, net-credit-only, never-below-basis all live; LIFO is Schwab-specific N/A on Alpaca; vol gate ≈ premium band). See decisions/log.md 2026-08-01.
 ---
 
 # Premium Desk Upgrade Proposal — Suna Tactics Applied to $50k CC + CSP Wheel

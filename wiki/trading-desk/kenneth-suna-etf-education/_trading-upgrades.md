@@ -4,7 +4,7 @@ title: Trading Strategy Upgrade Proposals from Kenneth Suna Videos
 generated: 2026-07-10
 source_videos: 52
 candidates_considered: 49
-status: AWAITING BRIAN'S APPROVAL — no strategies modified
+status: RESOLVED 2026-08-01 — #2 adopted in part (PREM_MIN 0.8%→1.2%; full 2.0% gate runs as 👻 shadow counter), #3 adopted (earnings-window guard; rip filter already live), #4/#5 run as 👻 shadow counters, #7 deferred to wheel verification (week of Aug 7), #6/#8/#10 already live in v3 form, #1 IV-rank rolodex declined (premium band replaced it), #9/#11/#12 declined. See wiki/trading-desk/method-comparison-2026-08.md + decisions/log.md 2026-08-01.
 ---
 
 # Premium Desk Strategy Upgrades — PROPOSAL (Brian to approve)

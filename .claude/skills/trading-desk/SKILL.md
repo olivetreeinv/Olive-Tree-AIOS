@@ -1,6 +1,6 @@
 ---
 name: trading-desk
-description: "Paper-trading covered-call/wheel income desk: screener (IV rank + earnings filter + AI event-screen) → CSP-first wheel entries → 21-DTE management → equity anomaly circuit breaker → Alpaca paper execution. Run /trading-desk, 'start the trading desk', 'run a trade cycle', 'show my P&L'."
+description: "Paper-trading covered-call/wheel income desk (Suna weekly, share-first): movers discovery + stock screen + AI event-screen → buy 100-share lots, sell ~0.45Δ weekly calls (premium band 1.2–2.5%) → 60% profit-close / Friday-afternoon ITM roll → wheel-back CSPs on assigned → Alpaca paper execution. Run /trading-desk, 'start the trading desk', 'run a trade cycle', 'show my P&L'."
 ---
 
 # Trading Desk Skill — Olive Tree Investments — Premium Desk v3 (Suna)
@@ -11,9 +11,9 @@ Paper-trading income desk. Covered-call/wheel book is PRIMARY. All paper money u
 
 The desk runs **Suna's weekly share-first income wheel** exclusively (launchd plist runs `--loop`). v2 (the monthly CSP-first wheel described below) was retired as a strategy on 2026-07-15 — the `--suna` flag was removed since Suna is now the only path; `trading_covered_calls.py` stays in the repo only because `trading_suna.py` imports its order/fill/position primitives. Full spec + rationale: `wiki/trading-desk/_suna-redesign-spec.md`; decisions: `decisions/log.md` 2026-07-10, 2026-07-15. Source: `wiki/trading-desk/kenneth-suna*` (mined from his videos + paid guide).
 
-- **Goal:** $1,000/week premium (weekly is the primary unit; `--status` leads with premium WTD).
+- **Goal:** $500/week premium (weekly is the primary unit; `--status` leads with premium WTD). Restated from $1k/wk on 2026-08-01 — see `## Goal` below.
 - **New code:** `scripts/trading_suna.py` (weekly driver) + `scripts/trading_movers.py` (Alpaca movers discovery). Reuses v2's guard/report/DB/execution primitives.
-- **Cycle:** SYNC (reused) → MANAGE (profit-close / Wed >$1 ITM roll) → COVER (weekly ~0.45Δ call, repair-aware) → ENTER (share-first from the movers pool, premium-band 0.8–2.5%, >3% pause, entry-timing filter) → WHEEL (weekly CSP on assigned).
+- **Cycle:** SYNC (reused) → MANAGE (60% profit-close / Friday ≥12pm ET >$1 ITM roll, net-credit only) → COVER (weekly ~0.45Δ call, repair-aware, dead-lot escalation) → ENTER (share-first from the movers pool, premium-band 1.2–2.5%, >3% pause, entry-timing + earnings-window filters) → WHEEL (weekly CSP on assigned, no CSP across earnings).
 - **Discovery:** rebuilt weekly from Alpaca most-actives + gainers/losers (`trading_movers.discover()`), not the fixed 38-name list. Options-liquidity floor + $10–100 price band + earnings filter cull junk movers.
 - **Structural-drop screen:** meaningful droppers get a Haiku "structural vs transient" read before buying the dip (`structural_drop_screen()`) — skips deteriorating businesses, buys overreactions. Lazy, cached per cycle, fail-open.
 
@@ -152,7 +152,7 @@ To change ceilings, edit constants at the top of `scripts/trading_covered_calls.
 
 ## Goal
 
-**$1,000/week premium** (≈ $4,333/mo) on the $50k CC/wheel book — a ~104% annualized yield-on-book target (Suna-method weekly cadence). This is an aggressive stretch goal: it implies selling near-the-money weekly calls at ~2%/week gross, which in practice means frequent assignment and real capped-upside/drawdown drag. Weekly is the primary unit (`--status` leads with premium WTD vs $1,000); treat 15–35% annualized as the honest base case until paper results prove the pace. Tracked in `--report` and the daily scorecard email.
+**$500/week premium** (≈ $2,167/mo) on the $50k CC/wheel book. Restated from $1k/wk on 2026-08-01: $1k/wk was ~104% annualized — no documented method sustains that (Suna's own best stretch was ~3%/wk on $33k with real losing weeks; practitioner consensus for a $50k wheel is $400–800/mo). The desk's measured ceiling is ~$640/wk at normal 1.3% fills, $980+ only in fear-priced weeks; July's true pace was ~31% annualized. $500/wk (~52% annualized gross) is the stretch band between actual pace and ceiling. Weekly is the primary unit (`--status` leads with premium WTD vs $500). Tracked in `--report` and the daily scorecard email. Full method comparison: `wiki/trading-desk/method-comparison-2026-08.md`.
 
 ## Keys required (.env)
 

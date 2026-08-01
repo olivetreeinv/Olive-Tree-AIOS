@@ -55,10 +55,16 @@ SUNA_CALL_BAND  = (0.38, 0.55)            # acceptable delta band around the tar
 SUNA_CSP_DELTA  = 0.30                    # wheel-back puts, a touch richer than v2's 0.25
 SUNA_CSP_BAND   = (0.22, 0.40)
 
-# Premium-band gate (weekly premium ÷ price), from the paid guide's risk bands:
-PREM_MIN   = 0.008   # <0.8%/wk → too little premium, skip
-PREM_MAX   = 0.025   # 0.8–2.5% is the sellable range
+# Premium-band gate (weekly premium ÷ price), from the paid guide's risk bands.
+# Floor raised 0.8%→1.2% (2026-08-01): across July's 15 real call fills a 1.2%
+# floor forgoes only $117 of $1,992 premium (XLE, BAC — the thin tail that ties
+# a $10k lot up for <$100/wk). 1.5% would have forgone $390 and proposal A2's
+# 2.0% hard gate $828 (42% of all premium) — so 2.0% runs as a shadow counter
+# in _enter() instead of a rule until a few live weeks say otherwise.
+PREM_MIN   = 0.012   # <1.2%/wk → too little premium for the capital, skip
+PREM_MAX   = 0.025   # 1.2–2.5% is the sellable range
 PREM_PAUSE = 0.030   # >3%/wk → ultra-volatile, Kenneth pauses; we skip entries
+PREM_SHADOW_GATE = 0.020  # proposal A2's floor — logs 👻, never rejects
 
 # Options-liquidity floor — movers surface illiquid names the blue-chip list never did.
 LIQ_MAX_SPREAD_PCT = 0.10   # bid/ask spread as % of mid
@@ -191,10 +197,12 @@ def pick_weekly_call(snaps: list[dict], price: float, min_strike: float = 0.0,
     return {**min(otm, key=lambda c: c["strike"]), "_fallback": True}
 
 
-def pick_weekly_put(snaps: list[dict], max_strike: float) -> Optional[dict]:
+def pick_weekly_put(snaps: list[dict], max_strike: float,
+                    dte_max: int = SUNA_DTE_MAX) -> Optional[dict]:
     """Wheel-back weekly put: nearest ~0.30Δ inside the band, strike ≤ max_strike
-    (cash available). Falls back to nearest 3% OTM below spot."""
-    puts = [p for p in (_sellable(s, "put") for s in snaps)
+    (cash available). Falls back to nearest 3% OTM below spot. dte_max caps the
+    expiry below the next earnings date (no CSP across earnings)."""
+    puts = [p for p in (_sellable(s, "put", dte_max=dte_max) for s in snaps)
             if p and p["strike"] <= max_strike]
     if not puts:
         return None
@@ -903,19 +911,40 @@ def _enter(client, dry_run: bool = False):
                 continue
             if not _gate("trend", *trend_ok(sig), tkr):
                 continue
-            # Earnings guard (reuse v2's resolver): skip if earnings before our weekly expiry.
+            # Earnings guard (reuse v2's resolver): the chosen expiry must land
+            # BEFORE earnings, not just >3 days out — the old check let a 7-DTE
+            # pick straddle a day-5 earnings date (Suna: no CC across earnings).
             max_exp = earnings_max_expiry(get_next_earnings(tkr))
-            if max_exp and (max_exp - date.today()).days < SUNA_DTE_MIN:
-                print(f"  ⏭  {tkr}: earnings inside the weekly window — skip")
-                continue
+            dte_cap = SUNA_DTE_MAX
+            if max_exp:
+                dte_cap = min(dte_cap, (max_exp - date.today()).days)
+                if dte_cap < SUNA_DTE_MIN:
+                    print(f"  ⏭  {tkr}: earnings inside the weekly window — skip")
+                    continue
             snaps = _get_option_snapshots(tkr, opt_type="call", dte_min=SUNA_DTE_MIN)
-            call = pick_weekly_call(snaps, price, min_strike=price)  # 1-strike-OTM (≥ spot)
+            call = pick_weekly_call(snaps, price, min_strike=price, dte_max=dte_cap)
             if not call:
                 continue
             ok, why = premium_band_ok(call["premium"], price)
             if not ok:
                 print(f"  ⏭  {tkr}: {why}")
                 continue
+            # Shadow counters for the pending 7/10 proposals — log, never reject.
+            # A2: 2.0% hard yield gate. A4: stable/high-IV tier blend. A5: what
+            # the 30Δ alternative would have earned vs the chosen 0.45Δ strike.
+            pct = call["premium"] / price
+            print(f"  👻 {tkr}: SHADOW A2-2%-gate="
+                  f"{'reject' if pct < PREM_SHADOW_GATE else 'pass'}, "
+                  f"A4-tier={'high-IV' if pct >= 0.015 else 'stable'} "
+                  f"(prem {pct:.2%}/wk)")
+            alt30 = [c for c in (_sellable(sn, "call", dte_max=dte_cap) for sn in snaps)
+                     if c and c["delta"] and 0.25 <= c["delta"] <= 0.35
+                     and c["strike"] >= price]
+            if alt30:
+                a30 = min(alt30, key=lambda c: abs(c["delta"] - 0.30))
+                print(f"  👻 {tkr}: SHADOW A5 30Δ alt ${a30['strike']:g} would earn "
+                      f"${a30['premium']*100:,.0f}/lot vs chosen "
+                      f"${call['premium']*100:,.0f}")
             lots = position_lots(price, avail)
             if lots < 1:
                 continue
@@ -1007,8 +1036,17 @@ def _wheel(client, dry_run: bool = False):
                 print(f"  ⏭  {row.underlying}: ${opt_bp:,.0f} options buying power "
                       f"can't secure a single put — skip")
                 continue
+            # No CSP across earnings (Suna's rule; upgrade proposal #8) —
+            # assignment into an earnings gap-down is the wheel's tail risk.
+            max_exp = earnings_max_expiry(get_next_earnings(row.underlying))
+            dte_cap = SUNA_DTE_MAX
+            if max_exp:
+                dte_cap = min(dte_cap, (max_exp - date.today()).days)
+                if dte_cap < SUNA_DTE_MIN:
+                    print(f"  ⏭  {row.underlying}: earnings inside the weekly window — no CSP")
+                    continue
             snaps = _get_option_snapshots(row.underlying, opt_type="put", dte_min=SUNA_DTE_MIN)
-            put = pick_weekly_put(snaps, max_strike)
+            put = pick_weekly_put(snaps, max_strike, dte_max=dte_cap)
             if not put:
                 print(f"  ⚠️  {row.underlying}: no weekly put fits cash/DTE — skip")
                 continue
