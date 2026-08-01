@@ -58,12 +58,17 @@ Each enrolled contact gets the tag `raise-641-enrolled` so re-runs skip them.
 GHL's "Deal Funnel Pitch Deck" workflow handles the email, SMS, Loom, and follow-up drip.
 
 ### Step 4 — Track soft commits
-As prospects respond and you add them to the Investors pipeline in GHL:
+Log every commitment the moment a prospect says yes — GHL is being decommissioned,
+so the local `investor_commitments` table is the source of truth:
 ```bash
-python3 scripts/capital_raise.py track
+python3 scripts/capital_raise.py commit --investor "Jane Doe" --amount 50000 \
+    --deal "641 Powder Springs"          # --status soft (default) | funded
+python3 scripts/capital_raise.py track   # running total vs. the $400K Q3 target
 ```
-Shows running total vs. $400K Q3 target. Log each commitment in the "Soft commitment"
-stage with `monetaryValue` set to the dollar amount.
+`commit` creates the investor if the name is new (add `--contact` and `--type`),
+refuses near-duplicate names without `--new-investor`, and refuses an identical
+commitment without `--force`. **Nothing reaches the Q3 scoreboard until it's
+logged here** — a warm reply that only lives in your inbox counts as $0.
 
 ### Step 5 — Tax/returns hook (optional, for the right investor)
 Cost-seg + bonus depreciation: Year-1 paper loss of ~$0.95–$1.20 per $1 invested.

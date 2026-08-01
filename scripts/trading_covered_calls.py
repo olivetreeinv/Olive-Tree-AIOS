@@ -1048,9 +1048,13 @@ def cc_premium_stats() -> dict:
         mtd_start = today[:7] + "-01"
         wtd_start = (date.today() - timedelta(days=date.today().weekday())).isoformat()  # Monday
         open_rows = s.query(TradingCCPosition).filter_by(status="open").all()
+        # Fetch back to whichever window starts earlier: on the 1st-6th of a
+        # month wtd_start is in the PRIOR month, and an mtd_start-only fetch
+        # made the WTD fallback below blind to the week's first days. Every
+        # consumer re-filters to its own window.
         closed    = s.query(TradingCCPosition).filter(
             TradingCCPosition.status.in_(("closed", "assigned", "expired", "wheeled")),
-            TradingCCPosition.closed_at >= mtd_start,
+            TradingCCPosition.closed_at >= min(mtd_start, wtd_start),
         ).all()
         # _parse_occ filters out the momentum book's plain-ticker equity orders,
         # which share the trading_orders table.
@@ -1082,7 +1086,8 @@ def cc_premium_stats() -> dict:
     else:
         premium_mtd = sum((r.premium_received or 0) for r in open_rows
                           if (r.opened_at or "") >= mtd_start) + \
-                      sum((r.premium_received or 0) for r in closed) + \
+                      sum((r.premium_received or 0) for r in closed
+                          if (r.closed_at or "") >= mtd_start) + \
                       sum((r.realized_pnl or 0) for r in open_rows)
     if ledger_start and ledger_start <= wtd_start:
         premium_wtd = _net_premium(all_fills, wtd_start)
@@ -1093,7 +1098,8 @@ def cc_premium_stats() -> dict:
                           if (r.closed_at or "") >= wtd_start)
     # Realized P&L MTD: closed-lot P&L this month, plus P&L already banked on
     # still-open lots from legs that were closed and resold in place.
-    realized_pnl = sum((r.realized_pnl or 0) for r in closed) + \
+    realized_pnl = sum((r.realized_pnl or 0) for r in closed
+                       if (r.closed_at or "") >= mtd_start) + \
                    sum((r.realized_pnl or 0) for r in open_rows)
     return {"premium_wtd": round(premium_wtd, 2), "premium_mtd": round(premium_mtd, 2),
             "realized_pnl": round(realized_pnl, 2)}

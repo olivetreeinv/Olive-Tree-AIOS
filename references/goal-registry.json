@@ -47,7 +47,7 @@
       "label": "com.olivetree.usage-audit",
       "goal": "Runs the 1st of each month at 9:05am, mines the last month of sessions, and emails the usage-audit report; last run should have exited clean (only meaningful once/month \u2014 a stale last-exit outside day 1 is not itself a failure signal).",
       "evidence": [
-        "tail -20 \"/Users/olivetree/Documents/Olive AIOS/logs/usage_audit_run.log\" 2>/dev/null || echo \"no log yet \u2014 job may not have run since setup\""
+        "tail -20 ~/Library/Logs/usage-audit.log 2>/dev/null || echo \"no log yet \u2014 job may not have run since setup\""
       ],
       "enabled": true
     },
