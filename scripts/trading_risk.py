@@ -63,8 +63,9 @@ class RiskDecision:
     initial_stop_dist:  float = 0.0  # $ distance from entry (1R); used for trail + breakeven
 
 
-def _open_position_count() -> int:
+def _open_position_count() -> int | None:
     # Alpaca is authoritative — if it says 0, that's 0. No SQLite fallback.
+    # None means the fetch failed — unknown, not zero (see trading_data.get_open_position_count).
     return _alpaca_position_count()
 
 
@@ -205,6 +206,9 @@ def evaluate(
         return base
 
     open_count = _open_position_count()
+    if open_count is None:
+        base.veto_reason = "Could not verify open position count (Alpaca fetch failed) — veto until it recovers"
+        return base
     if open_count >= MAX_POSITIONS:
         base.veto_reason = f"Max concurrent positions reached ({open_count}/{MAX_POSITIONS})"
         return base

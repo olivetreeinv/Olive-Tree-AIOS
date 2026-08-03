@@ -25,6 +25,7 @@ Spec: wiki/trading-desk/_suna-redesign-spec.md
 import json
 import os
 import sys
+from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timezone
 from functools import lru_cache
 from pathlib import Path
@@ -868,6 +869,37 @@ def _enter(client, dry_run: bool = False):
 
         pool = discover()
         print(f"  🔎 {len(pool)} movers in pool")
+
+        # Screening data (price/profile/bars/earnings) is read-only and independent
+        # per ticker — suna_profile alone is ~0.5s/call, so fetch it for the whole
+        # pool concurrently instead of one name at a time. Gate LOGIC (sector caps,
+        # DB writes, order placement) stays sequential below, untouched.
+        # ponytail: prefetches all 3 calls for every not-held/live candidate, even
+        # ones the sequential gates below would've short-circuited before reaching
+        # bars/earnings — trades a few extra yfinance/Alpaca calls for one shared
+        # fan-out instead of N sequential ones. Revisit if rate-limits show up.
+        to_screen = [c for c in pool if c["symbol"] not in held and c["symbol"] not in live]
+
+        def _prefetch(cand):
+            tkr = cand["symbol"]
+            price = cand.get("price")  # most-actives rows lack it
+            if not price:
+                try:
+                    q = get_quote(tkr); price = q.get("last") or q.get("ask") or 0
+                except Exception:
+                    price = 0
+            if not price or price < 10:
+                return {"price": price}
+            return {
+                "price": price,
+                "profile": suna_profile(tkr),
+                "sig": entry_signals(tkr),
+                "next_earnings": get_next_earnings(tkr),
+            }
+
+        with ThreadPoolExecutor(max_workers=8) as pool_exec:
+            prefetched = dict(zip((c["symbol"] for c in to_screen), pool_exec.map(_prefetch, to_screen)))
+
         entered = 0
         for cand in pool:
             if entered >= slots:
@@ -875,19 +907,13 @@ def _enter(client, dry_run: bool = False):
             tkr = cand["symbol"]
             if tkr in held or tkr in live:
                 continue
-            # Resolve price (most-actives rows lack it).
-            price = cand.get("price")
-            if not price:
-                try:
-                    q = get_quote(tkr); price = q.get("last") or q.get("ask") or 0
-                except Exception:
-                    price = 0
+            data = prefetched[tkr]
+            price = data["price"]
             if not price or price < 10:
                 continue
-            # Suna's stock-side screener (type/beta/short interest) — first network
-            # call in the chain because it rejects the most: ~10% of the pool
-            # survives it, so it saves the bars/earnings/chain calls below.
-            profile = suna_profile(tkr)
+            # Suna's stock-side screener (type/beta/short interest) rejects most
+            # of the pool (prefetched above, in parallel with bars/earnings).
+            profile = data["profile"]
             ok, why_stock = stock_filters_ok(profile)
             if not ok:
                 print(f"  ⏭  {tkr}: {why_stock}")
@@ -903,7 +929,7 @@ def _enter(client, dry_run: bool = False):
             if sector != "Unknown" and sector_counts[sector] >= CC_MAX_PER_SECTOR:
                 print(f"  ⏭  {tkr}: {sector} already has {CC_MAX_PER_SECTOR} positions")
                 continue
-            sig = entry_signals(tkr)          # one bars call → rip + trend + rvol
+            sig = data["sig"]                 # prefetched bars call → rip + trend + rvol
             if sig.get("ripped"):
                 print(f"  ⏭  {tkr}: already ripped this week — wait for pullback")
                 continue
@@ -914,7 +940,7 @@ def _enter(client, dry_run: bool = False):
             # Earnings guard (reuse v2's resolver): the chosen expiry must land
             # BEFORE earnings, not just >3 days out — the old check let a 7-DTE
             # pick straddle a day-5 earnings date (Suna: no CC across earnings).
-            max_exp = earnings_max_expiry(get_next_earnings(tkr))
+            max_exp = earnings_max_expiry(data["next_earnings"])
             dte_cap = SUNA_DTE_MAX
             if max_exp:
                 dte_cap = min(dte_cap, (max_exp - date.today()).days)

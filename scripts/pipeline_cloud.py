@@ -30,6 +30,7 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
+from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta
 from email.header import Header
 
@@ -157,13 +158,16 @@ def _gmail_meta(token, msg_id):
 
 
 def _fetch_emails(token, query, limit=20):
-    results = []
-    for msg_id in _gmail_search(token, query, limit):
+    msg_ids = _gmail_search(token, query, limit)
+
+    def _fetch(msg_id):
         try:
-            results.append(_gmail_meta(token, msg_id))
+            return _gmail_meta(token, msg_id)
         except RuntimeError:
-            continue
-    return results
+            return None
+
+    with ThreadPoolExecutor(max_workers=8) as executor:
+        return [m for m in executor.map(_fetch, msg_ids) if m is not None]
 
 
 def _buy_box_flag(text):

@@ -34,6 +34,7 @@ import urllib.error
 import ssl
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 import requests
 
@@ -169,13 +170,16 @@ def get_account() -> dict:
     }
 
 
-def get_open_position_count() -> int:
-    """Return number of open positions from Alpaca (cloud-safe; no local DB needed)."""
+def get_open_position_count() -> int | None:
+    """Return number of open positions from Alpaca, or None if the call failed
+    (cloud-safe; no local DB needed). None means unknown — callers must not
+    treat it as zero (a transient error isn't the same as a flat account)."""
     try:
         positions = _get(f"{_ALPACA_BASE}/v2/positions", _alpaca_headers())
         return len(positions) if isinstance(positions, list) else 0
-    except Exception:
-        return 0
+    except Exception as e:
+        print(f"  get_open_position_count failed ({e}) — returning None (unknown, not zero)")
+        return None
 
 
 def get_quote(symbol: str) -> dict:
@@ -447,7 +451,7 @@ def get_top_movers(symbols: list[str], n: int = 15, days: int = 5) -> list[str]:
     return anchors + top
 
 
-_ET_TZ = timezone(timedelta(hours=-4), "ET")  # EDT fixed offset; sufficient for market-hours check
+_ET_TZ = ZoneInfo("America/New_York")  # DST-aware — fixed EDT offset went 1h off every EST season
 
 
 def _is_market_open_heuristic() -> bool:

@@ -571,15 +571,24 @@ def cmd_scan_bounces(args):
             break
 
     def _fetch_full(msg):
-        d = requests.get(f"{GMAIL_BASE}/messages/{msg['id']}",
-                         headers={"Authorization": f"Bearer {token}"},
-                         params={"format": "full"}, timeout=30)
-        d.raise_for_status()
-        return d.json()
+        # Skip-not-crash on transient Gmail errors (mirrors _fetch_detail in
+        # cmd_scan_unsubs above): one bad fetch shouldn't crash the whole
+        # unattended bounce-hygiene run.
+        try:
+            d = requests.get(f"{GMAIL_BASE}/messages/{msg['id']}",
+                             headers={"Authorization": f"Bearer {token}"},
+                             params={"format": "full"}, timeout=30)
+            d.raise_for_status()
+            return d.json()
+        except requests.RequestException as e:
+            print(f"  fetch failed ({type(e).__name__}) msg={msg['id']} — skipped")
+            return None
 
     hard, soft, dinc, dinc_ids = set(), set(), set(), []
     with ThreadPoolExecutor(max_workers=8) as pool:
         for dj in pool.map(_fetch_full, messages):
+            if not dj:
+                continue
             blob = dj.get("snippet", "") + "\n" + _decode_part(dj.get("payload", {}))
             emails, is_hard = parse_bounce(blob)
             emails = {e for e in emails if e != FROM_ADDR.lower() and "mailer-daemon" not in e}

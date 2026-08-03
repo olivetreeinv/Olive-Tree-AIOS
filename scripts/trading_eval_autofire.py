@@ -43,21 +43,23 @@ NEW_ANCHOR = '_DESK_START = "2026-08-01"'
 def _fire():
     # 1–2. archive July tracking, clear, seed the $50k baseline
     con = sqlite3.connect(DB)
-    con.row_factory = sqlite3.Row
-    ARCH.mkdir(parents=True, exist_ok=True)
-    for t in TABLES:
-        rows = [dict(r) for r in con.execute(f"SELECT * FROM {t}")]
-        (ARCH / f"{t}.json").write_text(json.dumps(rows, indent=2, default=str))
-        con.execute(f"DELETE FROM {t}")
-        print(f"  archived {len(rows):>3} rows -> {t}.json (cleared)")
-    con.execute(
-        "INSERT INTO trading_equity_curve "
-        "(date, portfolio_equity, cash, port_return_pct, sharpe_running, max_drawdown, open_positions, daily_halted) "
-        "VALUES (?,?,?,0,0,0,0,0)",
-        (BASELINE_DATE, BASELINE_EQ, BASELINE_EQ),
-    )
-    con.commit()
-    con.close()
+    try:
+        con.row_factory = sqlite3.Row
+        ARCH.mkdir(parents=True, exist_ok=True)
+        for t in TABLES:
+            rows = [dict(r) for r in con.execute(f"SELECT * FROM {t}")]
+            (ARCH / f"{t}.json").write_text(json.dumps(rows, indent=2, default=str))
+            con.execute(f"DELETE FROM {t}")
+            print(f"  archived {len(rows):>3} rows -> {t}.json (cleared)")
+        con.execute(
+            "INSERT INTO trading_equity_curve "
+            "(date, portfolio_equity, cash, port_return_pct, sharpe_running, max_drawdown, open_positions, daily_halted) "
+            "VALUES (?,?,?,0,0,0,0,0)",
+            (BASELINE_DATE, BASELINE_EQ, BASELINE_EQ),
+        )
+        con.commit()
+    finally:
+        con.close()
     print(f"  seeded baseline {BASELINE_DATE} @ ${BASELINE_EQ:,.0f}")
 
     # 3. flip the report anchor to Aug 1
@@ -84,10 +86,14 @@ def maybe_fire_eval() -> bool:
         return False
     try:
         eq = float(get_account()["equity"])
+        pos_count = get_open_position_count()
+        if pos_count is None:
+            print("  eval-autofire: position count unknown (Alpaca fetch failed) — will retry next cycle")
+            return False
         # Equity alone is NOT a reset signal — July equity drifting back through the
         # $49.5–50.5k band would wipe live tracking data mid-eval. A reset account is
         # also FLAT; the wheel desk is not. Require both.
-        if abs(eq - BASELINE_EQ) > 500 or get_open_position_count() > 0:
+        if abs(eq - BASELINE_EQ) > 500 or pos_count > 0:
             return False
     except Exception as e:
         print(f"  eval-autofire: account check failed ({e}) — will retry next cycle")
