@@ -32,7 +32,8 @@ def main():
         ok = True
         for cmd in COMMANDS:
             log.write(f"$ {' '.join(cmd[1:])}\n")
-            r = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT, timeout=600)
+            # ponytail: 3600s — Monday's full drip batch (~265 sends at 2-4s pacing) needs ~20 min; 600s killed it mid-run
+            r = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT, timeout=3600)
             log.write(r.stdout)
             if r.stderr:
                 log.write(r.stderr)

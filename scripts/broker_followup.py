@@ -424,6 +424,8 @@ def main():
         return
 
     if args.gmail_drafts:
+        exclude_rows = {int(r) for r in (args.exclude or "").split(",") if r.strip().isdigit()}
+        overdue = [b for b in overdue if b["row"] not in exclude_rows]
         drafts = [draft_followup_email(b["data"]) for b in overdue]
         if not drafts:
             print("✅ No overdue follow-ups.")
