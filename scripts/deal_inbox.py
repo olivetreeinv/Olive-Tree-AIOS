@@ -68,7 +68,9 @@ DEAL_QUERIES = [
 INVESTOR_REPLY_QUERY = (
     '("interested" OR "the deck" OR "pitch deck" OR "invest" OR "investing" '
     'OR "commitment" OR "commit" OR "accredited" OR "wire" OR "subscription" '
-    'OR "how much" OR "minimum") -from:me'
+    # opt-outs too: a body-only "unsubscribe" reply skips the subject:UNSUBSCRIBE
+    # scan (caught 8/3: Trey Davenport emailed drip step 3 after opting out).
+    'OR "how much" OR "minimum" OR "unsubscribe" OR "remove me" OR "take me off") -from:me'
 )
 
 # ─────────────────────────────────────────────

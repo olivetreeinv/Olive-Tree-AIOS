@@ -8,7 +8,8 @@ build       merge content into template, save HTML, create campaigns row
 test-send   send to brian@olivetreeinv.io with [TEST] subject prefix
 send        send to newsletter-tagged audience (resume-safe, 2–4s delay)
 scan-unsubs search Gmail for UNSUBSCRIBE replies, flag contacts
-scan-bounces search Gmail for hard bounces (address not found), remove dead contacts
+scan-bounces search Gmail for hard bounces + 'Delivery incomplete' notices,
+             remove dead contacts, trash the delivery-incomplete notifications
 """
 
 import argparse
@@ -364,18 +365,49 @@ def cmd_send(args):
     print(f"Done. sent={sent} failed={failed}")
 
 
+# Opt-out language for the body pass. Deliberately narrow — soft phrases like
+# "not interested" go to human review via the morning scan, never auto-flag.
+BODY_OPTOUT_RE = re.compile(
+    r"unsubscribe|remove me|take me off|stop (?:sending|emailing)", re.I)
+
+# Everything after the first of these markers is quoted/forwarded content,
+# not the sender's own words.
+_QUOTE_CUT_RE = re.compile(
+    r"-+\s*(?:Original Message|Forwarded message)\s*-+"
+    r"|<blockquote|gmail_quote"
+    r"|\bOn [^\n]{0,120}wrote:"
+    r"|\n\s*>",
+    re.I,
+)
+
+
+def _own_words(payload) -> str:
+    """Message text with quoted/forwarded content stripped — only what the sender typed."""
+    text = _decode_part(payload)
+    m = _QUOTE_CUT_RE.search(text)
+    if m:
+        text = text[: m.start()]
+    return html.unescape(re.sub(r"<[^>]+>", " ", text))
+
+
 def cmd_scan_unsubs(args):
     token = get_token()
     days = args.days
 
-    # Inbound-only: our own sends carry UNSUBSCRIBE in the footer, so a bare
-    # match flags every outbound newsletter (and Brian himself).
+    # Two passes, both inbound-only (our own sends carry UNSUBSCRIBE in the footer).
+    # Subject pass: explicit UNSUBSCRIBE subject (footer mailto / Apple Mail one-click)
+    # — sender match alone counts. Body pass: opt-out language in the message text —
+    # flags only replies (In-Reply-To or "Re:") where the phrase survives
+    # quote-stripping, so a forwarded newsletter footer or our own quoted footer
+    # can't unsubscribe anyone.
+    base = f"in:inbox to:brian@olivetreeinv.io -from:brian@olivetreeinv.io newer_than:{days}d"
     queries = [
-        f"in:inbox to:brian@olivetreeinv.io subject:UNSUBSCRIBE "
-        f"-from:brian@olivetreeinv.io newer_than:{days}d",
+        (f"{base} subject:UNSUBSCRIBE", False),
+        (f'{base} ("unsubscribe" OR "remove me" OR "take me off"'
+         f' OR "stop emailing" OR "stop sending")', True),
     ]
     found_emails = set()
-    for q in queries:
+    for q, check_body in queries:
         messages, page_token = [], None
         while True:  # paginate — a missed unsubscribe keeps getting mail
             params = {"q": q, "maxResults": 100}
@@ -394,22 +426,38 @@ def cmd_scan_unsubs(args):
             if not page_token:
                 break
         def _fetch_detail(msg):
-            detail = requests.get(
-                f"{GMAIL_BASE}/messages/{msg['id']}",
-                headers={"Authorization": f"Bearer {token}"},
-                params={"format": "metadata", "metadataHeaders": ["From"]},
-                timeout=30,
-            )
-            detail.raise_for_status()
-            return detail.json()
+            params = ({"format": "full"} if check_body
+                      else {"format": "metadata", "metadataHeaders": ["From"]})
+            # Skip-not-crash on transient Gmail errors: the body pass fans out to
+            # every inbox match, and daily windows overlap — a miss is retried
+            # tomorrow, but an unhandled 429 would abort the whole unattended scan.
+            try:
+                detail = requests.get(
+                    f"{GMAIL_BASE}/messages/{msg['id']}",
+                    headers={"Authorization": f"Bearer {token}"},
+                    params=params,
+                    timeout=30,
+                )
+                detail.raise_for_status()
+                return detail.json()
+            except requests.RequestException as e:
+                print(f"  fetch failed ({type(e).__name__}) msg={msg['id']} — skipped")
+                return None
 
         with ThreadPoolExecutor(max_workers=8) as pool:
             for detail_json in pool.map(_fetch_detail, messages):
-                for h in detail_json.get("payload", {}).get("headers", []):
-                    if h["name"] == "From":
-                        m = re.search(r"[\w.+-]+@[\w.-]+\.\w+", h["value"])
-                        if m and m.group(0).lower() != "brian@olivetreeinv.io":
-                            found_emails.add(m.group(0).lower())
+                if not detail_json:
+                    continue
+                payload = detail_json.get("payload", {})
+                hdrs = {h["name"].lower(): h["value"] for h in payload.get("headers", [])}
+                if check_body:
+                    is_reply = ("in-reply-to" in hdrs
+                                or hdrs.get("subject", "").lower().startswith("re:"))
+                    if not is_reply or not BODY_OPTOUT_RE.search(_own_words(payload)):
+                        continue
+                m = re.search(r"[\w.+-]+@[\w.-]+\.\w+", hdrs.get("from", ""))
+                if m and m.group(0).lower() != "brian@olivetreeinv.io":
+                    found_emails.add(m.group(0).lower())
 
     if not found_emails:
         print(f"No UNSUBSCRIBE requests found in last {days} days.")
@@ -487,9 +535,13 @@ def parse_bounce(text: str):
 
 
 def cmd_scan_bounces(args):
-    """Scan Gmail for hard bounces (mailer-daemon 'address not found') → remove those
-    contacts from future sends: mark unsubscribed + add the `bounced` tag. The next drip
-    run then auto-stops their sequence (it already skips unsubscribed)."""
+    """Scan Gmail for bounces → remove dead contacts from future sends.
+
+    Hard bounces ('address not found') → unsubscribed + tagged `bounced`.
+    'Delivery incomplete' notices (Gmail gave up after temporary failures) →
+    unsubscribed + tagged `bounced-soft`, and the notification email is trashed.
+    Other soft NDRs (mailbox full etc. — valid people) stay untouched.
+    The next drip run auto-stops their sequence (it already skips unsubscribed)."""
     token = get_token()
     days = args.days
     # Bounces come from Google's mailer-daemon AND recipient-side postmasters (Outlook/Exchange,
@@ -525,40 +577,73 @@ def cmd_scan_bounces(args):
         d.raise_for_status()
         return d.json()
 
-    hard, soft = set(), set()
+    hard, soft, dinc, dinc_ids = set(), set(), set(), []
     with ThreadPoolExecutor(max_workers=8) as pool:
         for dj in pool.map(_fetch_full, messages):
             blob = dj.get("snippet", "") + "\n" + _decode_part(dj.get("payload", {}))
             emails, is_hard = parse_bounce(blob)
             emails = {e for e in emails if e != FROM_ADDR.lower() and "mailer-daemon" not in e}
-            (hard if is_hard else soft).update(emails)
-    soft -= hard  # a hard failure elsewhere wins over a stray soft mention
+            subj = next((h["value"] for h in dj.get("payload", {}).get("headers", [])
+                         if h["name"].lower() == "subject"), "").lower()
+            # Gmail's "Delivery incomplete" banner rides on subject "Delivery Status
+            # Notification (Delay)"; mailbox-full etc. use "(Failure)" and stay protected.
+            is_dinc = "delivery incomplete" in subj or "notification (delay)" in subj
+            if is_dinc:
+                dinc_ids.append(dj["id"])  # trash the notification either way
+            if is_hard:
+                hard.update(emails)
+            elif is_dinc:
+                dinc.update(emails)
+            else:
+                soft.update(emails)
+    dinc -= hard  # a hard failure elsewhere wins
+    soft -= hard | dinc
 
-    if not hard:
+    # dinc_ids too: a delay notice with an unparseable recipient still needs trashing.
+    if not hard and not dinc and not dinc_ids:
         extra = f" ({len(soft)} soft/transient skipped)" if soft else ""
-        print(f"No hard bounces found in last {days} days.{extra}")
+        print(f"No hard or delivery-incomplete bounces in last {days} days.{extra}")
         return
 
     session = get_session()
     flagged, no_match = [], []
-    for email in sorted(hard):
+    for email, tag in [*((e, "bounced") for e in sorted(hard)),
+                       *((e, "bounced-soft") for e in sorted(dinc))]:
         c = session.query(Contact).filter(Contact.email.ilike(email)).first()
         if not c:
             no_match.append(email)
             continue
         already = session.query(ContactTag).filter(
-            ContactTag.contact_id == c.id, ContactTag.tag == "bounced").first()
-        flagged.append((c.id, c.email, c.first_name, bool(already)))
+            ContactTag.contact_id == c.id,
+            ContactTag.tag.in_(("bounced", "bounced-soft"))).first()
+        flagged.append((c.id, c.email, c.first_name, tag, bool(already)))
         if not args.dry_run and not already:
             c.unsubscribed = True
-            session.add(ContactTag(contact_id=c.id, tag="bounced"))
+            session.add(ContactTag(contact_id=c.id, tag=tag))
     if not args.dry_run:
         session.commit()
     session.close()
 
-    verb = "[dry-run] would remove" if args.dry_run else "Removed (unsubscribed + tagged bounced)"
-    for cid, email, name, already in flagged:
-        print(f"  {verb}: id={cid} {email} ({name}){' (already bounced)' if already else ''}")
+    verb = "[dry-run] would remove" if args.dry_run else "Removed (unsubscribed + tagged"
+    for cid, email, name, tag, already in flagged:
+        suffix = ")" if not args.dry_run else ""
+        print(f"  {verb} {tag}{suffix}: id={cid} {email} ({name})"
+              f"{' (already bounced)' if already else ''}")
+
+    if dinc_ids:
+        if args.dry_run:
+            print(f"  [dry-run] would trash {len(dinc_ids)} 'Delivery incomplete' notification(s)")
+        else:
+            trashed = 0
+            for mid in dinc_ids:
+                try:
+                    requests.post(f"{GMAIL_BASE}/messages/{mid}/trash",
+                                  headers={"Authorization": f"Bearer {token}"},
+                                  timeout=30).raise_for_status()
+                    trashed += 1
+                except requests.RequestException as e:
+                    print(f"  trash failed ({type(e).__name__}) msg={mid}")
+            print(f"  Trashed {trashed}/{len(dinc_ids)} 'Delivery incomplete' notification(s)")
     if no_match:
         print(f"  bounced but not in CRM ({len(no_match)}): {', '.join(no_match)}")
     if soft:
