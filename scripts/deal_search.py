@@ -350,16 +350,18 @@ def fetch_fmls_listings():
         return []
 
     headers = {"Authorization": f"Bearer {FMLS_API_TOKEN}"}
-    zip_list = ",".join(f"'{z}'" for z in sorted(GA_ZIPS))
+    # Bridge's OData doesn't support the v4.01 `in` operator (400) — use an or-chain
+    zip_filter = " or ".join(f"PostalCode eq '{z}'" for z in sorted(GA_ZIPS))
     params = {
         "$filter": (
             f"PropertyType eq 'Residential Income'"
             f" and StandardStatus eq 'Active'"
-            f" and PostalCode in ({zip_list})"
+            f" and ({zip_filter})"
         ),
         "$select": ",".join([
+            # no ListAgentEmail — the FMLS dataset blocks selecting it (400); phone only
             "ListingKey", "UnparsedAddress", "PostalCode", "ListPrice",
-            "NumberOfUnitsTotal", "YearBuilt", "ListAgentFullName", "ListAgentEmail",
+            "NumberOfUnitsTotal", "YearBuilt", "ListAgentFullName",
             "ListAgentDirectPhone", "ListOfficeName", "VirtualTourURLUnbranded",
             "MajorChangeTimestamp",
         ]),

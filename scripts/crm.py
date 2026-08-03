@@ -64,6 +64,7 @@ def cmd_search(args):
         or_(
             func.lower(Contact.first_name).contains(q),
             func.lower(Contact.last_name).contains(q),
+            func.lower(Contact.first_name + " " + Contact.last_name).contains(q),
             func.lower(Contact.email).contains(q),
             func.lower(Contact.phone).contains(q),
             func.lower(Contact.company).contains(q),
