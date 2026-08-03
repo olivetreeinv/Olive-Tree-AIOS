@@ -265,17 +265,20 @@ def print_performance():
     print("  " + "-" * 75)
     for r in rows:
         halted = " 🛑" if r.daily_halted else ""
+        # The seeded $50k baseline row (Aug-1 eval reset) has no SPY reference —
+        # its pct fields are None, not 0.
+        spy = f"{r.spy_return_pct:>+7.2%}" if r.spy_return_pct is not None else f"{'—':>8s}"
         print(
             f"  {r.date:12s}  ${r.portfolio_equity:>11,.2f}"
-            f"  {r.port_return_pct:>+9.2%}  {r.spy_return_pct:>+7.2%}"
-            f"  {r.sharpe_running:>7.2f}  {r.max_drawdown:>6.1%}  {r.open_positions or 0:>4d}{halted}"
+            f"  {(r.port_return_pct or 0):>+9.2%}  {spy}"
+            f"  {(r.sharpe_running or 0):>7.2f}  {(r.max_drawdown or 0):>6.1%}  {r.open_positions or 0:>4d}{halted}"
         )
 
     latest = rows[-1]
     # Same-window comparison: desk return vs SPY over the desk's actual life —
     # the stored spy_return_pct uses a 400-day window and overstates SPY badly.
     alpha  = (latest.port_return_pct or 0) - _spy_same_window(rows)
-    print(f"\n  Alpha vs SPY (since {_DESK_START}): {alpha:+.2%}  |  Running Sharpe: {latest.sharpe_running:.2f}  |  Max Drawdown: {latest.max_drawdown:.1%}")
+    print(f"\n  Alpha vs SPY (since {_DESK_START}): {alpha:+.2%}  |  Running Sharpe: {latest.sharpe_running or 0:.2f}  |  Max Drawdown: {latest.max_drawdown or 0:.1%}")
     if len(rows) >= 2:
         daily_pnl = latest.portfolio_equity - rows[-2].portfolio_equity
         hit = "✅" if daily_pnl >= _DAILY_TARGET else ""

@@ -20,8 +20,9 @@ import sqlite3
 import subprocess
 import sys
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 REPO = Path(__file__).parent.parent
 sys.path.insert(0, str(REPO))
@@ -84,14 +85,61 @@ def check_launchd() -> list[tuple[bool, str]]:
     return results
 
 
+# NYSE full-close days, observed dates. The desk itself asks Alpaca's clock
+# (holiday-aware); this list only keeps the silence math honest. Extend each
+# December — check_holiday_calendar() REDs when it runs dry.
+MARKET_HOLIDAYS = {
+    # 2026
+    "2026-01-01", "2026-01-19", "2026-02-16", "2026-04-03", "2026-05-25",
+    "2026-06-19", "2026-07-03", "2026-09-07", "2026-11-26", "2026-12-25",
+    # 2027
+    "2027-01-01", "2027-01-18", "2027-02-15", "2027-03-26", "2027-05-31",
+    "2027-06-18", "2027-07-05", "2027-09-06", "2027-11-25", "2027-12-24",
+}
+
+
+def _minutes_since_market() -> float:
+    """Minutes since an equities/extended session (Mon–Fri 9:30am–8pm ET,
+    excluding NYSE holidays) was last active; 0 while one is on. The desk logs
+    hourly in-session but only once per idle stretch, so a closed market means
+    legitimate silence."""
+    now = datetime.now(ZoneInfo("America/New_York"))
+    for d in range(8):
+        day = now - timedelta(days=d)
+        if day.weekday() >= 5 or f"{day:%Y-%m-%d}" in MARKET_HOLIDAYS:
+            continue
+        if d == 0 and now < day.replace(hour=9, minute=30, second=0, microsecond=0):
+            continue  # today's session hasn't opened yet — keep walking back
+        close = day.replace(hour=20, minute=0, second=0, microsecond=0)
+        if now <= close:
+            return 0.0
+        return (now - close).total_seconds() / 60
+    return 0.0
+
+
+def check_holiday_calendar() -> tuple[bool, str] | None:
+    """None (silent) while MARKET_HOLIDAYS covers the current year; RED once it
+    runs dry so the list gets extended instead of quietly reverting to
+    one-false-alarm-per-holiday."""
+    last = max(MARKET_HOLIDAYS)
+    if f"{datetime.now():%Y}" > last[:4]:
+        return False, (f"Market-holiday calendar: EXPIRED (last entry {last}) — "
+                       f"extend MARKET_HOLIDAYS in scripts/heartbeat.py with next year's NYSE closures")
+    return None
+
+
 def check_trading_log() -> tuple[bool, str]:
     age = _age_minutes(TRADING_LOG)
     if age is None:
         return False, "Trading desk activity: no log file — the desk has never written anything; is it installed?"
-    # v3 desk wakes hourly (--interval 3600) and logs one line per wake; 75 min of silence means the loop is wedged
-    ok = age < 75
-    return ok, (f"Trading desk activity: alive, last log write {age:.0f} min ago" if ok
-                else f"Trading desk activity: WEDGED — no log writes in {age:.0f} min (expects one every ~60); restart the desk")
+    # v3 desk wakes hourly (--interval 3600) and logs one line per wake while a
+    # session is active; a weekend/overnight of silence is normal (bit us
+    # 2026-08-03: Monday-7:45am check called a healthy idle desk WEDGED).
+    ok = age < _minutes_since_market() + 75
+    if not ok:
+        return False, f"Trading desk activity: WEDGED — silent for {age:.0f} min of open market (expects one log write every ~60); restart the desk"
+    return True, (f"Trading desk activity: alive, last log write {age:.0f} min ago" if age < 75
+                  else f"Trading desk activity: quiet since the market closed — last write {age/60:.0f}h ago, normal for an idle desk")
 
 
 def check_desk_code_fresh() -> tuple[bool, str]:
@@ -198,6 +246,8 @@ def main():
     checks: list[tuple[bool, str]] = []
     checks.extend(check_launchd())
     checks.append(check_trading_log())
+    if (stale_cal := check_holiday_calendar()):
+        checks.append(stale_cal)
     checks.append(check_desk_code_fresh())
     checks.append(check_morning_brief())
     checks.append(check_db())
