@@ -4,7 +4,7 @@ Registry of every system your AIOS can reach. Filled by `/onboard` from Q4-Q7 an
 
 | # | Domain | Tool | Mechanism | Auth | Last checked |
 |---|---|---|---|---|---|
-| 1 | Revenue / Financials | QuickBooks | not yet connected | — | — |
+| 1 | Revenue / Financials | QuickBooks Online | mcp (local server) | **PRODUCTION LIVE** — Olive Tree Investments, LLC (realm 9130357838988976). OAuth creds in `.mcp.json`; read+write+update enabled, delete disabled. Intuit app assessment submitted/approved 2026-08-03. Re-auth if refresh token dies (100d idle): consent flow via OAuth2Playground redirect, see `scripts/qb_auth.py` pattern. Reconcile step itself is QBO-UI-only (no API). | 2026-08-03 |
 | 1 | Revenue / Financials | Bluevine (Business Banking) | not yet connected | — | — |
 | 2 | Customer / Investor interactions | GoHighLevel CRM | migrating → local CRM | 804 contacts mirrored in data/olive.db via ghl_export.py; GHL being decommissioned; use scripts/crm.py | 2026-07-06 |
 | 3 | Calendar | Google Calendar (Google Workspace) | gws cli | OAuth — gws auth login | 2026-05-28 |

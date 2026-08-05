@@ -6,10 +6,10 @@ is reset to $50k (Brian does that reset in the dashboard — there's no API for 
 LIVE account equity reads ~$50k, then ONCE:
   1. archives all July tracking rows (equity curve / orders / CC positions / signals) and clears them
      so the DB matches the fresh account,
-  2. seeds the Aug-1 $50k baseline row,
+  2. seeds the Aug-1 $50k baseline row and drops the never-fire-twice sentinel,
   3. flips _DESK_START -> 2026-08-01 in trading_report.py (SPY-alpha + annualization anchor),
   4. kickstarts the desk so the loop reloads the new anchor,
-  5. ntfy-pushes Brian and drops a sentinel so it never fires twice.
+  5. ntfy-pushes Brian.
 
 Guarded + sentinel-gated: cannot fire before the reset and cannot fire twice. Run standalone
 (`python3 scripts/trading_eval_autofire.py`) to check status / fire manually.
@@ -41,7 +41,13 @@ NEW_ANCHOR = '_DESK_START = "2026-08-01"'
 
 
 def _fire():
-    # 1–2. archive July tracking, clear, seed the $50k baseline
+    # 1–2. archive July tracking, clear, seed the $50k baseline. Never clobber an
+    # existing archive — if these files exist, a prior fire already saved the real
+    # data and re-archiving the cleared tables would overwrite it with empties.
+    existing = [t for t in TABLES if (ARCH / f"{t}.json").exists()]
+    if existing:
+        raise RuntimeError(f"archive files already exist in {ARCH} ({', '.join(existing)}) "
+                           "— refusing to overwrite; move them aside to re-fire")
     con = sqlite3.connect(DB)
     try:
         con.row_factory = sqlite3.Row
@@ -60,6 +66,10 @@ def _fire():
         con.commit()
     finally:
         con.close()
+    # Sentinel IMMEDIATELY after the commit — if any later step (anchor flip, push,
+    # kickstart) dies, the next cycle must not re-run the archive+clear against the
+    # now-empty tables.
+    SENTINEL.write_text(f"fired: baseline {BASELINE_DATE} $50k\n")
     print(f"  seeded baseline {BASELINE_DATE} @ ${BASELINE_EQ:,.0f}")
 
     # 3. flip the report anchor to Aug 1
@@ -70,8 +80,7 @@ def _fire():
     else:
         print("  WARN: _DESK_START anchor not found (already flipped?) — leaving as-is")
 
-    # 4. sentinel + push BEFORE the kickstart (kickstart -k kills this process)
-    SENTINEL.write_text(f"fired: baseline {BASELINE_DATE} $50k\n")
+    # 4. push BEFORE the kickstart (kickstart -k kills this process)
     subprocess.run([str(NOTIFY), "Trading eval LIVE",
                     "Account reset to $50k. Aug 1-31 clean eval started: baseline seeded, "
                     "July data archived, desk reloading."], check=False)

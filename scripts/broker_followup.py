@@ -17,6 +17,7 @@ Usage:
 
 import argparse
 import sys
+import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -98,12 +99,15 @@ def build_market_block(markets_str):
 # Brokers List column positions (0-indexed)
 # Brokerage(0), Broker Name(1), Email(2), Phone(3), Markets/Zips(4),
 # Specialty(5), Tier(6), Buy Box Sent(7), # Deals Sent(8),
-# Last Contact(9), Next Follow-Up(10), Status(11), Notes(12)
+# Last Contact(9), Next Follow-Up(10), Status(11), Notes(12),
+# Crexi Listing Link(s)(13), Follow-Up Attempts(14)
+# NOTE: "# Deals Sent" (col I) belongs to broker_search/deal_inbox — this script
+# must never read or write it. Follow-up cadence lives in its own column O.
 COL = {
     "brokerage":    0, "name": 1, "email": 2, "phone": 3,
     "markets":      4, "specialty": 5, "tier": 6, "buy_box_sent": 7,
     "deals_sent":   8, "last_contact": 9, "next_followup": 10,
-    "status":       11, "notes": 12
+    "status":       11, "notes": 12, "followup_attempts": 14
 }
 
 # ─────────────────────────────────────────────
@@ -120,7 +124,7 @@ def auth_headers(token):
 
 def get_brokers(token):
     r = requests.get(
-        f"{SHEETS_BASE}/{SPREADSHEET_ID}/values/Brokers%20List!A:M",
+        f"{SHEETS_BASE}/{SPREADSHEET_ID}/values/Brokers%20List!A:O",
         headers=auth_headers(token),
         timeout=30,
     )
@@ -130,7 +134,7 @@ def get_brokers(token):
         return []
     brokers = []
     for i, row in enumerate(rows[1:], start=2):  # start=2 because row 1 is header
-        while len(row) < 13:
+        while len(row) < 15:
             row.append("")
         brokers.append({"row": i, "data": row})
     return brokers
@@ -169,9 +173,9 @@ def draft_followup_email(broker_data):
     email          = broker_data[COL["email"]].strip()
     markets        = broker_data[COL["markets"]].strip()
     tier           = broker_data[COL["tier"]].strip().upper() or "B"
-    deals_sent_str = broker_data[COL["deals_sent"]].strip()
+    attempts_str   = broker_data[COL["followup_attempts"]].strip()
     try:
-        attempt_num = int(deals_sent_str) + 1 if deals_sent_str else 1
+        attempt_num = int(attempts_str) + 1 if attempts_str else 1
     except ValueError:
         attempt_num = 1
 
@@ -344,35 +348,44 @@ def create_gmail_draft(token, draft):
     return r.json()
 
 
-def build_after_send_data(row_num, current_sent=0):
+def build_after_send_data(row_num, current_attempts=0):
     """Build the batchUpdate range entries for one broker after a send."""
     next_fup = (TODAY + timedelta(days=FOLLOW_UP_INTERVAL_DAYS)).strftime("%m/%d/%Y")
-    new_sent = current_sent + 1
+    new_attempts = current_attempts + 1
     data = [
-        {"range": f"Brokers List!I{row_num}", "values": [[new_sent]]},
         {"range": f"Brokers List!J{row_num}", "values": [[TODAY_STR]]},
         {"range": f"Brokers List!K{row_num}", "values": [[next_fup]]},
+        {"range": f"Brokers List!O{row_num}", "values": [[new_attempts]]},
     ]
-    return data, new_sent, next_fup
+    return data, new_attempts, next_fup
 
 
-def batch_update_sheet(token, data_entries):
-    """Apply all range updates in a single Sheets batchUpdate call."""
+def batch_update_sheet(token, data_entries, attempts=4):
+    """Apply all range updates in a single Sheets batchUpdate call.
+    Retries with backoff — by the time this runs the emails are already sent, and
+    a dropped update leaves those brokers overdue → duplicate follow-ups next run."""
     if not data_entries:
         return
-    r = requests.post(
-        f"{SHEETS_BASE}/{SPREADSHEET_ID}/values:batchUpdate",
-        headers=auth_headers(token),
-        json={"valueInputOption": "USER_ENTERED", "data": data_entries},
-        timeout=30,
-    )
-    r.raise_for_status()
+    for i in range(attempts):
+        try:
+            r = requests.post(
+                f"{SHEETS_BASE}/{SPREADSHEET_ID}/values:batchUpdate",
+                headers=auth_headers(token),
+                json={"valueInputOption": "USER_ENTERED", "data": data_entries},
+                timeout=30,
+            )
+            r.raise_for_status()
+            return
+        except Exception:
+            if i == attempts - 1:
+                raise
+            time.sleep(2 ** i)
 
 
-def update_broker_after_send(token, row_num, current_sent=0):
-    data, new_sent, next_fup = build_after_send_data(row_num, current_sent)
+def update_broker_after_send(token, row_num, current_attempts=0):
+    data, new_attempts, next_fup = build_after_send_data(row_num, current_attempts)
     batch_update_sheet(token, data)
-    print(f"✅ Updated broker row {row_num}: sent={new_sent}, next={next_fup}")
+    print(f"✅ Updated broker row {row_num}: attempts={new_attempts}, next={next_fup}")
 
 
 # ─────────────────────────────────────────────
@@ -418,8 +431,8 @@ def main():
             brokerage = d[COL["brokerage"]]
             markets  = d[COL["markets"]]
             last     = d[COL["last_contact"]] or "never"
-            sent     = d[COL["deals_sent"]] or "0"
-            print(f"  Row {b['row']}: {name} ({brokerage}) | {markets} | Last: {last} | Sent: {sent}")
+            attempts = d[COL["followup_attempts"]] or "0"
+            print(f"  Row {b['row']}: {name} ({brokerage}) | {markets} | Last: {last} | Attempts: {attempts}")
         print()
         return
 
@@ -468,14 +481,20 @@ def main():
                 print(f"⚠️  Skipped {draft['to_name']} — no email address on file.")
                 return
             broker_row = overdue[args.send]["row"]
-            current_sent_val = overdue[args.send]["data"][COL["deals_sent"]]
+            current_val = overdue[args.send]["data"][COL["followup_attempts"]]
             try:
-                current_sent_int = int(current_sent_val) if current_sent_val else 0
+                current_attempts = int(current_val) if current_val else 0
             except (ValueError, TypeError):
-                current_sent_int = 0
+                current_attempts = 0
             print(f"Sending to {draft['to_name']} <{draft['to_email']}>...")
             send_email(token, draft)
-            update_broker_after_send(token, broker_row, current_sent_int)
+            try:
+                update_broker_after_send(token, broker_row, current_attempts)
+            except Exception as e:
+                print(f"🚨 Sheet update FAILED after retries ({e}) — the email DID send.")
+                print(f"   Fix now or row {broker_row} gets a duplicate follow-up next run:")
+                print(f"   python3 scripts/broker_followup.py --mark-sent {broker_row}")
+                sys.exit(1)
             print(f"✅ Sent: {draft['subject']}")
             return
 
@@ -505,12 +524,12 @@ def main():
                     print(f"⚠️  Skipped {d['to_name'] or 'unknown'} — no email address on file.")
                     skipped += 1
                     continue
-                b_sent_val = b["data"][COL["deals_sent"]]
+                b_att_val = b["data"][COL["followup_attempts"]]
                 try:
-                    b_sent_int = int(b_sent_val) if b_sent_val else 0
+                    b_att_int = int(b_att_val) if b_att_val else 0
                 except (ValueError, TypeError):
-                    b_sent_int = 0
-                jobs.append((d, row, b_sent_int))
+                    b_att_int = 0
+                jobs.append((d, row, b_att_int))
 
             if dry_run:
                 print(f"📬 Would send to {len(jobs)} broker(s):\n")
@@ -536,11 +555,13 @@ def main():
 
             sent = 0
             update_data = []
+            sent_rows = []
             with ThreadPoolExecutor(max_workers=5) as executor:
-                for ok, d, row, sent_int, err in executor.map(_send, jobs):
+                for ok, d, row, att_int, err in executor.map(_send, jobs):
                     if ok:
-                        data, _, _ = build_after_send_data(row, sent_int)
+                        data, _, _ = build_after_send_data(row, att_int)
                         update_data.extend(data)
+                        sent_rows.append(row)
                         sent += 1
                         print(f"✅ Sent: {d['to_name']} — {d['subject']}")
                     else:
@@ -548,7 +569,14 @@ def main():
                         print(f"❌ Failed: {d['to_name']} <{d['to_email']}> — {err}")
 
             # One Sheets batchUpdate for every successfully sent broker
-            batch_update_sheet(token, update_data)
+            try:
+                batch_update_sheet(token, update_data)
+            except Exception as e:
+                print(f"\n🚨 Sheet update FAILED after retries ({e}) — {sent} email(s) DID send.")
+                print("   Fix now or these rows get duplicate follow-ups next run:")
+                for row in sent_rows:
+                    print(f"   python3 scripts/broker_followup.py --mark-sent {row}")
+                sys.exit(1)
             print(f"\n📬 Done — {sent} sent, {skipped} skipped/failed.")
             return
 

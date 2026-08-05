@@ -279,7 +279,7 @@ def cmd_send(args):
 
     audience_tag = args.tag or "newsletter"
 
-    # contacts tagged audience_tag, with email, not unsubscribed
+    # contacts tagged audience_tag, with email, not unsubscribed, not DND
     tagged_ids = {
         r.contact_id
         for r in session.query(ContactTag).filter(ContactTag.tag == audience_tag)
@@ -291,23 +291,46 @@ def cmd_send(args):
             Contact.email.isnot(None),
             Contact.email != "",
             Contact.unsubscribed == False,  # noqa: E712
+            Contact.dnd.isnot(True),
         )
         .all()
     )
 
-    # already sent for this campaign (resume-safe)
+    # One send per email address — Contact.email has no unique constraint, so
+    # duplicate rows sharing an inbox must collapse to one (lowest id, stable
+    # across reruns).
+    by_email = {}
+    for c in sorted(contacts, key=lambda c: c.id):
+        by_email.setdefault(c.email.strip().lower(), []).append(c)
+
+    # An unsub/DND on ANY row sharing an inbox suppresses the whole inbox —
+    # flagged rows fall out of the query above, so their surviving dupes
+    # would otherwise still get the send.
+    suppressed = {
+        e.strip().lower()
+        for (e,) in session.query(Contact.email).filter(
+            Contact.email.isnot(None), Contact.email != "",
+            (Contact.unsubscribed == True) | (Contact.dnd == True),  # noqa: E712
+        )
+    }
+    by_email = {e: dupes for e, dupes in by_email.items() if e not in suppressed}
+
+    # already sent for this campaign (resume-safe) — an email counts as sent if
+    # ANY contact row sharing it got the send
     already_sent = {
         r.contact_id
         for r in session.query(EmailLog).filter_by(
             campaign_id=camp.id, status="sent"
         )
     }
-    to_send = [c for c in contacts if c.id not in already_sent]
+    to_send = [dupes[0] for dupes in by_email.values()
+               if not any(c.id in already_sent for c in dupes)]
 
     if args.limit:
         to_send = to_send[: args.limit]
 
-    print(f"Audience tag={audience_tag!r}: {len(contacts)} total, {len(already_sent)} already sent, {len(to_send)} queued")
+    print(f"Audience tag={audience_tag!r}: {len(contacts)} contacts / "
+          f"{len(by_email)} unique emails, {len(already_sent)} already sent, {len(to_send)} queued")
 
     if args.dry_run:
         print("[dry-run] No emails sent.")
@@ -318,10 +341,10 @@ def cmd_send(args):
     sent = failed = 0
 
     for c in to_send:
-        # Re-fetch unsubscribe flag fresh — could have changed since we built the list
+        # Re-fetch unsubscribe/DND flags fresh — could have changed since we built the list
         session.expire(c)
-        if c.unsubscribed:
-            print(f"  SKIP (now unsubscribed): {c.email}")
+        if c.unsubscribed or c.dnd:
+            print(f"  SKIP (now unsubscribed/DND): {c.email}")
             continue
 
         first = c.first_name or "there"

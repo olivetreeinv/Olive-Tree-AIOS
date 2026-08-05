@@ -849,3 +849,15 @@ native push covers Remote Control sessions only.
 asks with no terminal. Caveat: Cowork sources skills from the claude.ai account
 config, not `.claude/skills/`, so Olive skills are not reliably reachable there.
 Anything that runs `/heartbeat`, `/deal-search`, `/loi` goes through Remote Control.
+
+## 2026-08-03 — QuickBooks Online connected to production (real books)
+- Intuit app "AIOS Dashboard" passed the production assessment (submitted via browser session, approved same-day); production keys issued.
+- Connected to Olive Tree Investments, LLC (realm 9130357838988976) with read + write/update enabled; **delete disabled** as a guardrail.
+- Why: Brian wants transaction posting/updates and reconciliation prep from the AIOS, not just reporting. Reconcile finalization stays in the QBO UI (not exposed by API).
+- Auth: OAuth2Playground redirect used for the one-time production consent (Intuit blocks localhost on prod redirect URIs); tokens live in .mcp.json, refresh rotates on use.
+
+## 2026-08-04 — CC_NH_X6725 cleanup: closed periods stay as-is
+- Merged "Office Supplies & Software" into "Office expenses:Software & apps" (50 lines reclassed via API, legacy account deactivated); recategorized Claude/Google/UPS strays; assigned 6 missing payees; created First Watch vendor.
+- **Books are closed through 2024-12-31.** 23 legacy-category lines + 3 blank payees sit in 2024 and stay as-is unless MCP & Associates reopens the year. Filed-year history doesn't get rewritten for tidiness.
+- Open: Home Depot 2×$3,790.06 (2024-02-09, txns 661/662) possible duplicate — verify against Chase statement; also in closed 2024, so a fix would go through the accountant anyway.
+- Bank rules for the card drafted at output/qbo-bank-rules-CC_NH_X6725.csv — import is QBO-UI-only (no API for rules), Brian to import via Transactions → Rules → Import rules.

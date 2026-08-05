@@ -72,8 +72,9 @@ class CallbackHandler(http.server.BaseHTTPRequestHandler):
         global auth_code, auth_state
         parsed = urllib.parse.urlparse(self.path)
         params = urllib.parse.parse_qs(parsed.query)
-        auth_code = params.get("code", [None])[0]
-        auth_state = params.get("state", [None])[0]
+        if "code" in params:  # ignore favicon.ico and stray GETs — they must not clobber the code
+            auth_code = params["code"][0]
+            auth_state = params.get("state", [None])[0]
         self.send_response(200)
         self.send_header("Content-type", "text/html")
         self.end_headers()

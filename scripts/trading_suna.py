@@ -168,9 +168,9 @@ def _sellable(snap: dict, opt_type: str, dte_max: int = SUNA_DTE_MAX) -> Optiona
     bid = float(quote.get("bp", 0) or 0)
     ask = float(quote.get("ap", 0) or 0)
     mid = (bid + ask) / 2 if (bid or ask) else 0.0
-    if mid <= 0 or bid < LIQ_MIN_BID:
-        return None
-    if ask > 0 and (ask - bid) / mid > LIQ_MAX_SPREAD_PCT:
+    if mid <= 0 or bid < LIQ_MIN_BID or ask <= 0:
+        return None  # one-sided quote (no resting offer) → mid would be bid/2
+    if (ask - bid) / mid > LIQ_MAX_SPREAD_PCT:
         return None  # spread too wide → illiquid chain, skip
     greeks = snap.get("greeks", {}) or {}
     delta = greeks.get("delta", None)
@@ -803,11 +803,12 @@ def _cover(client, dry_run: bool = False):
                 print(f"  🩹 {row.underlying}: REPAIR — spot ${spot:.2f} < basis ${basis:.2f}, "
                       f"sell ${best['strike']:g} call (ladder up next week)")
             _sell_call_row(client, s, row, best, spot, label, dry_run)
-            state.pop(row.underlying, None)  # covered — clear any escalation tracking
+            if row.option_symbol:  # sell landed — clear any escalation tracking
+                state.pop(row.underlying, None)
         s.commit()
     finally:
         s.close()
-    if state != before:
+    if state != before and not dry_run:
         _save_uncovered(state)
 
 

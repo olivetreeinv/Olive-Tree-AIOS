@@ -73,9 +73,10 @@
     {
       "name": "weekly-cloud-sync",
       "kind": "artifact",
-      "goal": "The Friday cloud routines (loom-sync 5pm, pitch-deck-archive 6pm, deal-index/loi-archive 7pm) each write a wiki note and commit to GitHub main. Only meaningful to judge Saturday through Monday \u2014 say NO DATA the rest of the week, not OFF GOAL, since these routines simply haven't run yet mid-week.",
+      "goal": "The Friday cloud routines (loom-sync 5pm, pitch-deck-archive 6pm, deal-index/loi-archive 7pm) each write a wiki note and commit to GitHub main WHEN there is new content to archive. A quiet week (no Loom shares, no new decks or LOIs) legitimately produces zero commits \u2014 that is ON GOAL, not a failure. Judge OFF GOAL only if the loom dry-run evidence shows content that never landed as commits. Only meaningful to judge Saturday through Monday \u2014 say NO DATA the rest of the week, not OFF GOAL, since these routines simply haven't run yet mid-week.",
       "evidence": [
-        "git fetch origin main --quiet 2>/dev/null; git log origin/main --since='8 days ago' --oneline -- wiki/ | head -20"
+        "git fetch origin main --quiet 2>/dev/null; git log origin/main --since='8 days ago' --oneline -- wiki/ | head -20",
+        "python3 scripts/loom_sync.py --days 8 --dry-run 2>&1 | tail -3"
       ],
       "enabled": true
     },

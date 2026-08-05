@@ -87,7 +87,7 @@ Match the register in `references/voice.md`. Direct. Short sentences. Numbers up
 
 | Domain | Tool | Status |
 |---|---|---|
-| Revenue / Financials | QuickBooks | not yet connected |
+| Revenue / Financials | QuickBooks | mcp (local server) — PRODUCTION live (real books), read/write, delete disabled |
 | Revenue / Financials | Bluevine | not yet connected |
 | CRM / Investor Pipeline | GoHighLevel | migrating to local CRM (data/olive.db) |
 | Email | Gmail (Google Workspace) | mcp — connected |
