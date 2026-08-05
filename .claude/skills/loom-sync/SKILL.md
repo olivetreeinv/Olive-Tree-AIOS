@@ -27,10 +27,10 @@ Turns Loom from a fragile player into a durable, searchable library. Brian recor
 ## Commands
 
 ```bash
-python3 scripts/loom_sync.py                # sync last 8 days
-python3 scripts/loom_sync.py --days 30      # look back N days
-python3 scripts/loom_sync.py --dry-run      # list links only, no download/write
-python3 scripts/loom_sync.py --url <share>  # process one Loom share URL directly
+.venv/bin/python scripts/loom_sync.py                # sync last 8 days
+.venv/bin/python scripts/loom_sync.py --days 30      # look back N days
+.venv/bin/python scripts/loom_sync.py --dry-run      # list links only, no download/write
+.venv/bin/python scripts/loom_sync.py --url <share>  # process one Loom share URL directly
 ```
 
 ## Config (in `.env`)

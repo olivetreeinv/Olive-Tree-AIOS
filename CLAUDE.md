@@ -103,12 +103,28 @@ Run `/usage-audit` for the monthly usage + coverage retro.
 
 Auth pattern and common API calls → `references/google-workspace-api.md`.
 
+## Python environment
+
+**Always run scripts with `.venv/bin/python`, never bare `python3`.** The project's dependencies live in a virtualenv at `.venv/` (Python 3.13, Homebrew). Bare `python3` resolves to an interpreter with none of them installed and fails with `ModuleNotFoundError`.
+
+```bash
+.venv/bin/python scripts/<name>.py        # correct
+source .venv/bin/activate                 # or activate once per shell
+```
+
+Rebuild after changing `requirements.txt`:
+```bash
+rm -rf .venv && /opt/homebrew/bin/python3.13 -m venv .venv && .venv/bin/pip install -r requirements.txt
+```
+
+**New machine:** `scripts/bootstrap.sh` does venv + deps + index + shell aliases in one command (`--with-launchd` also installs the scheduled jobs). Shell aliases live in `shell/aliases.zsh` (tracked in the repo, sourced from `~/.zshrc`): `olive-rc` restarts the phone session, `olive-rc-log` tails its log, `olive-jobs` shows launchd status, `olive-py` runs a script through the venv, `olive` jumps to the repo. launchd plists are templates in `launchd/*.plist.tmpl` — `scripts/install_launchd.sh` substitutes the real path at install time, so nothing hardcodes a username.
+
 ## Unified knowledge recall (aios_recall)
 
 Before reading wiki files by hardcoded path, use the hybrid recall layer to pull the most relevant chunks from all three knowledge corpuses (wiki, references/context/decisions, memory) in one call:
 
 ```bash
-python3 scripts/aios_recall.py "your question" [--layer wiki|reference|memory] [--cat deals|markets|brokers|...] [--k 8] [--json]
+.venv/bin/python scripts/aios_recall.py "your question" [--layer wiki|reference|memory] [--cat deals|markets|brokers|...] [--k 8] [--json]
 ```
 
 Or in Python within a skill:
@@ -122,15 +138,15 @@ context = "\n\n".join(f"### {h.citation}\n{h.snippet}" for h in hits)
 - **Always prefer this over loading whole files** — returns RRF-ranked chunks (keyword BM25 + semantic vector), not word-overlap, catches synonyms.
 - **Cross-layer by default** — one query reaches wiki notes, reference docs, and memory at once. Use `--layer` to narrow.
 - **Pure retrieval, no LLM call** — fast and $0/query. Callers synthesize.
-- Keep the index fresh: run `python3 scripts/aios_index.py` after adding content (incremental; re-embeds only changed files).
-- Full rebuild: `python3 scripts/aios_index.py --rebuild` (one-time ~50–100MB model download on first run; free/local after that).
+- Keep the index fresh: run `.venv/bin/python scripts/aios_index.py` after adding content (incremental; re-embeds only changed files).
+- Full rebuild: `.venv/bin/python scripts/aios_index.py --rebuild` (one-time ~50–100MB model download on first run; free/local after that).
 
 ## Second-opinion research (Perplexity)
 
 When Brian asks which stack/tool/architecture fits a task or scenario — or any question where a live, cited outside view sharpens the call — pull a second opinion from Perplexity's Sonar API via `scripts/perplexity.py`:
 
 ```bash
-python3 scripts/perplexity.py "your question" [--model sonar-pro|sonar|sonar-reasoning]
+.venv/bin/python scripts/perplexity.py "your question" [--model sonar-pro|sonar|sonar-reasoning]
 ```
 
 It returns a web-grounded answer plus numbered sources. Fold it into your own reasoning — don't just relay it. Lead with your recommendation; use Perplexity to confirm, challenge, or add citations.

@@ -81,7 +81,7 @@ server and give Brian the URL + 3 example questions from his actual notes.
    wrong. Writes the note, calls `build.build()` directly to regenerate
    `graph-data.js` (no separate `aios_index.py` reindex step — `aios_recall`'s
    DB index and the galaxy's `graph-data.js` are independent stores; run
-   `python3 scripts/aios_index.py` separately if the capture should also
+   `.venv/bin/python scripts/aios_index.py` separately if the capture should also
    surface through `/aios_recall` elsewhere).
 
 ## Rules

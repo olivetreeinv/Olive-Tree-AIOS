@@ -27,19 +27,19 @@ addresses for free; no skip trace needed.
 
 ```bash
 # Generate letters for all new mail-channel sellers in Cartersville
-python3 scripts/land_mail.py --zip 30120
+.venv/bin/python scripts/land_mail.py --zip 30120
 
 # Preview 3 letters first — no files written
-python3 scripts/land_mail.py --zip 30120 --dry-run --limit 3
+.venv/bin/python scripts/land_mail.py --zip 30120 --dry-run --limit 3
 
 # Reprint / include rows already run once
-python3 scripts/land_mail.py --zip 30120 --status all
+.venv/bin/python scripts/land_mail.py --zip 30120 --status all
 
 # Subset — just the top 20 by offer size (sellers script already ranks them)
-python3 scripts/land_mail.py --zip 30120 --limit 20
+.venv/bin/python scripts/land_mail.py --zip 30120 --limit 20
 
 # Source-of-truth method: enclose a pre-filled SIGNABLE PSA with each letter
-python3 scripts/land_mail.py --zip 30120 --with-contract --dry-run --limit 1
+.venv/bin/python scripts/land_mail.py --zip 30120 --with-contract --dry-run --limit 1
 ```
 
 Set `BRIAN_PHONE` in `.env` so the letter footer uses your real number instead of

@@ -21,24 +21,24 @@ and firing post-close compounding actions after closing.
 
 ```bash
 # Open a deal (looks up seller from Land Sellers tab)
-python3 scripts/land_deal.py --parcel 0051-0574-005 \
+.venv/bin/python scripts/land_deal.py --parcel 0051-0574-005 \
     --contract-price 45400 --assignment-price 54000 --builder "LGI Homes"
 
 # Update status as the deal progresses
-python3 scripts/land_deal.py --parcel 0051-0574-005 --status psa-sent
-python3 scripts/land_deal.py --parcel 0051-0574-005 --status psa-signed
-python3 scripts/land_deal.py --parcel 0051-0574-005 --status assigned
-python3 scripts/land_deal.py --parcel 0051-0574-005 --status closed
+.venv/bin/python scripts/land_deal.py --parcel 0051-0574-005 --status psa-sent
+.venv/bin/python scripts/land_deal.py --parcel 0051-0574-005 --status psa-signed
+.venv/bin/python scripts/land_deal.py --parcel 0051-0574-005 --status assigned
+.venv/bin/python scripts/land_deal.py --parcel 0051-0574-005 --status closed
 
 # Log a deal-killer flag (stored as JSON in the sheet)
-python3 scripts/land_deal.py --parcel 0051-0574-005 --flag wetlands --severity high
-python3 scripts/land_deal.py --parcel 0051-0574-005 --flag slope --severity low
+.venv/bin/python scripts/land_deal.py --parcel 0051-0574-005 --flag wetlands --severity high
+.venv/bin/python scripts/land_deal.py --parcel 0051-0574-005 --flag slope --severity low
 
 # Post-close: print referral letter + neighbor first-look script
-python3 scripts/land_deal.py --parcel 0051-0574-005 --post-close
+.venv/bin/python scripts/land_deal.py --parcel 0051-0574-005 --post-close
 
 # View all active deals
-python3 scripts/land_deal.py --pipeline
+.venv/bin/python scripts/land_deal.py --pipeline
 ```
 
 ## Status flow

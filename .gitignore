@@ -42,3 +42,14 @@ data/suna_uncovered.json
 # Root scratch files
 scratchpad_*
 data/*.bak-*
+# Any database backup, whatever the suffix — these carry live contact PII and
+# run ~14MB each. data/*.bak-* alone missed .pre-cutover.bak.
+data/*.bak
+# Cutover debris: a stale duplicate of data/ copied in during the 2026-08-05
+# MacBook -> mini move. Nothing reads it; ignored so it can't be committed.
+data/data/
+
+# Generated artifacts that embed absolute machine paths.
+# Both are rebuilt on demand, so tracking them only propagates stale paths.
+jarvis/viewer/graph-data.js
+data/deal_intake_seen.json

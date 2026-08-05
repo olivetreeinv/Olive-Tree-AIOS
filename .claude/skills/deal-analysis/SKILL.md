@@ -89,7 +89,7 @@ To pull market rent comps, I need 4 things:
 Then run:
 
 ```bash
-python3 scripts/rentometer.py \
+.venv/bin/python scripts/rentometer.py \
   --address "[full address with zip]" \
   --beds [n] \
   --baths "[1|1.5+]" \
@@ -126,12 +126,12 @@ Then proceed with the output CSV path.
 
 **From Gmail attachment (most common):**
 ```bash
-python3 scripts/deal_analysis.py --fetch-docs --property "[property name]"
+.venv/bin/python scripts/deal_analysis.py --fetch-docs --property "[property name]"
 ```
 
 **From Google Drive link:**
 ```bash
-python3 scripts/deal_analysis.py --fetch-docs --drive-id [file_id]
+.venv/bin/python scripts/deal_analysis.py --fetch-docs --drive-id [file_id]
 ```
 
 **Brian pastes data inline:** skip to Step 3 and extract from what's provided.
@@ -476,7 +476,7 @@ This is NOT a full analysis recap — just the decision rationale and GO price, 
 Regardless of recommendation, log the deal:
 
 ```bash
-python3 scripts/deal_analysis.py --log-deal \
+.venv/bin/python scripts/deal_analysis.py --log-deal \
   --property "[name]" --address "[addr]" --market "[market]" \
   --zip "[zip]" --units [n] --asking [price] \
   --stage "[Analyzing/Pass/LOI Sent]" \
@@ -490,7 +490,7 @@ python3 scripts/deal_analysis.py --log-deal \
 Download the right template (auto-selected by door count — see the templates table in Step 3), write the inputs, upload as a live Google Sheet:
 
 ```bash
-python3 scripts/deal_analysis.py --populate-analyzer \
+.venv/bin/python scripts/deal_analysis.py --populate-analyzer \
   --property "[name]" --address "[addr]" \
   --asking [price] --offer [go_price] --units [n] --repair [budget] \
   --entry-cap [n] --exit-cap [n] --vintage [year] \
@@ -509,18 +509,18 @@ Saves as `[Property] — Deal Analyzer 0-50 — [date]` (or `— 50+ Proforma �
 
 ```bash
 # Full analysis (with docs on Drive)
-python3 scripts/deal_analysis.py --analyze \
+.venv/bin/python scripts/deal_analysis.py --analyze \
   --property "[name]" --asking [price] --units [n] --zip [zip] \
   --drive-id [file_id]
 
 # Log deal to sheet only
-python3 scripts/deal_analysis.py --log-deal [flags above]
+.venv/bin/python scripts/deal_analysis.py --log-deal [flags above]
 
 # Populate deal analyzer with inputs
-python3 scripts/deal_analysis.py --populate-analyzer [flags above]
+.venv/bin/python scripts/deal_analysis.py --populate-analyzer [flags above]
 
 # Dry run — print analysis, no writes
-python3 scripts/deal_analysis.py --analyze --dry-run [flags]
+.venv/bin/python scripts/deal_analysis.py --analyze --dry-run [flags]
 ```
 
 ---

@@ -12,7 +12,7 @@
 # NTFY_TOPIC is read from "<repo>/.env"; the phone subscribes to the same topic
 # in the ntfy app. No account, carrier, or verification needed.
 
-REPO="/Users/olivetree/Documents/Olive AIOS"
+REPO="$(cd "$(dirname "$0")/.." && pwd)"
 TITLE="${1:-Olive AIOS}"
 MESSAGE="${2:-(no message)}"
 

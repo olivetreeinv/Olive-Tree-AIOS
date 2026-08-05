@@ -37,21 +37,21 @@ poor wholesale market.
 
 ```bash
 # Screen + log to the Land Markets tab (Bartow is the default county)
-python3 scripts/land_markets.py --zip 30120 --city Cartersville
+.venv/bin/python scripts/land_markets.py --zip 30120 --city Cartersville
 
 # Screen only, no write
-python3 scripts/land_markets.py --zip 30120 --dry-run
+.venv/bin/python scripts/land_markets.py --zip 30120 --dry-run
 
 # Another county (must be wired in scripts/land_parcels.py COUNTIES)
-python3 scripts/land_markets.py --county forsyth-ga --zip 30040 --dry-run
+.venv/bin/python scripts/land_markets.py --county forsyth-ga --zip 30040 --dry-run
 
 # Override the seller acreage band (default: bartow 1–10 ac)
-python3 scripts/land_markets.py --zip 30184 --min-acres 1 --max-acres 10
+.venv/bin/python scripts/land_markets.py --zip 30184 --min-acres 1 --max-acres 10
 
 # Scout an UNWIRED county via ReportAll (nationwide, by zip) — for the 6-state
 # SE candidates whose counties run qPublic/Schneider or geometry-only AGO layers.
 # Needs REPORTALL_API_KEY with live quota. Bills per parcel returned → --cap guards it.
-python3 scripts/land_markets.py --zip 30506 --county hall-ga --source reportall --cap 2000
+.venv/bin/python scripts/land_markets.py --zip 30506 --county hall-ga --source reportall --cap 2000
 ```
 
 **Note:** `--source reportall` leaves Total/Vacant parcel counts blank (no free
@@ -83,7 +83,7 @@ pull the seller list (`/land-sellers`).
 
 | Symptom | Fix |
 |---|---|
-| `LAND_SHEET_ID not set` | `python3 scripts/land_setup.py` |
+| `LAND_SHEET_ID not set` | `.venv/bin/python scripts/land_setup.py` |
 | `has no vacant_where` | The county config needs a server-side vacant filter — add one to `COUNTIES`. |
 | `has no situs zip and no bbox` | Add the zip to `ZIP_BBOX` or pass `--bbox west,south,east,north`. |
 | 5xx from the GIS server | Transient; the client retries 3× with backoff. Re-run if it persists. |

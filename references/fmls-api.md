@@ -42,7 +42,7 @@ Authorization: Bearer YOUR_SERVER_TOKEN
 ```
 
 Stored in `.env` as `FMLS_API_TOKEN`. Dataset ID (`fmls`) as `FMLS_DATASET_ID`.
-Client ID stored as `FMLS-CLIENT_ID` (not needed for API calls — kept for reference).
+Client ID stored as `FMLS_CLIENT_ID` (not needed for API calls — kept for reference).
 
 ---
 
@@ -161,7 +161,7 @@ Full member API docs PDF: https://api.fmls.com/img/documentation/FMLS_MemberAPI.
 Replace or supplement `broker_search.py` email parsing with a direct FMLS pull:
 
 ```bash
-python3 scripts/broker_search.py --source fmls --days 7
+.venv/bin/python scripts/broker_search.py --source fmls --days 7
 ```
 
 Logic:

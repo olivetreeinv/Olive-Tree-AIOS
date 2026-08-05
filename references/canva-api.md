@@ -42,7 +42,7 @@ Content-Type: application/json
 ```
 
 ### OAuth setup (one-time)
-Run `python3 scripts/canva_oauth_setup.py` — opens browser, captures callback, saves tokens to `.env`.
+Run `.venv/bin/python scripts/canva_oauth_setup.py` — opens browser, captures callback, saves tokens to `.env`.
 
 ### Refresh token (automated — run in scripts)
 ```python

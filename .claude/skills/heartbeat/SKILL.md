@@ -12,8 +12,8 @@ and pushes the summary to Brian's phone via ntfy.
 ## How to run
 
 ```bash
-python3 scripts/heartbeat.py            # print full report
-python3 scripts/heartbeat.py --notify   # + ntfy push (what the 7:45am job does)
+.venv/bin/python scripts/heartbeat.py            # print full report
+.venv/bin/python scripts/heartbeat.py --notify   # + ntfy push (what the 7:45am job does)
 ```
 
 ## What it checks
@@ -32,7 +32,7 @@ ends (via `loose_ends.py`), and a Monday (`/lets-get-to-work`) or Friday
 ## When Brian asks a status question
 
 Any "is X running / did Y send / why no texts" question → run
-`python3 scripts/heartbeat.py` FIRST, then answer from its output. If something
+`.venv/bin/python scripts/heartbeat.py` FIRST, then answer from its output. If something
 is RED, diagnose that system specifically (trading desk → check
 `~/Library/Logs/trading-desk.log` tail; brief missing → check the cloud routine).
 

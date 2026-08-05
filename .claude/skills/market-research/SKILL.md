@@ -135,7 +135,7 @@ Score each: 🟢 Green (go) / 🟡 Yellow (investigate) / 🔴 Red (pass)
 **Live rent comps (deal-triggered runs):** Pull current asking-rent comps from Rentometer using Brian's web account — no API key needed:
 
 ```bash
-python3 scripts/rentometer.py \
+.venv/bin/python scripts/rentometer.py \
   --address "<representative submarket address with zip>" \
   --beds <dominant unit type: 1/2/3>
 ```

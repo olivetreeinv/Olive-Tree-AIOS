@@ -23,14 +23,14 @@ Gather (run in parallel where possible):
    - LOIs out / countered / accepted → scan `decisions/log.md` entries this
      quarter for "LOI Submitted" + any responses; cross-check the LOI tracking
      sheet (`/loi-archive` sheet) if needed.
-   - Deals worked up this week → `python3 scripts/deal_intake.py --all` +
+   - Deals worked up this week → `.venv/bin/python scripts/deal_intake.py --all` +
      this week's decisions-log entries.
-2. **Goal 2 — capital:** `python3 scripts/capital_raise.py track` → running
+2. **Goal 2 — capital:** `.venv/bin/python scripts/capital_raise.py track` → running
    soft-commit total vs $400K. If GHL is unreachable, say so — don't guess.
 3. **Goal 3 — broker flow:** count inbound deals from brokers this week
-   (`python3 scripts/deal_inbox.py` scan or Gmail deal bucket) and active
+   (`.venv/bin/python scripts/deal_inbox.py` scan or Gmail deal bucket) and active
    broker conversations (Brokers List sheet, status ≠ dormant).
-4. **Loose ends:** `python3 scripts/loose_ends.py --top 3`.
+4. **Loose ends:** `.venv/bin/python scripts/loose_ends.py --top 3`.
 
 ## Output format
 

@@ -47,7 +47,7 @@ The script auto-searches FMLS for the address. Two paths:
 **Path A — Listed on FMLS (most common):**
 The script pulls subject details (beds, baths, sqft, year, style, price, agent) directly. Run:
 ```bash
-python3 scripts/bpo.py --address "[address]" [--as-is "$X"] [--repaired "$X"]
+.venv/bin/python scripts/bpo.py --address "[address]" [--as-is "$X"] [--repaired "$X"]
 ```
 
 **Path B — Not listed (off-market or withdrawn):**
@@ -57,7 +57,7 @@ Ask Brian for:
 
 Then run:
 ```bash
-python3 scripts/bpo.py \
+.venv/bin/python scripts/bpo.py \
   --address "[address]" \
   --zip [zip] --beds [n] --baths [n] --sqft [n] --year [n] --style [style] \
   [--as-is "$X"] [--repaired "$X"]

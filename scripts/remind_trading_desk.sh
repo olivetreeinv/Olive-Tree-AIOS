@@ -3,7 +3,7 @@
 # Fired by ~/Library/LaunchAgents/com.olivetree.trading-desk-reminder.plist.
 # After firing, it unloads its own launchd job so it never repeats.
 
-REPO="/Users/olivetree/Documents/Olive AIOS"
+REPO="$(cd "$(dirname "$0")/.." && pwd)"
 LOG="$REPO/logs/reminders.log"
 PLIST="$HOME/Library/LaunchAgents/com.olivetree.trading-desk-reminder.plist"
 TIMESTAMP=$(date "+%Y-%m-%d %H:%M")

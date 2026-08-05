@@ -1,5 +1,5 @@
 #!/bin/sh
-REPO="/Users/olivetree/Documents/Olive AIOS"
+REPO="$(cd "$(dirname "$0")/.." && pwd)"
 LOG="$REPO/logs/auto-commit.log"
 cd "$REPO" || exit 1
 

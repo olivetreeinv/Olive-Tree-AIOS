@@ -25,22 +25,22 @@ Land Sellers tab).
 
 ```bash
 # Today's call list for Cartersville (phone-enriched rows only)
-python3 scripts/land_call.py --zip 30120
+.venv/bin/python scripts/land_call.py --zip 30120
 
 # Callbacks due today or earlier
-python3 scripts/land_call.py --zip 30120 --callbacks
+.venv/bin/python scripts/land_call.py --zip 30120 --callbacks
 
 # Who needs a phone number (skip-trace queue)
-python3 scripts/land_call.py --zip 30120 --no-phone
+.venv/bin/python scripts/land_call.py --zip 30120 --no-phone
 
 # Add a skip-traced phone (channel auto-promoted from mail → call)
-python3 scripts/land_call.py --add-phone 0051-0574-005 --phone 772-555-0100
+.venv/bin/python scripts/land_call.py --add-phone 0051-0574-005 --phone 772-555-0100
 
 # Log outcomes
-python3 scripts/land_call.py --log 0051-0574-005 --outcome interested
-python3 scripts/land_call.py --log 0051-0574-005 --outcome no
-python3 scripts/land_call.py --log 0051-0574-005 --outcome callback --callback 2026-06-24 --notes "wants 60K, will reconsider in July"
-python3 scripts/land_call.py --log 0051-0574-005 --outcome contracted
+.venv/bin/python scripts/land_call.py --log 0051-0574-005 --outcome interested
+.venv/bin/python scripts/land_call.py --log 0051-0574-005 --outcome no
+.venv/bin/python scripts/land_call.py --log 0051-0574-005 --outcome callback --callback 2026-06-24 --notes "wants 60K, will reconsider in July"
+.venv/bin/python scripts/land_call.py --log 0051-0574-005 --outcome contracted
 ```
 
 ## Outcome values

@@ -20,8 +20,8 @@ Output: one email to Brian with a verdict and max 3 recommended changes.
 
 ### Step 1 — mine the month
 ```bash
-python3 scripts/usage_audit.py --days 31 --sessions
-python3 scripts/loose_ends.py --top 5
+.venv/bin/python scripts/usage_audit.py --days 31 --sessions
+.venv/bin/python scripts/loose_ends.py --top 5
 ```
 Read the decisions-log entries from the past month for what shipped.
 
@@ -96,7 +96,7 @@ creds from the gws keyring first (verified working 2026-07-06):
 creds=$(gws auth export --unmasked | python3 -c "import json,sys; d=json.load(sys.stdin); print(d['client_id'], d['client_secret'], d['refresh_token'])")
 read -r cid csec crt <<< "$creds"
 GOOGLE_CLIENT_ID="$cid" GOOGLE_CLIENT_SECRET="$csec" GOOGLE_REFRESH_TOKEN="$crt" \
-  python3 scripts/daily_brief_cloud.py send --to brian@olivetreeinv.io \
+  .venv/bin/python scripts/daily_brief_cloud.py send --to brian@olivetreeinv.io \
   --subject "Monthly Usage Audit — $(date '+%b %Y')" --body-file /tmp/usage_audit.txt
 ```
 Then ntfy: `sh scripts/notify.sh "Usage Audit" "Monthly audit emailed — <verdict one-liner>"`

@@ -36,15 +36,15 @@ New listings → Broker follow-ups → Inbound deal emails → Document requests
 
 **Deal-doc intake scan (silent):**
 ```bash
-python3 scripts/deal_intake.py
+.venv/bin/python scripts/deal_intake.py
 ```
 If it lists new doc-drop folders in ~/Downloads, surface them as workup
 candidates alongside the pipeline results. After a workup starts, run
-`python3 scripts/deal_intake.py --ack`.
+`.venv/bin/python scripts/deal_intake.py --ack`.
 
 **Sync Fathom meetings first (silent):**
 ```bash
-cd "/Users/olivetree/Documents/Olive AIOS" && source .env && python3 scripts/fathom_sync.py --days 7
+cd "/Users/olive/Documents/Olive AIOS" && source .env && .venv/bin/python scripts/fathom_sync.py --days 7
 ```
 Run before anything else. Logs the last 7 days of meetings to the Meetings sheet and `wiki/meetings/` so call notes are current before pipeline review. If it errors, skip silently.
 
@@ -109,9 +109,9 @@ Proceed to selected phases only.
 After Brian selects a scope that includes any of Phases 1, 2, or 4, launch them as concurrent sub-agents before presenting any results. Do not run them sequentially.
 
 **Spawn simultaneously:**
-- **Agent A** — `python3 scripts/deal_search.py --days 7` + `python3 scripts/crexi_live.py --state GA --deals` + `python3 scripts/broker_sites.py` then extract/screen the fetched pages (Phase 1: new listings — email alerts + full live Crexi buy-box screen + off-market broker-site sweep per /deal-search SKILL.md)
-- **Agent B** — `python3 scripts/crexi_live.py --state GA` (Phase 2: broker discovery — live Crexi, add states as polygons are captured; `scripts/broker_search.py` for email-alert fallback). New brokers land with blank contact fields — enrich via background agents per /broker-search Step 6 before outreach.
-- **Agent C** — `python3 scripts/deal_inbox.py --days 7` + `python3 scripts/broker_replies.py --days 7` (Phase 4: inbound deal emails + replies from known brokers — deal emails to run, contact updates, replies needing Brian)
+- **Agent A** — `.venv/bin/python scripts/deal_search.py --days 7` + `.venv/bin/python scripts/crexi_live.py --state GA --deals` + `.venv/bin/python scripts/broker_sites.py` then extract/screen the fetched pages (Phase 1: new listings — email alerts + full live Crexi buy-box screen + off-market broker-site sweep per /deal-search SKILL.md)
+- **Agent B** — `.venv/bin/python scripts/crexi_live.py --state GA` (Phase 2: broker discovery — live Crexi, add states as polygons are captured; `scripts/broker_search.py` for email-alert fallback). New brokers land with blank contact fields — enrich via background agents per /broker-search Step 6 before outreach.
+- **Agent C** — `.venv/bin/python scripts/deal_inbox.py --days 7` + `.venv/bin/python scripts/broker_replies.py --days 7` (Phase 4: inbound deal emails + replies from known brokers — deal emails to run, contact updates, replies needing Brian)
 
 Wait for all three to complete. Then run Phase 3 (broker follow-ups) using Agent B's new-broker output. If broker_replies reported contact updates, apply with `broker_replies.py --apply`; if it flagged DEAL emails, offer `/deal-analysis` on each.
 
@@ -192,7 +192,7 @@ Flag brokers where:
 - `Status` ≠ "Dormant"
 
 ```bash
-python3 scripts/broker_followup.py --check
+.venv/bin/python scripts/broker_followup.py --check
 ```
 
 For each overdue broker, draft a follow-up in Brian's voice:
@@ -224,8 +224,8 @@ Approve all / review one-by-one / skip?
 ```
 
 On approval — always sandbox first, then production:
-1. **Dry run:** `python3 scripts/broker_followup.py --send-all --dry-run [--exclude ROWS]` — shows every draft, no emails sent, no sheet updates. Present output to Brian.
-2. **Production:** `python3 scripts/broker_followup.py --send-all [--exclude ROWS]` — only after Brian confirms dry run looks clean.
+1. **Dry run:** `.venv/bin/python scripts/broker_followup.py --send-all --dry-run [--exclude ROWS]` — shows every draft, no emails sent, no sheet updates. Present output to Brian.
+2. **Production:** `.venv/bin/python scripts/broker_followup.py --send-all [--exclude ROWS]` — only after Brian confirms dry run looks clean.
 3. Script updates Brokers List automatically: `Last Contact` → today, `Next Follow-Up` → +7 days, `# Deals Sent` += 1.
 4. Brokers with no email address are skipped automatically with a warning.
 
@@ -297,7 +297,7 @@ Rentometer runs automatically and sets market GPR from the median comp.
 Call `/deal-analysis`:
 
 ```bash
-python3 scripts/deal_analysis.py --analyze \
+.venv/bin/python scripts/deal_analysis.py --analyze \
   --property "[name]" --asking [price] --units [n] --zip [zip] \
   --beds [n] --om-rent [om_rent_per_unit] [--baths "1|1.5+"] \
   [--drive-id [id]] [--gmail-id [message_id]]
@@ -314,13 +314,13 @@ On `PASS` → log Stage as "Pass" in Deal Sourcing. Offer brief pass note to bro
 Run the doc-request script with the deal's index from Phase 3:
 
 ```bash
-python3 scripts/deal_inbox.py --doc-request [INDEX] --days 7
+.venv/bin/python scripts/deal_inbox.py --doc-request [INDEX] --days 7
 ```
 
 Script generates the draft and prints it. On Brian's approval:
 
 ```bash
-python3 scripts/deal_inbox.py --doc-request [INDEX] --days 7 --send
+.venv/bin/python scripts/deal_inbox.py --doc-request [INDEX] --days 7 --send
 ```
 
 ---
@@ -331,7 +331,7 @@ Triggered by:
 - `/deal-analysis` returning `PURSUE LOI`, OR
 - Brian saying "draft LOI for [property name]"
 
-> Fields, defaults, and formulas: `templates/loi-fields.json`. Preview body: `templates/loi-template.md`. Generation: `python3 scripts/loi.py`.
+> Fields, defaults, and formulas: `templates/loi-fields.json`. Preview body: `templates/loi-template.md`. Generation: `.venv/bin/python scripts/loi.py`.
 
 **Before finalizing the LOI, prompt Brian to call the broker first:**
 > "Call broker before sending? Confirm: how many offers are in, where is pricing
@@ -418,7 +418,7 @@ LOIs:        [n] drafted | [n] sent
 Outstanding:
 - [Any pending approvals or doc requests not yet actioned]
 
-Next run: Monday [date] — `python3 scripts/deal_search.py --days 7` then `python3 scripts/broker_search.py`
+Next run: Monday [date] — `.venv/bin/python scripts/deal_search.py --days 7` then `.venv/bin/python scripts/broker_search.py`
 
 Log any decisions from this session? (y/n)
 ```

@@ -36,8 +36,8 @@ Folders named `TEST` or `Land Wholesale` are skipped.
 ## Commands
 
 ```bash
-python3 scripts/deal_index.py            # rebuild master index
-python3 scripts/deal_index.py --dry-run  # print classification, no sheet write
+.venv/bin/python scripts/deal_index.py            # rebuild master index
+.venv/bin/python scripts/deal_index.py --dry-run  # print classification, no sheet write
 ```
 
 ## Key IDs

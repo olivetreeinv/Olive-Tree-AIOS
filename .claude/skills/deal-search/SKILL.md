@@ -79,18 +79,18 @@ Authoritative list: `references/buy-box.md` (14 markets). The zip map used by th
 
 ```bash
 # Standard weekly run (last 7 days of Crexi + LoopNet emails; live FMLS API call)
-python3 scripts/deal_search.py
+.venv/bin/python scripts/deal_search.py
 
 # Scan emails further back (FMLS always pulls live)
-python3 scripts/deal_search.py --days 30
+.venv/bin/python scripts/deal_search.py --days 30
 
 # Test run — parses and prints without writing to sheet
-python3 scripts/deal_search.py --dry-run
+.venv/bin/python scripts/deal_search.py --dry-run
 
 # Specific source only
-python3 scripts/deal_search.py --source crexi
-python3 scripts/deal_search.py --source loopnet
-python3 scripts/deal_search.py --source fmls
+.venv/bin/python scripts/deal_search.py --source crexi
+.venv/bin/python scripts/deal_search.py --source loopnet
+.venv/bin/python scripts/deal_search.py --source fmls
 ```
 
 ---
@@ -128,7 +128,7 @@ Duplicates checked by address and property name.
 
 ## Live Crexi buy-box screen (no email alerts needed)
 
-`python3 scripts/crexi_live.py --state GA --deals` screens EVERY active Crexi listing in the state against the buy box (matches + near-misses with links). Full coverage, not just what alerts caught. Local-only (cloud IPs are 403'd by Crexi).
+`.venv/bin/python scripts/crexi_live.py --state GA --deals` screens EVERY active Crexi listing in the state against the buy box (matches + near-misses with links). Full coverage, not just what alerts caught. Local-only (cloud IPs are 403'd by Crexi).
 
 ---
 
@@ -137,7 +137,7 @@ Duplicates checked by address and property name.
 **Why:** off-market deals post on broker/brokerage sites FIRST — only hitting Crexi/LoopNet if they don't sell. Crexi/LoopNet are for broker discovery; the broker sites are the early deal source.
 
 **How:**
-1. `python3 scripts/broker_sites.py` — fetches every URL in `references/broker-sites.json` from the local IP, saves page text to `output/broker-sites/<date>/`.
+1. `.venv/bin/python scripts/broker_sites.py` — fetches every URL in `references/broker-sites.json` from the local IP, saves page text to `output/broker-sites/<date>/`.
 2. Have Claude (or a background agent) extract listings from the .txt files: property, city, units, price, status. Only count clearly-active listings; advisor pages mix in closed transactions.
 3. Screen vs buy box; cross-check names against `crexi_live --deals` output — a buy-box fit NOT on Crexi = pre-portal candidate → surface to Brian immediately with the broker's contact.
 4. Grow the registry: when a new broker is added to the Brokers List, add their listings-page URL to `broker-sites.json` (M&M advisors: `marcusmillichap.com/advisors/{first-last}`).

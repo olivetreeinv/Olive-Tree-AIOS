@@ -35,7 +35,13 @@ import requests
 from scripts.deal_intake import find_candidates, _seen as intake_seen
 from scripts.loose_ends import harvest
 
-TRADING_LOG = Path.home() / "Library/Logs/trading-desk.log"
+# Logs live in the repo (launchd/*.plist.tmpl writes them to __REPO__/logs/), so they
+# travel with the project. Falls back to the old ~/Library/Logs path for older installs.
+TRADING_LOG = next(
+    (p for p in (REPO / "logs" / "trading-desk.log",
+                 Path.home() / "Library/Logs/trading-desk.log") if p.exists()),
+    REPO / "logs" / "trading-desk.log",
+)
 DB = REPO / "data" / "olive.db"
 
 # KeepAlive jobs must show a PID; calendar jobs must be loaded with exit 0.

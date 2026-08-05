@@ -47,7 +47,7 @@ Read all six files above before proceeding.
 
 **Rate snapshot — pull every run:**
 ```bash
-python3 scripts/newsletter_rates.py
+.venv/bin/python scripts/newsletter_rates.py
 # → prints cached months; live-fetches Mortgage News Daily (residential) +
 #   Commercial Loan Direct (multifamily) and updates data/newsletter_rates.json
 ```
@@ -152,7 +152,7 @@ Send IS available locally now — `scripts/newsletter.py` replaces the GHL campa
 
 **1. Build** (once the draft is approved in chat — save the approved body as markdown first):
 ```bash
-python3 scripts/newsletter.py build \
+.venv/bin/python scripts/newsletter.py build \
     --name "[Month YYYY] Newsletter" \
     --subject "[chosen subject line]" \
     --markdown /path/to/approved-body.md
@@ -162,22 +162,22 @@ Show Brian the generated HTML path (open it if he wants to see the render).
 
 **2. Test-send** (on approval):
 ```bash
-python3 scripts/newsletter.py test-send --campaign "[Month YYYY] Newsletter"
+.venv/bin/python scripts/newsletter.py test-send --campaign "[Month YYYY] Newsletter"
 # → sends ONE copy to brian@olivetreeinv.io, subject prefixed [TEST]
 ```
 Brian eyeballs it in his inbox.
 
 **3. Send** (only after Brian confirms the test looks right):
 ```bash
-python3 scripts/newsletter.py send --campaign "[Month YYYY] Newsletter" --dry-run
+.venv/bin/python scripts/newsletter.py send --campaign "[Month YYYY] Newsletter" --dry-run
 # → prints audience size, sends nothing — show Brian the count first
-python3 scripts/newsletter.py send --campaign "[Month YYYY] Newsletter"
+.venv/bin/python scripts/newsletter.py send --campaign "[Month YYYY] Newsletter"
 # → real send
 ```
 
 **Audience rule:** contacts tagged `newsletter` in `data/olive.db`, with an email, minus anyone `unsubscribed`. Override with `--tag X` if Brian wants a different segment. Sends go out individually (2–4s apart), each logged to `email_log` — the send is resume-safe if interrupted (already-sent contacts are skipped on re-run).
 
-**Unsubscribes:** run `python3 scripts/newsletter.py scan-unsubs --days 30` after each campaign to flag UNSUBSCRIBE replies in the DB.
+**Unsubscribes:** run `.venv/bin/python scripts/newsletter.py scan-unsubs --days 30` after each campaign to flag UNSUBSCRIBE replies in the DB.
 
 Confirm once sent:
 ```
@@ -235,7 +235,7 @@ Show briefs. Ask: "Approve to render and schedule?"
 
 **Cover art — source in this order (anti-slop ladder):**
 
-1. **kie.ai — GPT Image 2 (default)** — `python3 scripts/kie_hero.py --prompt "[subject]" --out output/carousel/[slug]/hero.png` (~6 credits ≈ $0.03/image; checks balance first, falls back automatically). Pass the returned path as `"cover_image"` in the slide spec JSON. Uses `KIE_API_KEY` in `.env`.
+1. **kie.ai — GPT Image 2 (default)** — `.venv/bin/python scripts/kie_hero.py --prompt "[subject]" --out output/carousel/[slug]/hero.png` (~6 credits ≈ $0.03/image; checks balance first, falls back automatically). Pass the returned path as `"cover_image"` in the slide spec JSON. Uses `KIE_API_KEY` in `.env`.
 2. **Brian's own art** — Luma board (`app.lumalabs.ai/boards`), Midjourney, or ChatGPT — for posts he wants to art-direct by hand. He downloads it; pass its path as `"cover_image"`.
 3. **Pexels via `cover_query` (last resort)** — query must name a real, specific place or scene from the story ("Atlanta Midtown skyline dusk", not "city buildings" or "business meeting"). Generic stock is the #1 slop tell.
 
@@ -243,17 +243,17 @@ Prompt recipe for 1 & 2: real place from the story + light/airy editorial photo 
 
 **Motion cover (optional, for Reels/video posts):** animate a still into a short MP4 (Veo 3 Fast, ~$0.33/8s; kie doesn't carry Luma). The still must be a *public* URL — use the one kie returns, or upload the PNG first.
 ```bash
-python3 scripts/kie_hero.py --prompt "<public image URL>" --out output/carousel/[slug]/hero.mp4 --motion
-python3 scripts/social_drive_upload.py --video output/carousel/[slug]/hero.mp4 --date YYYY-MM-DD --title "..."
+.venv/bin/python scripts/kie_hero.py --prompt "<public image URL>" --out output/carousel/[slug]/hero.mp4 --motion
+.venv/bin/python scripts/social_drive_upload.py --video output/carousel/[slug]/hero.mp4 --date YYYY-MM-DD --title "..."
 # → prints a drive.usercontent.google.com/download URL; pass it in Metricool `media` as an IG REEL
 ```
 Metricool re-hosts the MP4 to its own CDN (verified 2026-07-07). Schedule with `instagramData: {"type": "REEL"}` and `draft: true`. The image-CDN `lh3` URL does NOT work for video — `social_drive_upload.py --video` returns the correct download URL.
 
 **Render** (HTML renderer — primary):
 ```bash
-python3 scripts/carousel_render_html.py --json /tmp/slides_mf.json \
+.venv/bin/python scripts/carousel_render_html.py --json /tmp/slides_mf.json \
     --out output/carousel/[date]-mf
-python3 scripts/carousel_render_html.py --json /tmp/slides_sf.json \
+.venv/bin/python scripts/carousel_render_html.py --json /tmp/slides_sf.json \
     --out output/carousel/[date]-sf
 ```
 
@@ -261,12 +261,12 @@ Show rendered PNGs to Brian. Ask: "Approve to upload and schedule?"
 
 **Host** (once approved):
 ```bash
-python3 scripts/social_drive_upload.py \
+.venv/bin/python scripts/social_drive_upload.py \
     --slides-dir output/carousel/[date]-mf \
     --date YYYY-MM-DD --title "MF Story Title"
 # → prints lh3.googleusercontent.com/d/<id> URLs in slide order
 
-python3 scripts/social_drive_upload.py \
+.venv/bin/python scripts/social_drive_upload.py \
     --slides-dir output/carousel/[date]-sf \
     --date YYYY-MM-DD --title "SF Story Title"
 ```
@@ -297,7 +297,7 @@ mcp__claude_ai_Metricool_Instragram_MCP__createScheduledPost
 
 **Log** (once per post):
 ```bash
-python3 scripts/social_sheet.py \
+.venv/bin/python scripts/social_sheet.py \
     --date YYYY-MM-DD --title "Title" --type "MF Carousel" \
     --topic "..." --caption "..." \
     --slides "<drive_folder_url>" --metricool "<plannerUrl>" \

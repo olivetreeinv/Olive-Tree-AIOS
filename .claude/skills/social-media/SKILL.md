@@ -58,7 +58,7 @@ Single-image typography posts — Cormorant Garamond serif on the light olive sy
 cat > /tmp/quote.json <<'EOF'
 {"slides": [{"type": "quote", "title": "[the quote]", "who": "[optional]", "role": "[optional]"}]}
 EOF
-python3 scripts/carousel_render_html.py --json /tmp/quote.json --out output/carousel/[date]-quote
+.venv/bin/python scripts/carousel_render_html.py --json /tmp/quote.json --out output/carousel/[date]-quote
 ```
 Sizing is automatic by quote length; keep quotes under ~180 characters — shorter is stronger.
 

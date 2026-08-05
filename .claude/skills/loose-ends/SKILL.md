@@ -13,9 +13,9 @@ them newest-first. The top 3 also appear in every morning `/heartbeat`.
 ## How to run
 
 ```bash
-python3 scripts/loose_ends.py               # full list, grouped by source
-python3 scripts/loose_ends.py --top 3       # the 3 most recent, one line each
-python3 scripts/loose_ends.py --done "ReportAll quota"   # suppress a resolved item
+.venv/bin/python scripts/loose_ends.py               # full list, grouped by source
+.venv/bin/python scripts/loose_ends.py --top 3       # the 3 most recent, one line each
+.venv/bin/python scripts/loose_ends.py --done "ReportAll quota"   # suppress a resolved item
 ```
 
 ## Workflow when Brian runs it

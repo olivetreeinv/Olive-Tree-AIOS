@@ -42,7 +42,7 @@ http://localhost:8000
 ```
 If it's not running, open Terminal and run:
 ```bash
-cd "/Users/olivetree/Documents/Olive AIOS/olive-tree-govcon"
+cd "/Users/olive/Documents/Olive AIOS/olive-tree-govcon"
 .venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
 

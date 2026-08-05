@@ -13,3 +13,10 @@ PyYAML
 beautifulsoup4
 requests
 yfinance
+alpaca-py
+openpyxl
+pypdf
+youtube_transcript_api
+# vectorbt — optional, only for trading_quant's --momentum / --backtest-all path.
+# Pulls ~40 packages (matplotlib, scikit-learn, numba) and downgrades numpy. Install
+# on demand: .venv/bin/pip install vectorbt

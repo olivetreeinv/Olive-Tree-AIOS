@@ -35,9 +35,9 @@ sheet, and writes a wiki note. Deduped by Canva design ID — safe to re-run.
 ## Commands
 
 ```bash
-python3 scripts/canva_sync.py                 # archive new "Pitch Deck" designs
-python3 scripts/canva_sync.py --query "OM"    # different search term
-python3 scripts/canva_sync.py --dry-run       # list matches, no export/write
+.venv/bin/python scripts/canva_sync.py                 # archive new "Pitch Deck" designs
+.venv/bin/python scripts/canva_sync.py --query "OM"    # different search term
+.venv/bin/python scripts/canva_sync.py --dry-run       # list matches, no export/write
 ```
 
 ## Auth — the important part
@@ -50,9 +50,9 @@ tokens die after ~4h. So:
   (never the shareable Pitch Decks folder). This is what lets cloud runs survive rotation.
 - `canva_sync.py` prefers a still-valid access token (to avoid burning a refresh),
   and persists every rotation to both the store and `.env`.
-- **If auth ever dies:** re-auth locally with `python3 scripts/canva_oauth_setup.py`
+- **If auth ever dies:** re-auth locally with `.venv/bin/python scripts/canva_oauth_setup.py`
   (stdlib-only, opens a browser, no `source` needed), then re-seed the store:
-  `python3 scripts/canva_token_store.py seed`.
+  `.venv/bin/python scripts/canva_token_store.py seed`.
 
 ## Cloud note
 

@@ -34,7 +34,7 @@ volume/month, close timeline, tier (A/B/C).
 
 ```bash
 # Add / update a builder (dedups on name)
-python3 scripts/land_builders.py --add \
+.venv/bin/python scripts/land_builders.py --add \
     --name "Jane Doe" --company "Acme Homes" --phone 770-555-0100 \
     --email jane@acme.com --markets 30120,30121 \
     --price-per-acre 8000 --min-acres 1 --max-acres 10 \
@@ -42,14 +42,14 @@ python3 scripts/land_builders.py --add \
     --timeline "30 days" --tier A
 
 # List builders (optionally filter to a market)
-python3 scripts/land_builders.py --list
-python3 scripts/land_builders.py --list --market 30120
+.venv/bin/python scripts/land_builders.py --list
+.venv/bin/python scripts/land_builders.py --list --market 30120
 
 # Offer anchor: highest builder $/acre covering a zip
-python3 scripts/land_builders.py --price-for 30120
+.venv/bin/python scripts/land_builders.py --price-for 30120
 
 # Auto-discover builder leads for a zip via Google Places (unverified rows to call)
-python3 scripts/land_builders.py --discover-builders 30120
+.venv/bin/python scripts/land_builders.py --discover-builders 30120
 ```
 
 ## How to find builders to call
@@ -77,4 +77,4 @@ before working real builders.
 |---|---|
 | `--price-for` says none on file | Add a builder with `--price-per-acre` covering that zip. |
 | Markets show as a big number | Fixed — land sheet I/O uses RAW input so zips stay text. |
-| `LAND_SHEET_ID not set` | `python3 scripts/land_setup.py` |
+| `LAND_SHEET_ID not set` | `.venv/bin/python scripts/land_setup.py` |

@@ -18,11 +18,11 @@ The desk runs **Suna's weekly share-first income wheel** exclusively (launchd pl
 - **Structural-drop screen:** meaningful droppers get a Haiku "structural vs transient" read before buying the dip (`structural_drop_screen()`) — skips deteriorating businesses, buys overreactions. Lazy, cached per cycle, fail-open.
 
 ```bash
-python3 scripts/trading_suna.py --test        # offline rules self-check
-python3 scripts/trading_suna.py --discover    # this week's movers pool
-python3 scripts/trading_suna.py --once --dry-run   # print intended actions, no orders
-python3 scripts/trading_movers.py --test      # discovery self-check
-python3 scripts/trading_orchestrator.py --once   # one live Suna cycle
+.venv/bin/python scripts/trading_suna.py --test        # offline rules self-check
+.venv/bin/python scripts/trading_suna.py --discover    # this week's movers pool
+.venv/bin/python scripts/trading_suna.py --once --dry-run   # print intended actions, no orders
+.venv/bin/python scripts/trading_movers.py --test      # discovery self-check
+.venv/bin/python scripts/trading_orchestrator.py --once   # one live Suna cycle
 ```
 
 ---
@@ -65,14 +65,14 @@ The walk-forward gate was passing small-sample noise — Sharpe/win-rate stats b
 - **Optional AI event-screen** (`trading_screener.py --ai`): Claude Haiku flags known binary catalysts (FDA/litigation/M&A/guidance) the earnings-date filter alone can't see.
 
 ```bash
-python3 scripts/trading_screener.py                      # ranked candidate table
-python3 scripts/trading_screener.py --json                # machine-readable
-python3 scripts/trading_screener.py --ai                  # + Claude event-screen pass
-python3 scripts/trading_screener.py --test                # self-check, no network
+.venv/bin/python scripts/trading_screener.py                      # ranked candidate table
+.venv/bin/python scripts/trading_screener.py --json                # machine-readable
+.venv/bin/python scripts/trading_screener.py --ai                  # + Claude event-screen pass
+.venv/bin/python scripts/trading_screener.py --test                # self-check, no network
 
-python3 scripts/trading_covered_calls.py --status          # CC/wheel book + premium WTD vs $1,000/week target
-python3 scripts/trading_covered_calls.py --once --dry-run  # print intended actions
-python3 scripts/trading_covered_calls.py --test             # stub-driven rules self-check
+.venv/bin/python scripts/trading_covered_calls.py --status          # CC/wheel book + premium WTD vs $1,000/week target
+.venv/bin/python scripts/trading_covered_calls.py --once --dry-run  # print intended actions
+.venv/bin/python scripts/trading_covered_calls.py --test             # stub-driven rules self-check
 ```
 
 Orchestrator runs the CC cycle every default cycle (equities + extended sessions only); disable with `--no-cc`.
@@ -89,38 +89,38 @@ Runs at the start of **every** cycle, before any trading:
 5. Fails open, not open-to-crash: an Alpaca outage/auth error during the check is treated as "can't judge, don't halt," logged, and the cycle continues — the breaker itself must never become the outage.
 
 ```bash
-python3 scripts/trading_guard.py --test          # assert-based self-check, no network
-python3 scripts/trading_guard.py --check          # one live check against Alpaca
-python3 scripts/trading_orchestrator.py --clear-halt   # clear a tripped halt and resume
+.venv/bin/python scripts/trading_guard.py --test          # assert-based self-check, no network
+.venv/bin/python scripts/trading_guard.py --check          # one live check against Alpaca
+.venv/bin/python scripts/trading_orchestrator.py --clear-halt   # clear a tripped halt and resume
 ```
 
 ## Run commands
 
 ```bash
 # Single cycle dry-run — CC/wheel + guard only, no orders:
-python3 scripts/trading_orchestrator.py --once --dry-run
+.venv/bin/python scripts/trading_orchestrator.py --once --dry-run
 
 # Single live cycle (paper orders), CC/wheel-primary:
-python3 scripts/trading_orchestrator.py --once
+.venv/bin/python scripts/trading_orchestrator.py --once
 
 # Also run the retired momentum pipeline + SPY core sweep this cycle:
-python3 scripts/trading_orchestrator.py --once --momentum
+.venv/bin/python scripts/trading_orchestrator.py --once --momentum
 
 # Continuous loop (keep Mac awake):
-caffeinate -i python3 scripts/trading_orchestrator.py --loop --interval 3600
+caffeinate -i .venv/bin/python scripts/trading_orchestrator.py --loop --interval 3600
 
 # Backtest all symbols, print gate results (momentum pipeline):
-python3 scripts/trading_orchestrator.py --backtest-only
+.venv/bin/python scripts/trading_orchestrator.py --backtest-only
 
 # Today's P&L vs SPY + CC/wheel premium + yield-on-book:
-python3 scripts/trading_orchestrator.py --report
+.venv/bin/python scripts/trading_orchestrator.py --report
 
 # Clear a tripped equity-anomaly halt:
-python3 scripts/trading_orchestrator.py --clear-halt
+.venv/bin/python scripts/trading_orchestrator.py --clear-halt
 
 # Risk unit tests / equity guard unit tests:
-python3 scripts/trading_risk.py --test
-python3 scripts/trading_guard.py --test
+.venv/bin/python scripts/trading_risk.py --test
+.venv/bin/python scripts/trading_guard.py --test
 ```
 
 ## Universe
@@ -180,7 +180,7 @@ Momentum pipeline (--momentum only): Haiku research ~$0.01–0.03/cycle + local 
 - **Crypto Alpaca data**: use `/v1beta3/crypto/us/` endpoint, not `/v2/stocks/`. Symbol format is `BTC/USD` (with slash). Crypto/momentum only matter under `--momentum`.
 - **Paper is hard-coded**: `_PAPER = True` in `trading_execution.py` and `trading_covered_calls.py`. Never set to False without Brian's explicit approval and real Alpaca live keys.
 - **Claude JSON fences**: Haiku sometimes wraps output in ``` fences despite instructions. `trading_research.py` and the screener's `--ai` pass strip them automatically.
-- **caffeinate**: required for `--loop` so macOS doesn't sleep mid-cycle. `caffeinate -i python3 scripts/trading_orchestrator.py --loop`.
+- **caffeinate**: required for `--loop` so macOS doesn't sleep mid-cycle. `caffeinate -i .venv/bin/python scripts/trading_orchestrator.py --loop`.
 - **Equity anomaly breaker fails open on Alpaca errors** — an auth/network failure during the check is logged and trading continues; it only halts when it can positively confirm an unexplained move, since a broken breaker must never itself take the desk down.
 
 ## Real money checklist (do NOT skip)

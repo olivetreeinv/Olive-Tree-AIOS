@@ -34,7 +34,7 @@ commitments**.
 
 ### Step 1 — Size the audience
 ```bash
-python3 scripts/capital_raise.py audience
+.venv/bin/python scripts/capital_raise.py audience
 ```
 Pages all GHL contacts, buckets by tag, prints reachable counts, writes
 `output/capital-raise/641-powder-springs-audience-<date>.csv`.
@@ -44,15 +44,15 @@ Pages all GHL contacts, buckets by tag, prints reachable counts, writes
 Check `output/capital-raise/641-first-touch.md` against the drip's first email/SMS in GHL.
 Then enroll yourself to confirm the drip fires correctly:
 ```bash
-python3 scripts/capital_raise.py enroll --send --contact-id <your-contact-id>
+.venv/bin/python scripts/capital_raise.py enroll --send --contact-id <your-contact-id>
 ```
 Confirm you receive the email + text and the landing page/Loom render at
 `https://olivetreeinv.io/641_powder`.
 
 ### Step 3 — Dry-run then send
 ```bash
-python3 scripts/capital_raise.py enroll              # dry-run — prints who would enroll
-python3 scripts/capital_raise.py enroll --send       # live — enrolls all 633, idempotent
+.venv/bin/python scripts/capital_raise.py enroll              # dry-run — prints who would enroll
+.venv/bin/python scripts/capital_raise.py enroll --send       # live — enrolls all 633, idempotent
 ```
 Each enrolled contact gets the tag `raise-641-enrolled` so re-runs skip them.
 GHL's "Deal Funnel Pitch Deck" workflow handles the email, SMS, Loom, and follow-up drip.
@@ -61,9 +61,9 @@ GHL's "Deal Funnel Pitch Deck" workflow handles the email, SMS, Loom, and follow
 Log every commitment the moment a prospect says yes — GHL is being decommissioned,
 so the local `investor_commitments` table is the source of truth:
 ```bash
-python3 scripts/capital_raise.py commit --investor "Jane Doe" --amount 50000 \
+.venv/bin/python scripts/capital_raise.py commit --investor "Jane Doe" --amount 50000 \
     --deal "641 Powder Springs"          # --status soft (default) | funded
-python3 scripts/capital_raise.py track   # running total vs. the $400K Q3 target
+.venv/bin/python scripts/capital_raise.py track   # running total vs. the $400K Q3 target
 ```
 `commit` creates the investor if the name is new (add `--contact` and `--type`),
 refuses near-duplicate names without `--new-investor`, and refuses an identical

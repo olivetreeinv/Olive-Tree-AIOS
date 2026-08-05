@@ -14,9 +14,9 @@ morning `/heartbeat`.
 ## How to run
 
 ```bash
-python3 scripts/deal_intake.py           # new (unseen) candidates
-python3 scripts/deal_intake.py --all     # include already-worked ones
-python3 scripts/deal_intake.py --ack     # mark current candidates as seen
+.venv/bin/python scripts/deal_intake.py           # new (unseen) candidates
+.venv/bin/python scripts/deal_intake.py --all     # include already-worked ones
+.venv/bin/python scripts/deal_intake.py --ack     # mark current candidates as seen
 ```
 
 ## Workflow

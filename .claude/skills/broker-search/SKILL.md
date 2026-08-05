@@ -19,8 +19,8 @@ Crexi live browser scan (preferred) or Crexi/LoopNet email alerts + FMLS API →
 
 ```bash
 # Automated scan — appends new 2+ brokers to the sheet (contact fields blank)
-python3 scripts/crexi_live.py --state GA
-python3 scripts/crexi_live.py --state GA --dry-run   # print only
+.venv/bin/python scripts/crexi_live.py --state GA
+.venv/bin/python scripts/crexi_live.py --state GA --dry-run   # print only
 
 # New states need a one-time polygon capture first:
 ls references/crexi-polygons/    # states already captured
@@ -60,10 +60,10 @@ New brokers are added with:
 Off-market deals post on a broker's own site before Crexi/LoopNet (see /deal-search "Off-market broker-site sweep"). Coverage is driven off the Brokers List sheet, so **every broker we add is automatically in scope** — the only per-broker step is discovering their listings-page URL once.
 
 **After adding brokers (crexi_live or manual), reconcile + discover URLs:**
-1. `python3 scripts/broker_sites.py --sync` — reconciles `references/broker-sites.json` against the sheet, auto-fills URLs for brokerages with a known pattern (Marcus & Millichap → `advisors/{first-last}`), and lists brokers still needing a URL.
+1. `.venv/bin/python scripts/broker_sites.py --sync` — reconciles `references/broker-sites.json` against the sheet, auto-fills URLs for brokerages with a known pattern (Marcus & Millichap → `advisors/{first-last}`), and lists brokers still needing a URL.
 2. **Discover the gaps with agents** (batch ~15 names, general-purpose/sonnet). For each broker, WebSearch their brokerage's agent page / listings page. Return `Name | URL | type` where type ∈ `agent-listings` (server-rendered), `js-app` (client-rendered → @browser DOM sweep), `brokerage-all-listings`, or `none` (residential agents at KW / RE/MAX / Century 21 / eXp rarely have a per-agent listings page — record `none` so they're not re-checked).
 3. Append every result to `broker-sites.json` (including `none` entries — a recorded "no page" is resolved, and `--sync` skips it next time). CRE brokerages worth the discovery effort: M&M, Bull Realty, Cushman, Berkadia, GREA, Franklin Street, SVN, EDGE, Charles Hawkins, Fickling, Sherman & Hemstreet, Meybohm, Matthews, Colliers, Avison Young. Skip residential-only agents.
-4. Sweep: `python3 scripts/broker_sites.py` (curl, server-rendered) + the @browser DOM pass for `js-app` sites. Extract → screen vs buy box → cross-check `analyzed_deals.py` → flag pre-portal (not on `crexi_live --deals`).
+4. Sweep: `.venv/bin/python scripts/broker_sites.py` (curl, server-rendered) + the @browser DOM pass for `js-app` sites. Extract → screen vs buy box → cross-check `analyzed_deals.py` → flag pre-portal (not on `crexi_live --deals`).
 
 Registry entry shape: `{"broker","brokerage","url","status": active|js-app|404|none, "source": manual|template|discovered}`.
 
@@ -94,15 +94,15 @@ Gotchas: the Chrome extension blocks JS outputs that look like cookies/query str
 
 ```bash
 # Standard run — live API calls to all three platforms
-python3 scripts/broker_search.py
+.venv/bin/python scripts/broker_search.py
 
 # Test run — prints qualifying brokers without writing to sheet
-python3 scripts/broker_search.py --dry-run
+.venv/bin/python scripts/broker_search.py --dry-run
 
 # Specific platform only
-python3 scripts/broker_search.py --source crexi
-python3 scripts/broker_search.py --source loopnet
-python3 scripts/broker_search.py --source fmls
+.venv/bin/python scripts/broker_search.py --source crexi
+.venv/bin/python scripts/broker_search.py --source loopnet
+.venv/bin/python scripts/broker_search.py --source fmls
 ```
 
 ---
@@ -216,7 +216,7 @@ Favor mom-and-pop brokers on sub-20-unit assets — you reach the decision-maker
 
 ## Suggested cadence
 
-Run **every Monday morning** as part of `/lets-get-to-work`, after deal-search: `python3 scripts/crexi_live.py --state GA` (add states as polygons are captured), then enrich + draft buy-box intros for any new names. Platform listings update daily — weekly scans catch new brokers before competitors reach out. Crexi live scans are **local-only** (cloud IPs are blocked); cloud routines fall back to email-alert mode.
+Run **every Monday morning** as part of `/lets-get-to-work`, after deal-search: `.venv/bin/python scripts/crexi_live.py --state GA` (add states as polygons are captured), then enrich + draft buy-box intros for any new names. Platform listings update daily — weekly scans catch new brokers before competitors reach out. Crexi live scans are **local-only** (cloud IPs are blocked); cloud routines fall back to email-alert mode.
 
 ---
 

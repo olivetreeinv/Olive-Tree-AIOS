@@ -149,7 +149,7 @@ If yes:
 
 Before pulling anything else, run:
 ```bash
-cd "/Users/olivetree/Documents/Olive AIOS" && source .env && python3 scripts/fathom_sync.py --days 1
+cd "/Users/olive/Documents/Olive AIOS" && source .env && .venv/bin/python scripts/fathom_sync.py --days 1
 ```
 This logs any meetings from the last 24h to the Meetings sheet and `wiki/meetings/` before the brief runs. If it errors, skip silently — do not surface the error in the brief output.
 

@@ -15,7 +15,7 @@ See `PLAN.md` for the business model. This is the "build a site" mechanics.
    documented in the docstring at the top of `scripts/rr_sitegen.py`.
 3. Build it:
    ```
-   python3 scripts/rr_sitegen.py <new-slug>
+   .venv/bin/python scripts/rr_sitegen.py <new-slug>
    ```
    Output lands in `rank-rent/sites/<new-slug>/dist/`. The build always runs a
    self-check afterward (one `<h1>` per page, valid JSON-LD, required files present)

@@ -82,8 +82,8 @@ Render the `{{KEY}}` preview from `templates/loi-template.md` and show it to Bri
 On approval, write the collected terms to `/tmp/loi_values.json` (flat `{KEY: value}` using keys from `loi-fields.json` — only include what Brian provided/changed; defaults and formulas are applied by the script) and run:
 
 ```bash
-python3 scripts/loi.py --values /tmp/loi_values.json --dry-run   # confirm resolved numbers
-python3 scripts/loi.py --values /tmp/loi_values.json              # generate Doc + PDF
+.venv/bin/python scripts/loi.py --values /tmp/loi_values.json --dry-run   # confirm resolved numbers
+.venv/bin/python scripts/loi.py --values /tmp/loi_values.json              # generate Doc + PDF
 # add --folder-id <id> to target a specific deal folder; omit to auto-resolve by property name
 ```
 

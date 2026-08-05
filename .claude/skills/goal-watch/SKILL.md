@@ -16,10 +16,10 @@ OFF GOAL. Runs weekdays at 12:30pm via launchd (`com.olivetree.goal-watch`).
 ## How to run
 
 ```bash
-python3 scripts/goal_watch.py                    # judge + print, no push (default)
-python3 scripts/goal_watch.py --dry               # print the judge prompt only, no claude call
-python3 scripts/goal_watch.py --target drip        # judge just one target
-python3 scripts/goal_watch.py --notify             # what the 12:30pm job runs
+.venv/bin/python scripts/goal_watch.py                    # judge + print, no push (default)
+.venv/bin/python scripts/goal_watch.py --dry               # print the judge prompt only, no claude call
+.venv/bin/python scripts/goal_watch.py --target drip        # judge just one target
+.venv/bin/python scripts/goal_watch.py --notify             # what the 12:30pm job runs
 ```
 
 ## What it judges
@@ -44,7 +44,7 @@ IMPROVEMENTS section — up to 3 concrete suggestions, best first.
 
 ## Workflow when Brian runs it
 
-1. Run `python3 scripts/goal_watch.py`.
+1. Run `.venv/bin/python scripts/goal_watch.py`.
 2. Show the verdict table — lead with any OFF GOAL rows and their fix.
 3. Surface the top improvement suggestions.
 4. Offer to implement any fix directly (edit the script, reload the launchd

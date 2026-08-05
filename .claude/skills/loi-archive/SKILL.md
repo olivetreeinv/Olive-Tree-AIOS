@@ -34,8 +34,8 @@ Deduped by source Doc ID — safe to re-run any time.
 ## Commands
 
 ```bash
-python3 scripts/loi_sync.py            # archive new LOI docs
-python3 scripts/loi_sync.py --dry-run  # list matches, no export/write
+.venv/bin/python scripts/loi_sync.py            # archive new LOI docs
+.venv/bin/python scripts/loi_sync.py --dry-run  # list matches, no export/write
 ```
 
 ## Key IDs

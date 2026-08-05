@@ -68,12 +68,12 @@ Fill each field from the deal data sources below. Apply defaults for anything no
 ### Step 2 — Copy the master template
 
 ```bash
-source .env && python3 scripts/canva_api.py verify   # refresh first if expired
+source .env && .venv/bin/python scripts/canva_api.py verify   # refresh first if expired
 # master_design_id comes from templates/pitch-deck-fields.json
-python3 scripts/canva_api.py copy <master_design_id> "Olive Tree - [Deal Name] - [Market]"
+.venv/bin/python scripts/canva_api.py copy <master_design_id> "Olive Tree - [Deal Name] - [Market]"
 ```
 
-(If token expired: `python3 scripts/canva_api.py refresh && source .env`)
+(If token expired: `.venv/bin/python scripts/canva_api.py refresh && source .env`)
 
 ### Step 3 — Populate the slides (Canva MCP)
 
@@ -104,10 +104,10 @@ On Brian's approval, one command handles export + upload:
 
 ```bash
 # --dry-run first to confirm filename + folder target
-python3 scripts/canva_api.py archive [DESIGN_ID] --address "[FULL_PROPERTY_ADDRESS]" --dry-run
+.venv/bin/python scripts/canva_api.py archive [DESIGN_ID] --address "[FULL_PROPERTY_ADDRESS]" --dry-run
 
 # Live run: exports PDF, downloads, uploads to Deals / [property short name] /
-python3 scripts/canva_api.py archive [DESIGN_ID] --address "[FULL_PROPERTY_ADDRESS]"
+.venv/bin/python scripts/canva_api.py archive [DESIGN_ID] --address "[FULL_PROPERTY_ADDRESS]"
 ```
 
 The deck lands in `Olive Tree Investments - Deals / [address]/` beside the OM, T-12, Deal Analyzer, and LOI. The command prints `pdf_link` and `folder_id` — relay both to Brian.
@@ -127,7 +127,7 @@ The deck lands in `Olive Tree Investments - Deals / [address]/` beside the OM, T
 
 ## Token management
 
-Access tokens expire every 4 hours. `scripts/canva_api.py` auto-refreshes on 401 within a run; for interactive sessions: `python3 scripts/canva_api.py refresh && source .env`. Manual rotation: `scripts/canva_oauth_setup.py`.
+Access tokens expire every 4 hours. `scripts/canva_api.py` auto-refreshes on 401 within a run; for interactive sessions: `.venv/bin/python scripts/canva_api.py refresh && source .env`. Manual rotation: `scripts/canva_oauth_setup.py`.
 
 ---
 

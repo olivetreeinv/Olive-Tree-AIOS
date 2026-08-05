@@ -2,67 +2,71 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>PATH</key>
+		<string>__REPO__/.venv/bin:/opt/homebrew/bin:/usr/bin:/bin</string>
+	</dict>
 	<key>Label</key>
-	<string>com.olivetree.dailyscan</string>
+	<string>com.olivetree.heartbeat</string>
 	<key>ProgramArguments</key>
 	<array>
 		<string>/usr/bin/caffeinate</string>
 		<string>-i</string>
-		<string>/Users/olive/Documents/Olive AIOS/.venv/bin/python3</string>
-		<string>/Users/olive/Documents/Olive AIOS/scripts/daily_scan.py</string>
-		<string>--research</string>
-		<string>--email</string>
+		<string>__REPO__/.venv/bin/python</string>
+		<string>__REPO__/scripts/heartbeat.py</string>
+		<string>--notify</string>
 	</array>
 	<key>RunAtLoad</key>
 	<false/>
 	<key>StandardErrorPath</key>
-	<string>/Users/olive/Library/Logs/dailyscan.log</string>
+	<string>__REPO__/logs/heartbeat.log</string>
 	<key>StandardOutPath</key>
-	<string>/Users/olive/Library/Logs/dailyscan.log</string>
+	<string>__REPO__/logs/heartbeat.log</string>
 	<key>StartCalendarInterval</key>
 	<array>
 		<dict>
 			<key>Hour</key>
-			<integer>9</integer>
+			<integer>7</integer>
 			<key>Minute</key>
-			<integer>40</integer>
+			<integer>45</integer>
 			<key>Weekday</key>
 			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>Hour</key>
-			<integer>9</integer>
+			<integer>7</integer>
 			<key>Minute</key>
-			<integer>40</integer>
+			<integer>45</integer>
 			<key>Weekday</key>
 			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>Hour</key>
-			<integer>9</integer>
+			<integer>7</integer>
 			<key>Minute</key>
-			<integer>40</integer>
+			<integer>45</integer>
 			<key>Weekday</key>
 			<integer>3</integer>
 		</dict>
 		<dict>
 			<key>Hour</key>
-			<integer>9</integer>
+			<integer>7</integer>
 			<key>Minute</key>
-			<integer>40</integer>
+			<integer>45</integer>
 			<key>Weekday</key>
 			<integer>4</integer>
 		</dict>
 		<dict>
 			<key>Hour</key>
-			<integer>9</integer>
+			<integer>7</integer>
 			<key>Minute</key>
-			<integer>40</integer>
+			<integer>45</integer>
 			<key>Weekday</key>
 			<integer>5</integer>
 		</dict>
 	</array>
 	<key>WorkingDirectory</key>
-	<string>/Users/olive/Documents/Olive AIOS</string>
+	<string>__REPO__</string>
 </dict>
 </plist>

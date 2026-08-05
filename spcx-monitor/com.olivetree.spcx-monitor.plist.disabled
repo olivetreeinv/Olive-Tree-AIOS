@@ -13,7 +13,7 @@
     </array>
 
     <key>WorkingDirectory</key>
-    <string>/Users/olivetree/Documents/Olive AIOS/spcx-monitor</string>
+    <string>/Users/olive/Documents/Olive AIOS/spcx-monitor</string>
 
     <key>EnvironmentVariables</key>
     <dict>
@@ -30,9 +30,9 @@
     </dict>
 
     <key>StandardOutPath</key>
-    <string>/Users/olivetree/Documents/Olive AIOS/spcx-monitor/data/server.log</string>
+    <string>/Users/olive/Documents/Olive AIOS/spcx-monitor/data/server.log</string>
     <key>StandardErrorPath</key>
-    <string>/Users/olivetree/Documents/Olive AIOS/spcx-monitor/data/server.log</string>
+    <string>/Users/olive/Documents/Olive AIOS/spcx-monitor/data/server.log</string>
 
     <key>RunAtLoad</key>
     <true/>

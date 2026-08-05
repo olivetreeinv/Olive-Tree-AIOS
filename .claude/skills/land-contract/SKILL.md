@@ -37,14 +37,14 @@ without counsel sign-off.
 
 ```bash
 # Draft both contracts for a parcel (auto-selects builder by zip)
-python3 scripts/land_contract.py --parcel 0051-0574-005
+.venv/bin/python scripts/land_contract.py --parcel 0051-0574-005
 
 # Override the builder and assignment price
-python3 scripts/land_contract.py --parcel 0051-0574-005 \
+.venv/bin/python scripts/land_contract.py --parcel 0051-0574-005 \
     --builder "LGI Homes" --assignment-price 54000
 
 # Preview filled contracts in the terminal — no files written
-python3 scripts/land_contract.py --parcel 0051-0574-005 --dry-run
+.venv/bin/python scripts/land_contract.py --parcel 0051-0574-005 --dry-run
 ```
 
 ## Spread math

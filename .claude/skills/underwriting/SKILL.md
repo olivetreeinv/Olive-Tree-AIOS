@@ -78,8 +78,8 @@ Market verdict PASS → tell Brian the market kills it before the deal numbers g
 For each doc provided:
 
 - **.xlsx** → convert to CSV first (pandas snippet in deal-analysis Step 3), then parse.
-- **Gmail attachment** → `python3 scripts/deal_analysis.py --fetch-docs --property "[name]"`
-- **Drive link** → `python3 scripts/deal_analysis.py --fetch-docs --drive-id [file_id]`
+- **Gmail attachment** → `.venv/bin/python scripts/deal_analysis.py --fetch-docs --property "[name]"`
+- **Drive link** → `.venv/bin/python scripts/deal_analysis.py --fetch-docs --drive-id [file_id]`
 - **Inline data** → extract directly.
 
 Extract per the input-source table in deal-analysis Step 3 (asking, units, rents, occupancy, OpEx, capex, vintage, unit mix). Build a **doc inventory** line: `Docs: OM ✅ | T-12 ✅ | Rent Roll ❌` — missing docs lower confidence but don't stop the session; note what each gap costs.
@@ -115,7 +115,7 @@ This is the heart of the skill. After reading the docs, ask the questions the do
 Pull market rent via Rentometer (address, beds, baths, OM rent), then run the engine:
 
 ```bash
-python3 scripts/deal_analysis.py --analyze --dry-run \
+.venv/bin/python scripts/deal_analysis.py --analyze --dry-run \
   --property "[name]" --address "[addr]" --market "[market]" --zip [zip] \
   --asking [price] --units [n] --repair [budget] \
   --current-gpr [n] --current-opex [n] --vacancy-pct [n] \
@@ -155,7 +155,7 @@ Adjust per his answers. This is the last stop before the spreadsheet.
 ### Phase 7 — Populate the Deal Analyzer
 
 ```bash
-python3 scripts/deal_analysis.py --populate-analyzer \
+.venv/bin/python scripts/deal_analysis.py --populate-analyzer \
   --property "[name]" --address "[addr]" \
   --asking [price] --units [n] --repair [budget] \
   --entry-cap [n] --exit-cap [n] --vintage [year] \
@@ -214,7 +214,7 @@ the DD checklist or the MORE INFO request]
 Always, regardless of verdict:
 
 ```bash
-python3 scripts/deal_analysis.py --log-deal \
+.venv/bin/python scripts/deal_analysis.py --log-deal \
   --property "[name]" --address "[addr]" --market "[market]" --zip "[zip]" \
   --units [n] --asking [price] --stage "[Analyzing/Pass/LOI Sent]" \
   --broker-name "[name]" --broker-email "[email]" --platform "[source]" \

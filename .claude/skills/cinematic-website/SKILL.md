@@ -31,7 +31,7 @@ Never guess the template. Use AskUserQuestion to establish, in this order:
 - Measured cost: Seedance 2.0 std, 1080p, 8s, no audio = **816-1,632 credits ($4-$8) per
   clip** (two same-spec sessions billed differently; quote the high end). 720p is roughly
   40% of that; 4K ~4x. Hero image reference: ~6 credits.
-- `python3 scripts/kie_video.py --check` FIRST. kie.ai will let the balance go **negative**
+- `.venv/bin/python scripts/kie_video.py --check` FIRST. kie.ai will let the balance go **negative**
   (it hit -1,512 once) — never rely on the API to stop you.
 - **Never run kie_video.py "as a test" with a real prompt** — a submitted createTask bills
   even if you kill the local process. Use `--dry-run` for any smoke test or preview; it
@@ -46,14 +46,14 @@ All generation goes through `scripts/kie_video.py` (model `bytedance/seedance-2`
 defaults: std, 1080p, 16:9, 8s, no audio):
 
 ```bash
-python3 scripts/kie_video.py --prompt "..." --out site-<slug>/assets/hero.mp4
+.venv/bin/python scripts/kie_video.py --prompt "..." --out site-<slug>/assets/hero.mp4
 ```
 
 - **Hero-image trick (identity consistency — don't skip when the template calls for it):**
   generate ONE hero image first, then pass its hosted URL to every clip:
   ```bash
-  python3 scripts/kie_video.py --image --prompt "..." --out ref.png   # prints hosted URL
-  python3 scripts/kie_video.py --prompt "..." --ref-image <URL> --out clip1.mp4
+  .venv/bin/python scripts/kie_video.py --image --prompt "..." --out ref.png   # prints hosted URL
+  .venv/bin/python scripts/kie_video.py --prompt "..." --ref-image <URL> --out clip1.mp4
   ```
   For real products/people, upload Brian's photo instead (see upload below) and use that URL.
 - **Clip chaining (journey templates 02/06/07):** each clip's final frame becomes the next
@@ -62,7 +62,7 @@ python3 scripts/kie_video.py --prompt "..." --out site-<slug>/assets/hero.mp4
   ffmpeg -sseof -0.05 -i clip1.mp4 -frames:v 1 last1.jpg
   curl -X POST https://kieai.redpandaai.co/api/file-stream-upload \
     -H "Authorization: Bearer $KIE_API_KEY" -F "file=@last1.jpg"   # hosted URL in response (24h temp)
-  python3 scripts/kie_video.py --prompt "..." --first-frame <URL> --out clip2.mp4
+  .venv/bin/python scripts/kie_video.py --prompt "..." --first-frame <URL> --out clip2.mp4
   ```
   Chained clips generate sequentially; independent clips run in parallel as background tasks.
 - Failed generations cost 0 credits; retry twice before falling back.
@@ -85,7 +85,7 @@ python3 scripts/kie_video.py --prompt "..." --out site-<slug>/assets/hero.mp4
 
 ## Launch & verify (never skip; "done" means verified)
 
-1. Serve with `python3 scripts/serve_range.py site-<slug> 8090`.
+1. Serve with `.venv/bin/python scripts/serve_range.py site-<slug> 8090`.
    **Never `python -m http.server`** — it lacks HTTP Range support, so Chrome plays video
    but silently cannot seek: every scroll-scrub sticks at frame 0.
 2. Playwright (bundled chromium is fine once Range works) — assert, per template:
