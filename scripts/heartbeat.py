@@ -43,6 +43,7 @@ TRADING_LOG = next(
     REPO / "logs" / "trading-desk.log",
 )
 DB = REPO / "data" / "olive.db"
+AUTOCOMMIT_LOG = REPO / "logs" / "auto-commit.log"
 
 # KeepAlive jobs must show a PID; calendar jobs must be loaded with exit 0.
 # (label, kind, plain-language name)
@@ -232,6 +233,43 @@ def unreviewed_scripts() -> list[str]:
     )
 
 
+def check_backup_fresh() -> tuple[bool, str]:
+    """RED when the hourly autosave hasn't reached GitHub. The job exits 0
+    whether or not its push lands, so the launchd check above calls it clean
+    either way. Bit us 2026-08-05: the mini cutover left the machine with no
+    GitHub credentials, every push failed silently, and the off-machine backup
+    sat 23h stale behind a GREEN light. Judge the outcome instead — the job
+    logs one line per run, and a push that landed leaves the branch level with
+    its remote."""
+    age = _age_minutes(AUTOCOMMIT_LOG)
+    if age is None:
+        return False, ("Git backup: no auto-commit log — the hourly job has never run here; "
+                       "check `launchctl list | grep autocommit`")
+    if age > 130:  # hourly job; allow two misses before complaining
+        return False, (f"Git backup: job silent for {age/60:.0f}h — expected a log line every hour; "
+                       "check logs/auto-commit.log")
+
+    def _git(*a) -> str:
+        return subprocess.run(["git", "-C", str(REPO), *a],
+                              capture_output=True, text=True, timeout=15).stdout.strip()
+
+    try:
+        local = _git("rev-parse", "-q", "--verify", "refs/heads/autosave")
+        if not local:
+            return True, "Git backup: job running, no autosave branch yet (nothing changed since install)"
+        remote = _git("rev-parse", "-q", "--verify", "refs/remotes/origin/autosave")
+        if local != remote:
+            n = _git("rev-list", "--count", f"{remote}..{local}") if remote else "?"
+            return False, (f"Git backup: {n} autosave commit(s) NOT on GitHub — pushes are failing, so the "
+                           "off-machine backup is stale; check `gh auth status`, then `git push origin autosave`")
+        return True, f"Git backup: on GitHub, last autosave {_git('log', '-1', '--format=%cr', 'refs/heads/autosave')}"
+    except Exception as e:
+        # Same fail-closed rule as check_desk_code_fresh: an unguarded git call
+        # that hangs or errors would abort every check after this one, and the
+        # point of this check is that a backup problem must not read as healthy.
+        return False, f"Git backup: check FAILED ({e}) — treat as unknown, not healthy"
+
+
 def check_db() -> tuple[bool, str]:
     try:
         con = sqlite3.connect(DB, timeout=5)
@@ -256,6 +294,7 @@ def main():
         checks.append(stale_cal)
     checks.append(check_desk_code_fresh())
     checks.append(check_morning_brief())
+    checks.append(check_backup_fresh())
     checks.append(check_db())
 
     today = datetime.now()
