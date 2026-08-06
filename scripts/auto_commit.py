@@ -50,8 +50,21 @@ def main() -> None:
 
         parent = git("rev-parse", "-q", "--verify", f"refs/heads/{BRANCH}").stdout.strip()
         if parent and git("rev-parse", f"{parent}^{{tree}}").stdout.strip() == tree:
+            # Nothing new to commit. Don't return yet: an earlier run may have
+            # committed and failed to push (missing credentials, network down),
+            # and that backlog never drains on its own — every later run lands
+            # here. Retry the push whenever the branch is ahead of its remote.
+            # The tracking ref is only stale after a *successful* push, which is
+            # exactly the case where there's nothing to retry.
+            remote = git("rev-parse", "-q", "--verify", f"refs/remotes/origin/{BRANCH}").stdout.strip()
+            if remote != parent:
+                push = git("push", "origin", BRANCH)
+                ok = "✓ pushed" if push.returncode == 0 else f"still local (push failed: {push.stderr.strip()[:100]})"
+                msg = f"No changes — retried unpushed {parent[:8]}: {ok}"
+            else:
+                msg = "No changes — skipped."
             with LOG.open("a") as f:
-                f.write(f"[{stamp}] No changes — skipped.\n")
+                f.write(f"[{stamp}] {msg}\n")
             return
 
         args = ["commit-tree", tree, "-m", f"autosave {stamp}"]
