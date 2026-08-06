@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth documents a weekly covered call trading session generating $1,454 profit (4.6% return) on a $31,400 deployed capital across HIMS, OLO, and Oscar Health positions. He addresses two critical risks: forced stock ownership during downturns and capped upside potential, plus taxation implications of short-term capital gains from weekly expiration cycles.",
+  "takeaways": [
+    "Weekly covered calls target ~$180 profit per week with Friday or 2-week expirations",
+    "Deploy 100-300 shares per position to generate $300-$500 premium per contract",
+    "Accept capped upside (e.g., OLO skyrocketed to $77 but shares called away at $68.88 strike, limiting profit to 4% vs. potential 11%)",
+    "Extended expirations (2 weeks vs. 1 week) can generate higher premiums\u2014compare both before selling",
+    "Short-term capital gains tax is cost of doing business; set aside ~22% of profits in HYSA to cover tax liability",
+    "If stock drops after purchase, can either buy call back and sell stock at loss, or hold and collect premium\u2014requires comfort owning underlying",
+    "Risk: Must be willing to own the stock if assigned; if you wouldn't hold the stock long-term, don't sell covered calls on it"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Standardize strike selection rule: only sell calls at strikes where assignment is acceptable, or use 2-3 week expirations when weekly premium is insufficient to compensate for assignment risk",
+      "evidence": "Kenneth notes OLO opportunity cost ($1k upside capped) and mentions choosing 2-week expirations on Oscar Health and HIMS specifically because 'premium was a lot higher'\u2014implies premium-to-risk tradeoff is explicit decision point for Brian's $1,250/mo target"
+    }
+  ],
+  "id": "zfGPByrU3tg",
+  "title": "Part 8.5 7/26/25 $180 a week: risks and taxes with covered calls ",
+  "duration": 324
+}

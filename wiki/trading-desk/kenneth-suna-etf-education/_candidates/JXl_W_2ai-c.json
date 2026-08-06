@@ -1,0 +1,22 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth Suna demonstrates how many shares of covered call ETFs (QQQI and SPYI) are needed to generate $500/month in dividend income. QQQI requires ~1,666 shares (~$80k) based on expected 30\u00a2 monthly dividend; SPYI is more stable with 11.87% yield and more consistent dividends, offering better diversification for passive income generation.",
+  "takeaways": [
+    "QQQI pays ~62\u00a2 current dividend but forward expectation is ~30\u00a2/month, creating dividend volatility risk",
+    "To generate $500/month from QQQI at 30\u00a2 dividend requires 1,666 shares costing ~$80,000",
+    "SPYI dividend yield at 11.87% annually with more stable, less fluctuating monthly payouts than QQQI",
+    "QQQI is a newer fund (created January 2024) with higher expense ratios than traditional ETFs but pays monthly dividends",
+    "Covered call ETFs carry specific risks including dividend unpredictability month-to-month that require investor education"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Evaluate SPYI as primary covered call vehicle vs. individual stock covered calls, targeting $1,250/mo premium with more stable dividend base than QQQI",
+      "evidence": "SPYI shown to have 11.87% yield with stable, non-fluctuating monthly dividends; Kenneth explicitly highlights SPYI as more stable and suitable for passive income generation vs. the volatile QQQI dividend structure"
+    }
+  ],
+  "id": "JXl_W_2ai-c",
+  "title": "How to Make $500 PER MONTH from QQQI and SPYI #coveredcalls #kennethsuna #investing #stockmarket",
+  "duration": 157
+}

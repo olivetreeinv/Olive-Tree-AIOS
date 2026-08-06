@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan teaches a comprehensive framework for buying 15-50 unit multifamily properties in 90 days with minimal cash ($4,500-$42,000 out of pocket). He demonstrates how to structure deals using debt (65-70% LTV) and equity (30-35%), leverage broker relationships to access off-market deals, and use acquisition fees and asset management fees to reduce personal capital requirements while maintaining control as the general partner.",
+  "takeaways": [
+    "Target deals with 14-20%+ annual cash-on-cash returns, 6-10%+ cash flow, and 1.8x+ equity multiples before proceeding",
+    "Increase NOI by $1,000/month = $220,000 in property value increase (NOI \u00f7 cap rate formula)",
+    "Only 40% of multifamily deals appear on websites like CoStar; 60% are pre-market\u2014build broker relationships to access them",
+    "Structure equity raise with 10% GP investment to control 30% ownership while limited partners invest 90% for 70% ownership",
+    "Get commercial loans on property financials (not personal credit)\u201465-70% LTV on total project cost easier than residential mortgages",
+    "Earn 5-8 revenue streams per deal: 2-3% acquisition fee, 1-2% asset management fee, 30-40% cash flow, 30-40% profits, tax write-offs, construction management fees (5-8%), disposition fees, and finder fees",
+    "On a $1.25M purchase price deal: $100K closing costs + $170K renovations = $1.52M all-in; 70% loan = $1.06M; $420K equity needed; GP contributes $42K (10%), receives $37,500 acquisition fee = $4,500 net out-of-pocket"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Adopt 14-20% IRR / 6-10% cash-on-cash / 1.8x equity multiple screening before deeper underwriting",
+      "evidence": "Justin teaches these three metrics as the minimum thresholds to determine if a deal warrants further analysis, preventing time wasted on marginal deals"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Call 3-5 on-market brokers from CoStar/Loopnet to build relationships and access 60% pre-market inventory instead of only viewing 40% public listings",
+      "evidence": "Justin demonstrates calling three brokers on specific properties, building rapport, scheduling tours, then receiving access to pre-market deals from those same brokers who recognize him as a serious buyer"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Use NOI formula (NOI \u00f7 cap rate = value) to quickly calculate impact of rent increases: $1,000/month NOI increase \u2248 $220,000 property value increase at 5.5% cap rate",
+      "evidence": "Justin shows the formula: $12,000 annual NOI \u00f7 0.055 cap rate = ~$220,000 added value, demonstrating how to leverage existing cash flow for valuation without additional capital"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Target 10-30 unit buildings with $4,500-$42,000 out-of-pocket by collecting acquisition fees (2-3% of purchase price) to offset down payment required",
+      "evidence": "Justin walks through a $1.25M deal where a $37,500 acquisition fee nearly covers the $42,000 total GP equity requirement, leaving only $4,500 net out-of-pocket for the GP"
+    }
+  ],
+  "id": "vgqBCHKnMcU",
+  "title": "How To Buy Multifamily Real Estate In 90 Days With Minimal Cash: Proven Strategies For Beginners",
+  "duration": 4501
+}

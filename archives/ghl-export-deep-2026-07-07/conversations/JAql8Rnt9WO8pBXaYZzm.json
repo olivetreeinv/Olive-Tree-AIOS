@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "JAql8Rnt9WO8pBXaYZzm",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906192674,
+    "dateUpdated": 1783364877575,
+    "lastMessageDate": 1783364877572,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Matt, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906193384,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "pVMKStiWTY4oBv92mLZD",
+    "fullName": "Matt Tommey",
+    "contactName": "Matt Tommey",
+    "companyName": null,
+    "phone": "+14045385173",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364877572
+    ]
+  },
+  "messages": [
+    {
+      "id": "PZEPbf2lEzNLIQCHkkYS",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Matt, a copy of the pitch deck has been sent to your email.",
+      "contactId": "pVMKStiWTY4oBv92mLZD",
+      "contentType": "text/plain",
+      "conversationId": "JAql8Rnt9WO8pBXaYZzm",
+      "dateAdded": "2026-07-06T19:07:57.081Z",
+      "dateUpdated": "2026-07-06T19:07:57.082Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+14045385173",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "dItsnARtAt9wVAXpZtTm",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Matt, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "pVMKStiWTY4oBv92mLZD",
+      "contentType": "text/plain",
+      "conversationId": "JAql8Rnt9WO8pBXaYZzm",
+      "dateAdded": "2026-06-19T21:56:32.924Z",
+      "dateUpdated": "2026-06-19T21:56:34.440Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+14045385173",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

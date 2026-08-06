@@ -1,0 +1,49 @@
+{
+  "conversation": {
+    "id": "VTywtQWFrwiDcVds4STL",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249912757,
+    "dateUpdated": 1750249912757,
+    "lastMessageDate": 1750249912757,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "MtFe7dVBB6h1xYWcYNAn",
+    "fullName": "Joy Fromhagem",
+    "contactName": "Joy Fromhagem",
+    "companyName": null,
+    "email": "joybirduncaged70@yahoo.com",
+    "tags": [],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "phone": null,
+    "attributed": null,
+    "sort": [
+      1750249912757
+    ]
+  },
+  "messages": [
+    {
+      "id": "qGWhM5pm7UK8tEyp9ok6",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "MtFe7dVBB6h1xYWcYNAn",
+      "conversationId": "VTywtQWFrwiDcVds4STL",
+      "dateAdded": "2025-06-18T12:31:20.572Z",
+      "dateUpdated": "2025-06-18T12:33:23.153Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "SVvxAZeIrz2x5aSfQhq2"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

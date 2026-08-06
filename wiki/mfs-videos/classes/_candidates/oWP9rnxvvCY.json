@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "yes",
+  "topic": "broker-search",
+  "summary": "Justin Brennan conducts live broker outreach calls across AR/TN/AL markets, demonstrating deal sourcing methodology and how to build relationships with brokers who control off-market inventory. He emphasizes using Crexy as a broker Rolodex tool, identifying market makers by logo frequency, and positioning oneself as a serious buyer through operational setup (CRM, lenders, mock deals).",
+  "takeaways": [
+    "Identify market makers by scanning Crexy logos repeatedly\u2014same brokers appearing multiple times indicate they control deal flow",
+    "Target 10-30 unit B/C class assets, ideally built before 2000s, priced $50k-$150k per unit to control capital (e.g., 20 units @ $100k/unit = $2M deal, $600k down payment, $60k out-of-pocket after acquisition fee)",
+    "Use the initial property call as a 'lure'\u2014don't just pitch that deal; mention broader market interest ('we're looking at coming into Arkansas') to trigger broker to share off-market pipeline",
+    "Keep buy box high-level conversationally; don't send formal buy box immediately, build rapport first over time",
+    "Underwrite on fundamentals: 65-70% LTV, mid-teens IRR target, 8-15% economic loss depending on market (exceptions only in CA, S. Florida, Northeast at 5-6%)",
+    "Set up full operational infrastructure (website, CRM, lenders with soft quotes, mock deals, advisory board) so brokers see you as serious; this unlocks off-market deal access after in-person market trips",
+    "Follow up aggressively: send aggressive LOIs to create conversation hooks, then follow up with brokers to discuss numbers rather than waiting passively"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "broker-search",
+      "change": "Implement systematic logo-scanning on Crexy to identify 2-3 market makers per target market before calling",
+      "evidence": "Justin demonstrates scrolling through Crexy thumbnails, noting 'Moses and Tucker,' 'PWA,' 'Matthews'\u2014'the ones you see the most logos of repeatedly, those are your market makers'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Establish price-per-unit floor of $50k-$150k and validate against fundamental underwriting (65-70% LTV, mid-teens IRR, 8-15% economic loss) before engaging broker",
+      "evidence": "Justin rejects the $147k/door 10-unit as 'probably not going to work,' explains capital efficiency math: '$100k per unit on 20 units = $2M, $600k down, $60k OOP after acquisition fee,' and tells Mark the 8-unit at $100k/door fails because 'it doesn't work at 80-85% financing'"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Schedule in-person market trips to meet brokers face-to-face after phone rapport, moving from virtual to 'boots on the ground' to unlock off-market inventory",
+      "evidence": "Justin: 'when you're doing your market setup...meet them in face to face because that's when it goes from a phone call and a Zoom...to a real human that now okay I feel comfortable sending you deals'"
+    }
+  ],
+  "id": "oWP9rnxvvCY",
+  "title": "Weekly Coaching_04/23/26 | Justin Brennan",
+  "duration": 3198
+}

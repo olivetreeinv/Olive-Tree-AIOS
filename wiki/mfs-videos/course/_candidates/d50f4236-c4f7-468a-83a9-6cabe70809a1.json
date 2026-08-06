@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan teaches the fundamental structure of a rental property proforma, breaking down the universal formula: Gross Potential Income \u2192 subtract economic losses (vacancy, bad debt, loss-to-lease, concessions) \u2192 add reimbursables and other income \u2192 equals EGI \u2192 subtract operating expenses \u2192 equals NOI \u2192 subtract debt service and CapEx \u2192 equals net cash. This framework applies across all property sizes from 2-unit to 500-unit multifamily.",
+  "takeaways": [
+    "Gross Potential Income less 8-10% total economic losses (1-2% bad debt/concessions, 3-7% physical vacancy) gets you to Effective Gross Income (EGI)",
+    "Add Reimbursables (RUBS): water, sewer, gas, trash, pest costs tenants pay back to offset landlord burden",
+    "Add Other Income sources: pet rent, administrative fees, late fees, parking fees, tech packages, valet trash fees",
+    "Operating expenses include: admin, advertising, insurance, contract services, repairs/maintenance, turnover make-ready, payroll, utilities, property taxes, property management fees",
+    "NOI (Net Operating Income) = EGI minus total operating expenses; represents cash return with zero debt",
+    "Final Net Cash = NOI minus mortgage payments minus capital expenditures (CapEx)",
+    "Proforma structure scales universally across all property types and sizes; complexity comes in detail execution but core formula remains constant"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Improve proforma accuracy by applying 8-10% total economic loss assumption with specific breakdown (1-2% bad debt/concessions, 3-7% physical vacancy) rather than guessing",
+      "evidence": "Justin provides concrete Midwest market benchmarks: 1-2% bad debt/concessions, 3-7% physical vacancy range, totaling 8-10% off gross potential income"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Stop underestimating rental income by capturing all reimbursable and ancillary revenue streams (RUBS, pet rent, admin fees, late fees, parking, tech packages, valet trash)",
+      "evidence": "Justin emphasizes 'litany list of tons' of other income potentials specifically stating these items should be 'considered' in proforma, noting RUBs are standard in 50+ unit properties"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Create year-over-year proforma projections (Year 1, 2, 3+) to calculate IRR and cash-on-cash returns rather than analyzing single-year snapshots",
+      "evidence": "Justin explains the proforma model progresses year-by-year to generate IRR and cash-on-cash return metrics, treating each year as a separate calculation that compounds into overall investment analysis"
+    }
+  ],
+  "id": "d50f4236-c4f7-468a-83a9-6cabe70809a1",
+  "title": "Lesson 2: Understanding The Proforma",
+  "module": "Module 2: How To Analyze Deals"
+}

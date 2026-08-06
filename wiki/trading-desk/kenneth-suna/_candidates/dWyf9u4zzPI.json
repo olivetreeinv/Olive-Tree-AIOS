@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth Suna teaches the mechanics of covered call selling for weekly income. Buy 100 shares, immediately sell a covered call at $1-1.50 out-of-the-money strike expiring Friday, and earn premium income plus capital gains if assigned. He reports making ~$2,000/week using this method and emphasizes the dual profit mechanism: premium retention regardless of outcome, plus $1/share profit if shares are called away.",
+  "takeaways": [
+    "Minimum 100 shares required per covered call contract",
+    "Sell strike price $1-$1.50 out-of-the-money from purchase price (e.g., buy at $55, sell $56 call)",
+    "Use weekly Friday expiration (buy Monday, expire Friday)",
+    "Earn premium regardless of assignment outcome",
+    "If assigned, earn additional $1/share profit (e.g., $100 on 100 shares bought at $55, assigned at $56)",
+    "If stock doesn't breach strike, keep shares + premium and sell new call next week",
+    "Example: HIMS at $42/share, sell $43 call, earn $175 premium on $4,279 position"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Apply Kenneth's $1-1.50 OTM strike targeting rule to Premium Desk covered calls; systematically sell Friday weekly expirations instead of longer-dated calls to accelerate premium collection velocity toward $1,250/month target on $50k portfolio",
+      "evidence": "Kenneth demonstrates consistent weekly premium harvesting with tight OTM strikes and Friday expiration cycles, stating he generates ~$2,000/week income; Premium Desk $1,250/month (~$288/week on $50k) is significantly below Kenneth's demonstrated rate, suggesting adoption of his tighter strike and weekly roll discipline could narrow the gap"
+    }
+  ],
+  "id": "dWyf9u4zzPI",
+  "title": "What are covered call premiums and how do you earn them? ",
+  "duration": 259
+}

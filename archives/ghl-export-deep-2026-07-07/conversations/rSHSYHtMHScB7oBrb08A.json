@@ -1,0 +1,49 @@
+{
+  "conversation": {
+    "id": "rSHSYHtMHScB7oBrb08A",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249976851,
+    "dateUpdated": 1750249976851,
+    "lastMessageDate": 1750249976851,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "K1C5N5egSQlOn7he8sNe",
+    "fullName": "Marlasia Wallace",
+    "contactName": "Marlasia Wallace",
+    "companyName": null,
+    "email": "marlasiatuck@gmail.com",
+    "phone": "+17572821324",
+    "tags": [],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "sort": [
+      1750249976851
+    ]
+  },
+  "messages": [
+    {
+      "id": "FrD3Y75RYjWyrFU9Ceph",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "K1C5N5egSQlOn7he8sNe",
+      "conversationId": "rSHSYHtMHScB7oBrb08A",
+      "dateAdded": "2025-06-18T12:31:16.251Z",
+      "dateUpdated": "2025-06-18T12:36:18.915Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "wd4I2jzZJzoWeK1lTT86"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan walks through the Menlo Park Townhomes 10-unit case study\u2014a live Tucson deal in escrow with seller financing. He explains the five pillars of apartment acquisition (find, analyze, raise capital, close, manage), demonstrates how to transition from on-market to off-market deal sourcing by building broker relationships, and breaks down the pitch deck structure, return metrics (17% IRR, 9.74% cash-on-cash, 2.58x equity multiple), and GP/LP compensation (acquisition fees, disposition fees, asset management fees). He also covers four critical management reports for ongoing property performance.",
+  "takeaways": [
+    "Five pillars of multifamily investing apply uniformly across 2-unit to 100-unit deals: find, analyze, raise capital, close, manage",
+    "60% of apartment deals are off-market; only 40% appear on LoopNet/Crexie, and 95% of listed deals are overpriced",
+    "Start on Crexie/LoopNet to identify active brokers, then ping them repeatedly ('ping, ping, ping') even on deals that don't work to build relationships and gain access to pre-market opportunities",
+    "Visit target markets in person for 2-3 days with 2-3 property tours lined up to establish credibility ('eyeball to eyeball') and convert brokers to active deal flow partners",
+    "Preferred return structure: investors receive 6% interest on capital first, then split profits (75% LP / 25% GP in this example) post-preferred return",
+    "GP double-dips: receives preferred return as an investor PLUS 25% promote bonus if investor returns are met, plus 2% acquisition fee ($30K on $1.34M purchase), plus 1% disposition fee on sale ($20K projected)",
+    "Four critical management reports to monitor: unit availability (occupancy pipeline), delinquency (collections), work orders (maintenance backlog), and lease renewal rate\u2014review 90 days forward to predict property performance"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "broker-search",
+      "change": "Systematically contact brokers from on-market listings to build relationships before expecting off-market deal access",
+      "evidence": "Justin and Hayden's example: start on Crexie, identify brokers with deal volume, ping them repeatedly ('ping, ping, ping, ping'), visit market in person 2-3 days with scheduled tours to establish credibility ('they know you're a real human being'), then pitch 'we're looking for 8-20 units' to trigger pre-market sharing"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Use four-report framework (unit availability, delinquency, work orders, lease renewal) reviewed 90 days forward to predict property performance instead of relying on pro forma alone",
+      "evidence": "Justin states: 'If I see these reports, based on these reports, I can tell you how well your complex is going to do today and how well it's going to do 90 days from now, simply by looking at these four reports'\u2014and 'if you don't manage these four reports well, your property's financials will not do well'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Understand GP compensation structure includes acquisition fee (2%), disposition fee (1%), asset management fee (2%), preferred return, and promote (25%) to properly model deal returns",
+      "evidence": "In Menlo Park deal, GP invests $60K, receives $30K acquisition fee at close, so actual capital at risk is $30K; receives another $20K disposition fee on sale; plus 25% promote after LP preferred return\u2014all reducing true capital deployed"
+    }
+  ],
+  "id": "ba16e140-0fc9-4f30-b6f0-ecba5474929a",
+  "title": "10 UNIT CASE STUDY",
+  "module": "CASE STUDIES"
+}

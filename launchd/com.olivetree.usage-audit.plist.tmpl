@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>PATH</key>
+		<string>__REPO__/.venv/bin:/opt/homebrew/bin:/usr/bin:/bin</string>
+	</dict>
+	<key>Label</key>
+	<string>com.olivetree.usage-audit</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/usr/bin/caffeinate</string>
+		<string>-i</string>
+		<string>__REPO__/.venv/bin/python</string>
+		<string>__REPO__/scripts/usage_audit_run.py</string>
+	</array>
+	<key>RunAtLoad</key>
+	<false/>
+	<key>StandardErrorPath</key>
+	<string>__REPO__/logs/usage-audit.log</string>
+	<key>StandardOutPath</key>
+	<string>__REPO__/logs/usage-audit.log</string>
+	<key>StartCalendarInterval</key>
+	<dict>
+		<key>Day</key>
+		<integer>1</integer>
+		<key>Hour</key>
+		<integer>9</integer>
+		<key>Minute</key>
+		<integer>5</integer>
+	</dict>
+	<key>WorkingDirectory</key>
+	<string>__REPO__</string>
+</dict>
+</plist>

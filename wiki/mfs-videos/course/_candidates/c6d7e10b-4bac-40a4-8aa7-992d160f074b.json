@@ -1,0 +1,29 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan introduces foundational financial terminology essential for analyzing multifamily deals: NOI (net operating income), cap rate (capitalization rate), IRR (internal rate of return), and COC (cash-on-cash return). Understanding how these metrics interact is critical for quickly evaluating whether a deal makes financial sense and how to interpret the numbers on financial statements.",
+  "takeaways": [
+    "NOI = all income less all expenses, showing returns before debt service/mortgages",
+    "Cap rate = NOI divided by purchase price, answering 'what's my annualized return with zero debt?'",
+    "IRR = time value of money: cash-on-cash returns + appreciation/sale proceeds annualized over the hold period",
+    "COC = actual physical cash returned monthly/quarterly/yearly on the investment",
+    "IRR includes both current cash return AND future profit from sale/refinance, while COC is only current annual cash",
+    "Download the attached glossary file for complete definitions and backstory of all financial terms",
+    "These four metrics (NOI, cap rate, IRR, COC) are the 'main ones you gotta focus on' for deal analysis"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Learn to distinguish between COC (annual cash returns only) and IRR (cash returns + appreciation over time) to properly evaluate deal returns",
+      "evidence": "Justin explicitly contrasts: 'if I'm getting 6% cash on cash, 8% cash on cash, 10% cash on cash, that's physical cash return' versus IRR which adds 'appreciation and profit that I'm going to get from a sale or a refinance' and 'take all of that money together...annualizing that'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Master the cap rate formula (NOI \u00f7 purchase price) to quickly compare unlevered returns across markets and property types",
+      "evidence": "Justin emphasizes cap rate's universal relevance: 'You'll hear it...What's the cap rate? What's the cap rate for the market? How is this area? What are cap rates for this type of property in the area? You'll kind of hear that all the time'"
+    }
+  ],
+  "id": "c6d7e10b-4bac-40a4-8aa7-992d160f074b",
+  "title": "Lesson 1: Important Terms",
+  "module": "Module 2: How To Analyze Deals"
+}

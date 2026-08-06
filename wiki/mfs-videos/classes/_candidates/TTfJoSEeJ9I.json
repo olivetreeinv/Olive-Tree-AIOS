@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan walks through critical underwriting errors found in a multifamily deal, specifically discrepancies in the broker's repair & maintenance line items and how these errors cascade through the financial model, ultimately affecting cap rate, debt service coverage ratio, and deal viability. He teaches the community how to audit broker P&Ls for hidden one-time expenses and validate operating expense ratios against industry benchmarks.",
+  "takeaways": [
+    "Repairs & maintenance should average $800/unit/year for standard operating costs; turnover costs average $1,500/unit with 25-30% annual turnover = ~$13,500-$15,000 for a 30-unit property",
+    "Never buy a rental property when cap rate is more than 0.5 points below your loan interest rate (e.g., 4.99% cap on 6.25% loan does not work)",
+    "For property age benchmarks: 1980+ older = 45-50% expense ratio; 1980-2010 = 35-45%; 2010+ newer = 30-40%",
+    "Projected investor returns should be quoted simply as 17-20% annualized (cash flow + refinance/sale proceeds), not just cash-on-cash which is typically 8-10%",
+    "Preferred return (6-8%) paid to investors first quarterly before general partner gets profit splits (70/30, 60/40, 50/50, or 80/20)",
+    "When you invest 10% as GP you 'double dip': earning LP returns on your capital PLUS general partnership promote/tip on profits",
+    "Extract one-time capital expenses (e.g., 14 water heaters replaced) from P&L line items; broker's \"cleaned\" numbers often mask the true recurring operating costs\u2014demand actual T12 work orders and accounting detail to verify"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Always validate broker P&L repair/maintenance line items against actual work orders; do not accept cleaned numbers without supporting documentation showing one-time vs. recurring costs",
+      "evidence": "Michael caught broker claiming $22-23K repairs/maint but actuals were $37K; broker had embedded one-time capex items; Justin stressed 'you just got to realize it's not that you're not going to improve it...the problem is you're taking it on today with today's numbers'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Reject deals where cap rate falls below 0.5 point spread from loan rate; use this as hard stop rule, not negotiable",
+      "evidence": "Justin told broker directly: 'you can't buy a property right now less than 6% cap rate in the Midwest because interest rates and cap rates on the Midwest are six to 7%' and 'if I'm going to pay a five cap or 5.2 cap...I can buy something in San Diego for that. So why would I go into the Midwest?'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Reference specific expense ratio benchmarks by property age during underwriting to flag outliers immediately",
+      "evidence": "Justin provided: 1980+ = 45-50%, 1980-2010 = 35-45%, 2010+ = 30-40%; showed Michael's 2011 property should be 30-40% range to validate whether operating assumptions are reasonable"
+    }
+  ],
+  "id": "TTfJoSEeJ9I",
+  "title": "Tuesday Mentorship Q&A - Managing Investor Capital Right _11-11-25 | Justin Brennan",
+  "duration": 7481
+}

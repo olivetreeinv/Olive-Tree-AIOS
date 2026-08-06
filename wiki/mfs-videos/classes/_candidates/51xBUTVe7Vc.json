@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "partial",
+  "topic": "capital-raise",
+  "summary": "Justin Brennan conducts a weekly mentorship session covering deal structuring, investor payout mechanics, fee structures for GPs, and platform backend navigation. While primarily focused on capital raising and legal/financial structuring for multifamily deals, the content is moderately relevant to Brian's stated drag points (deal sourcing and underwriting) as it addresses how to attract investor capital once deals are identified.",
+  "takeaways": [
+    "Structure deals with 60/40 split (60% to LPs, 40% to GP promote) or adjust to 70/30 or 80/20 on first deal to hit 14-15% investor IRR target",
+    "GP earns: preferred return portion (6-8% standard), promote split on cash flow, plus one-time fees (acquisition 1-2%, construction management 8%, asset management 1% monthly on revenue, capital raise 2%, refi fee 0.5%)",
+    "Example: $12.9M deal generated $193k acquisition fee (7 days post-close), $160k construction fee, $52k refi fee, $50k capital raise fee, plus monthly asset management of ~1% on $130k/month revenue",
+    "Minimum investor check size: $25k baseline (can flex to $15k for right person), but ensure it's not >50% of investor's disposable income to avoid constant calls",
+    "Set 90-day goals quarterly rather than 12-month annual plans (read '12-Week Year' by Moran/Lennington)",
+    "Build 'soft commitments' pre-deal by sending sample pitch decks to network, creating landing pages with summary videos (15-min Loom screen recordings), collect investor info via CRM",
+    "Don't wait until January\u2014Q4 is setup time; apply 'Atomic Habits' (James Clear) to build consistent deal-hunting and underwriting routines"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "capital-raise",
+      "change": "Pre-build soft investor commitments before deal closes to accelerate capital deployment during offer negotiation phase",
+      "evidence": "Justin explains 'raise capital before the deal' means setting foundation: send sample pitch deck to network, create landing pages with summary videos (15-min Loom), collect info in CRM so you have list ready when deal arrives; example: Julian is raising money while in contract because all systems pre-built"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Use Capital Accounts Tracking Excel template to model waterfall payouts (preferred return \u2192 LP splits \u2192 GP promote) before presenting to investors",
+      "evidence": "Justin walks through manual calculation: $10k cash flow \u2192 $600 preferred return (6%) \u2192 $9,400 split 60/40 ($5,640 LPs, $3,760 GP) + GP's LP share ($564) + preferred return share ($60) = $4,384 total GP payout; says template 'does a lot of the math for you' automatically"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Commit to 90-day quarterly goals instead of 12-month plans; track weekly accountability via form submission to maintain momentum",
+      "evidence": "Justin recommends '12-Week Year' book and explains human psychology: 'if you give them a week they take a week, if you give a year they take a year'; proposes sending team weekly 2-3 question form to track roadmap progress and gamify peer accountability without public callouts"
+    }
+  ],
+  "id": "51xBUTVe7Vc",
+  "title": "Weekly Coaching_12-04-25 | Justin Brennan",
+  "duration": 3556
+}

@@ -1,0 +1,10 @@
+.env
+cache.db
+sam_data.db
+server.pid
+server.log
+__pycache__/
+venv/
+.venv/
+*.pyc
+.DS_Store

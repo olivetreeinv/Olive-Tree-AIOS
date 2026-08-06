@@ -1,0 +1,40 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan coaches Enoch through underwriting a 40-unit apartment deal in Montgomery, Alabama priced at $3.25M with an assumable loan. The core issue is insufficient revenue due to the unit mix (one-bedroom and studio apartments) making the deal difficult to pencil at current market rates, despite strong exterior renovations and an attractive assumable loan rate of 5.59%.",
+  "takeaways": [
+    "Assumable loans: adjust down payment percentage until the loan amount matches the assumed debt amount (in this case $1.8M at 5.59%)",
+    "Cap rates must align with interest rates in current market conditions\u2014don't buy properties at cap rates significantly below lending rates (avoid 5.4% cap when rates are 6%+)",
+    "Use Rentometer.com and Zillow for high-level rent verification, then get boots on the ground in the market to confirm rent levels by neighborhood",
+    "Price per unit is misleading on unit-mix deals\u2014focus on total revenue generation; one-bedroom units at $825 rent differently than two-bedroom at potentially $1,050+",
+    "Target exit cap rate of 6.5% for Montgomery, Alabama market (6.5%-7% range)",
+    "Operating expense ratio for 1980s+ properties should be 40-50% of gross revenue",
+    "Deal structure: on 40-unit deals, assumable loans may require 38-40% down payment vs. traditional 30-35% financing",
+    "LOI template format: price per unit, 1% earnest deposit going non-refundable post-due diligence, 30-day due diligence with extension option, 60-day close with 30-day option to extend"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Validate unit mix impact on revenue before extensive underwriting\u2014recognize that studio/one-bedroom portfolio generates 20-30% less income than two-bedroom equivalent at same unit count",
+      "evidence": "Enoch's deal analysis showed $73k/unit price but insufficient revenue due to 1BR/studio mix; Justin demonstrated that rents of $825-$895 vs. potential $1,050-$1,150 for 2BR units fundamentally changes all returns. Justin coached: 'Simply a revenue game' and showed rents were capped by unit type, not market opportunity."
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Cross-check current cap rate against interest rate environment before proceeding with offer\u2014reject deals where cap rate is materially below achievable financing rates in non-appreciation markets",
+      "evidence": "Justin showed current market doesn't support buying at 5.4% cap with 6%+ interest rates: 'There's no way on planet earth I would ever buy a property in Alabama at a five point anything.' He recalculated at 6.5% cap rate to make deal pencil, demonstrating the discipline needed post-2023."
+    },
+    {
+      "skill": "broker-search",
+      "change": "Establish explicit buy box conversation with brokers including unit count (10-30 units), price per unit ($50k-$150k), and target IRR (15-18%) to filter deal flow and build credibility",
+      "evidence": "Justin told group: 'you're leveraging [hundreds of thousands below asking] to build the relationship because the broker knows you know how to underwrite deals and that builds respect.' He shared his specific buy box criteria when talking to brokers to signal serious, knowledgeable buyer."
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Implement broker touch-base cadence (regular check-ins) and follow-up discipline using phrase 'dial for dollars' to stay top-of-mind for pre-market deal flow",
+      "evidence": "Justin emphasized: 'Fortune is always in the followup' and 'closed mouths don't get fed.' He cited Michael doing this 'quite well' and Kelly's success getting offmarket deals from Cleveland broker via consistent relationship maintenance."
+    }
+  ],
+  "id": "BMlbvhDwS0Y",
+  "title": "Weekly Coaching 2-12-26 | Justin Brennan",
+  "duration": 3790
+}

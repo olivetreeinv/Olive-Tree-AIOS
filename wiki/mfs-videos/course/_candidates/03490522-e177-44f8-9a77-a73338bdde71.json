@@ -1,0 +1,29 @@
+{
+  "deal_relevant": "partial",
+  "topic": "asset-mgmt",
+  "summary": "Justin Brennan covers the critical operational systems and infrastructure needed to scale a multifamily business beyond the first deal, including accounting, legal, bookkeeping, CRM, property management, and contractor networks. While foundational for asset management, the lesson doesn't directly address Brian's stated drag areas of deal sourcing or underwriting mechanics.",
+  "takeaways": [
+    "Separate your accountant (handles tax returns and K-1 statements for investors, more expensive) from your bookkeeper (reconciles accounts monthly via QuickBooks, day-to-day operations)",
+    "Use QuickBooks Online for accounting - it's scalable and integrates with other systems",
+    "Implement a CRM system (Justin uses Syndication Pro) that manages investor leads, actual investors, and projects with distribution tracking and waterfall reporting",
+    "Build a pro forma in Excel; for 2-10 unit properties use a basic template; for 100-200+ unit properties use Real Data software for institutionalized, sophisticated reports",
+    "For legal: start with a business real estate attorney for operating agreements and LLCs on single-asset entities; graduate to a securities attorney for syndications that require private placement memorandums, offering documents, and subscription agreements",
+    "Create and maintain databases in each market: licensed general contractors, property management contacts, CBRE/Marcus & Millichap/Colliers brokers, and handyman/electrician/plumber networks before you need them",
+    "Website (Justin uses Wix) plus CRM system (Syndication Pro) to manage all marketing, leads, and investor communications"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "lets-get-to-work",
+      "change": "Establish operational infrastructure (accounting, legal, CRM, property management contacts) before scaling to multiple properties",
+      "evidence": "Justin emphasizes 'you better have these operations in place' as you go from deal 1 to deal 2 to 10+ properties, stating it prevents mistakes 'especially in the money side with investors'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Master Excel pro formas as the foundation for underwriting deals at scale",
+      "evidence": "Justin states 'if you don't know Excel, you're going to need to get to know it' and positions the pro forma in Excel as critical infrastructure for analyzing properties, with Real Data as a plug-and-play option for sophisticated analysis"
+    }
+  ],
+  "id": "03490522-e177-44f8-9a77-a73338bdde71",
+  "title": "Lesson 2 - Operations",
+  "module": "Module 5 - The Beginning"
+}

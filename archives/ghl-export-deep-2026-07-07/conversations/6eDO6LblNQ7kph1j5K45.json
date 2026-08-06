@@ -1,0 +1,54 @@
+{
+  "conversation": {
+    "id": "6eDO6LblNQ7kph1j5K45",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249869956,
+    "dateUpdated": 1750249869956,
+    "lastMessageDate": 1750249869956,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "bNqoOyp5UC9yyN58AAgx",
+    "fullName": "Trent & Kim Smith",
+    "contactName": "Trent & Kim Smith",
+    "companyName": null,
+    "email": "kimberlee.m.smith@chase.com",
+    "tags": [
+      "friend",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "phone": null,
+    "attributed": null,
+    "profilePhoto": null,
+    "sort": [
+      1750249869956
+    ]
+  },
+  "messages": [
+    {
+      "id": "iwUMUMxzGNU3gfMvibbl",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "bNqoOyp5UC9yyN58AAgx",
+      "conversationId": "6eDO6LblNQ7kph1j5K45",
+      "dateAdded": "2025-06-18T12:30:57.106Z",
+      "dateUpdated": "2025-06-18T12:37:05.925Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "K9Xjo7A7GKUhqEBdZNYM"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

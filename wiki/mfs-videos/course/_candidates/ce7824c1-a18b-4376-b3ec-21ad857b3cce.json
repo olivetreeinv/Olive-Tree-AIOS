@@ -1,0 +1,35 @@
+{
+  "deal_relevant": "yes",
+  "topic": "broker-search",
+  "summary": "Justin Brennan teaches newbie multifamily investors how to effectively communicate with commercial real estate brokers by preparing scripted responses to the top 10 questions brokers typically ask. He emphasizes first impressions, credibility signals, and positioning oneself as capable of closing deals in the 10-50 unit value-add space. The video provides specific talking points on property criteria, markets, pricing, financing structure, team composition, and investment strategy.",
+  "takeaways": [
+    "Target 10-50 units on first two deals; don't jump to 50+ units as a newbie\u2014'walk before you run'",
+    "Answer property type question: 'I'm focused on small to midsize multifamily deals, typically 10 to 50 units value add potential'",
+    "On financing: 'I'll be using a mix. Conventional financing, typically 65% to 70% leverage. And I'll be syndicating the equity with other investors and investment partners'",
+    "On equity contribution: bring 10% of equity yourself, raise the remaining 90%",
+    "On deal review speed: 'I can typically get back to you in 24 to 48 hours after receiving the package' (offering memorandum/OM)",
+    "Request T12 (12-month P&L), rent roll, and marketing package from brokers",
+    "Target deal metrics: '6% to 10% cash on cash return and a 14% to 20% or more IRR over 3-5 years'",
+    "Use even on-market deals as conversation lures to build broker relationships for pre-market and off-market deal flow"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "broker-search",
+      "change": "Develop standardized broker outreach scripts for the 10 most common qualifying questions",
+      "evidence": "Justin provides word-for-word responses to 'What kind of properties are you looking for?', 'What markets are you focused in?', 'What price range?', financing questions, team composition, decision speed, lender/equity partnerships, investment strategy, and return targets"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Establish 24-48 hour deal review turnaround time and request T12 + rent roll + OM immediately upon broker contact",
+      "evidence": "'I can typically get back to you in 24 to 48 hours after receiving the package' and 'you'll be able to get financials because the financials you need are the T12, the rent roll'"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Use on-market deals as relationship-building lures even if they don't pencil out, to access broker's pre-market/off-market pipeline",
+      "evidence": "'I'm going to use it as a lure because Michael is clearly a deal maker...to find pre-market and off-market deals' and 'finding good deals is the number one thing you need to be good at'"
+    }
+  ],
+  "id": "ce7824c1-a18b-4376-b3ec-21ad857b3cce",
+  "title": "Top 10 Questions Brokers Ask",
+  "module": "Module 1: How To Find Deals"
+}

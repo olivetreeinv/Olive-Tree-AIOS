@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan walks through Brian Norton's actual 48-unit portfolio deal (four properties in Atlanta) with live deal analyzer training, focusing on how to input broker data (OM, T12, rent roll) and calculate key underwriting metrics. The discussion covers unit economics, renovation value-adds, proforma rent validation through market comps, and threshold metrics for deal evaluation.",
+  "takeaways": [
+    "Use three key metrics to evaluate deals: Cash-on-Cash 6-10%+, IRR 14-20%+, Equity Multiple 1.8x+; if all three align, other metrics will follow",
+    "Input only blue cells in deal analyzer; white cells auto-calculate\u2014do not modify until proficient",
+    "Proforma = future rent achievable within 6-12 months post-close; current = actual last 12 months; validate proforma by touring 3 comparable properties in market",
+    "Expense ratio typically 45-48% for value-add multifamily; management fee headline 5-6% but effective 8% when including leasing/lease-up costs at 2%",
+    "For sub-$1M loan amounts, expect ~7% interest rate from local commercial banks; portfolioizing 2+ properties can lower to ~6.25%",
+    "Unit mix analysis: use market research via ChatGPT or AI by property address to determine optimal bedroom configuration rather than assuming 2-bed superiority",
+    "Deal analyzer for 0-50 units is starter tool; advanced analyzer ($300-5K build cost) used only after first two deals closed"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Add comment cells and conditional formatting to deal analyzer showing IRR/Cash-on-Cash/Equity Multiple thresholds",
+      "evidence": "Rose requests visual thresholds; Justin agrees to add red/green conditional formatting so users immediately see if metrics hit 6-10% cash-on-cash, 14-20% IRR, 1.8x equity multiple"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Standardize input approach: use summary box score (average rent + unit count) rather than line-item units when data available",
+      "evidence": "Justin shows Brian how entering 10 units at $1,225 avg rent is equivalent to detailed unit-by-unit entry, simplifying underwriting for 15-50 unit deals"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Implement market validation protocol: tour 3 comps with boots-on-ground before committing to proforma rent assumptions",
+      "evidence": "Justin tells Brian proforma rents require on-site validation; driving comparable properties 2-3 times builds market intelligence to avoid inflated rent projections"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Contact current lenders and request quote on interest rate before finalizing LOI offer price",
+      "evidence": "Justin advises asking broker for current lender identity, then requesting rate quotes (~6.5-7% for sub-$1M) to back into max offer price; portfolioizing 2+ properties can reduce rate 0.75-1%"
+    }
+  ],
+  "id": "OfTWKsT7Fu8",
+  "title": "Weekly Coaching_06-19-25 | Justin Brennan",
+  "duration": 4436
+}

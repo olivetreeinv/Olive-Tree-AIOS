@@ -1,0 +1,105 @@
+{
+  "conversation": {
+    "id": "5sQxmLyWHeJdPl8tiiel",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249979523,
+    "dateUpdated": 1783364743533,
+    "lastMessageDate": 1783364743530,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Donna, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781961355395,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "c3PEJy8YpemKPktT0uFe",
+    "fullName": "Donna Lee",
+    "contactName": "Donna Lee",
+    "companyName": null,
+    "email": "leedonna422@gmail.com",
+    "phone": "+14047107849",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364743530
+    ]
+  },
+  "messages": [
+    {
+      "id": "kt9TCFXM5uTsBuNoWgQl",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Donna, a copy of the pitch deck has been sent to your email.",
+      "contactId": "c3PEJy8YpemKPktT0uFe",
+      "contentType": "text/plain",
+      "conversationId": "5sQxmLyWHeJdPl8tiiel",
+      "dateAdded": "2026-07-06T19:05:42.778Z",
+      "dateUpdated": "2026-07-06T19:05:42.779Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+14047107849",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "NyV5vcdzqw20oHJ273p2",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Donna, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "c3PEJy8YpemKPktT0uFe",
+      "contentType": "text/plain",
+      "conversationId": "5sQxmLyWHeJdPl8tiiel",
+      "dateAdded": "2026-06-20T13:15:54.635Z",
+      "dateUpdated": "2026-06-20T13:15:56.398Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+14047107849",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "3dXqJGTc0hmWwLaqGz64",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "c3PEJy8YpemKPktT0uFe",
+      "conversationId": "5sQxmLyWHeJdPl8tiiel",
+      "dateAdded": "2025-06-18T12:31:21.458Z",
+      "dateUpdated": "2025-06-18T12:34:39.215Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "sNbhvCFASc6Ee0Z36aPx"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "trading_relevant": "no",
+  "strategy": "market-analysis",
+  "summary": "Kenneth Suna teaches a research methodology for finding niche ETFs and identifying strong individual stocks within sectors like AI by using Seeking Alpha's search feature and analyzing top holdings across multiple ETFs. This is fundamentally stock-selection and portfolio construction advice rather than options strategy education.",
+  "takeaways": [
+    "Use Seeking Alpha search bar to find niche ETFs by typing sector keywords (e.g., 'AI ETF', 'artificial intelligence ETF')",
+    "Review top 10 holdings of multiple ETFs in a sector to identify overlapping stocks",
+    "Compare ETF options by stock price, expense ratio, dividends, growth metrics, and holdings composition",
+    "Look for stocks held as largest positions across multiple ETFs as potential standalone investments",
+    "Consider specialty/niche ETFs may have higher fees (acceptable for high-risk ultra-focused funds)"
+  ],
+  "strategy_candidates": [],
+  "id": "KC-15ubjyN4",
+  "title": "Niche ETFs or Individual Stocks?! How to find them #kennethsuna #investingforbeginners",
+  "duration": 115
+}

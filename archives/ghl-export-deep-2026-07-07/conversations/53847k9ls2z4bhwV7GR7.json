@@ -1,0 +1,86 @@
+{
+  "conversation": {
+    "id": "53847k9ls2z4bhwV7GR7",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781905992764,
+    "dateUpdated": 1783364541184,
+    "lastMessageDate": 1783364541178,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Remco, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781905993647,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "7m1jA1KQ9cTBm9EL0cab",
+    "fullName": "Remco",
+    "contactName": "Remco",
+    "companyName": "Iris Hospitality",
+    "phone": "+258843950221",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "profilePhoto": null,
+    "attributed": null,
+    "email": null,
+    "sort": [
+      1783364541178
+    ]
+  },
+  "messages": [
+    {
+      "id": "SdGJheR1CBM7wZvBSeoW",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Remco, a copy of the pitch deck has been sent to your email.",
+      "contactId": "7m1jA1KQ9cTBm9EL0cab",
+      "contentType": "text/plain",
+      "conversationId": "53847k9ls2z4bhwV7GR7",
+      "dateAdded": "2026-07-06T19:02:20.429Z",
+      "dateUpdated": "2026-07-06T19:02:20.429Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+258843950221",
+      "error": "Error 21408 - Your account is not allowed to send SMS to this country or region.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "jdvpQuEVC2TG5UX9dco3",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Remco, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "7m1jA1KQ9cTBm9EL0cab",
+      "contentType": "text/plain",
+      "conversationId": "53847k9ls2z4bhwV7GR7",
+      "dateAdded": "2026-06-19T21:53:13.005Z",
+      "dateUpdated": "2026-06-19T21:53:14.422Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+258843950221",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

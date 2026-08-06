@@ -1,0 +1,55 @@
+{
+  "_comment": "Single source of truth for the pitch-deck skill. master_design_id = the 641 Powder Springs completed LP deck to clone (26 slides, 16:9). Sections mirror the 6 deck sections; each field has a default (from knowledge-base-metrics.md), an optional formula, and a find_text string = the literal text in the master slides to replace when populating via Canva MCP. The skill assembles field values, computes formulas, then executes find_text -> value replacements section-by-section via start/commit-editing-transaction.",
+  "master_design_id": "DAHIppfBwgs",
+  "master_deal_name": "641 Powder Springs St",
+  "deals_root_folder_id": "1pLWVMaLPy-8Rt1NGQsX2wg2oNDonWC-p",
+  "sections": ["cover", "offering_summary", "the_property", "the_market", "the_financials", "how_to_invest"],
+  "fields": {
+    "DEAL_NAME":         { "section": "cover", "default": null, "find_text": "641 Powder Springs St" },
+    "PROPERTY_ADDRESS":  { "section": "cover", "default": null, "find_text": "641 Powder Springs St, Smyrna, GA 30080" },
+    "MARKET":            { "section": "cover", "default": null, "find_text": "Smyrna, GA" },
+    "UNITS":             { "section": "cover", "default": null, "find_text": "14 Units" },
+    "VINTAGE":           { "section": "cover", "default": null, "find_text": null },
+    "CLASS":             { "section": "cover", "default": null, "find_text": null },
+    "STRATEGY":          { "section": "cover", "default": "Value-Add", "find_text": "Value-Add" },
+    "HOLD_PERIOD":       { "section": "cover", "default": "4–6 Years", "find_text": "4–6 Years" },
+
+    "MIN_INVESTMENT":    { "section": "offering_summary", "default": "$25,000", "find_text": "$25,000" },
+    "PREF_RETURN":       { "section": "offering_summary", "default": "6%", "find_text": "6%" },
+    "LP_SPLIT":          { "section": "offering_summary", "default": "70%", "find_text": "70%" },
+    "GP_SPLIT":          { "section": "offering_summary", "default": "30%", "find_text": "30%" },
+    "INVESTOR_IRR":      { "section": "offering_summary", "default": null, "find_text": null },
+    "EQUITY_MULTIPLE":   { "section": "offering_summary", "default": null, "find_text": null },
+    "COC_RETURN":        { "section": "offering_summary", "default": null, "find_text": null },
+    "RAISE_AMOUNT":      { "section": "offering_summary", "default": null, "find_text": null },
+    "RETURN_PER_100K":   { "section": "offering_summary", "formula": "EQUITY_MULTIPLE * 100000", "type": "money", "find_text": null },
+    "CAPITAL_STACK_DEBT":{ "section": "offering_summary", "default": null, "find_text": null },
+    "CAPITAL_STACK_LP":  { "section": "offering_summary", "default": null, "find_text": null },
+    "CAPITAL_STACK_GP":  { "section": "offering_summary", "default": null, "find_text": null },
+
+    "PROPERTY_STORY":    { "section": "the_property", "default": null, "find_text": null },
+    "UNIT_MIX":          { "section": "the_property", "default": null, "find_text": null },
+    "CURRENT_RENTS":     { "section": "the_property", "default": null, "find_text": null },
+    "PROFORMA_RENTS":    { "section": "the_property", "default": null, "find_text": null },
+    "RENO_SCOPE":        { "section": "the_property", "default": null, "find_text": null },
+
+    "MARKET_NARRATIVE":  { "section": "the_market", "default": null, "find_text": null },
+    "POPULATION_GROWTH": { "section": "the_market", "default": null, "find_text": null },
+    "JOB_GROWTH":        { "section": "the_market", "default": null, "find_text": null },
+    "RENT_GROWTH":       { "section": "the_market", "default": null, "find_text": null },
+
+    "PURCHASE_PRICE":    { "section": "the_financials", "default": null, "find_text": null },
+    "TOTAL_PROJECT_COST":{ "section": "the_financials", "default": null, "find_text": null },
+    "LTV":               { "section": "the_financials", "default": "70%", "find_text": null },
+    "DSCR":              { "section": "the_financials", "default": null, "find_text": null },
+    "EXIT_CAP":          { "section": "the_financials", "default": null, "find_text": null },
+    "YEAR1_COC":         { "section": "the_financials", "default": null, "find_text": null },
+    "YEAR2_COC":         { "section": "the_financials", "default": null, "find_text": null },
+    "YEAR3_COC":         { "section": "the_financials", "default": null, "find_text": null },
+
+    "INVESTMENT_STEPS":  { "section": "how_to_invest", "default": "1. Request an intro call\n2. Sign the PPM\n3. Wire your investment\n4. Receive quarterly updates", "find_text": null },
+    "CONTACT_EMAIL":     { "section": "how_to_invest", "default": "brian@olivetreeinv.io", "find_text": "brian@olivetreeinv.io" },
+    "CONTACT_PHONE":     { "section": "how_to_invest", "default": "404-643-2356", "find_text": "404-643-2356" },
+    "WEBSITE":           { "section": "how_to_invest", "default": "www.olivetreeinv.io", "find_text": "www.olivetreeinv.io" }
+  }
+}

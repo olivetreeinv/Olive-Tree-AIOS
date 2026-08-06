@@ -1,0 +1,29 @@
+{
+  "deal_relevant": "partial",
+  "topic": "other",
+  "summary": "Justin Brennan outlines the essential team members needed for multifamily real estate business and deal operations, including CPAs, attorneys, property managers, and construction contractors. While foundational for business structure, the content focuses on organizational setup rather than Brian's specific pain points of deal sourcing and underwriting.",
+  "takeaways": [
+    "Securities attorney for first syndication deal costs ~$14,000, then cuts in half for subsequent deals",
+    "Transactional attorney costs $15,000-$40,000 depending on deal size",
+    "Business/real estate attorney typically hourly with initial retainer of 'a few thousand bucks'",
+    "Scout markets 6-8 months in advance before acquiring deals, including PM company interviews and neighborhood research",
+    "Property management economies of scale really kick in at 100+ units; below that requires more hands-on asset manager oversight",
+    "'Manage the managers' - cannot delegate property management without ongoing oversight",
+    "Vet property managers by secretly shopping their managed properties and checking reviews before selection"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Implement pre-deal market and vendor due diligence 6-8 months in advance to identify qualified property managers and contractors",
+      "evidence": "'we go into markets, right? Usually six to eight months in advance of ever acquiring any deals. Boots on the ground. Interviewing PM companies, right? interviewing construction companies driving the neighborhoods'"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Establish PM company vetting process including secret shopping properties under management before hire",
+      "evidence": "'Go secretly shop the properties that they're managing. Right? Go see how it works... If you're getting down to kind of whittling down to two or three, spend the time to really do the research. Trust me, it can make or break you.'"
+    }
+  ],
+  "id": "7b4344a9-1032-4043-815a-5b0ed93cdc19",
+  "title": "Lesson 2: Who you need on your team",
+  "module": "Module 1B: Creating A Business LLC & Team"
+}

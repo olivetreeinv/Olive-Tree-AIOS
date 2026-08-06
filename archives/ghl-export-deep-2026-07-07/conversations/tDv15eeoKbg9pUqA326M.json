@@ -1,0 +1,54 @@
+{
+  "conversation": {
+    "id": "tDv15eeoKbg9pUqA326M",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249894659,
+    "dateUpdated": 1750249894659,
+    "lastMessageDate": 1750249894659,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "kzXenQkyLxFsng7g6oJw",
+    "fullName": "Timmy Panasyuk",
+    "contactName": "Timmy Panasyuk",
+    "companyName": null,
+    "email": "timpanasyuk@yahoo.com",
+    "tags": [
+      "friend",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "phone": null,
+    "attributed": null,
+    "profilePhoto": null,
+    "sort": [
+      1750249894659
+    ]
+  },
+  "messages": [
+    {
+      "id": "oAbm2y2C4R29BfYwPNOe",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "kzXenQkyLxFsng7g6oJw",
+      "conversationId": "tDv15eeoKbg9pUqA326M",
+      "dateAdded": "2025-06-18T12:30:56.571Z",
+      "dateUpdated": "2025-06-18T12:33:23.751Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "ckeB33y9NKlngwHFIh76"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

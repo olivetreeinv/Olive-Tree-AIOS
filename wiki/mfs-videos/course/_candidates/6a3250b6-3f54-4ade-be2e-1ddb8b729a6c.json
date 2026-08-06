@@ -1,0 +1,44 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan teaches a systematic framework for analyzing multifamily deals by gathering and verifying specific financial documents (T12s, rent rolls, tenant estoppels, aged receivables), calculating key performance metrics (cash-on-cash returns, IRR, equity multiple, return on cost), and evaluating four qualitative factors (location, people/management, processes, and competitive comps) to quickly determine deal viability.",
+  "takeaways": [
+    "For smaller properties (2-4 units): obtain current rents, market rents, post-renovation rents via comps",
+    "For larger properties (5+ units): require T12 (12-month P&L), rent roll, aged receivables, unit availability report, and lease velocity metrics (leases signed in last 30/90 days)",
+    "Verify rents with tenant estoppel certificates and lease copies; verify expenses with receipts, invoices, and utility bills",
+    "Target metrics for Class B/C assets: 7-10% cash-on-cash returns, 16-22% IRR, 18-25% annual rate of return, 1-2x equity multiple, 18-20%+ return on cost",
+    "Cap rate strategy for value-add deals: buy at 4 cap, force appreciation to 7 cap, sell at 4.5-5 cap; maintain minimum 2-point spread between forced cap rate and exit cap rate",
+    "Get boots on the ground to physically tour comps and understand the competitive landscape; don't rely solely on online data",
+    "Analyze the four critical factors: location (non-negotiable for tenant appeal), people (quality of tenants, property management, maintenance staff), processes (software systems, eviction handling, move-in/out procedures), and comps (direct competition analysis)"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Systematically collect T12, rent roll, aged receivables, and unit availability reports before underwriting larger deals",
+      "evidence": "Justin states 'Five, ten units, fifty, hundred, two hundred plus units. You're getting what's called a T12' and lists specific documents required for financial analysis of larger properties"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Verify all financial documents with primary sources (receipts, invoices, estoppels, leases) rather than accepting seller-provided numbers",
+      "evidence": "Justin emphasizes 'You want it verified. So in terms of the expenses, you want like receipts or invoices...You want copies of the leases to review the leases'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Use specific return thresholds to qualify deals: 7-10% cash-on-cash, 16-22% IRR, 1-2x equity multiple, 18-20%+ return on cost",
+      "evidence": "Justin provides explicit ranges: 'we'd like to see right now is...7 to 10% average cash on cash returns...somewhere...between 16 to probably 22% in terms of an annual IRR...1 to 2 Equity multiple...18 to 20 plus percent' return on cost"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Apply cap rate spread strategy: target minimum 2-point gap between forced appreciation cap and exit cap to achieve projected returns",
+      "evidence": "Justin explains 'typically on our deals, we may buy something at a four cap, we will take it to say a seven cap and then we will sell back down at say a 4.5 to five...the spread...to be at least two'"
+    },
+    {
+      "skill": "market-research",
+      "change": "Conduct physical on-the-ground comp analysis rather than relying on online data alone for deal areas",
+      "evidence": "Justin states 'You got to get boots on the ground. You got to go knock the doors, walk the properties, understand the areas...once you're getting real and got money on the line, you got to get on the ground'"
+    }
+  ],
+  "id": "6a3250b6-3f54-4ade-be2e-1ddb8b729a6c",
+  "title": "Lesson 3: How To Analyze A Deal",
+  "module": "Module 2: How To Analyze Deals"
+}

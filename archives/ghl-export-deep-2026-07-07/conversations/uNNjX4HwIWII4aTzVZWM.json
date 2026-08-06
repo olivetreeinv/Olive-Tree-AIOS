@@ -1,0 +1,122 @@
+{
+  "conversation": {
+    "id": "uNNjX4HwIWII4aTzVZWM",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906004951,
+    "dateUpdated": 1783365316548,
+    "lastMessageDate": 1783365316545,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Hi Haley, This is Brian Norton. These days, I'm in the apartment syndication game. I buy apartments with investors, and they get a return. --I use this number to send out the deals. If you know someone who might be interested. Let them know! --Take a look and let me know what you think about the presentation... I worked hard on that bad boy :D",
+    "lastOutboundMessageAction": "manual",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1783365316545,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "LKXWbVXaisxVdKwkDawA",
+    "fullName": "Haley Campbell",
+    "contactName": "Haley Campbell",
+    "companyName": null,
+    "phone": "+17703781314",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "attributed": null,
+    "sort": [
+      1783365316545
+    ]
+  },
+  "messages": [
+    {
+      "id": "eFq4IyVio6GmeucGhn76",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hi Haley, This is Brian Norton. These days, I'm in the apartment syndication game. I buy apartments with investors, and they get a return. --I use this number to send out the deals. If you know someone who might be interested. Let them know! --Take a look and let me know what you think about the presentation... I worked hard on that bad boy :D",
+      "contactId": "LKXWbVXaisxVdKwkDawA",
+      "contentType": "text/plain",
+      "conversationId": "uNNjX4HwIWII4aTzVZWM",
+      "dateAdded": "2026-07-06T19:15:15.850Z",
+      "dateUpdated": "2026-07-06T19:15:16.926Z",
+      "userId": "2DmTJ7IvCjSM8ql83oiZ",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+17703781314",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "eBzVILDcl9Ah6TTgtwpr",
+      "direction": "inbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hi! I'm sorry, who is this?",
+      "contactId": "LKXWbVXaisxVdKwkDawA",
+      "contentType": "text/plain",
+      "conversationId": "uNNjX4HwIWII4aTzVZWM",
+      "dateAdded": "2026-07-06T19:05:28.046Z",
+      "dateUpdated": "2026-07-06T19:05:28.046Z",
+      "altId": "SMa0723abc267e9b69c19c2ce2f67d55a7",
+      "from": "+17703781314",
+      "to": "+16789712411",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "v1dqkHzJZHRHdcGPMKfO",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Haley, a copy of the pitch deck has been sent to your email.",
+      "contactId": "LKXWbVXaisxVdKwkDawA",
+      "contentType": "text/plain",
+      "conversationId": "uNNjX4HwIWII4aTzVZWM",
+      "dateAdded": "2026-07-06T19:02:42.808Z",
+      "dateUpdated": "2026-07-06T19:02:46.994Z",
+      "source": "workflow",
+      "altId": "SM3a905f98f45532ced5aa8cd7f24e440e",
+      "from": "+16789712411",
+      "to": "+17703781314",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "1a5unmgeUHZTjIaswbZO",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Haley, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "LKXWbVXaisxVdKwkDawA",
+      "contentType": "text/plain",
+      "conversationId": "uNNjX4HwIWII4aTzVZWM",
+      "dateAdded": "2026-06-19T21:53:25.197Z",
+      "dateUpdated": "2026-06-19T21:53:26.796Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+17703781314",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

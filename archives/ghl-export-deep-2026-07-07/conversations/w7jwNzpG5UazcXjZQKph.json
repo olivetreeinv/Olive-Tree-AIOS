@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "w7jwNzpG5UazcXjZQKph",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781905826659,
+    "dateUpdated": 1783364211873,
+    "lastMessageDate": 1783364211870,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Josh + Kaylee, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781905827441,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "Ju8sJU6cx81SIgyybARk",
+    "fullName": "Josh + Kaylee Oppenheim",
+    "contactName": "Josh + Kaylee Oppenheim",
+    "companyName": "Simon Home Group",
+    "phone": "+16788496777",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364211870
+    ]
+  },
+  "messages": [
+    {
+      "id": "wkhLrmLG46tpTqBr2mWb",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Josh + Kaylee, a copy of the pitch deck has been sent to your email.",
+      "contactId": "Ju8sJU6cx81SIgyybARk",
+      "contentType": "text/plain",
+      "conversationId": "w7jwNzpG5UazcXjZQKph",
+      "dateAdded": "2026-07-06T18:56:51.178Z",
+      "dateUpdated": "2026-07-06T18:56:54.071Z",
+      "source": "workflow",
+      "altId": "SMaf4772d599fbee31bf08675f0c3c5033",
+      "from": "+16789712411",
+      "to": "+16788496777",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "Jcry0TvvBog6iIuvxEy1",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Josh + Kaylee, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "Ju8sJU6cx81SIgyybARk",
+      "contentType": "text/plain",
+      "conversationId": "w7jwNzpG5UazcXjZQKph",
+      "dateAdded": "2026-06-19T21:50:27.024Z",
+      "dateUpdated": "2026-06-19T21:50:32.232Z",
+      "source": "app",
+      "altId": "SMb99468ea907107c7345ee112f115cc86",
+      "from": "+16789712411",
+      "to": "+16788496777",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

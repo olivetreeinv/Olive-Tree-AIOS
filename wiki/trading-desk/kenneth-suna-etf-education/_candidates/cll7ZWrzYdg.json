@@ -1,0 +1,16 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth Suna critiques unrealistic covered call income claims on TikTok, using Tesla and Palantir examples to show actual premiums ($695 for Tesla, $159 for Palantir) and the capital requirements (100 shares needed per contract). He emphasizes realistic expectations for retail investors selling covered calls on stocks they already own.",
+  "takeaways": [
+    "Selling one covered call contract requires owning 100 shares of the underlying stock",
+    "Tesla example: $165/share \u00d7 100 = $16,500 capital required to sell one $170 strike covered call for $695 premium",
+    "Palantir example: ~$2,100 for 100 shares, selling $22 strike covered call generates $159 premium",
+    "Income claims of $700-$900k monthly on social media are misleading and unrealistic for most retail investors",
+    "Covered call premium is kept regardless of stock direction, but shares can be called away if stock closes above strike price at expiration"
+  ],
+  "strategy_candidates": [],
+  "id": "cll7ZWrzYdg",
+  "title": "Make Money Selling Covered Calls",
+  "duration": 250
+}

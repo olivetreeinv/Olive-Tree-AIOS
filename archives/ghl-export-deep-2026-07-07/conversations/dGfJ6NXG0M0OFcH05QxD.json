@@ -1,0 +1,106 @@
+{
+  "conversation": {
+    "id": "dGfJ6NXG0M0OFcH05QxD",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781905784936,
+    "dateUpdated": 1781905998564,
+    "lastMessageDate": 1781905998545,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "STOP",
+    "lastOutboundMessageAction": "manual",
+    "lastMessageDirection": "inbound",
+    "inbox": true,
+    "unreadCount": 1,
+    "lastManualMessageDate": 1781905998545,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "bqD3DdQWFkkQ56G2GLzI",
+    "fullName": "Tyler Putnam",
+    "contactName": "Tyler Putnam",
+    "companyName": null,
+    "phone": "+17062642353",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "profilePhoto": null,
+    "email": null,
+    "sort": [
+      1781905998545
+    ]
+  },
+  "messages": [
+    {
+      "id": "d88vAM0z1aj0ScU0jyn3",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "bqD3DdQWFkkQ56G2GLzI",
+      "conversationId": "dGfJ6NXG0M0OFcH05QxD",
+      "dateAdded": "2026-06-19T21:53:19.456Z",
+      "dateUpdated": "2026-06-19T21:53:19.456Z",
+      "from": "+17062642353",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "RCS",
+            "SMS"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "86OdKCbMdeDo3pYYHDMJ",
+      "direction": "inbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "STOP",
+      "contactId": "bqD3DdQWFkkQ56G2GLzI",
+      "contentType": "text/plain",
+      "conversationId": "dGfJ6NXG0M0OFcH05QxD",
+      "dateAdded": "2026-06-19T21:53:18.625Z",
+      "dateUpdated": "2026-06-19T21:53:18.625Z",
+      "altId": "SMfaa70dfe573b5e555482f04ddbf2fa84",
+      "from": "+17062642353",
+      "to": "+16789712411",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "NrNDtxS38upCsEHoixS9",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Tyler, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "bqD3DdQWFkkQ56G2GLzI",
+      "contentType": "text/plain",
+      "conversationId": "dGfJ6NXG0M0OFcH05QxD",
+      "dateAdded": "2026-06-19T21:49:45.254Z",
+      "dateUpdated": "2026-06-19T21:49:49.396Z",
+      "source": "app",
+      "altId": "SM83682a2ca9eba368c30530164bf8e7da",
+      "from": "+16789712411",
+      "to": "+17062642353",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

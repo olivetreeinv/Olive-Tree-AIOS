@@ -1,0 +1,45 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan guides mentorship students through the multifamily acquisition roadmap, focusing on two case studies: Julian navigating financial due diligence on a $1.25M Michigan deal with reconciliation issues between seller's claimed $130k NOI versus his verified ~$76-78k, and King who just went under contract on a Fort Worth, TX property. The coaching covers critical underwriting discipline, seller transparency requirements, and the importance of verifying all income sources and expense line items before committing capital.",
+  "takeaways": [
+    "Maintenance & repair should run at $700-800 per unit annually for typical properties; if seller claims $7k total for 20+ units, investigate deeply",
+    "Economic loss (vacancy) should be calculated at 10% of gross rental income as a conservative standard",
+    "For $205k annual rent with 10% vacancy loss ($20k) plus other income (~$17k), effective gross income = $202k; expenses at 50% = $100k NOI, not the 64% expense ratio claimed",
+    "Always reconcile seller's claimed NOI line-item by line-item: rent roll \u00d7 occupancy minus vacancy, plus documented other income (RUBs, application fees with bank statement proof)",
+    "Bad debt write-offs don't increase usable income\u2014they're already deducted in economic loss; $23k bad debt means $23k additional vacancy impact",
+    "Never accept 'cash-based system' as explanation for unverified income; all rental income must flow through single-purpose entity bank account (required by lenders anyway)",
+    "If numbers don't pencil at seller's asking price after rigorous due diligence, present clear choice: show verified documentation of additional income/lower expenses, or accept lower purchase price (e.g., $900k vs $1.25M)",
+    "Do 'ugly duckling in decent area' value-adds\u2014worn property surrounded by single-family homes with pride of ownership, churches, new construction nearby shows path of progress",
+    "Solar screens (~$0.15-0.18/sq ft application) improve curb appeal and create uniform exterior without visible unit interiors",
+    "Tar and seal parking lots ($0.15-0.18/sq ft) refreshes appearance without full replacement; restripe and it looks new",
+    "Sample/mock pitch deck sent to warm database of 25+ people establishes multifamily investor identity before deals exist, builds soft commitments and trust foundation",
+    "When under contract with 7-14 day PSA negotiation window, don't let brokers rush; use Texas commercial contract with addendums for smaller deals (King's situation)",
+    "Landing page + pitch deck + CRM database setup BEFORE deal procurement allows immediate capital raise infrastructure when LOI is accepted"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Establish minimum 10% economic vacancy loss assumption and $700-800/unit/year maintenance benchmark as underwriting floor",
+      "evidence": "Julian's Michigan deal showed 64% expense ratio but should target 50%; Justin demonstrated math: $205k rent - 10% vacancy ($20k) + other income ($17k) = $202k effective gross, then 50% expenses = $100k NOI. Justin stated 'If you're running, let's say a flat 50%...$700 to $800 per unit per year' for maintenance."
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Require seller bank statements to verify all claimed income sources; reject 'cash-based system' excuses",
+      "evidence": "Justin to Julian on $130k claimed NOI vs $76-78k verified: 'the money still has to go somewhere...it goes into a thing called a bank account.' Justin told seller 'if you guys don't show me the bank statements, I don't know what we can do' and explained lenders require single-purpose entity with bank account anyway."
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Create mock pitch deck and landing page for sample deal before any real deal is under contract; send to 25-person warm database with 'feedback request only' positioning",
+      "evidence": "Justin coached Brian: 'one great thing you could do now, would be kind of preset up that...landing page for a mockup deal and then do a mockup pitch deck.' He explained: 'You're simply sending it to them...you just say, Hey...I would love your feedback...That's it. I would love your feedback.'"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Use structured market trips post-LOI acceptance to build property manager and broker relationships; property managers identify which neighborhoods are viable for new investors",
+      "evidence": "Justin highlighted Brian's Memphis activity: 'finding those property managers, they give you a lot of insight um into areas...basically what he's telling me that's probably somewhere you should be as a new investor or that's somewhere you shouldn't be.'"
+    }
+  ],
+  "id": "aiyrPBp060Y",
+  "title": "Weekly Coaching - 02/19/26 | Justin Brennan",
+  "duration": 3524
+}

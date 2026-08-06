@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "partial",
+  "topic": "broker-search",
+  "summary": "Justin conducts live broker calls to demonstrate deal sourcing techniques, then role-plays an investor pitch on a San Diego condo conversion deal. While the broker calls are directly relevant to Brian's sourcing drag, the investor pitch segment is secondary to deal-sourcing mechanics and focuses on capital-raise communication rather than deal analysis or underwriting.",
+  "takeaways": [
+    "Call brokers directly off Crexy with brief intro: 'This is Justin Brennan with Brennan Pulley Capital Group, calling on your listing at [address]'\u2014establish credibility without over-explaining",
+    "Ask brokers open-ended questions about market conditions (jobs, anchors, university presence) to build rapport and let them talk; empowers broker to like you",
+    "For smaller deals (10-50 units) without P&L statements, request bank statements + physical leases, then cross-match deposits against lease amounts to reconstruct revenue and expenses",
+    "When lacking track record, position as: 'I've done single family, now entering 10-30 unit space because we've pre-positioned market relationships (brokers, PMs, lenders, construction) to close efficiently'",
+    "Schedule back-to-back property showings to create FOMO/urgency; overlap investor tours by 15 minutes so prospects see other buyers evaluating simultaneously",
+    "Always emphasize to investors: 'We do not risk your money until close\u2014funds sit in property-specific escrow account and are returned if deal doesn't close'",
+    "Pitch to investors focuses on three questions: When do you need money? What are projected returns (frame as 15-20% annually)? When do you get distributions (quarterly)"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "broker-search",
+      "change": "Move from overthinking calls to rapid dialing practice; start with small/unknown brokers as 'dry runs' before calling tier-1 firms (Marcus & Millichap, Colliers)",
+      "evidence": "Justin advises: 'If scared to call, pick crappiest broker from crappiest brokerage for practice run...doesn't matter if you explode moronic on phone...repetition is everything.' Demonstrates two live calls showing relaxed, conversational approach without script."
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "For mom-and-pop small properties lacking financial documentation, systematize missing data via bank statements + lease reconciliation instead of requesting prepared P&L",
+      "evidence": "Justin tells Angelica: 'If they don't have P&L, ask for bank accounts...match 10 leases against what's coming into bank accounts...you get revenue checked...then extrapolate expenses from what tenants don't pay for.' Applies this principle to 10-unit new build lacking OM."
+    },
+    {
+      "skill": "broker-search",
+      "change": "Ask qualifying questions about broker's geographic coverage and pipeline (off-market deals, team website pre-listings) before pitching interest",
+      "evidence": "Justin asks Harrison: 'Do you represent properties in major markets or Jackson area? ...Do you have stuff behind scenes on some BOVs?' Harrison responds with team website link showing 20 Southeast deals\u2014reveals access to pre-market inventory not on Crexy."
+    }
+  ],
+  "id": "CEfNJWO_hps",
+  "title": "Weekly Coaching_11-13-25 | Justin Brennan",
+  "duration": 3866
+}

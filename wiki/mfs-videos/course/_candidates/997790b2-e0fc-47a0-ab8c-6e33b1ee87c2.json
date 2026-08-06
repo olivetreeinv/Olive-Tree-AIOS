@@ -1,0 +1,29 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan explains the commercial multifamily letter of intent (LOI) process, covering LOI structure, key terms (price, deposit, due diligence timeframe, closing timeline), and the typical competitive bidding process from initial submission through highest-and-best rounds to deal award.",
+  "takeaways": [
+    "LOI is the commercial equivalent of a residential offer, typically prepared by investor group or listing broker",
+    "In larger multifamily deals, buyer's agents don't exist; groups submit directly to listing brokers",
+    "Deposits often go partially hard from day one in competitive markets (e.g., $500,000 deposit with $250,000 hard day one)",
+    "Due diligence timeframe, closing timeframe, and commission responsibility are critical LOI terms",
+    "Standard competitive process: 30-day lead time, call-for-offers deadline, highest-and-best rounds (typically 2-3 rounds), final phone call with seller before award",
+    "Always submit background information and resumes along with LOI to broker",
+    "If selected into highest-and-best, broker notifies you and requests submission of improved offer"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Use LOI template with required sections (price, deposit structure, due diligence period, closing timeline) for consistent offer submissions",
+      "evidence": "Justin provides detailed LOI template covering property price, deposit amount (with hard/soft split), due diligence timeframe, closing timeframe, closing costs, commissions, and special conditions"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Include background information and resumes with every LOI submission to differentiate from competing groups",
+      "evidence": "Justin states 'along with maybe some background information, resumes and so forth about yourself. And that would go to the broker' to strengthen offers in competitive process"
+    }
+  ],
+  "id": "997790b2-e0fc-47a0-ab8c-6e33b1ee87c2",
+  "title": "Lesson 3: Submitting a LOI (Letter Of Intent)",
+  "module": "Module 8: The Four Quadrants Of Multifamily"
+}

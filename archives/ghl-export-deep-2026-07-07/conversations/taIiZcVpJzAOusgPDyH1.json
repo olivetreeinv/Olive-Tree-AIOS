@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "taIiZcVpJzAOusgPDyH1",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906434439,
+    "dateUpdated": 1783365059363,
+    "lastMessageDate": 1783365059358,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Lane, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906436036,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "qZuxNsBMPxA3LKmb2kXN",
+    "fullName": "Lane Kollen",
+    "contactName": "Lane Kollen",
+    "companyName": null,
+    "phone": "+17703312207",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783365059358
+    ]
+  },
+  "messages": [
+    {
+      "id": "ohv4wLSb5GqpbdH5if3x",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Lane, a copy of the pitch deck has been sent to your email.",
+      "contactId": "qZuxNsBMPxA3LKmb2kXN",
+      "contentType": "text/plain",
+      "conversationId": "taIiZcVpJzAOusgPDyH1",
+      "dateAdded": "2026-07-06T19:10:25.288Z",
+      "dateUpdated": "2026-07-06T19:10:25.288Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+17703312207",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "HnmZVy4tAO6j3MZcANsm",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Lane, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "qZuxNsBMPxA3LKmb2kXN",
+      "contentType": "text/plain",
+      "conversationId": "taIiZcVpJzAOusgPDyH1",
+      "dateAdded": "2026-06-19T22:00:35.269Z",
+      "dateUpdated": "2026-06-19T22:00:36.777Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+17703312207",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

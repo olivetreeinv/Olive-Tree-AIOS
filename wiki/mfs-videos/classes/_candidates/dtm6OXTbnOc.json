@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "partial",
+  "topic": "broker-search",
+  "summary": "Justin Brennan conducts live broker calls in Ohio (Toledo, Columbus) to demonstrate deal sourcing and relationship-building with agents. He has an in-depth conversation with Beth Rose, a foreclosure and auction specialist, discussing a 40-unit multifamily property on auction, financing options, reserve pricing, and bidding strategy. The call illustrates how to build broker relationships, ask the right questions, and qualify deals via auctions.",
+  "takeaways": [
+    "Ask brokers 'What is the whisper price or price guidance?' when list price is unavailable\u2014Beth Rose indicated $50-55K per door ($2-2.2M for 40 units)",
+    "Auctions require due diligence upfront (inspections, financials) before bidding; no contingencies post-win, so verify everything in advance",
+    "Bid to financials, not emotion\u2014determine absolute max price using deal analyzer, stress-test to your required IRR (teens for syndicated deals), and hold the line",
+    "Register to bid by providing proof of funds for 10% down + lender letter for 65-70% loan + evidence of investor access; brokers vet before auction goes live",
+    "On foreclosures, call broker day-of-auction for updated market intel and reserve guidance; last-hour bidding typically sees highest activity and emotion",
+    "Build broker relationships before deals arise: visit market in person, meet property managers & lenders they recommend, check their app/website for pipeline deal flow",
+    "For first auction/market entry, physically tour property and meet broker to build trust; once rapport established, future deals can be handled more efficiently remotely"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Implement financial stress-testing discipline: calculate absolute maximum bid price using deal analyzer at target IRR (15-18% for syndicated equity), then refuse to exceed that threshold regardless of competition",
+      "evidence": "Justin walks through using 40-unit Toledo property: assumes $2M price point, backs into 65-70% LTV loan, calculates equity raise needed (~$600K), stress-tests to higher prices ($2.2-2.4M) to find max sustainable bid, explicitly states 'I do not go above that and just hold the line'"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Create systematic broker relationship pipeline: (1) identify 3-5 key brokers per target market, (2) call/email asking for whisper price and market comps, (3) schedule in-person property tour + broker meeting, (4) request referrals for property managers & lenders, (5) follow broker's pipeline app/listings for 6+ months before first deal",
+      "evidence": "Justin demonstrates with Beth Rose: asks about whisper price, requests property manager recommendations, requests lender intro, offers to visit in 2 weeks, mentions following her app (BethRose Auctions), explicitly tells group 'this is why they have a leadup time...90 days leading up to the auction date'"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "When raising capital, close on deal with minimum amount needed (down payment + closing costs only ~$400-525K in Hayden's example), continue raising remainder post-close (up to 2-3 months) instead of waiting for 100% capital raised pre-close",
+      "evidence": "Hayden's deal: needed $650K total raise, closed at $525K with ~2 weeks left in due diligence, lost $250K soft commitments, then raised remaining $100K+ post-close over 2 months. Justin states: 'you don't necessarily need to raise all the money prior to close...some of that money could be for due diligence, for renovations...You can close on the property and continue to raise money'"
+    }
+  ],
+  "id": "dtm6OXTbnOc",
+  "title": "Weekly Coaching_12-18-25 | Justin Brennan",
+  "duration": 4500
+}

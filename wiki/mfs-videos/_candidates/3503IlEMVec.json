@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "partial",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan's mentorship video on acquiring multifamily properties with minimal capital emphasizes mindset, deal structure, and the syndication model. While primarily focused on mindset and business philosophy, it covers deal analysis frameworks (NOI, cap rates, IRR, cash-on-cash returns) and the mechanics of raising capital for 10-30 unit first deals. The content is tangentially relevant to Brian's stated needs in deal sourcing and underwriting but lacks depth on Brian's specific pain points around broker relationships and market analysis.",
+  "takeaways": [
+    "Target 10-30 unit deals for your first acquisition, not 50+ units (60% of deals never hit the market, only 40% visible on loopnet/CoStar)",
+    "Net Operating Income (NOI) is the key valuation metric: $100/month rent increase per unit on a 10-unit building adds $220,000 in value",
+    "Structure deals with 10% of your capital, 90% from others (OPM); acquire fees typically pay back initial investment at closing",
+    "Good deal metrics: IRR 14-20%+, cash-on-cash 6-10%+, equity multiple 1.8x+, all occurring simultaneously",
+    "Syndicators make money five ways: acquisition fees, asset management fees (paid monthly), profit splits (30-40%), refinance cash-out gains, disposition fees, and general partnership equity",
+    "Build broker relationships by touring 2-3 on-market properties with different brokers, then ask for pre-market deal access with language like 'we're going to buy here\u2014do you have inventory not yet on market?'",
+    "The 70/30 financing split is standard: commercial lenders prefer NOI-based underwriting over personal financials for multifamily properties"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Establish three-metric screening rule before underwriting (IRR 14-20%+, cash-on-cash 6-10%+, equity multiple 1.8x+ must all align)",
+      "evidence": "Brennan states: 'if the deal analyzer pumps out numbers like this...all of those happen at the same time that deals a good deal if it doesn't happen that deal sucks' and emphasizes NOI is determined by financials, not comps"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Replace cold outreach with in-person broker rapport-building on 2-3 on-market deals, then request pre-market access using specific language about capital availability",
+      "evidence": "Brennan describes his Kansas City approach: 'I made the calls...toured them...shook hands belly to belly...then I'm going to ask you the fundamental question...do you have any deals you're working on maybe some stuff that's not on market yet...boom that's when now you're on it'"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Start with 10-30 unit deals to build resume and lender relationships before attempting 50+ unit syndications",
+      "evidence": "Brennan explicitly rejects larger first deals: 'You have a better chance of breaking into the White House tonight and meeting Donald Trump than you do of getting a 50 plus unit deal on your first one...it's no different than how I started...you get into a couple deals in that 10 to 30 unit space...now you have a resume now you can start to play ball in the 50 plus'"
+    }
+  ],
+  "id": "3503IlEMVec",
+  "title": "Can You Really Buy Multifamily Properties With $30,000?",
+  "duration": 4107
+}

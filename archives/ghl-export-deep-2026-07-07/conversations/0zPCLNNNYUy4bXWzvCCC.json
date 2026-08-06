@@ -1,0 +1,102 @@
+{
+  "conversation": {
+    "id": "0zPCLNNNYUy4bXWzvCCC",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781905919760,
+    "dateUpdated": 1783367405625,
+    "lastMessageDate": 1783367405601,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Is this Brian Norton from the church at Acworth?",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "inbound",
+    "inbox": true,
+    "unreadCount": 1,
+    "lastManualMessageDate": 1783367405601,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "OK1oD4aNMOqNqrUk1Rb7",
+    "fullName": "Jeff Howe",
+    "contactName": "Jeff Howe",
+    "companyName": null,
+    "phone": "+16783714641",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783367405601
+    ]
+  },
+  "messages": [
+    {
+      "id": "BQxpcbgAttKbp47ZCi4u",
+      "direction": "inbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Is this Brian Norton from the church at Acworth?",
+      "contactId": "OK1oD4aNMOqNqrUk1Rb7",
+      "contentType": "text/plain",
+      "conversationId": "0zPCLNNNYUy4bXWzvCCC",
+      "dateAdded": "2026-07-06T19:50:05.679Z",
+      "dateUpdated": "2026-07-06T19:50:05.679Z",
+      "altId": "SM9b372c87f41aa8cd995550344602aeff",
+      "from": "+16783714641",
+      "to": "+16789712411",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "I5zTi8LRLhyy6TVP00RD",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Jeff, a copy of the pitch deck has been sent to your email.",
+      "contactId": "OK1oD4aNMOqNqrUk1Rb7",
+      "contentType": "text/plain",
+      "conversationId": "0zPCLNNNYUy4bXWzvCCC",
+      "dateAdded": "2026-07-06T19:00:03.078Z",
+      "dateUpdated": "2026-07-06T19:00:06.047Z",
+      "source": "workflow",
+      "altId": "SM41055b71a2abd35f81e02a6c006db6b5",
+      "from": "+16789712411",
+      "to": "+16783714641",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "ZQDYEcPBFLTKni7VoZz6",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Jeff, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "OK1oD4aNMOqNqrUk1Rb7",
+      "contentType": "text/plain",
+      "conversationId": "0zPCLNNNYUy4bXWzvCCC",
+      "dateAdded": "2026-06-19T21:52:00.040Z",
+      "dateUpdated": "2026-06-19T21:52:04.304Z",
+      "source": "app",
+      "altId": "SMe47b31947a002d0fb7068be635e9d1d5",
+      "from": "+16789712411",
+      "to": "+16783714641",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

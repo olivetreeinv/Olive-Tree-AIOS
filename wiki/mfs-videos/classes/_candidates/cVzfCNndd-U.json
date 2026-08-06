@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan coaches Brian Norton's AIOS community on the complete deal acquisition and funding process for multifamily investments, emphasizing market selection, broker relationships, team building, and proof of funds requirements. A detailed case study with Don Casper on a 5-unit value-add property in Orange, CA demonstrates how vacancy status and financing structure materially impact deal underwriting and purchase price.",
+  "takeaways": [
+    "Select 3 states, narrow to 1 using ChatGPT analysis of population growth, job growth, and median household income",
+    "Use Crexy/LoopNet to identify broker logos appearing across listings, then use AI prompts to find broker contact details and names",
+    "Phone brokers with a specific on-market property as a 'lure' to build relationships; 2-5 minute conversations can unlock off-market deal flow",
+    "Proof of funds strategy: get 70% pre-qualification loan letter from lender (typically 70% of purchase price), show 10% equity from personal capital, demonstrate ability to raise remaining 20% via syndication and CRM soft commitments",
+    "For vacant properties requiring hard money (12%+ interest + points + 8-10 month carry), back into purchase price from post-renovation exit value using 5.25-5.5% cap rate on pro-forma NOI",
+    "Hard money costs add $140K-$200K to deal carry on $1.4M loan over 8-10 months; renovation + financing costs must be underwritten before committing to price",
+    "For occupied properties, convert tenants to month-to-month leases (vs. full vacancy) to enable DCR financing at cheaper rates and preserve revenue during renovation phase"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Back into maximum purchase price using exit value math (post-reno cap rate \u2192 loan amount \u2192 work backward to current price with all carry costs)",
+      "evidence": "Justin walks Don through 5-unit example: post-reno value $2M at 5.25% cap = $1.4M loan available; subtract hard money carry costs (~$200K) and construction to determine max purchase price; 'begin with the end in mind' repeated framework"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Distinguish DCR financing (5-6% on occupied, income-producing properties) from hard money (10-12% on vacant/value-add requiring renovation), adjusting purchase price accordingly",
+      "evidence": "Don's 5-unit vacant property can only access 12% hard money instead of DCR loan; Justin explains broker's decision to evict tenants 'screwed the math' by eliminating income; demonstrates deal becomes unsyndicable and requires all-cash or massive equity injection"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Identify target brokers by scanning Crexy/LoopNet logos across 10-15 listings, then use AI prompt to extract broker names, phone numbers, and emails for outreach calls",
+      "evidence": "Justin demonstrates live: searched Memphis multifamily on Crexy, spotted 'Woodward' appearing 4-5 times across listings, then pulled AI prompt for 'Woodward CRE CREYL brokers Memphis' to get direct contact info; Brian confirmed he called Worth Woodward and got 5-minute warm conversation leading to off-market deal pipeline"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Lead broker outreach calls with a specific on-market property ('lure') and play the 'dumb newcomer' role to build rapport before requesting off-market deals",
+      "evidence": "Brian's playbook: called broker about on-market 71-unit property, used deal analyzer to show $73K/unit reasoning vs. asking price of $101K, positioned himself as new but educated ('I'm new, I'm not getting it, am I missing something?'), broker reciprocated with off-market pipeline offer in 5-10 minute call"
+    }
+  ],
+  "id": "cVzfCNndd-U",
+  "title": "Weekly Coaching - 01/15/26 | Justin Brennan",
+  "duration": 4068
+}

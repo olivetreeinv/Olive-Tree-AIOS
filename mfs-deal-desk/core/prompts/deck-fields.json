@@ -1,0 +1,52 @@
+{
+  "_comment": "Pitch-deck content model for MFS Deal Desk — multi-tenant version of AIOS templates/pitch-deck-fields.json (41 fields, 6 sections). Rendered server-side to PPTX by core/docgen.py; numbers computed from deal metrics in Python (LLM never does math); narrative fields (PROPERTY_STORY, MARKET_NARRATIVE, RENO_SCOPE) filled by one adapter.generate call. Contact fields come from user settings.contact. Offering-structure defaults follow the MFS-taught syndication template and are editable per deal.",
+  "sections": ["cover", "offering_summary", "the_property", "the_market", "the_financials", "how_to_invest"],
+  "fields": {
+    "DEAL_NAME":          { "section": "cover", "default": null },
+    "PROPERTY_ADDRESS":   { "section": "cover", "default": null },
+    "MARKET":             { "section": "cover", "default": null },
+    "UNITS":              { "section": "cover", "default": null },
+    "VINTAGE":            { "section": "cover", "default": null },
+    "CLASS":              { "section": "cover", "default": null },
+    "STRATEGY":           { "section": "cover", "default": "Value-Add" },
+    "HOLD_PERIOD":        { "section": "cover", "default": "4–6 Years" },
+
+    "MIN_INVESTMENT":     { "section": "offering_summary", "default": "$25,000" },
+    "PREF_RETURN":        { "section": "offering_summary", "default": "6%" },
+    "LP_SPLIT":           { "section": "offering_summary", "default": "70%" },
+    "GP_SPLIT":           { "section": "offering_summary", "default": "30%" },
+    "INVESTOR_IRR":       { "section": "offering_summary", "default": null, "from_metrics": "irr_estimate", "format": "pct1" },
+    "EQUITY_MULTIPLE":    { "section": "offering_summary", "default": null, "from_metrics": "equity_multiple", "format": "x2" },
+    "COC_RETURN":         { "section": "offering_summary", "default": null, "from_metrics": "coc_yr3", "format": "pct1" },
+    "RAISE_AMOUNT":       { "section": "offering_summary", "default": null, "from_metrics": "equity_invested", "format": "money" },
+    "RETURN_PER_100K":    { "section": "offering_summary", "formula": "EQUITY_MULTIPLE * 100000", "format": "money" },
+    "CAPITAL_STACK_DEBT": { "section": "offering_summary", "default": null, "from_metrics": "loan_amount", "format": "money" },
+    "CAPITAL_STACK_LP":   { "section": "offering_summary", "default": null },
+    "CAPITAL_STACK_GP":   { "section": "offering_summary", "default": null },
+
+    "PROPERTY_STORY":     { "section": "the_property", "default": null, "narrative": true },
+    "UNIT_MIX":           { "section": "the_property", "default": null, "from_extracted": "unit_mix" },
+    "CURRENT_RENTS":      { "section": "the_property", "default": null, "from_metrics": "yr1_gpr", "format": "money_monthly" },
+    "PROFORMA_RENTS":     { "section": "the_property", "default": null, "from_metrics": "yr2_gpr", "format": "money_monthly" },
+    "RENO_SCOPE":         { "section": "the_property", "default": null, "narrative": true },
+
+    "MARKET_NARRATIVE":   { "section": "the_market", "default": null, "narrative": true },
+    "POPULATION_GROWTH":  { "section": "the_market", "default": null, "from_market_research": "criteria.population_growth" },
+    "JOB_GROWTH":         { "section": "the_market", "default": null, "from_market_research": "criteria.job_growth" },
+    "RENT_GROWTH":        { "section": "the_market", "default": null, "from_market_research": "criteria.rent_growth" },
+
+    "PURCHASE_PRICE":     { "section": "the_financials", "default": null, "from_metrics": "offer", "format": "money" },
+    "TOTAL_PROJECT_COST": { "section": "the_financials", "default": null, "from_metrics": "all_in", "format": "money" },
+    "LTV":                { "section": "the_financials", "default": "70%", "from_metrics": "ltv", "format": "pct0" },
+    "DSCR":               { "section": "the_financials", "default": null, "from_metrics": "dscr", "format": "x2" },
+    "EXIT_CAP":           { "section": "the_financials", "default": null, "from_metrics": "exit_cap", "format": "cap" },
+    "YEAR1_COC":          { "section": "the_financials", "default": null, "from_metrics": "coc_yr1", "format": "pct1" },
+    "YEAR2_COC":          { "section": "the_financials", "default": null },
+    "YEAR3_COC":          { "section": "the_financials", "default": null, "from_metrics": "coc_yr3", "format": "pct1" },
+
+    "INVESTMENT_STEPS":   { "section": "how_to_invest", "default": "1. Request an intro call\n2. Review and sign the PPM\n3. Wire your investment\n4. Receive quarterly updates" },
+    "CONTACT_EMAIL":      { "section": "how_to_invest", "default": null, "from_settings": "contact.email" },
+    "CONTACT_PHONE":      { "section": "how_to_invest", "default": "", "from_settings": "contact.phone" },
+    "WEBSITE":            { "section": "how_to_invest", "default": "", "from_settings": "contact.website" }
+  }
+}

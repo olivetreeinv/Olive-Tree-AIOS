@@ -1,0 +1,110 @@
+{
+  "conversation": {
+    "id": "rfQZS8z9KR5JZ4kcFYvm",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781905979552,
+    "dateUpdated": 1783364519743,
+    "lastMessageDate": 1783364519739,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Hopeton, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781905980399,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "aPaoNJ25GQcspE20xEJi",
+    "fullName": "Hopeton Brown",
+    "contactName": "Hopeton Brown",
+    "companyName": null,
+    "phone": "+14708081861",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "profilePhoto": null,
+    "attributed": null,
+    "email": null,
+    "sort": [
+      1783364519739
+    ]
+  },
+  "messages": [
+    {
+      "id": "qYEdTjjZvocXbZ2giphd",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "aPaoNJ25GQcspE20xEJi",
+      "conversationId": "rfQZS8z9KR5JZ4kcFYvm",
+      "dateAdded": "2026-07-06T19:02:04.140Z",
+      "dateUpdated": "2026-07-06T19:02:04.140Z",
+      "from": "+14708081861",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "SMS"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "D6OjgPHlhwFyPt8T6GvT",
+      "direction": "outbound",
+      "status": "undelivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hopeton, a copy of the pitch deck has been sent to your email.",
+      "contactId": "aPaoNJ25GQcspE20xEJi",
+      "contentType": "text/plain",
+      "conversationId": "rfQZS8z9KR5JZ4kcFYvm",
+      "dateAdded": "2026-07-06T19:01:59.085Z",
+      "dateUpdated": "2026-07-06T19:02:03.899Z",
+      "source": "workflow",
+      "altId": "SM8ff7f8c8c01aacd9076f795886d4eefc",
+      "from": "+16789712411",
+      "to": "+14708081861",
+      "error": "Error 30003 - Number unreachable or out of service.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "P9tRIS045yFHxj0tL13C",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Hopeton, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "aPaoNJ25GQcspE20xEJi",
+      "contentType": "text/plain",
+      "conversationId": "rfQZS8z9KR5JZ4kcFYvm",
+      "dateAdded": "2026-06-19T21:52:59.797Z",
+      "dateUpdated": "2026-06-19T21:53:00.798Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+14708081861",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

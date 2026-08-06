@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth demonstrates a weekly covered call strategy on HIMS, selling $1 OTM calls for ~$25 premium with the goal of $180-200/week. In this example, he made $300 when shares were assigned at $48 strike, combining $25 premium + $95 stock gain, and explains why rolling calls (buying back early) often doesn't make sense versus accepting assignment and restarting the cycle.",
+  "takeaways": [
+    "Sell covered calls $1 out-of-the-money (OTM) on high-volatility stocks like HIMS to target $25 premium per weekly contract",
+    "If assigned, profit = premium collected + difference between purchase price and strike price; if not assigned, keep both premium and shares plus stock appreciation",
+    "Rolling/buying back contracts to prevent assignment costs capital (e.g., $400) and often destroys P&L; only roll if you have substantial unrealized gains or tax concerns worth the cost",
+    "Weekly covered calls work best on stocks with consistent volatility; as volatility decays, premiums shrink and you must find replacement stocks",
+    "Entry price matters for total return: buying at $47 and selling calls at $48 strike yields ~$95 profit on assignment plus $25 premium = $120 per round",
+    "Target $1 strike distance (OTM) balances high assignment probability with acceptable premium collection for consistent weekly income",
+    "Track weekly outcomes: update Monday on new purchase/sale, then Friday/Saturday on assignment or roll decision to maintain accountability."
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Formalize HIMS weekly cycle into systematic desk rule: allocate $5K tranche to weekly $1 OTM covered calls targeting $25/week = $100/month incremental to $1,250/mo target, track assignment vs. roll discipline.",
+      "evidence": "Kenneth demonstrates repeatable $25/week premium on HIMS alone, making $300 in one week; extending to 4-5 different high-IV stocks at similar premiums would add $100-125/month reliable income to Premium Desk without complexity."
+    }
+  ],
+  "id": "Rw_N9lqxN-w",
+  "title": "June 27, 2025 PT 4.5: Can I make $180 PER WEEK From HIMS Covered Calls?",
+  "duration": 330
+}

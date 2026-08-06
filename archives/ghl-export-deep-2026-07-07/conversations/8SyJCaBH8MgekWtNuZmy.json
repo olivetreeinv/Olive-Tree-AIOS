@@ -1,0 +1,87 @@
+{
+  "conversation": {
+    "id": "8SyJCaBH8MgekWtNuZmy",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906093141,
+    "dateUpdated": 1781906094043,
+    "lastMessageDate": 1781906094036,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Hey Dynamic Spine And Sports Therapy, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.",
+    "lastOutboundMessageAction": "manual",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906094036,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "eYTXDYe8zIzJkbvSW3wA",
+    "fullName": "Dynamic Spine And Sports Therapy",
+    "contactName": "Dynamic Spine And Sports Therapy",
+    "companyName": null,
+    "phone": "+16785745430",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "profilePhoto": null,
+    "attributed": null,
+    "email": null,
+    "sort": [
+      1781906094036
+    ]
+  },
+  "messages": [
+    {
+      "id": "7fav3S3bdgWCEU6W3OIW",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "eYTXDYe8zIzJkbvSW3wA",
+      "conversationId": "8SyJCaBH8MgekWtNuZmy",
+      "dateAdded": "2026-06-19T21:54:54.976Z",
+      "dateUpdated": "2026-06-19T21:54:54.976Z",
+      "from": "+16785745430",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "SMS"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "fEgUIvsLVw7GvTKMfLoL",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Dynamic Spine And Sports Therapy, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "eYTXDYe8zIzJkbvSW3wA",
+      "contentType": "text/plain",
+      "conversationId": "8SyJCaBH8MgekWtNuZmy",
+      "dateAdded": "2026-06-19T21:54:53.394Z",
+      "dateUpdated": "2026-06-19T21:54:53.394Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+16785745430",
+      "error": "Error 30006 - Landline or non-mobile number. Cannot receive SMS.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

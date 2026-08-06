@@ -1,0 +1,14 @@
+{
+  "trading_relevant": "no",
+  "strategy": "market-analysis",
+  "summary": "Kenneth compares dividend yields across SPY, VOO, and SPLG ETFs to show that despite SPLG's lower share price, all three offer approximately the same 1.5% dividend yield when accounting for share count, making the choice economically neutral rather than advantageous.",
+  "takeaways": [
+    "All three major broad-market ETFs (SPY, VOO, SPLG) yield approximately 1.5% annually",
+    "Share price alone does not determine dividend value; total capital invested and dividend per share must be considered together",
+    "$45,000 invested in VOO (100 shares) yields ~$620/year vs. SPLG (850 shares) yields ~$671/year\u2014functionally equivalent"
+  ],
+  "strategy_candidates": [],
+  "id": "RNBWZYSDg0s",
+  "title": "Dividend vs SPY vs VOO",
+  "duration": 76
+}

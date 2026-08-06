@@ -1,0 +1,56 @@
+{
+  "conversation": {
+    "id": "A2t4xssSOKf59KFpNJ0T",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364539286,
+    "dateUpdated": 1783364540153,
+    "lastMessageDate": 1783364540150,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Hector, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "Bp8MadfboAZGmieIOc2R",
+    "fullName": "Hector",
+    "contactName": "Hector",
+    "companyName": "Septic",
+    "phone": "+16782498431",
+    "tags": [
+      "contractor",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364540150
+    ]
+  },
+  "messages": [
+    {
+      "id": "CNfdsZw0PQ0L2cJGMiH2",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hector, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "Bp8MadfboAZGmieIOc2R",
+      "contentType": "text/plain",
+      "conversationId": "A2t4xssSOKf59KFpNJ0T",
+      "dateAdded": "2026-07-06T19:02:19.380Z",
+      "dateUpdated": "2026-07-06T19:02:24.837Z",
+      "source": "workflow",
+      "altId": "SMfb14c804d043c82b4704e24290e8ac0d",
+      "from": "+16789712411",
+      "to": "+16782498431",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

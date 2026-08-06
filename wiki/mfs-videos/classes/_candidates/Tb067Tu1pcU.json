@@ -1,0 +1,40 @@
+{
+  "deal_relevant": "partial",
+  "topic": "mindset",
+  "summary": "Justin Brennan delivers a coaching session emphasizing resilient mindset and consistent daily discipline as critical to deal sourcing success. While most of the session focuses on mindset philosophy, health optimization, and personal development, the latter portion includes a 14-unit Texas deal walkthrough with Gideon demonstrating underwriting mechanics, pricing strategy, and investor waterfall analysis.",
+  "takeaways": [
+    "Compound effect: daily penny doubled for 31 days = $10.7M; doubled every other day = only ~$327K\u2014consistency separates winners from losers",
+    "Closed mouths don't get fed; hunt for deals and broker relationships daily\u2014don't wait for brokers to come to you",
+    "Ask brokers for 'whisper price' or 'price guidance' before submitting LOI to anchor negotiation and understand market expectations",
+    "Underwrite deals using broker's stated numbers first, then adjust down to reality; expect broker numbers to be 20-30% optimistic in current market",
+    "Never operate <40-45% expense ratio on value-add buildings; resist broker pressure to 'work the proforma' instead of reality",
+    "For unpriced deals: target price should be $1-1.2M on $1.5M whisper; come in low with room to negotiate upward",
+    "Debt coverage ratio minimum 1.2-1.25x; if current rents below market, can refinance without renovation; if below-market rents require heavy value-add, need bridge debt not traditional financing",
+    "Three-person daily habits to escape negative mindset: list 3 gratitudes, ground barefoot on soil for vitamin D, play 5-7 song positivity playlist"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Establish underwriting sequence: get OM + T12, plug broker numbers into analyzer, then back away to realistic market assumptions",
+      "evidence": "Justin walks Gideon through Sherman TX deal, showing how to input their numbers first, then adjust expenses and rents downward; identifies 56% expense ratio as reasonable for 1975 property, flags utilities outlier, validates 2.25-2.5% property tax for Texas"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Ask for 'whisper price' immediately upon receiving OM, before LOI submission, to calibrate opening offer",
+      "evidence": "Justin tells Gideon: 'when you get the financials...you reach out to the broker and say Hey John what's your price guidance...whisper price or price guidance...triggers in the broker's brain...they'll give you some price guidance'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Recognize when current rents can reach market via rent-up only (get lender financing) vs. when heavy value-add required (need bridge debt for 24-36 months)",
+      "evidence": "Justin explains: 'if you can increase rents to market without renovation...lender may give you that...whereas if you have to do renovation...bank probably isn't going to give that to you...need bridge debt'"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Daily discipline matters more than deal quality; commit to 1-2 deal analyses, 1-2 LOIs, consistent broker contact every single day to compound results",
+      "evidence": "Penny doubling example + 'even if it's analyzing one or two deals, even if it's sending out one or two LOIs...staying consistent with the brokers...that's what separates'"
+    }
+  ],
+  "id": "Tb067Tu1pcU",
+  "title": "Weekly Coaching_08-21-25 | Justin Brennan",
+  "duration": 3831
+}

@@ -1,0 +1,45 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan mentors Tony on structuring a 39-unit value-add deal in Cleveland (7049 Superior Street, 44103) purchased for $546K with $2.6M construction loan at 13% interest-only. The deal involves full gut renovation, seller financing payoff by August 29th, projected $5M+ ARV, and refinance strategy to return all equity within 18 months while building significant profit equity.",
+  "takeaways": [
+    "Write three LOIs per week for one month to qualify for quarterly on-site coaching visit to your market",
+    "Structure: property LLC in state of location (e.g., Texas LLC), holding company in Wyoming/Delaware ($80/year maintenance), investors held in holding company at ~60% with GP retaining 40% plus LP share ('double dipping')",
+    "Construction loan interest reserve should cover 18 months not 12 months; at $2.6M loan at 13%, build in ~$500K interest reserve to avoid feeding deal from pocket if you extend",
+    "Plan 18-month timeline: 9-12 months construction + 6 months lease-up/stabilization minimum before refinance; construction loans typically 12-24 months with 6-month optional extension (~0.5-1 point)",
+    "Start pre-leasing at 3-6 months into construction using Fiverr renderings posted to apartments.com to achieve 40-50% pre-leased at certificate of occupancy",
+    "Include $50K+ marketing budget for lease-up phase; treat heavy renovation projects like new construction from marketing standpoint\u2014'blast at 100 miles an hour' with signage, banners, flags, not just Zillow drip",
+    "Fence entire property with 5-6 foot iron fencing, gate all parking, install lighting to privatize and secure\u2014model after similar developments that prove what works in market; security is 'numero uno'",
+    "ARV appraisal post-renovation determines takeout loan amount; if 70% LTV on $5M ARV = $3.5M loan pays off $3.556M all-in cost, creating $1.5M+ profit equity in 24 months (~78% annualized return)",
+    "Verify property for opportunity zone status by contacting city directly\u2014surrounding areas may qualify but specific address must be confirmed",
+    "Don't use small regional banks; use national banks (Bank of America, Wells Fargo, US Bank) with branch presence nationwide for ease of deposits, tech integration with QuickBooks, and out-of-state access",
+    "LLC agent of service costs ~$120/year (e.g., Incorp); necessary when forming LLC in state where you don't physically reside",
+    "Wyoming/Delaware LLCs can hide ownership via trust structure (e.g., 123trust.com trustee) so creditors cannot identify owners; harder for creditors to pierce veil vs other states",
+    "Don't create foreign entity registration in property state if holding LLC already in Wyoming/Delaware\u2014creates double costs and dual agent/attorney management; single state LLC for property + Wyoming holding company is more efficient"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Structure pro-forma with 18-month interest reserve (not 12), $50K lease-up marketing, and soft costs/general conditions as distinct line items from hard costs",
+      "evidence": "Justin instructs Tony: 'you're going to want a six-month optional extension...you're going to use it' and 'you need to have...lease up marketing costs...probably $50,000' and breaks down hard cost, soft cost, general conditions separately in construction budget"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Validate ARV via post-renovation appraisal before committing to construction loan structure; confirm opportunity zone status directly with city by address",
+      "evidence": "Tony verified Cleveland property address 7049 Superior not in opportunity zone despite surrounding areas qualifying; Justin emphasizes 'you want that as high as possible' on post-reno appraisal to determine 70% LTV loan proceeds"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Begin pre-leasing at 50% construction completion (3-6 months in) using Fiverr renderings and apartments.com; target 40-50% pre-leased by certificate of occupancy",
+      "evidence": "Justin teaches: 'once you're about halfway through construction...have a little bit of marketing package done from some people on Fiverr...start pre-leasasing the building' and 'you could pre lease and move them in right upon completion'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Account for product mix demand research before finalizing unit configuration; survey market for 2BR vs 3BR demand to avoid being stuck with unrentable inventory",
+      "evidence": "Tony states: 'determine what is the demand in that area. I mean, we don't want to get stuck with a bunch of threebedrooms if you know we're really renting to people that you know a two plus one is more desirable' with 10 existing 2+1s convertible to 3+1s"
+    }
+  ],
+  "id": "_ftHBaGXqMk",
+  "title": "Weekly Coaching_07-10-25 | Justin Brennan",
+  "duration": 3894
+}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Olive Tree — Email Signature Installer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#EDEAE0; font-family:'Archivo',Arial,sans-serif; color:#1B1E08; }
+  .wrap { max-width:720px; margin:0 auto; padding:64px 24px; }
+  .kicker { font-family:'Space Mono',monospace; font-size:12px; letter-spacing:0.28em; text-transform:uppercase; color:#B7965A; margin-bottom:12px; }
+  h1 { font-family:'Cormorant Garamond',Georgia,serif; font-weight:500; font-size:44px; margin:0 0 10px; letter-spacing:-0.01em; }
+  .lead { font-size:15px; line-height:1.7; color:#4A4C3E; margin:0 0 32px; }
+  .card { background:#fff; border:1px solid #E4DFCF; border-radius:10px; box-shadow:0 18px 44px rgba(27,30,8,0.10); padding:34px; }
+  .btn { display:inline-block; margin-top:24px; background:#1B1E08; color:#F5F2E9; border:0; border-radius:6px; padding:14px 28px; font:600 14px 'Archivo',Arial,sans-serif; letter-spacing:0.04em; cursor:pointer; }
+  .btn:hover { background:#505A19; }
+  .steps { margin-top:28px; font-size:14px; line-height:2; color:#4A4C3E; }
+  .steps b { color:#1B1E08; }
+  #done { display:none; margin-left:14px; color:#505A19; font-weight:600; font-size:14px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">Olive Tree Investments</div>
+  <h1>Email signature</h1>
+  <p class="lead">Click the button — the signature below is copied with formatting intact. Then paste it into Gmail's signature box.</p>
+
+  <div class="card">
+    <div style="font-size:14px; color:#26281C; margin-bottom:22px;">Best regards,</div>
+    <!-- ===== everything inside #sig is what gets copied into Gmail ===== -->
+    <div id="sig">
+      <table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+        <tr>
+          <td style="vertical-align:middle; padding-right:26px;">
+            <img src="https://raw.githubusercontent.com/olivetreeinv/Olive-Tree-AIOS/sig-v1/site/sig/brian.gif" width="104" height="104" alt="Brian Norton" style="display:block; border:0; border-radius:50%;">
+          </td>
+          <td style="vertical-align:middle; border-left:2px solid #B7965A; padding-left:26px;">
+            <div style="font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-weight:600; font-size:26px; line-height:1.1; color:#1B1E08;">Brian Norton</div>
+            <div style="font-family:'Archivo',Arial,Helvetica,sans-serif; font-size:13px; font-weight:500; color:#505A19; padding-top:3px;">Founder &amp; CEO</div>
+            <div style="font-family:'Archivo',Arial,Helvetica,sans-serif; font-size:11px; font-weight:bold; letter-spacing:2px; text-transform:uppercase; color:#7D8B3C; padding-top:12px;">Olive Tree Investments</div>
+            <table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse; font-family:'Space Mono','Courier New',monospace; font-size:12px; line-height:1.9; color:#4A4C3E; margin-top:10px;">
+              <tr><td style="padding-right:8px; color:#B7965A;">T</td><td><a href="tel:+14046432356" style="color:#4A4C3E; text-decoration:none;">404-643-2356</a></td></tr>
+              <tr><td style="padding-right:8px; color:#B7965A;">E</td><td><a href="mailto:brian@olivetreeinv.io" style="color:#4A4C3E; text-decoration:none;">brian@olivetreeinv.io</a></td></tr>
+              <tr><td style="padding-right:8px; color:#B7965A;">W</td><td><a href="https://olivetreeinv.io" style="color:#505A19; text-decoration:none;">olivetreeinv.io</a></td></tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" style="padding-top:16px;">
+            <div style="border-top:1px solid #E4DFCF; padding-top:14px; font-family:'Cormorant Garamond',Georgia,serif; font-style:italic; font-size:16px; color:#B7965A;">Rooted in patience, grown with purpose.</div>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <!-- ===== /sig ===== -->
+  </div>
+
+  <button class="btn" onclick="copySig(this)">Copy signature</button><span id="done">✓ Copied — now paste into Gmail</span>
+
+  <div class="steps">
+    <b>Install in Gmail</b><br>
+    1. Gmail → ⚙️ → <b>See all settings</b> → General → scroll to <b>Signature</b>.<br>
+    2. <b>Create new</b> → name it "Olive Tree" → click in the box → <b>⌘V paste</b>.<br>
+    3. Below the box, set it as default <b>for new emails</b> and <b>on reply/forward</b> → <b>Save Changes</b> (bottom of page).
+  </div>
+</div>
+
+<script>
+function copySig(btn) {
+  // ponytail: selection + execCommand copies the text/html flavor and works on file:// too
+  var sig = document.getElementById('sig');
+  var r = document.createRange(); r.selectNodeContents(sig);
+  var sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+  document.execCommand('copy');
+  sel.removeAllRanges();
+  document.getElementById('done').style.display = 'inline';
+}
+</script>
+</body>
+</html>

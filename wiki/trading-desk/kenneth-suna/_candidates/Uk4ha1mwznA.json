@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth demonstrates a weekly covered call strategy on HIMS, selling $25 premium contracts struck $1 out-of-the-money against 100-share positions. He explains the mechanics of assignment, profit scenarios, and why he doesn't roll contracts despite near-assignment situations, netting $300 this week versus $236 from outright stock trading.",
+  "takeaways": [
+    "Sell covered calls $1 out-of-the-money on volatile weekly series stocks like HIMS",
+    "Target $25 premium per weekly contract (~5% return on $475 stock cost)",
+    "Win either way at assignment ($95 profit) or stock retention ($205 profit + premium)",
+    "Don't roll contracts when cost to buyback (~$400) exceeds profit from extension",
+    "Monitor stock price daily starting Thursday to anticipate assignment likelihood",
+    "Use for short-term income generation separate from long-term buy-and-hold positions",
+    "Stock volatility determines premium sustainability\u2014switch stocks if premiums decline"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "covered-calls",
+      "change": "Systematize weekly covered call selection by volatility threshold to consistently generate $25/week premium",
+      "evidence": "Kenneth achieved $300 this week ($25 premium + $95 capital) on single HIMS contract; suggests replicable across multiple volatile tickers to scale Premium Desk toward $1,250/mo target"
+    }
+  ],
+  "id": "Uk4ha1mwznA",
+  "title": "Part 4.5 - 6/27 $200 per week ",
+  "duration": 330
+}

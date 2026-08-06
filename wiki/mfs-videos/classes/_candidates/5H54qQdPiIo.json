@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan analyzes Christian's 28-unit Indola Avenue deal using updated Version 10 analyzer, identifies fundamental issues with seller's $2.4M asking price, and guides Christian through proper underwriting including realistic expense assumptions, renovation budgeting, and capital structure to achieve 14-15% IRR at ~$1.45-1.55M offer price. Additionally, Justin demonstrates broker outreach by calling Cincinnati broker JD on a 33-unit value-add opportunity, discussing property management, financing options, and Ohio tax strategies (drop-and-swap LLC structures).",
+  "takeaways": [
+    "For 20-unit multifamily, eliminate onsite payroll entirely\u2014use offsite professional management company; any internal payroll means 'they're fired'",
+    "Budget minimum $8,000 per unit for renovation if rents are below-market; do not include reno costs in loan amount, keep in separate reno budget",
+    "Always run 10% credit loss/vacancy assumption regardless of seller claims (ignore 2% figures sellers present)",
+    "Debt coverage ratio (DCR) is the binding constraint for loan approval; when property doesn't pencil, increase down payment to 35-40% rather than lowering offer price further",
+    "Use properties as 'lure-in' tools with brokers even if deal won't work\u2014send LOI at 30%+ discount to establish rapport, get on offmarket lists, and build relationships for future deal flow",
+    "Ohio tax strategy: use 'drop and swap' LLC structure where seller creates new entity, transfers property pre-close, then sells LLC to buyer\u2014hides sale price from county assessor and prevents automatic tax reassessment",
+    "Target underwriting standards for 10-50 unit Class B/C deals: 1960-2000 vintage, light-to-medium value-add only, assume 6-8% preferred returns with 70/30 GP/LP split to attract capital"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Apply disciplined assumptions: 10% credit loss (not seller's 2%), eliminate payroll on sub-50 units, budget $8k reno per unit when below-market, run at DCR constraints rather than forcing offer price",
+      "evidence": "Justin corrects Christian's passthrough of seller assumptions (2% credit loss, payroll on 20 units, inadequate reno budget), then re-underwrite using institutional standards that reveal deal requires $1.45-1.55M max price, not $2.4M ask"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Use below-market offers and detailed underwriting walkthroughs as relationship-building tools; frame as 'lure-in' exercise to get on offmarket lists rather than expecting deal to close",
+      "evidence": "Justin instructs Christian: send LOI at $1.45M (way off from $2.4M ask), then call broker to 'walk through these numbers,' explain the delta, and pivot to 'do you have anything else behind the scenes?' Result: Christian now on JD's offmarket list despite deal not working"
+    },
+    {
+      "skill": "market-research",
+      "change": "Before committing capital, verify market fundamentals support operational improvements\u2014specifically confirm job providers, neighborhood trajectory, and rent growth ceiling exist before assuming value-add upside",
+      "evidence": "Justin questions broker on Cincinnati market fundamentals: 'Is the market there to get it to better occupancy north of 90?' and validates with local operator Jason that West Cincinnati is 'up and coming' with investor interest before considering 33-unit deal"
+    }
+  ],
+  "id": "5H54qQdPiIo",
+  "title": "Weekly Coaching_04/30/26 | Justin Brennan",
+  "duration": 3580
+}

@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "partial",
+  "topic": "broker-search",
+  "summary": "Justin Brennan demonstrates live broker outreach by calling on a 20-unit fractured condo apartment complex in Clearwater, Florida. He models how to initiate contact using a specific property as the conversation lure, build rapport with the broker (Sebastian), and pivot toward establishing a relationship for future deal flow. The call reveals market conditions in Florida and underwriting principles, though no actual deal analysis occurs.",
+  "takeaways": [
+    "Use a specific property as the 'lure' when calling brokers\u2014don't open with generic requests for deal flow",
+    "Build rapport by having a natural conversation rather than following a rigid script; let brokers speak to gather information",
+    "Brokers underestimate expenses to prop up NOI; standard expense ratios: pre-1979 properties 45-55%, 1980-2005 properties 39-45%, post-2005 properties 30s depending on state",
+    "Two types of sellers in current market: those who bought pre-2020 with good basis, or those in deep debt trouble; sellers from 2022-2024 buying window are likely distressed",
+    "Leverage 65-70% on deals with mid-six interest rates; local credit unions and regional banks prefer smaller deal sizes (15-50 units) over agency lenders for initial purchases",
+    "'Loss to lease' means the difference between current in-place rents and market rents on a specific property (e.g., $150-200 spread), not market comps",
+    "Follow broker phone calls with in-person market trips to build personal relationships ('belly to belly')\u2014this cements you in broker's top 5 for future deal flow"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "broker-search",
+      "change": "Structure cold calls to brokers using specific properties as conversation entry points rather than generic deal-sourcing requests",
+      "evidence": "Justin opens by saying 'calling on Horn Boulevard apartment complex' instead of asking for all available deals; this immediate specificity makes broker engage with the property details first, warming up the conversation"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Extract market and underwriting data from brokers through natural conversation without scripted questions",
+      "evidence": "Justin converses naturally with Sebastian, which causes Sebastian to voluntarily disclose expense ratios, market saturation in Pinellas County, seller motivation patterns, and financing options\u2014information that enriches underwriting assumptions"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Apply standardized expense ratio ranges by property vintage to validate broker underwriting rather than accepting broker numbers uncritically",
+      "evidence": "Justin states: 'pre-1979 or older you're going to operate somewhere between 45% up to 55%...1980 to 2005 you're going to operate between 39-45%...2005 or newer you could be in the 30s' and explains brokers often underestimate expenses to make deals pencil"
+    }
+  ],
+  "id": "qKIavKVdonA",
+  "title": "Weekly Coaching -03/12/26 | Justin Brennan",
+  "duration": 3432
+}

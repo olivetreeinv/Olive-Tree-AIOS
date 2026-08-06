@@ -1,0 +1,86 @@
+{
+  "conversation": {
+    "id": "nqoSvf6OtKWyMZ7ydM1H",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906046599,
+    "dateUpdated": 1783364623314,
+    "lastMessageDate": 1783364623296,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Frank, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906047543,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "ExqUryhdJo4152Way9Bi",
+    "fullName": "Frank Lettiere",
+    "contactName": "Frank Lettiere",
+    "companyName": "Hard Money",
+    "phone": "+17082773038",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "profilePhoto": null,
+    "email": null,
+    "sort": [
+      1783364623296
+    ]
+  },
+  "messages": [
+    {
+      "id": "Im9OND7vhZDQYdAKtPWh",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Frank, a copy of the pitch deck has been sent to your email.",
+      "contactId": "ExqUryhdJo4152Way9Bi",
+      "contentType": "text/plain",
+      "conversationId": "nqoSvf6OtKWyMZ7ydM1H",
+      "dateAdded": "2026-07-06T19:03:42.625Z",
+      "dateUpdated": "2026-07-06T19:03:42.625Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+17082773038",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "3nvWSkcXV7ka9dd4pRln",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Frank, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "ExqUryhdJo4152Way9Bi",
+      "contentType": "text/plain",
+      "conversationId": "nqoSvf6OtKWyMZ7ydM1H",
+      "dateAdded": "2026-06-19T21:54:06.832Z",
+      "dateUpdated": "2026-06-19T21:54:08.239Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+17082773038",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

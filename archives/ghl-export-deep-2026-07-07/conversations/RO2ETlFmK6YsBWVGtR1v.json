@@ -1,0 +1,86 @@
+{
+  "conversation": {
+    "id": "RO2ETlFmK6YsBWVGtR1v",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781905989554,
+    "dateUpdated": 1783364536180,
+    "lastMessageDate": 1783364536174,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Herb, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781905990616,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "X8WRu2x5p0p2KwNezUvR",
+    "fullName": "Herb Bays",
+    "contactName": "Herb Bays",
+    "companyName": null,
+    "phone": "+14049471743",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "profilePhoto": null,
+    "attributed": null,
+    "email": null,
+    "sort": [
+      1783364536174
+    ]
+  },
+  "messages": [
+    {
+      "id": "6NYKhLC9q9LMWtBFSYJF",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Herb, a copy of the pitch deck has been sent to your email.",
+      "contactId": "X8WRu2x5p0p2KwNezUvR",
+      "contentType": "text/plain",
+      "conversationId": "RO2ETlFmK6YsBWVGtR1v",
+      "dateAdded": "2026-07-06T19:02:15.389Z",
+      "dateUpdated": "2026-07-06T19:02:19.944Z",
+      "source": "workflow",
+      "altId": "SMacd0a2af46c85a8f68d14d3d01b2fb63",
+      "from": "+16789712411",
+      "to": "+14049471743",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "fOP307H5kvErULC9nM1B",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Herb, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "X8WRu2x5p0p2KwNezUvR",
+      "contentType": "text/plain",
+      "conversationId": "RO2ETlFmK6YsBWVGtR1v",
+      "dateAdded": "2026-06-19T21:53:09.925Z",
+      "dateUpdated": "2026-06-19T21:53:11.256Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+14049471743",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

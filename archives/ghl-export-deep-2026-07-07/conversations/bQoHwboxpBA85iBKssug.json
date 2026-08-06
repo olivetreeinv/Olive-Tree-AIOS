@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "bQoHwboxpBA85iBKssug",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906169571,
+    "dateUpdated": 1783364832647,
+    "lastMessageDate": 1783364832642,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "David, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906170700,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "I8NISszqJhE6C8DDxzgo",
+    "fullName": "David Cochran",
+    "contactName": "David Cochran",
+    "companyName": null,
+    "phone": "+16787794405",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364832642
+    ]
+  },
+  "messages": [
+    {
+      "id": "u0w3qjqen48NvAcdtAp8",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "David, a copy of the pitch deck has been sent to your email.",
+      "contactId": "I8NISszqJhE6C8DDxzgo",
+      "contentType": "text/plain",
+      "conversationId": "bQoHwboxpBA85iBKssug",
+      "dateAdded": "2026-07-06T19:07:11.873Z",
+      "dateUpdated": "2026-07-06T19:07:11.873Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+16787794405",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "FrQBAHD3fY55WLcKcqJc",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey David, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "I8NISszqJhE6C8DDxzgo",
+      "contentType": "text/plain",
+      "conversationId": "bQoHwboxpBA85iBKssug",
+      "dateAdded": "2026-06-19T21:56:09.989Z",
+      "dateUpdated": "2026-06-19T21:56:11.377Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+16787794405",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

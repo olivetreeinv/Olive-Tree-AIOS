@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>PATH</key>
+		<string>__REPO__/.venv/bin:/opt/homebrew/bin:/usr/bin:/bin</string>
+		<key>PYTHONUNBUFFERED</key>
+		<string>1</string>
+	</dict>
+	<key>KeepAlive</key>
+	<true/>
+	<key>Label</key>
+	<string>com.olivetree.trading-desk</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/usr/bin/caffeinate</string>
+		<string>-i</string>
+		<string>__REPO__/.venv/bin/python</string>
+		<string>__REPO__/scripts/trading_orchestrator.py</string>
+		<string>--loop</string>
+		<string>--market-session</string>
+		<string>auto</string>
+		<string>--interval</string>
+		<string>3600</string>
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>StandardErrorPath</key>
+	<string>__REPO__/logs/trading-desk.log</string>
+	<key>StandardOutPath</key>
+	<string>__REPO__/logs/trading-desk.log</string>
+	<key>ThrottleInterval</key>
+	<integer>30</integer>
+	<key>WorkingDirectory</key>
+	<string>__REPO__</string>
+</dict>
+</plist>

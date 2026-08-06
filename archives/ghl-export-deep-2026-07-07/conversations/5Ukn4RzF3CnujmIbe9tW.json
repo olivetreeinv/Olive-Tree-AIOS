@@ -1,0 +1,88 @@
+{
+  "conversation": {
+    "id": "5Ukn4RzF3CnujmIbe9tW",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781905814519,
+    "dateUpdated": 1781905815473,
+    "lastMessageDate": 1781905815470,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Hey Josh, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.",
+    "lastOutboundMessageAction": "manual",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781905815470,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "2MQlJWL1oJMAlBDZ96Kj",
+    "fullName": "Josh Krosek",
+    "contactName": "Josh Krosek",
+    "companyName": null,
+    "phone": "+16782323350",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "profilePhoto": null,
+    "attributed": null,
+    "email": null,
+    "sort": [
+      1781905815470
+    ]
+  },
+  "messages": [
+    {
+      "id": "9LRaJE3EU2FdSdzw1o7N",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "2MQlJWL1oJMAlBDZ96Kj",
+      "conversationId": "5Ukn4RzF3CnujmIbe9tW",
+      "dateAdded": "2026-06-22T20:50:18.839Z",
+      "dateUpdated": "2026-06-22T20:50:18.839Z",
+      "from": "+16782323350",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "SMS"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "pyOwLnEszPq1IHJtR5A3",
+      "direction": "outbound",
+      "status": "undelivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Josh, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "2MQlJWL1oJMAlBDZ96Kj",
+      "contentType": "text/plain",
+      "conversationId": "5Ukn4RzF3CnujmIbe9tW",
+      "dateAdded": "2026-06-19T21:50:14.769Z",
+      "dateUpdated": "2026-06-22T20:50:18.559Z",
+      "source": "app",
+      "altId": "SM0e4fd321a4034e1562e330508b448a74",
+      "from": "+16789712411",
+      "to": "+16782323350",
+      "error": "Error 30003 - Number unreachable or out of service.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

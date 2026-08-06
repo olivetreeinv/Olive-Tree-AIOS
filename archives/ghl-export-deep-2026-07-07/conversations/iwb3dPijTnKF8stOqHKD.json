@@ -1,0 +1,168 @@
+{
+  "conversation": {
+    "id": "iwb3dPijTnKF8stOqHKD",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249869825,
+    "dateUpdated": 1783364114105,
+    "lastMessageDate": 1783364114101,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Wayne, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781961037628,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "KmDvrKsWHKZAQGE9hGhl",
+    "fullName": "Wayne Davis",
+    "contactName": "Wayne Davis",
+    "companyName": "Sweetwater Music (Sales rep)",
+    "email": "wayne_davis@sweetwater.com",
+    "phone": "+12602476525",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364114101
+    ]
+  },
+  "messages": [
+    {
+      "id": "SyE5hdr6JAzeZV83UjvD",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Wayne, a copy of the pitch deck has been sent to your email.",
+      "contactId": "KmDvrKsWHKZAQGE9hGhl",
+      "contentType": "text/plain",
+      "conversationId": "iwb3dPijTnKF8stOqHKD",
+      "dateAdded": "2026-07-06T18:55:13.431Z",
+      "dateUpdated": "2026-07-06T18:55:16.941Z",
+      "source": "workflow",
+      "altId": "SMeb534738f6545890d17cfd1157e79b8c",
+      "from": "+16789712411",
+      "to": "+12602476525",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "87YooPCvzirUm4fRIIIu",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Wayne, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "KmDvrKsWHKZAQGE9hGhl",
+      "contentType": "text/plain",
+      "conversationId": "iwb3dPijTnKF8stOqHKD",
+      "dateAdded": "2026-06-20T13:10:36.889Z",
+      "dateUpdated": "2026-06-20T13:10:38.377Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+12602476525",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "ErXhOjPo6Zm9p9DSkz5l",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "KmDvrKsWHKZAQGE9hGhl",
+      "conversationId": "iwb3dPijTnKF8stOqHKD",
+      "dateAdded": "2025-08-19T14:21:54.233Z",
+      "dateUpdated": "2025-08-19T14:21:54.233Z",
+      "from": "+12602476525",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "Email"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "nDqPmvtEjWmutnybGaP8",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "KmDvrKsWHKZAQGE9hGhl",
+      "conversationId": "iwb3dPijTnKF8stOqHKD",
+      "dateAdded": "2025-08-19T14:07:53.277Z",
+      "dateUpdated": "2025-08-19T14:07:53.277Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "FeTtmVgNL9mOkk2ZEoJY"
+          ],
+          "direction": "outbound",
+          "subject": "Why 6.6% rates aren't stopping smart buyers"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "fIcJs3xxiczlMlP0Yz9E",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "KmDvrKsWHKZAQGE9hGhl",
+      "conversationId": "iwb3dPijTnKF8stOqHKD",
+      "dateAdded": "2025-07-22T14:11:17.897Z",
+      "dateUpdated": "2025-07-22T14:11:57.329Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "9gMtWmCuTRvVOcYJjcQT"
+          ],
+          "direction": "outbound",
+          "subject": "Real Estate Tax & Rate Shifts You Can\u2019t Ignore"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    },
+    {
+      "id": "SEad8327ITDeurM4o7f5",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "KmDvrKsWHKZAQGE9hGhl",
+      "conversationId": "iwb3dPijTnKF8stOqHKD",
+      "dateAdded": "2025-06-18T12:30:58.391Z",
+      "dateUpdated": "2025-06-18T12:41:09.550Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "lTrsB7WzhUymkn1noWDb"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

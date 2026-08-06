@@ -1,0 +1,86 @@
+{
+  "conversation": {
+    "id": "4v5VOPX0CHvVNbBF9goP",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906051859,
+    "dateUpdated": 1783364633953,
+    "lastMessageDate": 1783364633949,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Paul Junk Removal, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906052912,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "JN4rRR64QJtakJ6CsShk",
+    "fullName": "Paul Junk Removal",
+    "contactName": "Paul Junk Removal",
+    "companyName": null,
+    "phone": "+14048048593",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "profilePhoto": null,
+    "attributed": null,
+    "email": null,
+    "sort": [
+      1783364633949
+    ]
+  },
+  "messages": [
+    {
+      "id": "ozl3tNs0epqtLQQ0IRR8",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Paul Junk Removal, a copy of the pitch deck has been sent to your email.",
+      "contactId": "JN4rRR64QJtakJ6CsShk",
+      "contentType": "text/plain",
+      "conversationId": "4v5VOPX0CHvVNbBF9goP",
+      "dateAdded": "2026-07-06T19:03:53.195Z",
+      "dateUpdated": "2026-07-06T19:03:53.196Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+14048048593",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "eWYTWh1kMhk1QHLF4BId",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Paul Junk Removal, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "JN4rRR64QJtakJ6CsShk",
+      "contentType": "text/plain",
+      "conversationId": "4v5VOPX0CHvVNbBF9goP",
+      "dateAdded": "2026-06-19T21:54:12.097Z",
+      "dateUpdated": "2026-06-19T21:54:14.804Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+14048048593",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

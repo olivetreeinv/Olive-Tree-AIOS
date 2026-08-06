@@ -1,0 +1,22 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth documents his attempt to generate $180/week from covered calls on HIMS stock, which failed to meet the target. He discusses the trade-off between strike price selection and premium collection, ultimately securing $420 in premium across two positions (one original 100-share position generating $54, and a new 200-share position generating $366) with potential total profit of $446 if assigned by July 11th expiration.",
+  "takeaways": [
+    "Sell calls at $1 out-of-the-money (ATM or near-ATM) to maximize premium rather than selling further OTM where premiums decrease",
+    "Initial HIMS position: bought 100 shares at $50, sold $50 strike call for $54 premium when stock dropped to $47",
+    "When stock declines below purchase price, selling deeper OTM calls (e.g., $48 strike) creates larger losses on assignment ($2 loss on $50 buy/$48 sale) despite higher premiums\u2014avoid this trade-off",
+    "Added 200 shares of HIMS at $45, sold two calls at $46 strike for $366 premium, targeting $392-$446 total profit if assigned by July 11",
+    "Premium focus over delta/Greeks: Kenneth prioritizes collecting premium dollars rather than analyzing Greeks or delta targets"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "covered-calls",
+      "change": "Establish a minimum premium-to-loss ratio threshold before adjusting strike prices downward when stock declines; avoid assignment losses exceeding 50% of collected premium",
+      "evidence": "Kenneth explicitly rejected selling the $48 strike (which would generate higher premium but create a $2/$54 = 37% loss) to avoid excessive loss relative to premium earned, suggesting a formalized rule would prevent ad-hoc strike selection"
+    }
+  ],
+  "id": "Hq4gacM61gU",
+  "title": "PART 6: 7/7/25: $180 per week from HIMS Stock - FAIL!",
+  "duration": 233
+}

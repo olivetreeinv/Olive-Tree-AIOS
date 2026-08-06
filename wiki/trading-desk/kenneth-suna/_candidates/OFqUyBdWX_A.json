@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth demonstrates a weekly covered call selling strategy targeting $180/week premium. He reviews 5 positions (HIMS, Joby, NPHASE, OPEN, QBTS), discusses timing mistakes made by selling calls too early in a down week, and demonstrates rolling expired calls out one week to capture higher premium as stocks recovered.",
+  "takeaways": [
+    "Sell covered calls with 1-week expiration for maximum premium capture",
+    "Roll calls out 1 week when underlying stock price rises above strike price (keeps same strike for highest premium)",
+    "Avoid selling premium too early in volatile weeks; wait for recovery to sell at higher strikes/prices",
+    "Track cost basis and premium per position: NPHASE $7,500 cost for $110 premium (1.5%), OPEN $5,000 cost for $146 premium (2.9%)",
+    "Rolling mechanics: Buy back expired call at loss, immediately sell new 1-week call at same strike price to net additional premium",
+    "HIMS position: sold $49 strike call for $70 premium when stock closed at $48 (near ATM)",
+    "Weekly portfolio target: $180-$950+ range depending on rolling activity and stock recovery timing"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Implement minimum premium threshold rules\u2014do not sell covered calls during market downturns; instead queue positions and wait 2-3 days for recovery before selling, maximizing strike selection rather than forcing entry for small premiums",
+      "evidence": "Kenneth explicitly states 'I should have just sat on the sidelines' and 'I could have generated way more in premium' if he had waited through the Tuesday-Wednesday downturn. He recovered an extra $254 on OPEN and $265 on NPHASE by rolling instead of accepting the initial 1% weeks returns. This implies a rule like 'no premium sales on down-days; queue and execute on recovery day' would improve Brian's $1,250/mo target."
+    }
+  ],
+  "id": "OFqUyBdWX_A",
+  "title": "Part 14 9/2/25 $180 per week rolling calls ",
+  "duration": 303
+}

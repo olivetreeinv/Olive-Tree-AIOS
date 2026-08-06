@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan coaches Brian Norton's AIOS community on writing Letters of Intent (LOI) for commercial multifamily acquisitions, including deal timelines, negotiation tactics, and underwriting discipline. He walks through a live LOI template, explains the offer submission process, and emphasizes how brokers use inflated assumptions to make deals appear better than they are.",
+  "takeaways": [
+    "LOIs are non-binding, one-to-two page documents sent before purchase agreements; send them aggressively and frequently (aim for ~10-12 LOIs to land one deal)",
+    "Due diligence period is typically 30 days from PSA execution with full refundability of earnest money deposit during this window\u2014use it to back out for any reason without disclosure",
+    "Economic loss assumption should be minimum 10% (vacancy + loss to lease + bad debt + concessions), not the 5% brokers quote; only high-coastal markets (Miami, San Diego, NYC) justify 5-7%",
+    "Cost of capital is the only legitimate way to outbid competitors; if all use traditional financing at same rates, revenue and expenses are identical, so higher bids require cheaper money or lower required returns",
+    "Closing timeline: 60 days standard + 30-day extension option; push back on 45-day closings unless you have a 30-day extension; extension deposits (few thousand dollars) are typically non-refundable after due diligence ends",
+    "Submit LOI via email only (no hard copies); immediately follow up with broker by phone/text using rapport-building language: 'I used your numbers, show me where I'm wrong'",
+    "Contact lenders and insurance brokers during offer phase for soft quotes to tighten underwriting; use vendor list in mentorship portal (Incorp for Wyoming LLC setup at $125/year, then get agent of service)"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Use 10% minimum economic loss in underwriting instead of accepting broker's inflated 5% assumption",
+      "evidence": "Justin explicitly teaches Sandon to push back on brokers using basic math: 'you know darn well economic loss...is going to be north of 8 to 10 to 15%' and tells him to tell the broker 'I might as well just take a gun to my head' if he uses 5%, then provides exact script: 'John, listen. How long you've been doing this? 10 years. Great. You know darn well economic loss, not vacancy, economic loss on anything in this market is going to be north of 8 to 10 to 15%'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Back pricing decisions into market rent comparisons instead of assuming tenant behavior; research comparable rents before making rent-raise decisions",
+      "evidence": "Justin teaches Relle on the 8-unit month-to-month lease scenario: 'You want to go online. You want to see what they're currently paying for rent...what the market is' and explains tenants will do the same: 'they're going to go on Zillow...apartments.com, and they're going to start looking for a replacement property'"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Send 10-20+ LOIs per deal sourced instead of perfecting each one; treat LOIs as conversation starters, not final offers",
+      "evidence": "Justin states: 'you may have to throw out 20 to get one, right? It's very, very possible...like a 10 or 12 to one...I've seen upwards of 20 to 1 on ratios. So, you know, just throw throw them out. It's it's non-binding. It means nothing. You're just trying to start the conversations'"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Call broker immediately after sending LOI to build rapport and start negotiations using broker's own numbers against them",
+      "evidence": "Justin coaches Sandon: 'you'll typically follow up with the broker and say sometimes almost immediately...You can say, Hey, John, I just sent you in an LOI...I used your numbers that you gave me, plugged it in, and I'm backing into some returns'"
+    }
+  ],
+  "id": "1e1LAQBcaQo",
+  "title": "Weekly Coaching_08-14-25 | Justin Brennan",
+  "duration": 3562
+}

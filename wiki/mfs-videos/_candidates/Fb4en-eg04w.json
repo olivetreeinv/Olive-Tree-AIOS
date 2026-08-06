@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan teaches how to acquire 10-30 unit multifamily deals with minimal out-of-pocket capital ($20K) by leveraging other people's money (OPM) through structured partnerships. He breaks down deal mechanics, including acquisition fees, limited partner/general partner splits (90/10 capital, 60/40 equity), and how to access off-market deals via brokers and direct-to-owner software. The video emphasizes skill-building in deal-finding, underwriting, financing, and property management as the path to solving large financial problems and earning disproportionate returns.",
+  "takeaways": [
+    "15-unit deal structure: $1.5M purchase + $100K renovations + $50K closing costs = $1.65M all-in; 70% loan ($1.15M); GP brings 10% ($165K), gets 40% equity + acquisition fee (2-3% = $30-50K); LP brings 90%, gets 60% equity",
+    "Net out-of-pocket: $20K after acquisition fee ($50K in - $30K out = $20K net)",
+    "Revenue multiples: 3-4 deals in 10-30 unit range produce $10-20K/month passive income, enabling exit from W-2 job",
+    "Time commitment: 1-2 hours/day, 5-10 hours/week sufficient to execute (deal sourcing, analysis, offers)",
+    "31-unit case study: $19K out-of-pocket \u2192 $590K profit after 24-month hold (24-month BRRR refinance, $355K tax-free cash, $2K/month asset mgmt fee, $470K net proceeds from sale)",
+    "Deal sourcing: 80% of multifamily market sells pre-market to preferred broker lists (Crexi/LoopNet = bottom 20% only); use direct-to-broker (build relationships on-market) or direct-to-owner (Real Estate Radar software with 25-30M apartment listings, skip-trace, AI likelihood-to-sell)",
+    "Tax strategy: Debt is tax-free money (not earned income); bonus depreciation + cost segregation can eliminate taxes for years ('zero taxes for last 8 years' example)"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Learn to quickly underwrite deals using standardized spreadsheets to identify money-makers vs. money-pits before writing offers",
+      "evidence": "Justin emphasizes 'analyze them quickly to determine if it's a good deal' as core skill #2 of 5; mentions live deal analysis/underwriting at workshop; notes that most brokers' Crexi/LoopNet deals don't make sense ('do the deals make sense or do they not make sense? They do not')"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Build relationships with off-market deal flow via direct-to-broker approach (tour on-market properties, request preferred list access) rather than relying solely on Crexi/LoopNet",
+      "evidence": "'The direct-to-broker approach leverages the broker's on-market listings from LoopNet and Crexi to get access to their off-market opportunities...80% of the market is right here and sells right here. It never makes it to that Crexi and LoopNet, ever...this is why you're frustrated'"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Execute weekly action cadence: 1-2 hours daily on deal sourcing, analysis, and offer writing; treat as non-negotiable 'passion project' outside W-2 job for 2-3 years until passive income reaches exit threshold",
+      "evidence": "'One to two hours per day, five to 10 hours a week, you'll execute the game...I was a realtor working 8-10 hours a day...8:30 rolls around...I am making things happen for my family. I'm on the computer trying to find deals, analyze them, write offers...within 2-3 years, out'"
+    },
+    {
+      "skill": "capital-raise",
+      "change": "Master three-element capital-raising formula: (1) deal that makes financial sense, (2) pitch deck explaining deal + investor returns, (3) process for legally taking capital and depositing to property account",
+      "evidence": "'You need three things to raise money. You need a deal that makes financial sense. You need a pitch deck that helps explain what the deal is and what they get for their money. And then lastly, a process when somebody says, Hey, I want to give you 25 grand'"
+    }
+  ],
+  "id": "Fb4en-eg04w",
+  "title": "How I Turned $100K Into $3.5M With Apartments",
+  "duration": 4721
+}

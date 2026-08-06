@@ -1,0 +1,217 @@
+{
+  "_id": "a2539935-a5d0-4c22-92e9-378ee0319c98",
+  "locationId": "SLq7B2pldVzfQLKjGpvw",
+  "companyId": "etFEpuKKLwVQ4AMNOaLs",
+  "companyAge": 39,
+  "name": "Brian's Personal Calendar Booking - DS",
+  "status": "published",
+  "version": 9,
+  "dataVersion": 7,
+  "allowMultiple": true,
+  "timezone": "account",
+  "removeContactFromLastStep": true,
+  "filePath": "location/SLq7B2pldVzfQLKjGpvw/workflows/a2539935-a5d0-4c22-92e9-378ee0319c98/9",
+  "fileUrl": "https://firebasestorage.googleapis.com/v0/b/automation-workflows-production/o/location%2FSLq7B2pldVzfQLKjGpvw%2Fworkflows%2Fa2539935-a5d0-4c22-92e9-378ee0319c98%2F9?alt=media&token=9dde3610-cf69-49db-bc1b-3b1fee42e3e4",
+  "stopOnResponse": false,
+  "autoMarkAsRead": false,
+  "permission": 380,
+  "type": "workflow",
+  "parentId": null,
+  "updatedBy": "2DmTJ7IvCjSM8ql83oiZ",
+  "createdAt": "2026-02-16T20:48:35.326Z",
+  "updatedAt": "2026-05-28T10:26:42.126Z",
+  "deleted": false,
+  "allowMultipleOpportunity": true,
+  "creationSource": "builder",
+  "isTriggerBucketMigrated": true,
+  "originType": "user",
+  "__v": 0,
+  "eventStartDate": null,
+  "window": null,
+  "workflowNote": null,
+  "triggersFilePath": "location/SLq7B2pldVzfQLKjGpvw/workflow-triggers/a2539935-a5d0-4c22-92e9-378ee0319c98/8",
+  "id": "a2539935-a5d0-4c22-92e9-378ee0319c98",
+  "workflowData": {
+    "templates": [
+      {
+        "id": "e0d2006d-f1f5-4ece-9110-bf7b4ffee9ff",
+        "order": 0,
+        "attributes": {
+          "trackingOptions": {
+            "hasTrackingLinks": false,
+            "hasUtmTracking": false,
+            "hasTags": false,
+            "sourceId": "a2539935-a5d0-4c22-92e9-378ee0319c98:e0d2006d-f1f5-4ece-9110-bf7b4ffee9ff"
+          },
+          "conditions": [],
+          "html": "<br/>",
+          "subject": "Welcome",
+          "attachments": []
+        },
+        "name": "Email",
+        "type": "email",
+        "next": "ec716452-2b22-41f3-8006-f83a388bf7ab"
+      },
+      {
+        "id": "ec716452-2b22-41f3-8006-f83a388bf7ab",
+        "order": 1,
+        "attributes": {
+          "body": "Welcome",
+          "attachments": []
+        },
+        "name": "SMS",
+        "type": "sms",
+        "next": "dff9ba6a-18be-4f37-a7b8-fdc45f101df1",
+        "parentKey": "e0d2006d-f1f5-4ece-9110-bf7b4ffee9ff"
+      },
+      {
+        "id": "dff9ba6a-18be-4f37-a7b8-fdc45f101df1",
+        "order": 2,
+        "attributes": {
+          "type": "email",
+          "email": {
+            "isCloned": false,
+            "html": "<p style=\"margin:0px; padding-left: 0px!important;margin: 0px;\">Hi Brian,<br><br>A new call has been booked by <strong data-start=\"114\" data-end=\"162\">{{contact.first_name}}</strong>.</p><br/><p style=\"margin:0px; padding-left: 0px!important;\" data-start=\"165\" data-end=\"314\"><strong data-start=\"165\" data-end=\"179\">Date/Time:</strong> {{appointment.only_start_date}} at {{appointment.only_start_time}}</p><p style=\"margin:0px; padding-left: 0px!important;\" data-start=\"165\" data-end=\"314\"><br><strong data-start=\"209\" data-end=\"219\">Phone:</strong> {{contact.phone}}</p><p style=\"margin:0px; padding-left: 0px!important;\" data-start=\"165\" data-end=\"314\"><br><strong data-start=\"240\" data-end=\"250\">Email:</strong> {{contact.email}}</p><p style=\"margin:0px; padding-left: 0px!important;\" data-start=\"165\" data-end=\"314\"><br><strong data-start=\"271\" data-end=\"284\">Calendar:</strong> {{calendar.name}}  <br></p><p style=\"margin:0px; padding-left: 0px!important;\" data-start=\"316\" data-end=\"374\" data-is-last-node=\"\" data-is-only-node=\"\">Please review the contact details and follow up if needed.</p><div style=\"padding-left: 0px!important;\" class=\"z-0 flex min-h-[46px] justify-start\"></div><div style=\"padding-left: 0px!important;\" class=\"mt-3 w-full empty:hidden\"><div style=\"padding-left: 0px!important;\" class=\"text-center\"></div></div><div style=\"padding-left: 0px!important;\" class=\"pointer-events-none h-px w-px absolute bottom-0\" aria-hidden=\"true\" data-edge=\"true\"></div>",
+            "selectedUser": [
+              "2DmTJ7IvCjSM8ql83oiZ"
+            ],
+            "userType": "user",
+            "subject": "New Call Booked \u2013 {{contact.first_name}} on {{appointment.only_start_date}} at {{appointment.only_start_time}}",
+            "attachments": []
+          }
+        },
+        "name": "Internal Notification",
+        "type": "internal_notification",
+        "next": "d006c3d9-745a-4e4c-a13a-15ad1891caf4",
+        "parentKey": "ec716452-2b22-41f3-8006-f83a388bf7ab"
+      },
+      {
+        "id": "d006c3d9-745a-4e4c-a13a-15ad1891caf4",
+        "parentKey": "dff9ba6a-18be-4f37-a7b8-fdc45f101df1",
+        "type": "wait",
+        "name": "24 hours before Wait",
+        "attributes": {
+          "type": "appointment",
+          "name": "24 hours before Wait",
+          "cat": "",
+          "appointmentStartAfter": {
+            "when": "before",
+            "type": "minutes",
+            "value": 1440,
+            "distributed": {
+              "months": 0,
+              "days": 1,
+              "hours": 0,
+              "minutes": 0
+            }
+          },
+          "appointmentCondition": "skip",
+          "isHybridAction": true,
+          "hybridActionType": "wait",
+          "convertToMultipath": false,
+          "transitions": []
+        },
+        "order": 3,
+        "cat": "",
+        "next": "436d263a-29d1-4eca-96ed-28623958950e"
+      },
+      {
+        "id": "436d263a-29d1-4eca-96ed-28623958950e",
+        "order": 4,
+        "attributes": {
+          "trackingOptions": {
+            "hasTrackingLinks": false,
+            "hasUtmTracking": false,
+            "hasTags": false,
+            "sourceId": "a2539935-a5d0-4c22-92e9-378ee0319c98:436d263a-29d1-4eca-96ed-28623958950e"
+          },
+          "conditions": [],
+          "html": "<br/>",
+          "subject": "Welcome",
+          "attachments": []
+        },
+        "name": "24 hours before reminder Email",
+        "type": "email",
+        "next": "e43a4084-0fd6-476b-aec1-7852df94c886",
+        "parentKey": "d006c3d9-745a-4e4c-a13a-15ad1891caf4"
+      },
+      {
+        "id": "e43a4084-0fd6-476b-aec1-7852df94c886",
+        "order": 5,
+        "attributes": {
+          "body": "Welcome",
+          "attachments": []
+        },
+        "name": "24 hours before reminder SMS",
+        "type": "sms",
+        "next": "beec0231-772d-4349-b71e-e9514bd65431",
+        "parentKey": "436d263a-29d1-4eca-96ed-28623958950e"
+      },
+      {
+        "id": "beec0231-772d-4349-b71e-e9514bd65431",
+        "order": 6,
+        "attributes": {
+          "type": "appointment",
+          "name": "24 hours before Wait",
+          "cat": "",
+          "appointmentStartAfter": {
+            "when": "before",
+            "type": "minutes",
+            "value": 60,
+            "distributed": {
+              "months": 0,
+              "days": 0,
+              "hours": 1,
+              "minutes": 0
+            }
+          },
+          "appointmentCondition": "skip",
+          "isHybridAction": true,
+          "hybridActionType": "wait",
+          "convertToMultipath": false,
+          "transitions": []
+        },
+        "name": "24 hours before Wait",
+        "type": "wait",
+        "cat": "",
+        "next": "21683252-0501-4bd7-bf08-85c4e3bc4f01",
+        "parentKey": "e43a4084-0fd6-476b-aec1-7852df94c886"
+      },
+      {
+        "id": "21683252-0501-4bd7-bf08-85c4e3bc4f01",
+        "order": 7,
+        "attributes": {
+          "trackingOptions": {
+            "hasTrackingLinks": false,
+            "hasUtmTracking": false,
+            "hasTags": false,
+            "sourceId": "a2539935-a5d0-4c22-92e9-378ee0319c98:21683252-0501-4bd7-bf08-85c4e3bc4f01"
+          },
+          "conditions": [],
+          "html": "<br/>",
+          "subject": "Welcome",
+          "attachments": []
+        },
+        "name": "1 hour before reminder Email",
+        "type": "email",
+        "next": "88617879-cc32-41e2-a050-4578400d4621",
+        "parentKey": "beec0231-772d-4349-b71e-e9514bd65431"
+      },
+      {
+        "id": "88617879-cc32-41e2-a050-4578400d4621",
+        "order": 8,
+        "attributes": {
+          "body": "Welcome",
+          "attachments": []
+        },
+        "name": "1 hour before reminder SMS",
+        "type": "sms",
+        "parentKey": "21683252-0501-4bd7-bf08-85c4e3bc4f01"
+      }
+    ]
+  },
+  "permissionMeta": {
+    "canRead": true,
+    "canWrite": true
+  }
+}

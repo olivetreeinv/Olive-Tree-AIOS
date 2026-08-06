@@ -1,0 +1,29 @@
+{
+  "deal_relevant": "yes",
+  "topic": "capital-raise",
+  "summary": "Justin Brennan walks through the complete structure and sections of a multifamily pitch deck used to raise investor capital. He covers the 20-30 page document's key components including executive summary, financial metrics, sources and uses, market data, unit comps, and pro forma P&Ls, explaining where to source information and offering templated solutions via Canva or PowerPoint.",
+  "takeaways": [
+    "Pitch deck should be 20-30 pages packaged to send to potential investors",
+    "Cap stack should typically stay 70-30 or 80-20 debt-to-equity split",
+    "Set minimum investment threshold (example given: $50K)",
+    "Manually enter projected cash flows into pitch deck rather than screenshot Excel for professional appearance",
+    "Use Fiverr to hire someone for $200-300 after doing first deck yourself",
+    "Pull market data from offering memorandum (OM) or public websites listed in vendor systems PDF",
+    "Unit comps should be broken down by bedroom type (1BR, 2BR, 3BR) and sourced from broker or Rent-O-Meter/Zillow"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "capital-raise",
+      "change": "Learn pitch deck structure and sourcing methodology by building first deck yourself before outsourcing",
+      "evidence": "Justin emphasizes 'I would recommend the first one you do to put together yourself. That's how I started, right? Because then that way you understand all the little different pieces of it' and 'Do the first one yourself so you understand it. Then if you want to hire people like we do now to do this, you'll pay them a few hundred bucks'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Understand how to properly format financial projections and pro forma statements for investor presentation",
+      "evidence": "Justin states about the P&L section 'There's, once again, you can screenshot and just drop in an image, sure. But if you want it to look nice, you got to come in here and do the nasty' and 'you take the Excel and manually enter them here' for projected cash flows"
+    }
+  ],
+  "id": "c9914490-22d5-411d-a9bf-e03c4ee589ce",
+  "title": "Pitch Decks To Raise Money",
+  "module": "Module 3: Raising The Money"
+}

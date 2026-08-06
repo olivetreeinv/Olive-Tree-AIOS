@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "02bRXzvbvOktTzQX0upH",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781905888211,
+    "dateUpdated": 1783364336868,
+    "lastMessageDate": 1783364336859,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Jessa, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781905889149,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "qXoWPEPC7q5CIoig1Jei",
+    "fullName": "Jessa Lopez",
+    "contactName": "Jessa Lopez",
+    "companyName": null,
+    "phone": "+639122383351",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364336859
+    ]
+  },
+  "messages": [
+    {
+      "id": "zh0tIdWlYTfJa1gQXAqS",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Jessa, a copy of the pitch deck has been sent to your email.",
+      "contactId": "qXoWPEPC7q5CIoig1Jei",
+      "contentType": "text/plain",
+      "conversationId": "02bRXzvbvOktTzQX0upH",
+      "dateAdded": "2026-07-06T18:58:56.102Z",
+      "dateUpdated": "2026-07-06T18:58:56.102Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+639122383351",
+      "error": "Error 21408 - Your account is not allowed to send SMS to this country or region.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "PTV4kS9LuE4htK0VPnIW",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Jessa, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "qXoWPEPC7q5CIoig1Jei",
+      "contentType": "text/plain",
+      "conversationId": "02bRXzvbvOktTzQX0upH",
+      "dateAdded": "2026-06-19T21:51:28.469Z",
+      "dateUpdated": "2026-06-19T21:51:30.376Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+639122383351",
+      "error": "Error 21408 - Your account is not allowed to send SMS to this country or region.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

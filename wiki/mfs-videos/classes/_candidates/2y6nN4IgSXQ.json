@@ -1,0 +1,41 @@
+{
+  "deal_relevant": "yes",
+  "topic": "capital-raise",
+  "summary": "Justin Brennan walks through a pitch deck for a 33-unit Kansas City apartment deal closing in 30 days, explaining how to structure and present investor opportunities at stages 3-4 (after deal acquisition and underwriting). The mentees (Hayden and Matt) are raising ~$730k with a 6% preferred return, 16-18% projected returns, and $25k minimum investment, demonstrating how pitch decks answer 90% of investor questions.",
+  "takeaways": [
+    "Pitch deck is created at stages 3-4 (after offer accepted, in due diligence/escrow) to raise capital from your investor database",
+    "Minimum investment threshold: $25,000 in this deal structure",
+    "Preferred return: 6% baseline guaranteed return, included in total 16-18% projected return",
+    "80/20 equity split: investors receive 80% of profits, GP takes 20%",
+    "Equity multiple 1.99-2.25x means $100k investment returns $199k-$225k total",
+    "GP puts in 10% skin-in-game on smaller deals (33-50 units); reduces to ~5% on larger $30M+ deals",
+    "If raised at least 50% of equity by end of 30-day due diligence period when money goes hard, keep going; if raised nothing/very little, consider canceling to protect deposit",
+    "Soft commitments: build investor database before deals close using CRM; gather contact info from conversations (backyard barbecues, retail encounters, etc.)",
+    "Create placeholder pitch deck as marketing tool even before first deal to warm prospects and build rapport",
+    "Legal documents (PPM, contracts) prepared when entering escrow; use attorney templates from portal then connect with PPM lawyers for final review/naming",
+    "Solicit both accredited and non-accredited investors via 506(b) offering; 506(c) requires accredited-only but allows public online advertising",
+    "Start raising money simultaneously with deal sourcing via soft commitments, not after deal is found",
+    "Pitch deck template pulls 80% content from broker OM (marketing package) via copy-paste; use ChatGPT for market statistics/charts/graphs",
+    "Can backfill capital after closing if needed: close deal with partial equity raise then continue raising remaining capital post-close"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "capital-raise",
+      "change": "Begin building soft-commitment investor database via informal conversations (CRM tracking) before any deal is closed rather than waiting until deal is found",
+      "evidence": "Justin emphasizes: 'what you should be doing is getting what's called soft commitments' via CRM and website presence. Shares Trader Joe's example where casual conversation led to $50k investor. Advises: 'You're kind of collecting people. You could even start that now.'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Use fixed-rate interest-only bridge debt (2-3 year terms) or fixed 6-7% financing instead of conservative underwriting when market conditions force aggressive bidding on competitive deals",
+      "evidence": "Brian mentioned striking out on deals because institutional buyers using bridge debt with interest-only terms. Justin responds: 'ask them too I'd say hey is there any kind of interest-only, you know, two or three-year type debt that's fixed rate...that could be an option' and 'the lenders in the back end of the system will...can provide that financing.'"
+    },
+    {
+      "skill": "capital-raise",
+      "change": "Specify when legal documents (PPM, contracts, investor agreements) must be prepared: at escrow entry, not before, to reduce pre-closing costs that will be reimbursed at closing",
+      "evidence": "Justin clarifies: 'you would start that pretty much when you go into escrow' and 'the closing cost of the deal includes the cost of your documents. There may need to be a little bit of prefunding on that, right, to get it going, but it will be reimbursed to you.'"
+    }
+  ],
+  "id": "2y6nN4IgSXQ",
+  "title": "Tuesday Mentorship Q&A_05-20-25 | Justin Brennan",
+  "duration": 3075
+}

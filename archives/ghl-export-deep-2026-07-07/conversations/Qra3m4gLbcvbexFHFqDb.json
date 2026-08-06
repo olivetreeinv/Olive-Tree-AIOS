@@ -1,0 +1,54 @@
+{
+  "conversation": {
+    "id": "Qra3m4gLbcvbexFHFqDb",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249986899,
+    "dateUpdated": 1750249986899,
+    "lastMessageDate": 1750249986900,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "GL7Mx7DGvI5fVup9YvJB",
+    "fullName": "Albert Grassia",
+    "contactName": "Albert Grassia",
+    "companyName": null,
+    "email": "aznitalianguy@yahoo.com",
+    "tags": [
+      "friend",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "phone": null,
+    "attributed": null,
+    "profilePhoto": null,
+    "sort": [
+      1750249986900
+    ]
+  },
+  "messages": [
+    {
+      "id": "7ixBGYVubLHFo2sE9LGQ",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "GL7Mx7DGvI5fVup9YvJB",
+      "conversationId": "Qra3m4gLbcvbexFHFqDb",
+      "dateAdded": "2025-06-18T12:31:22.343Z",
+      "dateUpdated": "2025-06-18T12:34:40.516Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "nr1wD1AvUsOCTaI6vVAt"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

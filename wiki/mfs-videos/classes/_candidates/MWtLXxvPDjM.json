@@ -1,0 +1,36 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan coaches Brian's mentee Haim through underwriting a 20-unit Cleveland value-add property listed at $1.15M, negotiable to $1.09M. The seller is pressuring a 30-day close due to 1031 exchange timing, but Justin advises against bridge financing and recommends structuring a counter-offer at $1.2M with 45-day close, 28-day due diligence, and two 15-day extension options ($12K each, applicable to price) to allow proper underwriting and lender approval.",
+  "takeaways": [
+    "Build credit loss at minimum 10% in Midwest underwriting (includes physical vacancy, loss to lease, bad debt, concessions)",
+    "Never underwrite a 20-unit Midwest property below 10% economic loss, even with low market vacancy",
+    "Structure offers with extension options: 45-day close, 28-day due diligence, two 15-day extension options at 1% each ($12K), all applicable to purchase price",
+    "DSCR lending requires minimum 30-45 days for appraisal alone; hard money on multifamily takes 20-30+ days minimum, not 7-12 days",
+    "Hard money loans typically require 1.25x DSCR and cost 9-10% interest with minimum interest period (often 1 year minimum)",
+    "On $1.2M purchase with 25% down ($300K), run underwriting at 6.5-7% exit cap rate and 12% credit loss for conservative analysis",
+    "When negotiating, expand the pie by understanding the seller's ultimate goal beyond money (e.g., their 1031 timing needs, subsequent deal funding) and offer creative solutions to achieve their objective while improving your terms",
+    "Separate ownership percentage from voting rights/control: whoever signs the loan and manages operations should retain managing member status with voting control",
+    "For 20-unit property, query suspicious line items: $40K other income claim reduced to $1-2K is red flag; $1,200/month insurance on 1920s building warrants verification"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Implement 10% minimum credit loss assumption for Midwest underwriting regardless of current vacancy data",
+      "evidence": "Justin states: 'I would never underwrite a property in the Midwest for less than 10%' and 'You'll be at least 10% economic loss in the Midwest. Bare minimum. Even if the performer rents are extremely low...You're going to be at least 10% with 100% accuracy.'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Build extension options into LOI to manage unrealistic seller timelines without accepting bridge financing",
+      "evidence": "Justin prescribes: '45day close, 28 day due diligence with a 45day close with a um uh extension. I would at least have another 15-day option to extend...I would build in two of them, right? So, I would build in two options to extend, each costing you money...1% each right 12,000 bucks going into escrow...all applicable to the price'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Challenge suspicious expense/income line items by requesting broker verification before proceeding",
+      "evidence": "Justin questions the $40K other income claim: 'the broker smoking some good crack. I'd like to know what they're on' and insists '$1,000 a month...That doesn't make sense. Yeah...it's probably $1,000 a year, not $1,000 a month.' This identifies data integrity issues early."
+    }
+  ],
+  "id": "MWtLXxvPDjM",
+  "title": "Weekly Coaching - 02/26/26 | Justin Brennan",
+  "duration": 3883
+}

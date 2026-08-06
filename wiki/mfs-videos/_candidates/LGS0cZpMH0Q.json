@@ -1,0 +1,40 @@
+{
+  "deal_relevant": "no",
+  "topic": "other",
+  "summary": "Justin Brennan interviews San Diego-based flipper/contractor Brian Daily about single-family flipping operations, market dynamics, and renovation best practices. While Brian discusses deal sourcing through agents and wholesalers, market analysis (supply/inventory trends), and construction management, the content focuses on single-family flipping (120-140 day hold periods, $85-100/sq ft renovation costs) rather than the 15-50 unit multifamily value-add deals that Brian Norton targets in GA/TN/AL. The video touches on multifamily briefly only as an aside.",
+  "takeaways": [
+    "Hard money lenders charge 10-11% interest rates plus 1-2 points; daily carry costs compound pressure on timeline",
+    "Use 'annualized return' metric instead of net/gross margin to account for time-value of money; target 30% annualized cash-on-cash minimum",
+    "Budget renovation costs at $85-100/sq ft for full interior work; expect cost inflation (was $30-35/sq ft when started, now 3x higher in San Diego)",
+    "Economic obsolescence (external factors: busy road, freeway proximity) reduces buyer pool by ~30% immediately; functional obsolescence (interior issues) is fixable but economic obsolescence kills demand",
+    "Complete detailed scope of work upfront before contractor mobilization to prevent change orders and cost overruns; stack subs and use just-in-time material delivery",
+    "Partner with experienced operators if new to flipping rather than learning execution live; find someone who's done 'hundreds of flips' and co-invest with them managing the deal/capital side",
+    "Require 12 months operating reserves before flipping; stress of illiquid capital without cash buffer severely impacts decision-making and sleep quality",
+    "Market timing is critical: appreciation covers mistakes for beginning operators; in flat/declining markets, execution must be near-perfect to avoid losses"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Implement annualized return metric vs. gross/net margin to properly weight time-value of money and compare across deal hold periods",
+      "evidence": "Brian explicitly switched from margin-based thinking to annualized returns 3-4 years ago, using 30% annualized cash-on-cash as his minimum threshold; notes this captures daily carry costs (hard money at 10-11% rates, team overhead, etc.) that traditional metrics ignore"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Screen acquisitions for economic vs. functional obsolescence early to avoid 30%+ buyer pool reduction",
+      "evidence": "Brian uses aerial views to immediately disqualify properties next to busy roads/freeways; explains this cuts addressable market by minimum 30% and forces price reductions; functional issues (bathrooms, layout) can be fixed but economic factors are immutable"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Create locked-in detailed scope-of-work documents with contractors before mobilization to prevent change orders and cost inflation",
+      "evidence": "Brian emphasizes being 'freaking anal' about upfront scoping; notes difference between planned $60k budgets ballooning to $120k when scope is vague; uses just-in-time material delivery instead of warehousing dead inventory; stacks subs to maintain speed"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Prioritize agent partnerships and repeat relationships over direct-to-seller/wholesaler volume to build predictable deal flow and reduce assignment fee dilution",
+      "evidence": "Brian's entire business model shifted to 'service provider to real estate professionals'; explicitly avoids wholesalers to eliminate assignment fees eating margins; references that strong follow-up recovers deals that fall out of escrow later at better prices than original offers"
+    }
+  ],
+  "id": "LGS0cZpMH0Q",
+  "title": "Shocking Prices In San Diego Revealed!",
+  "duration": 4035
+}

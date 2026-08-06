@@ -1,0 +1,40 @@
+{
+  "deal_relevant": "partial",
+  "topic": "capital-raise",
+  "summary": "Todd Robinson, a syndication attorney, discusses legal structures for raising capital in multifamily real estate, including SEC compliance (506b/506c offerings), PPM documentation, and deal structuring. While focused on capital-raising mechanics, the conversation includes broader market observations about 2025-2026 multifamily conditions but lacks Brian's specific deal sourcing and underwriting challenges.",
+  "takeaways": [
+    "506b offerings allow up to 35 unaccredited investors with pre-existing substantive relationships (three-touch rule: met in person, had coffee, sent email); 506c offerings require accreditation but allow advertising",
+    "Attorney-drafted contracts (not broker contracts) protect buyers on reps/warranties, rent-ready credits (make-ready units), and collection contingencies before closing",
+    "Never accept broker contracts; insist on attorney-drafted contracts with minimum 3-page addendum covering conditions, reps/warranties, and rent-ready credits for vacant units",
+    "Tie rent rolls to bank deposit statements for minimum 6 months; request delinquency and eviction lists to verify stated economic occupancy (collections, not physical occupancy)",
+    "Syndication attorney fees: $12,500 flat fee for PPM/SEC filings; $15,000-$25,000 for transactional work on 15-50 unit deals; larger deals ($50M+) run $50,000-$80,000 with opinion letters",
+    "Property management: Keep units vacant rather than lease bad tenants; vacancy + turnover costs ($2-3K per unit) + eviction process + loss rent = worse than 1-2 month vacancy",
+    "To raise capital: start with friends/family (print LinkedIn/Facebook contacts), host dinner parties to establish pre-existing relationships for 506b compliance, avoid pitching directly",
+    "By 2026, supply/demand imbalance will compress as construction stops; rents will rebound but interest rates likely to stay 5-7% (normal), requiring sponsors to buy right and create value on revenue side"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Verify actual collections via bank deposits rather than relying on T12/rent roll, with minimum 6-month statement requirement",
+      "evidence": "Todd: '$25M deals have terminated because sellers won't provide bank statements...tie deposits to rent roll...a lot of sellers will push back...this is a red flag for me' and 'rent rolls are fudged T12 are fudged'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Request delinquency list and eviction filing list and cross-match to identify true economic occupancy (not physical occupancy)",
+      "evidence": "Todd: 'match all that stuff up...when you start tying that in then you have recourse...rent rolls are cute but you show me your collections...difference between physical occupancy and economic occupancy'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Require rent-ready/make-ready credits in contract for vacant units pre-closing; typical threshold is 10+ vacant units triggering $2K per-unit credit",
+      "evidence": "Todd: 'if there's 10 vacant units and they're going to cost $2,000 to turn...buyer gets a credit for those units...usually not found in broker contract...something you'll need to see in a [custom] agreement'"
+    },
+    {
+      "skill": "capital-raise",
+      "change": "Host relationship-building dinner parties as indirect networking to establish pre-existing substantive relationships (506b compliance) rather than direct investor pitches",
+      "evidence": "Justin: 'she hosted a party...called like influence influencers and connectors...she just invited everyone...not pitching a deal...deepening relationships...she probably had 50 people' and Todd: 'personal invitation personal relationship I would argue that is establishing a pre-existing substantive relation 100%'"
+    }
+  ],
+  "id": "GDkVIivKJ10",
+  "title": "How To Raise Money For Multifamily Real Estate Deals | For Beginners",
+  "duration": 4161
+}

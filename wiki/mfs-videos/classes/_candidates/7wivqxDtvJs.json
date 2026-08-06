@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "partial",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan mentors Brian Norton's AIOS members through a detailed underwriting review of a 23-unit multifamily property in Cleveland, OH. The discussion covers critical deal-analysis fundamentals including property tax calculations, expense verification, unit-mix conversions, and the mathematical relationship between NOI and property valuation. While the specific Cleveland deal may not match Brian's target markets (GA/TN/AL), the underwriting principles and mental framework are directly applicable to his 15-50 unit value-add deals.",
+  "takeaways": [
+    "Use ChatGPT to determine county-specific property tax assessment methods and rates rather than assuming broker numbers, which are often incorrect by $15,000+",
+    "Verify expense line items skeptically: for a 1926 building with 23 units, maintenance/repairs of only $1,800 is unrealistic; use formula of 23 units \u00d7 30% vacancy = 7 units \u00d7 $1,500 = ~$10,000 as baseline",
+    "For stabilized properties with mixed government tenants (CHA/Eden), underwrite vacancy/credit loss at 5-7% rather than relying on OM data",
+    "Management fees of 5-6% are standard, but verify the property management company has proper systems, infrastructure, and team before accepting lower rates",
+    "For properties with minimal obvious renovations, budget $25,000-$50,000 capex reserve from day one rather than inflated amounts",
+    "When sending aggressive LOIs, call the broker immediately and say: 'It's based on numbers I'm looking at\u2014I'd love to go over it with you and see where maybe I'm wrong' to position yourself as collaborative, not adversarial",
+    "Use the income approach to valuation: every $100/month rent increase per unit on a 10-unit property = $220,000 in added value at a 5.5% cap rate, demonstrating the power of operational improvements over market comps"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Implement skeptical verification of broker-provided expense assumptions, especially property taxes and maintenance line items",
+      "evidence": "Justin repeatedly points out broker errors in property tax projections (same rates for current and proforma despite different assessment methods) and unrealistic maintenance numbers ($1,800 on 1926 building = obviously low); provides calculation method: 23 units \u00d7 0.3 \u00d7 $1,500 = ~$10,000 correct baseline"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Master the NOI-to-valuation math to evaluate rent increases and capital improvements ROI",
+      "evidence": "Justin demonstrates: $100/month rent increase \u00d7 10 units = $12,000/year income = $220,000 property value increase at 5.5% cap rate; then shows actual deal example where changing unit mix (19 1BR+4 2BR to 5 1BR+18 2BR) increases NOI from $117k to $191k, adding $1.2M value"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Use ChatGPT systematically to determine county-specific tax assessment rules rather than extrapolating from broker OM figures",
+      "evidence": "Justin explains different counties assess taxes differently (some at sale, some every 3-10 years, some based on percentages); shows how to prompt ChatGPT with property address and county to get accurate rate; notes that brokers typically use wrong methodology and create $15,000+ underwriting errors"
+    }
+  ],
+  "id": "7wivqxDtvJs",
+  "title": "Tuesday Mentorship Q&A - Mastering Multifamily Numbers Fast_12-02-25 | Justin Brennan",
+  "duration": 2887
+}

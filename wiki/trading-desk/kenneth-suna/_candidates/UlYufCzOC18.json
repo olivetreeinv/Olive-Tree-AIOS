@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "cash-secured-puts",
+  "summary": "Kenneth Suna demonstrates how to sell cash-secured puts as part of a premium-selling strategy, using HIMS earnings as a high-risk example. He sold 3 contracts at $57 strike for $814 premium (4.7% return) while managing downside risk by reserving $17,100 in capital. The video includes a step-by-step tutorial on executing cash-secured put trades via broker platform.",
+  "takeaways": [
+    "Sell cash-secured puts on stocks you're comfortable owning long-term",
+    "Strike selection: choose strikes where stock would need to drop dramatically (e.g., HIMS at $64, sold $57 puts)",
+    "Premium must compensate for max loss: $35 premium + $55.95 net cost = $59 strike price",
+    "Reserve full capital requirement upfront: selling 3 contracts at $57 requires $17,100 reserved in account",
+    "Avoid greedy exits: lock in $193 on Oscar Health rather than chase extra $10-15 per contract",
+    "Earnings trades are high-risk, suitable only for experienced traders (15+ years trading)",
+    "Weekly target: $1,200 premium on $50k portfolio (~5% return for the week)"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Integrate cash-secured puts into rotation with covered calls when underlying drops below target entry, reserving capital systematically to reach $1,250/mo target",
+      "evidence": "Kenneth made $1,200 this week using CSPs + covered calls on limited capital deployed ($3,100 actual outlay due to CSP capital reservation). Demonstrates CSPs defer capital outlay while capturing premium, freeing up funds for additional positions to meet monthly premium goals."
+    }
+  ],
+  "id": "UlYufCzOC18",
+  "title": "Part 10: 8/4/25 $180 a week and HOW TO SELL CASH SECURED PUTS ",
+  "duration": 381
+}

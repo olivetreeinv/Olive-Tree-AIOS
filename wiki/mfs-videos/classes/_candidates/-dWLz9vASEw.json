@@ -1,0 +1,40 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan mentors multifamily investors on deal underwriting, due diligence, and capital raising. Key focus includes evaluating seller responses to 22-question due diligence checklists, understanding representations and warranties in contracts, and structuring syndication with proper legal documentation to avoid money pits and legal liability.",
+  "takeaways": [
+    "Send 22-question due diligence checklist to seller BEFORE going into contract to validate property condition, roof age, plumbing/electrical systems, Section 8 units, water heater specs, and wiring type (verify copper vs aluminum by having inspector remove outlets/fixtures)",
+    "Trust but verify: cross-reference seller's answers against lease audits and inspections; aluminum wiring fraud occurred 3x in their deals despite sellers claiming copper",
+    "Properties built pre-1980 (especially 1960s-1970s) have higher maintenance costs due to cast iron piping, aluminum wiring, flat roofs; 1980+ is quality threshold with ABS/PVC lines and copper electrical",
+    "Shut-off valve testing critical: failure to inspect all building water shut-offs individually caused $25k in remediation when half didn't work, forcing total complex shutdowns that cause 2-3 additional leaks over 3 months due to air/sediment in old piping",
+    "For flat roofs with prior leak history, inspect heavily and use repair/credit leverage to renegotiate; roof age 20+ years requires professional inspection",
+    "First deal sweet spot is 10-30 units with $300-600k capital raise; 12-unit deal with 6-7% closing costs should cover legal/syndication fees; deal economics pay for SEC documentation (~$14k first set, ~$7k thereafter)",
+    "Real estate professional designation (500-700 hours/year managing real estate) allows pass-through of negative K-1 losses against W-2 ordinary income, not just capital gains\u2014applies to multifamily syndication AND short-term rentals via bonus depreciation",
+    "Cost segregation study ($5-7k) financially justified only at scale (10+ units minimum); applies to any asset type but only makes sense when spread across sufficient units"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Implement pre-contract 22-question due diligence checklist covering roof age, water/electrical systems, Section 8 status, water heater specs, plumbing/electrical code compliance, and wiring type with inspection verification steps",
+      "evidence": "Tony's accepted offer ($1.22M at 18% IRR) came after sending questions; Samir's 16-unit property validated answers on 20-year roof, 250-gal water heaters, copper wiring, and no Section 8; Justin's $25k water valve failure shows cost of skipping individual unit shut-off inspection"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Verify aluminum vs copper wiring by having inspector physically remove outlet covers and light fixtures to check wire connections\u2014don't trust seller's written answers",
+      "evidence": "Justin caught seller lying 3 times claiming copper when aluminum wiring existed; discovery during due diligence contingency avoided post-hard-money renegotiation; aluminum wiring common in pre-mid-1970s builds requiring replacement"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Target 10-30 unit properties for first deal to optimize capital raising ($300-600k OPM) and spread syndication legal costs ($14k first set, ~$7k second set) across unit economics",
+      "evidence": "Tony's 12-unit deal at 6-7% closing costs covers legal fees; Justin's first 27-unit deal required $898k raise but built repeatable process; smaller deals make documentation cost per unit too high"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Establish broker relationships BEFORE deal sourcing through Zoom calls to build trust/rapport, then receive off-market deal flow (portfolio opportunities, backup listings) as deals mature",
+      "evidence": "Tony's accepted deal came from broker mentioning third property in portfolio after initial contract fell through; initial outreach on different property led to backup LOI strategy that generated the winning offer"
+    }
+  ],
+  "id": "-dWLz9vASEw",
+  "title": "Tuesday Mentorship Q&A_04-15-25 | Justin Brennan",
+  "duration": 2558
+}

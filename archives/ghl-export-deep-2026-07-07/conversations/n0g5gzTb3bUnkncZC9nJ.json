@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "n0g5gzTb3bUnkncZC9nJ",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906178332,
+    "dateUpdated": 1783364858825,
+    "lastMessageDate": 1783364858821,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Melissa, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906179314,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "XFLpI5JErsUNgm51WzDZ",
+    "fullName": "Melissa Barbier",
+    "contactName": "Melissa Barbier",
+    "companyName": null,
+    "phone": "+14046830975",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364858821
+    ]
+  },
+  "messages": [
+    {
+      "id": "N6Y5FFCEybiu3U7HETzC",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Melissa, a copy of the pitch deck has been sent to your email.",
+      "contactId": "XFLpI5JErsUNgm51WzDZ",
+      "contentType": "text/plain",
+      "conversationId": "n0g5gzTb3bUnkncZC9nJ",
+      "dateAdded": "2026-07-06T19:07:38.278Z",
+      "dateUpdated": "2026-07-06T19:07:38.278Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+14046830975",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "wk3YEodJmly26PibBpGI",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Melissa, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "XFLpI5JErsUNgm51WzDZ",
+      "contentType": "text/plain",
+      "conversationId": "n0g5gzTb3bUnkncZC9nJ",
+      "dateAdded": "2026-06-19T21:56:18.614Z",
+      "dateUpdated": "2026-06-19T21:56:20.036Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+14046830975",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

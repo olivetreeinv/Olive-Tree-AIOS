@@ -1,0 +1,40 @@
+{
+  "deal_relevant": "yes",
+  "topic": "capital-raise",
+  "summary": "Justin Brennan teaches the complete capital raising process for multifamily deals, covering both the marketing side (pitch decks, summary videos, investor outreach) and legal side (LLC operating agreements for friends/family deals vs. PPM with 506B/506C offerings for larger raises from unknown investors). He explains how to structure raises, identify investor sources, and work with securities attorneys to ensure legal compliance.",
+  "takeaways": [
+    "On a $700,000 raise with $630,000 from LPs, expect to land 5-8 investors total, typically one or two high net worth individuals ($100k-$500k each) plus friends/family at $25k-$50k minimums",
+    "Pitch decks must answer the three questions every investor asks: How much do you need? When do you need it? When do I get paid back?",
+    "Friends and family deals with 3-6 known investors require only an LLC operating agreement drafted by an attorney; don't use LegalZoom templates without attorney backing",
+    "For raising from unknown investors, use a PPM (private placement memorandum) with four documents: offering, subscription agreement, operating agreement, and investor questionnaire\u2014costs $14,000-$16,000 for first deal, ~50% less for subsequent deals",
+    "506B offerings are non-public (marketed only to your network via email/phone/text) and can include non-accredited investors; 506C offerings allow public marketing but require accredited investors only",
+    "Include a 5-10 minute summary video on a backend portal where investors can review pitch deck, documents, and schedule phone calls before committing",
+    "Don't publicly market deals on social media or run ads without proper legal structure (506C with accredited investors only)",
+    "Use your entire network strategically: even broke friends may refer wealthy contacts\u2014ask 'Who do you know?' rather than assuming they'll invest themselves"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "capital-raise",
+      "change": "Create pitch deck + summary video + portal before marketing to investors",
+      "evidence": "Justin emphasizes pitch decks are 'critical, critical, critical' and shows how summary videos on a backend portal let investors review docs and schedule calls, moving from general interest to commitment"
+    },
+    {
+      "skill": "capital-raise",
+      "change": "Know the four legal documents required in a PPM: offering, subscription agreement, operating agreement, investor questionnaire",
+      "evidence": "Justin details that 'the private placement memo package is going to include these four documents' and that securities attorneys prepare these specifically to protect the general partner if regulatory issues arise"
+    },
+    {
+      "skill": "capital-raise",
+      "change": "Structure investor outreach by tapping extended network, not just direct contacts",
+      "evidence": "Justin's explicit tactic: 'I wouldn't even go direct...I would say hey John, Joanne, I'd blast it to my database...then they may say I can't do it right now I say awesome Who do you know...You'd be amazed'"
+    },
+    {
+      "skill": "capital-raise",
+      "change": "Distinguish between 506B (non-public, any investor type) vs 506C (public marketing, accredited only)",
+      "evidence": "Justin teaches 'if you're going to publicly market a deal, it needs to be accredited investors only. Okay, that's a 506C...with a 506B offering is non-public' and uses his early 27-unit and 31-unit Kansas City deals as 506B examples"
+    }
+  ],
+  "id": "0de5bd5f-d9e9-4917-886b-8d8a3e9ec1a3",
+  "title": "How To Raise Capital",
+  "module": "Module 3: Raising The Money"
+}

@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan teaches the complete process for acquiring multifamily properties (5+ units) within 90 days by leveraging other people's money (OPM). He breaks down the five pillars: finding deals, analyzing deals, raising capital, closing escrow, and asset management. The core strategy involves identifying off-market deals through broker relationships, structuring deals to minimize personal capital (demonstrated with an 18K down payment on a $2.15M deal), and raising investor equity to control larger properties.",
+  "takeaways": [
+    "Identify 3+ brokers per market, tour on-market properties, then ask brokers for off-market deals - this leverage builds relationships to access off-market inventory where real deals exist",
+    "Target 8-20 unit deals as entry point; avoid 50+ unit deals as first investment because you'll lack execution capability",
+    "Underwrite deals requiring 14-20% annual returns (IRR) and 6-10% cash-on-cash return - if deal doesn't meet this, don't proceed",
+    "Structure capital as 10% GP contribution + 90% raised investor equity; this keeps personal cash minimal while maintaining control and 40%+ profit split",
+    "General Partners earn acquisition fees (3% of purchase price) at close and 40%+ of deal profits while investors receive 14-20% annual returns",
+    "Lead deal sourcing with: deal \u2192 debt (70% bank loan) \u2192 equity (30% investor capital), not the reverse; money follows good deals",
+    "Use 'soft commitments' by changing your tagline to 'I buy and sell apartments with investors around the country' - this attracts capital before you have a deal ready"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Implement the 5-pillar framework (find-analyze-raise-close-manage) with specific return thresholds (14-20% IRR, 6-10% cash-on-cash) to filter deals before capital commitment",
+      "evidence": "Brennan repeatedly emphasizes that analyzing deals with these specific metrics prevents pursuing weak opportunities; he states 'if it does not meet that you wouldn't move forward'"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Execute 3-broker tour strategy: identify 3+ brokers per market, tour their on-market listings, then request off-market inventory instead of searching listings online only",
+      "evidence": "Brennan teaches 'Leverage The on-market to get to the off-market' and shares his Kansas City example: 'I went into that market understood it found three Brokers three properties set up tours for them flew out there... boom that's how we got our first two deals 27 unit a 31 unit'"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Start with 8-20 unit deals, not 50+ unit properties; this size attracts responsive mom-and-pop brokers and is capital-executable for beginners",
+      "evidence": "Brennan warns 'if you've never done it before you have no chance... you start somewhere between 8 to 20 unit deal the Brokers are more mom and pop they'll actually call you back'"
+    },
+    {
+      "skill": "capital-raise",
+      "change": "Lead with deal quality first (14-20% returns), then structure debt/equity stack; use acquisition fees and profit splits to minimize personal cash outlay from $100K+ down to $18K-25K on million-dollar deals",
+      "evidence": "Brennan demonstrates $2.15M deal with $18K personal capital: '10% is what I bring in... 90% I raised from about five to seven people... acquisition fee for about 46 Grand... so my out of pocket literally was 18K'"
+    }
+  ],
+  "id": "neG5DujMGfg",
+  "title": "Own A Multifamily Property In Just 90 Days:  Expert Tips And Tricks! | Justin Brennan",
+  "duration": 4943
+}

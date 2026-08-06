@@ -1,0 +1,29 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth demonstrates his weekly covered call strategy, showing how he deployed $64,881 across multiple positions to generate $2,600 (4%) in premium income in half an hour. He walks through the mechanics of buying 100 shares and selling weekly covered calls using Charles Schwab's Think or Swim platform, using Snapchat ($8.40/share) as a low-cost example.",
+  "takeaways": [
+    "Sell covered calls on weekly expiration for recurring income",
+    "Minimum 100 shares required per covered call contract (1 contract = 100 shares)",
+    "Find stock candidates using CNBC market movers filtered by volatility, unusual volume, or most active",
+    "Use bid column in Think or Swim to sell covered calls at bid price",
+    "Calculate percentage gain on capital deployed: premium received \u00f7 stock cost \u00d7 100 (e.g., $19 premium on $839 cost = 2.26%)",
+    "Target 4% return weekly through multiple simultaneous positions ($64,881 deployed for $2,600 premium)",
+    "Lower-priced stocks like Snapchat ($840 total for 100 shares) are more accessible than expensive stocks ($23,000+)"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Systematize stock selection by filtering CNBC movers for volatility + unusual volume metrics to improve fill consistency across the $50k Premium Desk",
+      "evidence": "Kenneth explicitly uses CNBC market movers (top/bottom, most active, unusual volume) as primary method to identify candidates for covered call writing each week"
+    },
+    {
+      "strategy": "trading-desk",
+      "change": "Target 2-4% weekly return per position (matching Kenneth's 2.26% Snapchat example and $2,600 on $64,881 total, roughly 4%) as benchmark for premium collection threshold",
+      "evidence": "Kenneth demonstrates 2.26% on individual trade and 4% overall weekly return ($2,600/$64,881), suggesting this is his expected range for position sizing"
+    }
+  ],
+  "id": "I0RHS0i1OHw",
+  "title": "I just spent $64,881 - what did I buy?? ",
+  "duration": 305
+}

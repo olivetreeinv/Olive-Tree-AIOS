@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan teaches beginners how to start multifamily investing, targeting 10-30 unit boutique properties as first deals. He covers deal sourcing via brokers, underwriting metrics (14-20% IRR, 6-10% CoC, 1.8x equity multiple), and capital raising structures using general/limited partner models. He demonstrates how to raise capital through pitch decks and relationships rather than direct seller sourcing.",
+  "takeaways": [
+    "Target 10-30 unit 'boutique' properties for first deal, not 50+ units\u2014easier to finance, raise capital, and manage as a beginner",
+    "Use 'on-market to off-market' method: tour listed properties to build broker relationships and access pre-market deals not on websites",
+    "Deal must produce IRR 14-20%+, cash-on-cash return 6-10%+, and equity multiple 1.8x or higher\u2014all three metrics required or don't do the deal",
+    "General partner brings 10% of capital but receives 30-40% of deal profits; limited partners bring 90% and receive 70%",
+    "Acquisition fees, asset management fees (monthly), and cash distributions provide 5-8 different payment streams throughout deal lifecycle",
+    "Close escrow in 60-90 days; have 14-day lag after acceptance plus 3 months to raise capital\u2014plenty of time if deal is bite-sized",
+    "Physical out-of-pocket can be minimal ($18K example on $1.5M deal) via acquisition fees and refinancing; leverage OPM to scale capital efficiency"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Systematically screen deals against three mandatory return metrics before pursuing",
+      "evidence": "Justin explicitly teaches that deals must hit IRR 14-20%+, CoC 6-10%+, and 1.8x equity multiple\u2014'if it does not produce the information to the right you don't do the deal'"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Build broker relationships by touring on-market properties in target submarket to access pre-market deal flow",
+      "evidence": "Justin walks through calling broker Kyle on a listed 12-unit deal to set up tours, establishing rapport to receive pre-market listings within 3 weeks of visiting the market"
+    },
+    {
+      "skill": "capital-raise",
+      "change": "Pitch deals as investor opportunities (not money-asking) with templated pitch decks covering minimum investment, returns, timeline, and investor distributions",
+      "evidence": "Justin reframes capital raising from taboo money-asking to 'providing an opportunity'\u2014pitch deck answers 95% of investor questions; his first deal raised $898K in 3 weeks with no prior fundraising experience"
+    }
+  ],
+  "id": "GC31FAVq0R4",
+  "title": "How To Start Multi-Family Investing: A Step-By-Step Blueprint For Beginners",
+  "duration": 3970
+}

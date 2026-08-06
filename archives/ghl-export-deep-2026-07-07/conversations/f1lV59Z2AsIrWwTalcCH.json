@@ -1,0 +1,49 @@
+{
+  "conversation": {
+    "id": "f1lV59Z2AsIrWwTalcCH",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249921961,
+    "dateUpdated": 1750249921961,
+    "lastMessageDate": 1750249921961,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "2LOj0ljkncTusNcqh0V5",
+    "fullName": "Cathy Smith",
+    "contactName": "Cathy Smith",
+    "companyName": null,
+    "email": "csarahsm@yahoo.com",
+    "phone": "+17708738855",
+    "tags": [],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "sort": [
+      1750249921961
+    ]
+  },
+  "messages": [
+    {
+      "id": "9st4zp2TO3uZsQ0Ct1RE",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "2LOj0ljkncTusNcqh0V5",
+      "conversationId": "f1lV59Z2AsIrWwTalcCH",
+      "dateAdded": "2025-06-18T12:31:13.043Z",
+      "dateUpdated": "2025-06-18T12:33:22.510Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "KWJyQAu2MZVDhijQGk7J"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

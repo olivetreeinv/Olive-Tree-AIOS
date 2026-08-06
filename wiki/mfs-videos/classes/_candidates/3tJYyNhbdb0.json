@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin conducts a live mentorship session breaking down Robbie's 10-unit (5 duplex) value-add deal in Nampa, Idaho purchased at $1.173M with 25% down. The deal features significant upside from rent increases ($150-200/unit without improvements) and potential lot consolidation enabling new unit construction worth ~$800K in additional value. Discussion covers deal sourcing (off-market through personal network), underwriting methodology, financing structure, and how to evaluate properties when incomplete broker data is provided.",
+  "takeaways": [
+    "Request T12 profit & loss statement and rent roll as minimum critical documents when broker flyers lack complete data",
+    "Use ChatGPT with property address to pull population growth, job growth, median household income projections and new developments to validate market opportunity",
+    "Rent increases of $150-200/month can be achieved on undermarket mom-and-pop properties without any unit renovations",
+    "Hire civil engineer locally (cost $250-300K) to combine multiple lots into one, which can add ~$800K in value through additional unit construction potential",
+    "Insurance costs may be artificially low on multi-property portfolios due to blanket cross-collateralized policies\u2014must ask broker this question and underwrite to individual property insurance costs post-acquisition",
+    "Deal analyzer spreadsheet: only blue-highlighted cells are editable/have no formula; all non-blue cells are formula-based and auto-populate when inputs change",
+    "Use 6-10% cash-on-cash return range with aligned equity multiples and IRR as the decision threshold\u2014if property fits these ranges, write the LOI"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Validate incomplete broker packages by requesting specific minimum documents (T12 and rent roll) rather than waiting for full OM",
+      "evidence": "Michelle struggled analyzing flyers without complete data; Justin taught: 'the most important things that you need are a T12...and the rent roll' and explained that requesting these documents from brokers is standard practice for incomplete offerings"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Use ChatGPT systematically to validate market fundamentals before underwriting financials",
+      "evidence": "Justin instructed: 'Go into ChatGPT, put in the address...show me population growth, job growth, median household income for the last three years and any new developments.' He used this output to confirm Nampa opportunity before diving into numbers."
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Distinguish between editable vs formula-based spreadsheet cells to avoid manual entry errors in proformas",
+      "evidence": "New analyst submitted four deals with broken proforma calculations; Justin clarified: 'Everything in blue is editable...Everything not in blue is formula based' and showed that non-blue cells auto-populate, eliminating need for manual updates"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Ask specific follow-up question about multi-property insurance bundling to avoid underwriting artificially low costs",
+      "evidence": "Insurance was flagged as suspiciously low; Justin taught: 'Ask...how are they getting the insurance? Is it crosscollateralized amongst multiple properties?' and warned 'you're not going to be able to underwrite to that because the minute it comes out of the portfolio now, you're going to be paying a real insurance policy'"
+    }
+  ],
+  "id": "3tJYyNhbdb0",
+  "title": "Tuesday Mentorship Q&A - Live Apartment Deal Breakdown_08-05-25 | Justin Brennan",
+  "duration": 2808
+}

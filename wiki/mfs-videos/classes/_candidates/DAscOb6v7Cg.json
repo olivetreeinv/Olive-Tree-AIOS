@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "partial",
+  "topic": "broker-search",
+  "summary": "Justin Brennan conducts a mentorship Q&A focusing on initial market entry and broker engagement for newer multifamily investors. Joe shares his first broker-meeting experience in Dallas/Fort Worth, while other members discuss market selection (Indiana, Ohio, Atlanta) and deal analysis logistics. The discussion covers neighborhood evaluation techniques, flood zone risk assessment, and deal analyzer mechanics for structuring GP/LP contributions.",
+  "takeaways": [
+    "Make three broker appointments in your target market as your first reconnaissance mission, even if you fall flat on your face",
+    "Count bars on windows while driving the streets\u2014high bar count indicates poor neighborhood quality and is a reliable risk indicator",
+    "For neighborhood due diligence, speak directly to local business owners (mom-and-pop restaurants) and neighbors to understand area dynamics and safety",
+    "Use ChatGPT to pull market data in 15 minutes instead of a full day: ask for population growth, job growth, median household income, rent growth trends, vacancy rates, and new construction supply vs. demand",
+    "Check 10-year flood history by asking neighbors and researching if ravines/flood channels have actually overflowed\u2014if no overflow in 10 years, acceptable risk with flood insurance",
+    "On the Deal Analyzer 0-50 unit model, if double-dipping as GP, zero out GP contribution at top and include 100% of capital in LP section so numbers accurately reflect what LPs actually receive",
+    "Healthy LP annual returns are 12-15%, with anything north of 14% being good; equity multiplier of 1.8x or more is decent (though these are projections and can be outperformed)"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "broker-search",
+      "change": "Establish systematic first-contact protocol with brokers",
+      "evidence": "Joe's positive Texas broker meetings validated the '3 broker appointments in a new market' framework; Justin emphasizes this reconnaissance mission is critical and should be done even if nervous or uncomfortable"
+    },
+    {
+      "skill": "market-research",
+      "change": "Use ChatGPT for rapid market data aggregation instead of manual research",
+      "evidence": "Justin demonstrates ChatGPT can pull population growth, job growth, rent trends, vacancy, and new construction data in 15 minutes vs. full day; applicable to Atlanta market inquiry and property tax calculations"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Properly account for GP cash contribution in Deal Analyzer waterfall to reflect accurate LP returns",
+      "evidence": "Ryan identified that 0-50 unit analyzer doesn't show GP contribution impact on LP IRR/equity multiplier; fix by zeroing GP contribution at top and including all capital in LP section for pitch deck accuracy"
+    }
+  ],
+  "id": "DAscOb6v7Cg",
+  "title": "Tuesday Mentorship Q&A_05-13-25 | Justin Brennan",
+  "duration": 2376
+}

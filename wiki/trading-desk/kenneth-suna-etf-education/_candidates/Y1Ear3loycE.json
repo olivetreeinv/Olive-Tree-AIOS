@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "partial",
+  "strategy": "covered-calls",
+  "summary": "Kenneth compares two covered call ETFs (JEPPY vs JEEPQ), explaining their structural differences, holdings compositions, and risk-return profiles. JEPPY focuses on S&P 500 with 18.75% tech exposure and 8% yield, while JEEPQ focuses on NASDAQ-100 with 50% tech exposure and 9% yield. Both use hybrid approaches combining long-term stock holdings with covered call selling.",
+  "takeaways": [
+    "Both JEPPY and JEEPQ sell covered calls on a portion of holdings while maintaining long-term stock investments (hybrid approach)",
+    "JEPPY has 132 total holdings vs JEEPQ's 98 holdings, indicating different diversification strategies",
+    "JEPPY dividend yield around 8%, JEEPQ yield slightly higher around 9%",
+    "JEPPY up 3% over 1-year, JEEPQ up 22% over 1-year, driven by NASDAQ exposure difference",
+    "JEPPY 18.75% technology allocation vs JEEPQ 50% technology allocation reflects underlying index focus",
+    "Both funds relatively new (JEPPY since 2020, JEEPQ since 2022), limiting historical performance data",
+    "Identical expense ratios between the two funds"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Consider JEEPQ-style concentration (NASDAQ focus, 50% tech) over broader S&P 500 approach if Premium Desk portfolio already has growth bias and can tolerate higher tech volatility",
+      "evidence": "JEEPQ's 22% 1-year return vs JEPPY's 3% demonstrates the performance benefit of concentrated tech/growth exposure through covered call premium generation"
+    }
+  ],
+  "id": "Y1Ear3loycE",
+  "title": "Which Covered Call ETF is Better?! #kennethsuna #investingforbeginners",
+  "duration": 234
+}

@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan teaches a comprehensive framework for buying 15-50 unit multifamily properties in 90 days, focusing on the three critical skills of finding deals through brokers, analyzing them using key metrics (NOI, cap rate, cash-on-cash returns), and structuring financing using commercial loans and OPM (other people's money). He demonstrates how to enter deals with minimal personal capital by leveraging acquisition fees and equity raises to reduce out-of-pocket requirements.",
+  "takeaways": [
+    "Find deals through brokers by leveraging on-market listings (40% of deals) to access pre-market opportunities (60% of deals) - only 40% of properties make it to websites, the rest go to pre-market investor groups first",
+    "Focus on 10-30 unit deals when starting - anything 50+ units requires established track record and lender relationships you won't have initially",
+    "Use 75% loan-to-cost financing: for $1.6M total project cost, secure $1.2M loan (75%) and raise $400K equity (25%)",
+    "Structure GP/LP deal splits: bring 10% of capital ($40K on $400K equity raise) and receive 30% ownership, while investors bring 90% and receive 70%",
+    "Calculate deal quality using three metrics: 14-20% annual returns, 6-10%+ cash-on-cash returns, 1.8x+ equity multiples",
+    "Net operating income (NOI) is the core value driver: every $1,000/month NOI increase adds $220,000 in property value (NOI \u00f7 cap rate = property value)",
+    "Collect 5-8 revenue streams as syndicator: acquisition fee (2-3% at close), asset management fee (1-2% of revenue), 30-40% of cash flow, construction management fee (5-8% of construction costs), disposition fee (0.5-2% at sale), tax write-offs, and capital raise fees (3%)"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Learn to identify investment-grade deals by screening for minimum 14-20% annual returns, 6-10% cash-on-cash returns, and 1.8x+ equity multiples before deep analysis",
+      "evidence": "Justin teaches attendees to evaluate deals on three high-level metrics first, then dive deeper - this filters out obviously bad deals and saves time analyzing properties that don't meet Brian's criteria for 15-50 unit value-add multifamily in GA/TN/AL"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Implement systematic broker relationship-building by touring on-market properties specifically to build rapport and get added to pre-market investor lists, rather than cold-calling or mass outreach",
+      "evidence": "Justin demonstrates the exact script: tour on-market property, shake hands with broker, then ask 'do you have anything coming to market that's not listed yet?' to access the 60% of deals that never hit websites - this is how his mentees sourced 4 Texas properties in one visit"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Start executing deal analysis immediately with minimal capital by raising OPM (other people's money) rather than waiting to accumulate full down payment - structure deals where you put 10% and raise 90% from investors",
+      "evidence": "Justin's 31-unit Kansas City example: he had only $18,000 out-of-pocket after acquisition fee credit, yet controlled 40% ownership plus LP interest, ultimately making $590,000 profit - demonstrates that knowledge + execution beats capital"
+    }
+  ],
+  "id": "s-ym5Lze-3Y",
+  "title": "How To Buy Apartment Buildings In 90 Days: Multifamily Real Estate Investing",
+  "duration": 4189
+}

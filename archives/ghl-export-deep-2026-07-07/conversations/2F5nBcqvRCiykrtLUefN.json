@@ -1,0 +1,80 @@
+{
+  "conversation": {
+    "id": "2F5nBcqvRCiykrtLUefN",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364433399,
+    "dateUpdated": 1783364434144,
+    "lastMessageDate": 1783364434139,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Scott/Kathy, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "z5k3ZCbY19wzj80YfBuf",
+    "fullName": "Scott/kathy Carpet",
+    "contactName": "Scott/Kathy Carpet",
+    "companyName": null,
+    "phone": "+17709668858",
+    "tags": [
+      "contractor",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "attributed": null,
+    "sort": [
+      1783364434139
+    ]
+  },
+  "messages": [
+    {
+      "id": "2uKiUVO621jqpZyZg12P",
+      "direction": "inbound",
+      "type": 25,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "body": "DnD enabled by customer",
+      "contactId": "z5k3ZCbY19wzj80YfBuf",
+      "conversationId": "2F5nBcqvRCiykrtLUefN",
+      "dateAdded": "2026-07-06T19:00:35.253Z",
+      "dateUpdated": "2026-07-06T19:00:35.253Z",
+      "from": "+17709668858",
+      "to": "Brian Norton",
+      "activity": {
+        "data": {
+          "channel": [
+            "SMS"
+          ]
+        },
+        "title": "DND enabled by customer",
+        "type": "contact_dnd_enabled"
+      },
+      "messageType": "TYPE_ACTIVITY_CONTACT"
+    },
+    {
+      "id": "8rRlwR69oqj172Ffvnlj",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Scott/Kathy, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "z5k3ZCbY19wzj80YfBuf",
+      "contentType": "text/plain",
+      "conversationId": "2F5nBcqvRCiykrtLUefN",
+      "dateAdded": "2026-07-06T19:00:33.451Z",
+      "dateUpdated": "2026-07-06T19:00:33.451Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+17709668858",
+      "error": "Error 30006 - Landline or non-mobile number. Cannot receive SMS.",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

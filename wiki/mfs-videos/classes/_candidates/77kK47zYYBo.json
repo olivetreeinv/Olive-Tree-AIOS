@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "partial",
+  "topic": "broker-search",
+  "summary": "Justin Brennan coaches multifamily investors on market setup and broker relationship building. He explains how to use Crexy not to find deals (which he says are mostly overpriced at 80% of market), but to identify market-dominating brokers by their logo frequency. The core strategy involves calling brokers on listed deals as a pretext to build relationships and access their pre-market deal flow, where 80% of actual deals sell before public listing.",
+  "takeaways": [
+    "Use Crexy to find brokers by logo frequency, not deals\u2014brokers with 3+ listings are market makers with 3-4 more deals behind the scenes",
+    "Brokers filter off-market opportunities using loan maturity dates; properties with loans maturing in next 12 months are targets for refinance or sale conversations",
+    "Set up your market geographically (e.g., Ohio), then plan 2-3 day in-person trip to tour deals and meet brokers, PMs, and local lenders",
+    "Call brokers on Crexy-listed deals with script: 'I'm buying in this market, interested in this property, can I get on your preferred/pre-market list?'",
+    "Negotiations use price anchoring\u2014start high (e.g., $100K concession), expect rejection, land on target range ($30-40K) after multiple counteroffers and cooling-off periods",
+    "Brokers give lists (not recommendations) of PM companies and local lenders to build your local team without broker endorsement",
+    "Stage 1 deals sell 80% of the time in broker's pre-market database of 25-50 investors; Stage 2 (Crexy) gets the rejects that need heavy negotiation"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "broker-search",
+      "change": "systematically identify and prioritize brokers by market presence using Crexy logo frequency as signal",
+      "evidence": "Justin teaches filtering Crexy by broker logos in bottom-right corner, showing which brokers have most listings = market makers with hidden deal flow"
+    },
+    {
+      "skill": "broker-search",
+      "change": "build pre-market access by calling on listed deals as relationship-building pretext, not actual deal targets",
+      "evidence": "'I could care less about these properties... You're using them as a lure. You're not using them to actually do the deal.' Justin shows calling Austin Hall on 10-unit to gain access to his pre-market database"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "recognize that 99% of Crexy deals are overpriced rejects from Stage 1; filter by loan maturity dates instead of property quality",
+      "evidence": "'If it doesn't sell there because everybody passes on it, then it goes to stage two, which is what you're looking at here on krexy.com... it just needs to be heavily negotiated'"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "use multi-stage price anchoring with 24-48 hour cooling periods to move sellers from hard 'no' toward realistic concession range",
+      "evidence": "Samir/Luis negotiation example: set $100K anchor, get 'no', come back with $50K, get rejection, land at $35-40K target after broker mediation and time delays"
+    }
+  ],
+  "id": "77kK47zYYBo",
+  "title": "Weekly Coaching_10-30-25 | Justin Brennan",
+  "duration": 3581
+}

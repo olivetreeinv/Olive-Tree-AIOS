@@ -1,0 +1,86 @@
+{
+  "conversation": {
+    "id": "0dfGGDKQLPzpLZJh8FoV",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906053476,
+    "dateUpdated": 1783364634083,
+    "lastMessageDate": 1783364634079,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Patrick, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906054430,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "9TbR3F8TaWg8fmfaMMQZ",
+    "fullName": "Patrick",
+    "contactName": "Patrick",
+    "companyName": "Aloha Pools",
+    "phone": "+17704808461",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "profilePhoto": null,
+    "attributed": null,
+    "email": null,
+    "sort": [
+      1783364634079
+    ]
+  },
+  "messages": [
+    {
+      "id": "bIEYe3ap4Njmd10O8E7r",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Patrick, a copy of the pitch deck has been sent to your email.",
+      "contactId": "9TbR3F8TaWg8fmfaMMQZ",
+      "contentType": "text/plain",
+      "conversationId": "0dfGGDKQLPzpLZJh8FoV",
+      "dateAdded": "2026-07-06T19:03:53.488Z",
+      "dateUpdated": "2026-07-06T19:03:53.488Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+17704808461",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "rQXopvCpQmMeRzdig2Pm",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Patrick, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "9TbR3F8TaWg8fmfaMMQZ",
+      "contentType": "text/plain",
+      "conversationId": "0dfGGDKQLPzpLZJh8FoV",
+      "dateAdded": "2026-06-19T21:54:13.711Z",
+      "dateUpdated": "2026-06-19T21:54:15.108Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+17704808461",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth demonstrates how to sell covered calls on Meta using Thinkorswim, earning $1,800 premium by Friday, but advises against this specific trade due to upcoming earnings and stock volatility risk. He illustrates the capital requirement ($46,000 for 100 Meta shares) and contrasts returns across different stock prices (Palantir example yields only $13).",
+  "takeaways": [
+    "Avoid selling covered calls on stocks down dramatically when earnings are imminent\u2014risk of assignment outweighs premium collected",
+    "Strike prices further out-of-the-money yield smaller premiums but lower assignment probability",
+    "Capital requirement: $46,600 needed to sell one covered call contract on Meta at $466/share to collect $1,800 premium",
+    "Covered call premium collection requires owning 100 shares per contract",
+    "Lower-priced stocks like Palantir ($27-28 range) generate minimal weekly premium (~$13/contract) vs. expensive stocks like Meta/Tesla",
+    "One-week expiration on covered calls during earnings week is too risky despite attractive premium dollar amounts"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Focus covered call selling on earnings-free weeks and avoid stocks down significantly that could pop on positive catalysts",
+      "evidence": "Kenneth explicitly states 'when a stock is down dramatically, it's not the best time to sell covered calls because the stock could surge' and notes Meta's upcoming Wednesday earnings makes Friday expiration risky\u2014this directly contradicts Brian's portfolio goal of consistent $1,250/mo and avoids early assignment losses"
+    }
+  ],
+  "id": "UKu4lUs08G8",
+  "title": "Here\u2019s how to make money selling covered calls",
+  "duration": 227
+}

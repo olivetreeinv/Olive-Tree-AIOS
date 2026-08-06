@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "GScbPOGPW6bFQ89fnswz",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781905876189,
+    "dateUpdated": 1783364308798,
+    "lastMessageDate": 1783364308790,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Steve & Ellen, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781905877251,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "EPSLEnhg10iqwQAawSwl",
+    "fullName": "Steve & Ellen Howe",
+    "contactName": "Steve & Ellen Howe",
+    "companyName": null,
+    "phone": "+17704009665",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364308790
+    ]
+  },
+  "messages": [
+    {
+      "id": "YNp85ue6uKyDKZEbuJjG",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Steve & Ellen, a copy of the pitch deck has been sent to your email.",
+      "contactId": "EPSLEnhg10iqwQAawSwl",
+      "contentType": "text/plain",
+      "conversationId": "GScbPOGPW6bFQ89fnswz",
+      "dateAdded": "2026-07-06T18:58:28.132Z",
+      "dateUpdated": "2026-07-06T18:58:32.580Z",
+      "source": "workflow",
+      "altId": "SM9fa5281b21ff48cb0c765049955443d1",
+      "from": "+16789712411",
+      "to": "+17704009665",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "NUFKmzcKtBw7hMazVVGW",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Steve & Ellen, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "EPSLEnhg10iqwQAawSwl",
+      "contentType": "text/plain",
+      "conversationId": "GScbPOGPW6bFQ89fnswz",
+      "dateAdded": "2026-06-19T21:51:16.435Z",
+      "dateUpdated": "2026-06-19T21:51:19.566Z",
+      "source": "app",
+      "altId": "SM907c9982f2e708fe9332b20d95ff754f",
+      "from": "+16789712411",
+      "to": "+17704009665",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

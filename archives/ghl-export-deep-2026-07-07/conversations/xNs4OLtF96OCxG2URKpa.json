@@ -1,0 +1,59 @@
+{
+  "conversation": {
+    "id": "xNs4OLtF96OCxG2URKpa",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364292456,
+    "dateUpdated": 1783364293119,
+    "lastMessageDate": 1783364293116,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Joel, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "xKSHqZc2zeSpBfiBeGsL",
+    "fullName": "Joel Ramsey",
+    "contactName": "Joel Ramsey",
+    "companyName": "Chimney Guy",
+    "phone": "+17708657526",
+    "tags": [
+      "contractor",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "profilePhoto": null,
+    "attributed": null,
+    "email": null,
+    "sort": [
+      1783364293116
+    ]
+  },
+  "messages": [
+    {
+      "id": "TtK1ILpjL1VkVQNhmu7o",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Joel, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "xKSHqZc2zeSpBfiBeGsL",
+      "contentType": "text/plain",
+      "conversationId": "xNs4OLtF96OCxG2URKpa",
+      "dateAdded": "2026-07-06T18:58:12.507Z",
+      "dateUpdated": "2026-07-06T18:58:17.528Z",
+      "source": "workflow",
+      "altId": "SMfa9f0952f38a7106b41e8e9d9375b06f",
+      "from": "+16789712411",
+      "to": "+17708657526",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

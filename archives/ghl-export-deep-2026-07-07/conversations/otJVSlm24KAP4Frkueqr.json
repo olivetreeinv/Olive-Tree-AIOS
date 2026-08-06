@@ -1,0 +1,56 @@
+{
+  "conversation": {
+    "id": "otJVSlm24KAP4Frkueqr",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364112015,
+    "dateUpdated": 1783364112794,
+    "lastMessageDate": 1783364112789,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Wendy, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "L53IWhy4WBhPfSkZy04x",
+    "fullName": "Wendy Sanchez",
+    "contactName": "Wendy Sanchez",
+    "companyName": "Supplier - Eagle Roof Atlanta",
+    "phone": "+16787897439",
+    "tags": [
+      "contractor",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364112789
+    ]
+  },
+  "messages": [
+    {
+      "id": "SrKKXzfZzCNksE7dRPZm",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Wendy, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "L53IWhy4WBhPfSkZy04x",
+      "contentType": "text/plain",
+      "conversationId": "otJVSlm24KAP4Frkueqr",
+      "dateAdded": "2026-07-06T18:55:12.061Z",
+      "dateUpdated": "2026-07-06T18:55:17.848Z",
+      "source": "workflow",
+      "altId": "SMfcc1321b81b8fcd6c76172311a994719",
+      "from": "+16789712411",
+      "to": "+16787897439",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "conversation": {
+    "id": "4MBiTKOaYKWhZ2sL3d9S",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249889389,
+    "dateUpdated": 1750249889389,
+    "lastMessageDate": 1750249889389,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "qJ4trS3vzrx8T8FUoYh2",
+    "fullName": "Chandler Pridgeon",
+    "contactName": "Chandler Pridgeon",
+    "companyName": null,
+    "email": "mcfundraising@yahoo.com",
+    "tags": [],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "phone": null,
+    "attributed": null,
+    "sort": [
+      1750249889389
+    ]
+  },
+  "messages": [
+    {
+      "id": "sCZZC2bM3UnSGfmuysAh",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "qJ4trS3vzrx8T8FUoYh2",
+      "conversationId": "4MBiTKOaYKWhZ2sL3d9S",
+      "dateAdded": "2025-06-18T12:31:14.473Z",
+      "dateUpdated": "2025-06-18T12:33:17.016Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "PWU3SdKYtYKq3wDKvwch"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

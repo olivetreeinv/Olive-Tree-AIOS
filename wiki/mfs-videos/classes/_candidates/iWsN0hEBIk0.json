@@ -1,0 +1,57 @@
+{
+  "deal_relevant": "partial",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan conducts a detailed walkthrough of a simple deal analyzer tool for multifamily properties, demonstrating how to input property data, calculate key metrics (debt service coverage ratio, cash-on-cash return, IRR, equity multiple), and work backwards from target returns to determine fair offer prices. The session includes practical examples of underwriting a deal to make sense, broker outreach strategy, and market reconnaissance methodology.",
+  "takeaways": [
+    "Debt Service Coverage Ratio (DSCR) must exceed 1.25x to be bankable",
+    "Target cash-on-cash return of 6-10% or more; IRR of 14-20%+ per year; equity multiple of 2.0x or higher (minimum 1.8x acceptable)",
+    "Down payment assumption: start with 30% as commercial standard (range 30-35%)",
+    "Repair budget: 7,500-8,500 per unit for turnkey/nice properties; 10,000-14,000 per unit for heavy renovations",
+    "Closing costs baseline: 6% (includes legal, title, escrow, acquisition fees, financing fees)",
+    "Interest rate baseline: 6.5% current assumption for modeling",
+    "Maintenance and repairs expense: ~700 per unit per year; turnover costs: ~250 per unit per year; property tax reserve replacement: 250-300 per unit per year",
+    "Management fee: 6-8% all-inclusive; vacancy/credit loss assumption: 10% as starting point",
+    "Use Crexy to identify broker names/logos (market makers), not to find deals directly; 4-week broker relationship building precedes property tours",
+    "Reconnaissance mission: fly in Sunday, tour properties Monday with 3 separate brokers belly-to-belly for rapport; tour 3 properties minimum",
+    "Property tour timing: Sunday shows all residents (good/bad/ugly); weekday evening commute also reveals neighborhood truth",
+    "Letter of Intent template available in portal; verbal offers acceptable before written LOI submission",
+    "When offer rejected, use as leverage to get on pre-market email list: 'I'm a buyer in this market, I'd love to buy through you'",
+    "Chat GPT usage for market research: ask for population growth (want >1%), job growth (want >1-2%), median household income (want >$60k+) for city comparisons over last 3 years",
+    "When deal doesn't work: either increase revenue (rents), decrease expenses, or reduce purchase price; work backwards from target returns to acceptable offer price"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Learn to input property fundamentals into deal analyzer tool (address, purchase price, down payment, repair budget, unit mix, rents, expenses) and identify when DSCR, cash-on-cash, and IRR targets are hit",
+      "evidence": "Justin walks through complete deal analyzer example showing blue (editable) vs black (hardcoded) cells, explains how to plug in purchase price as placeholder, property taxes via county formulas, insurance quotes from vendors, and how spreadsheet auto-calculates DSCR and returns metrics"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Practice reverse-engineering offer price by working backwards from target return metrics rather than accepting seller asking prices",
+      "evidence": "Justin demonstrates adjusting $900k asking price down to $800k by manipulating repair budget ($8,500 vs higher), expense ratios (mid-40s %), and confirming 1.25x DSCR, 6-10% cash-on-cash, and 14-20% IRR all align at lower price point"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Implement structured 3-property reconnaissance mission: identify 3 brokers on Crexy by spotting logos/market makers, call each before visit, schedule property tours for Monday during a Sunday-Monday trip",
+      "evidence": "Justin models entire broker outreach call: 'Hey Kevin, I'm calling on your property at 2917 Ashley in Houston, 12 units. What's the action?' Then schedules tour: 'I'm flying in next week, can I tour it?' Purpose is 'belly-to-belly rapport building' to access pre-market deals"
+    },
+    {
+      "skill": "market-research",
+      "change": "Use Chat GPT to rapidly score 3 candidate markets on population growth, job growth, median household income (all >1-2% growth, income >$60k) instead of manual research",
+      "evidence": "Justin instructs: 'Go to Chat GPT, type: give me population growth for each of the last three years as a percentage in [city], [state]. Do it for Indiana, Arkansas, Florida.' Repeats for job growth and median household income. 'It's the craziest thing I've ever seen in my life.'"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "When broker rejects offer or acts defensive, immediately pivot to relationship building and pre-market access request rather than arguing price",
+      "evidence": "Justin scripts response: 'I totally understand seller may not negotiate at that level, but if they are, we're interested. I understand deal may not make sense, but we're a buyer. I'd love to buy through you. Do you have any other deals? Can I get on your pre-market email list?'"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Build mini team within target market by asking brokers for PM referrals, then asking PMs for construction crew referrals, creating vendor network before buying",
+      "evidence": "Justin outlines process: after broker tour, ask broker 'Do you have property management companies you can refer?' Then ask PM: 'Do you have construction crews that help renovate for your clients?' Creates full renovation/management team pre-deal"
+    }
+  ],
+  "id": "iWsN0hEBIk0",
+  "title": "Tuesday Mentorship Q&A_04-29-25 | Justin Brennan",
+  "duration": 3000
+}

@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan provides a comprehensive framework for physical due diligence during escrow, detailing the inspection team required, unit walk procedures, critical systems to evaluate, and timeline management. The lesson covers both tactical inspection methodology and strategic deferred maintenance vs. capital improvement segregation needed to properly underwrite value-add multifamily deals.",
+  "takeaways": [
+    "Walk every single unit\u2014do not accept broker/seller offers to sample 20-30% of units",
+    "Use HappyCo software to snapshot every unit's condition with photos and checklists; 2-3 inspectors can cover 20-30 units per day or 100 units in two days",
+    "Build inspection team: property inspector, roofer, pool contractor, rehab contractor, termite inspector, landscaper, HVAC, plumber, electrician",
+    "Segregate deferred maintenance (required fixes) from capital improvements (value-add upgrades) in your analysis",
+    "Inspect critical expensive systems first: foundations, drainage, roof, structure, sewer lines, HVAC, water heaters, electrical panels, windows, siding",
+    "Request seller concessions or credits within 20-30 day escrow window if issues found",
+    "Complete initial property inspection within first 10 days of escrow; give management one week post-close to verify true vacant units vs. make-ready status"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Implement systematic unit walk documentation using software tools and dedicated inspection teams rather than sampling",
+      "evidence": "Justin emphasizes 'walk every single unit' with HappyCo software, 2-3 inspectors per site, and complete photo/checklist documentation of all units before close"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Distinguish deferred maintenance costs from capital improvement costs during underwriting to avoid inflating true cost basis",
+      "evidence": "Justin states: 'Pay attention to deferred maintenance like we talked about earlier versus say a capital improvement...You have to segregate those'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Prioritize inspection of high-cost structural/system items (roof, foundation, drainage, HVAC, plumbing) to identify deal-killing expenses early",
+      "evidence": "Justin says: 'Check the expensive stuff. foundations, drainage, roof, right? All the expensive stuff, structure, all that's very important' and mentions these can be 'very expensive to fix later'"
+    }
+  ],
+  "id": "0c5c4471-b37b-4f6d-b52e-06623c7e8b01",
+  "title": "Lesson 2: Physcial Due Diligence",
+  "module": "Module 4: Due Diligence & Closing Deals"
+}

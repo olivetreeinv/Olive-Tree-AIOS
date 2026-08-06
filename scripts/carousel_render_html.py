@@ -1,0 +1,342 @@
+#!/usr/bin/env python3
+"""
+carousel_render_html.py — premium HTML/CSS → PNG carousel renderer (Olive Tree).
+
+Light & airy editorial slide system designed with the taste-skill principles:
+soft off-white grounds, generous whitespace, one locked olive accent, refined
+type (Archivo), a photo-top cover (no dark scrim), and a single inverted olive CTA.
+
+Each slide is a self-contained 1080x1350 HTML block; Playwright screenshots each.
+Same spec + output contract as the Pillow renderer, so Drive/Metricool/sheet flow
+is unchanged. Hero image: supplied `cover_image` (e.g. Higgsfield) → Pexels
+`cover_query` → Wikimedia. The accent color is derived from the hero photo; the
+background stays light.
+
+Usage:
+    python3 scripts/carousel_render_html.py --json slides.json --out output/carousel/<slug>
+    python3 scripts/carousel_render_html.py --demo
+"""
+from __future__ import annotations
+
+import argparse
+import base64
+import colorsys
+import html as _html
+import json
+import sys
+from pathlib import Path
+
+from PIL import Image
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from carousel_render import source_cover, palette_from_image  # reuse photo sourcing + palette
+
+ROOT = Path(__file__).resolve().parent.parent
+LOGO_DARK = ROOT / "assets" / "brand" / "olive-tree-mark-dark.png"
+LOGO_LIGHT = ROOT / "assets" / "brand" / "olive-tree-mark-white.png"
+FONT_DIR = ROOT / "assets" / "fonts"
+# Closing "card" slide reuses the newsletter signature assets so social + email match.
+CARD_PHOTO = ROOT / "templates" / "newsletter-assets" / "brian.jpg"
+CARD_IG = ROOT / "templates" / "newsletter-assets" / "instagram.png"
+CARD = {
+    "name": "Brian Norton",
+    "role": "Agent | Investor | Syndicator",
+    "email": "brian@olivetreeinv.io",
+    "addr": "269 Market Place Blvd, Suite 126<br>Cartersville, GA 30121",
+    "handle": "@olivetreeinv.io",
+    "tagline": "Rooted in patience, grown with purpose.",
+}
+W, H = 1080, 1350
+
+# Light & airy tokens (olive brand; NOT the banned cream/beige family).
+BG = "#F5F2E9"        # Bone — brand-kit light ground (site/brand/)
+PANEL = "#FBFAF5"     # Paper — near-white panel
+INK = "#1B1E08"       # Forest Night
+MUTED = "#4A4C3E"     # muted olive-gray (body / footer)
+ACCENT_DEFAULT = "#505A19"  # Olive
+
+
+def _b64(path):
+    return base64.b64encode(Path(path).read_bytes()).decode()
+
+
+def _accent_for_light(photo):
+    """Olive-green brand base with a subtle tint pulled from the hero photo, kept
+    dark/saturated enough to read on a light ground."""
+    base = (80, 90, 25)  # #505A19 olive
+    if not photo:
+        return ACCENT_DEFAULT
+    _, accent, _ = palette_from_image(photo)
+    mix = tuple(0.7 * base[i] + 0.3 * accent[i] for i in range(3))  # 70% olive / 30% photo
+    r, g, b = [c / 255 for c in mix]
+    h, s, v = colorsys.rgb_to_hsv(r, g, b)
+    s = max(s, 0.5)
+    v = min(v, 0.55)          # cap brightness so it contrasts on light bg
+    r, g, b = colorsys.hsv_to_rgb(h, s, v)
+    return f"#{int(r*255):02X}{int(g*255):02X}{int(b*255):02X}"
+
+
+def _lum(hex_):
+    r, g, b = (int(hex_[i:i+2], 16) for i in (1, 3, 5))
+    return 0.299 * r + 0.587 * g + 0.114 * b
+
+
+def _esc(t):
+    return _html.escape(t or "")
+
+
+def _font_css():
+    """Local variable fonts embedded as base64 — Google Fonts @import silently
+    failed at screenshot time and every render fell back to Helvetica."""
+    faces = [
+        ("Archivo", "normal", FONT_DIR / "Archivo-normal.woff2"),
+        ("Cormorant Garamond", "normal", FONT_DIR / "CormorantGaramond-normal.woff2"),
+        ("Cormorant Garamond", "italic", FONT_DIR / "CormorantGaramond-italic.woff2"),
+    ]
+    return "".join(
+        f"@font-face{{font-family:'{fam}';font-style:{style};font-weight:300 700;"
+        f"src:url(data:font/woff2;base64,{_b64(p)}) format('woff2');}}"
+        for fam, style, p in faces if p.exists()
+    )
+
+
+CSS = """
+* { margin:0; padding:0; box-sizing:border-box; }
+.slide {
+  width:1080px; height:1350px; position:relative; overflow:hidden;
+  font-family:'Archivo',-apple-system,sans-serif; background:%(BG)s; color:%(INK)s;
+  -webkit-font-smoothing:antialiased;
+}
+.pad { position:absolute; inset:0; padding:96px; display:flex; flex-direction:column; }
+.progress { position:absolute; top:56px; left:96px; right:96px; height:5px;
+  border-radius:3px; background:rgba(27,30,8,0.12); overflow:hidden; z-index:5; }
+.progress > i { display:block; height:100%%; border-radius:3px; background:var(--accent); }
+.kicker { font-size:30px; font-weight:600; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--accent); }
+.rule { width:76px; height:4px; background:var(--accent); margin-top:22px; border-radius:2px; }
+.headline { font-size:82px; font-weight:600; line-height:1.04; letter-spacing:-.02em; }
+.body { font-size:42px; font-weight:300; line-height:1.42; color:%(MUTED)s; max-width:20ch; }
+.foot { position:absolute; left:96px; right:96px; bottom:74px; display:flex;
+  justify-content:space-between; align-items:center; font-size:29px; font-weight:500; color:%(MUTED)s; }
+.mark { position:absolute; top:92px; right:96px; width:96px; height:96px; z-index:6; }
+.mark img { width:100%%; height:100%%; object-fit:contain; }
+.ghost { position:absolute; top:70px; right:80px; font-size:250px; font-weight:700;
+  line-height:1; letter-spacing:-.04em; color:var(--accent); opacity:.12; z-index:1; }
+.swipe { font-size:31px; font-weight:600; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--accent); }
+
+/* Cover: photo on top, clean light panel below */
+.cover .photo { position:absolute; top:0; left:0; width:1080px; height:812px;
+  object-fit:cover; }
+.cover .panel { position:absolute; left:0; right:0; top:812px; bottom:0; background:%(BG)s;
+  padding:64px 96px 0; display:flex; flex-direction:column; }
+.cover .kicker { font-size:28px; }
+.cover .headline { font-size:70px; margin-top:20px; }
+.cover .mark { top:832px; width:84px; height:84px; }  /* inside the light panel, always legible */
+
+/* Content */
+.content .stack { margin-top:150px; display:flex; flex-direction:column; }
+.content .headline { margin-top:34px; }
+.content .body { margin-top:30px; }
+.content .uline { width:104px; height:6px; background:var(--accent); margin-top:26px; border-radius:3px; }
+
+/* Quote: typography-led, serif, no photo */
+.quote .stack { margin-top:auto; margin-bottom:auto; }
+.quote .qmark { font-family:'Cormorant Garamond',serif; font-size:220px; line-height:.55;
+  color:var(--accent); height:120px; }
+.quote .headline { font-family:'Cormorant Garamond',serif; font-weight:420; font-style:italic;
+  line-height:1.22; letter-spacing:0; }
+.quote .attr { margin-top:56px; display:flex; align-items:center; gap:24px; }
+.quote .attr .bar { width:56px; height:3px; background:var(--accent); border-radius:2px; }
+.quote .attr .who { font-size:34px; font-weight:600; letter-spacing:.02em; }
+.quote .attr .role { font-size:29px; font-weight:400; color:%(MUTED)s; margin-top:6px; }
+
+/* CTA: inverted olive */
+.cta { background:var(--accent); color:%(CTA_TEXT)s; }
+.cta .stack { margin-top:auto; margin-bottom:auto; }
+.cta .headline { font-size:88px; }
+.cta .body { color:%(CTA_TEXT)s; opacity:.9; }
+.cta .progress { background:rgba(255,255,255,0.28); }
+.cta .progress > i { background:%(CTA_TEXT)s; }
+.cta .foot { color:%(CTA_TEXT)s; opacity:.85; }
+
+/* Card: closing slide = newsletter signature. Olive ground, Forest info box. */
+.card { background:#505A19; color:#F5F2E9; }
+/* ponytail: mirrors the newsletter signature block -- photo left, details right.
+   Horizontal keeps it ~290px tall so it fits the bottom band with the tagline
+   standing alone under it. Going vertical breaks that; keep it a flex row. */
+/* padding-top clears the .mark logo (top:92 + 96 tall = 188) so long close lines
+   can't wrap under it. Raise it if the mark ever grows. */
+.card .pad { align-items:center; text-align:center; padding-top:252px; }
+.card .close { font-size:74px; font-weight:600; line-height:1.05; color:#F5F2E9; }
+.card .sig { margin-top:auto; margin-bottom:128px; display:flex; align-items:center;
+  gap:48px; text-align:left; background:#1B1E08; border-radius:32px; padding:44px 56px;
+  border:2px solid rgba(183,150,90,.38); }
+.card .photo2 { width:150px; height:auto; border-radius:12px; display:block;
+  box-shadow:0 14px 38px rgba(0,0,0,.45); }
+.card .name { font-family:'Cormorant Garamond',serif; font-size:54px; font-weight:600; line-height:1.1; }
+.card .role { font-size:22px; font-weight:600; letter-spacing:.16em; text-transform:uppercase;
+  color:#B7965A; margin-top:10px; }
+.card .email { font-size:28px; color:#F5F2E9; text-decoration:underline; margin-top:22px; }
+.card .addr { font-size:26px; color:#F5F2E9; margin-top:12px; line-height:1.5; }
+.card .ig { margin-top:18px; }
+.card .ig img { width:34px; height:34px; border-radius:8px; display:block; }
+.card .tag { position:absolute; left:96px; right:96px; bottom:70px; text-align:center;
+  font-family:'Cormorant Garamond',serif; font-style:italic; font-size:36px; color:#B7965A; }
+""".strip()
+
+
+def _slide_html(slide, i, total, stype, handle, accent, photo_b64):
+    frac = i / total
+    counter = f'<span>{i}/{total}</span>' if total > 1 else "<span></span>"
+    foot = f'<div class="foot"><span>{_esc(handle)}</span>{counter}</div>'
+    prog = (f'<div class="progress"><i style="width:{frac*100:.1f}%"></i></div>'
+            if total > 1 else "")
+
+    if stype == "quote":
+        text = slide.get("title", "").replace("'", "’")  # curly apostrophe in serif
+        # size to quote length so short punchy lines fill and long ones still fit
+        size = 84 if len(text) <= 90 else 72 if len(text) <= 150 else 60
+        logo = f'<div class="mark"><img src="data:image/png;base64,{_b64(LOGO_DARK)}"></div>'
+        who = _esc(slide.get("who", "Brian Norton"))
+        role = _esc(slide.get("role", "Founder, Olive Tree Investments"))
+        return (f'<div class="slide quote"><div class="pad">{prog}'
+                f'<div class="stack"><div class="qmark">&ldquo;</div>'
+                f'<div class="headline" style="font-size:{size}px">{_esc(text)}</div>'
+                f'<div class="attr"><div class="bar"></div>'
+                f'<div><div class="who">{who}</div><div class="role">{role}</div></div></div>'
+                f'</div></div>{logo}{foot}</div>')
+
+    if stype == "cover":
+        logo = (f'<div class="mark"><img src="data:image/png;base64,{_b64(LOGO_DARK)}"></div>')
+        kick = f'<div class="kicker">{_esc(slide.get("kicker",""))}</div>' if slide.get("kicker") else ""
+        swipe = f'<div class="swipe" style="margin-top:auto;padding-bottom:30px">swipe &rarr;</div>' if total > 1 else ""
+        return (f'<div class="slide cover">'
+                f'<img class="photo" src="data:image/jpeg;base64,{photo_b64}">'
+                f'{prog}'
+                f'<div class="panel">{kick}'
+                f'<div class="headline">{_esc(slide.get("title",""))}</div>{swipe}</div>'
+                f'{logo}{foot}</div>')
+
+    if stype == "cta":
+        logo = (f'<div class="mark"><img src="data:image/png;base64,{_b64(LOGO_LIGHT)}"></div>')
+        body = f'<div class="body">{_esc(slide.get("body",""))}</div>' if slide.get("body") else ""
+        return (f'<div class="slide cta"><div class="pad">{prog}'
+                f'<div class="stack"><div class="headline">{_esc(slide.get("title",""))}</div>{body}</div>'
+                f'</div>{logo}{foot}</div>')
+
+    if stype == "card":
+        logo = f'<div class="mark"><img src="data:image/png;base64,{_b64(LOGO_LIGHT)}"></div>'
+        close = f'<div class="close">{_esc(slide.get("title",""))}</div>' if slide.get("title") else ""
+        photo = (f'<img class="photo2" src="data:image/jpeg;base64,{_b64(CARD_PHOTO)}">'
+                 if CARD_PHOTO.exists() else "")
+        ig_icon = (f'<img src="data:image/png;base64,{_b64(CARD_IG)}">' if CARD_IG.exists() else "")
+        return (f'<div class="slide card">{logo}<div class="pad">{prog}'
+                f'{close}'
+                f'<div class="sig">{photo}<div>'
+                f'<div class="name">{_esc(CARD["name"])}</div>'
+                f'<div class="role">{_esc(CARD["role"])}</div>'
+                f'<div class="email">{_esc(CARD["email"])}</div>'
+                f'<div class="addr">{CARD["addr"]}</div>'
+                f'<div class="ig">{ig_icon}</div>'
+                f'</div></div></div><div class="tag">{_esc(CARD["tagline"])}</div></div>')
+
+    # content
+    ghost = f'<div class="ghost">{i:02d}</div>'
+    kick = (f'<div class="kicker">{_esc(slide.get("kicker",""))}</div><div class="rule"></div>'
+            if slide.get("kicker") else "")
+    body = f'<div class="body">{_esc(slide.get("body",""))}</div>' if slide.get("body") else ""
+    return (f'<div class="slide content">{ghost}<div class="pad">{prog}'
+            f'<div class="stack">{kick}'
+            f'<div class="headline">{_esc(slide.get("title",""))}</div>'
+            f'<div class="uline"></div>{body}</div></div>{foot}</div>')
+
+
+def _page_html(spec, accent, photo_b64):
+    slides = spec["slides"]
+    total = len(slides)
+    handle = spec.get("handle", "@olivetreeinv.io")
+    cta_text = "#F5F2E9" if _lum(accent) < 150 else "#1B1E08"
+    css = CSS % {"BG": BG, "PANEL": PANEL, "INK": INK, "MUTED": MUTED, "CTA_TEXT": cta_text}
+    body = []
+    for idx, s in enumerate(slides, 1):
+        stype = s.get("type") or ("cover" if idx == 1 else "card" if idx == total else "content")
+        if stype == "cover" and not photo_b64:
+            stype = "content"  # no hero available -> fall back to text slide
+        body.append(_slide_html(s, idx, total, stype, handle, accent, photo_b64))
+    return (f'<!doctype html><html><head><meta charset="utf-8"><style>{_font_css()}'
+            f':root{{--accent:{accent}}}{css}</style></head><body>{"".join(body)}</body></html>')
+
+
+def render_carousel(spec, out_dir):
+    from playwright.sync_api import sync_playwright
+    out_dir = Path(out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    # Resolve hero photo (supplied wins, else source it).
+    photo = spec.get("cover_image")
+    if photo and not Path(photo).exists():
+        photo = None
+    if not photo and spec.get("cover_query"):
+        p = source_cover(spec["cover_query"], out_dir)
+        photo = str(p) if p else None
+
+    accent = _accent_for_light(photo)
+    photo_b64 = _b64(photo) if photo else ""
+    page_html = _page_html(spec, accent, photo_b64)
+
+    paths = []
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(viewport={"width": W, "height": H}, device_scale_factor=2)
+        page.set_content(page_html)
+        page.evaluate("document.fonts.ready")
+        page.wait_for_timeout(600)
+        slides = page.query_selector_all(".slide")
+        for i, el in enumerate(slides, 1):
+            dest = out_dir / f"slide{i:02d}.png"
+            el.screenshot(path=str(dest))
+            paths.append(dest)
+        browser.close()
+    # normalize to exactly 1080x1350 (device_scale_factor doubles pixels)
+    for pth in paths:
+        img = Image.open(pth)
+        if img.size != (W, H):
+            img.resize((W, H), Image.LANCZOS).save(pth)
+    return paths
+
+
+def demo():
+    spec = {
+        "cover_query": "bright airy modern living room home interior sunlight",
+        "slides": [
+            {"kicker": "Single Family", "title": "Nearly 40% of Southern listings just cut their price."},
+            {"kicker": "The shift", "title": "Inventory is climbing.", "body": "4.5 months of supply, the most balanced market buyers have seen in years."},
+            {"title": "The window is open. Position now.", "body": "Rates near 6.2%, prices off 2.4%. Buyers have leverage again."},
+        ],
+    }
+    out = ROOT / "output" / "carousel" / "_demo_html"
+    paths = render_carousel(spec, out)
+    assert len(paths) == 3
+    for p in paths:
+        assert p.exists() and Image.open(p).size == (W, H)
+    quote = {"slides": [{"type": "quote",
+                         "title": "We underwrite by submarket, not by metro. That's the edge."}]}
+    qpaths = render_carousel(quote, ROOT / "output" / "carousel" / "_demo_quote")
+    assert len(qpaths) == 1 and Image.open(qpaths[0]).size == (W, H)
+    print(f"OK — {len(paths)} slides -> {out}, 1 quote -> _demo_quote")
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--json"); ap.add_argument("--out"); ap.add_argument("--demo", action="store_true")
+    a = ap.parse_args()
+    if a.demo:
+        demo(); return
+    if not a.json or not a.out:
+        ap.error("provide --json and --out, or use --demo")
+    print("\n".join(str(p) for p in render_carousel(json.loads(Path(a.json).read_text()), a.out)))
+
+
+if __name__ == "__main__":
+    sys.exit(main())

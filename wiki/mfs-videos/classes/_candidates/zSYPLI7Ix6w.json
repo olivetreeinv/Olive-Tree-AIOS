@@ -1,0 +1,49 @@
+{
+  "deal_relevant": "yes",
+  "topic": "capital-raise",
+  "summary": "Justin Brennan mentors multifamily syndication operators on attracting investors through pitch decks and capital raises. He reviews Samir's 12-unit San Antonio deal pitch deck (showing 19.77% IRR, 2.7x equity multiple, 8% preferred return), explains investor fund flow mechanics, and teaches strategy for overcoming tax events to fuel deal raises.",
+  "takeaways": [
+    "Pitch deck must show minimum investment (e.g., $25k) with projected returns and capital stack; include both $25k and $100k investor examples on separate pages",
+    "Sell properties in Q1 (Jan-Feb-Mar) to give 9-10 months for bonus depreciation to offset capital gains; avoid 1031 exchanges for smaller deals under $1M",
+    "Establish property-specific LLC with dedicated Bank of America account; investors wire funds only after signed PPM, no commingling of funds",
+    "For first deals in 10-30 unit range, raise $300k-$600k total equity (syndicate ~90% from partners, retain ~10%); start with 25k commitments to build momentum",
+    "Position yourself as strategic partner on website/brokers; be transparent with lenders about being new/smaller; brokers prefer bite-sized 10-30 unit deals for newer operators",
+    "Visit property 3 times: Sunday afternoon, evening when tenants home, and one random time to assess neighborhood conditions and identify red flags",
+    "For 12-unit deal raising ~$400k, expect 4-7 total investors; no SEC involvement if raising from known relationships only; operating agreement sufficient vs. full PPM for friend/family rounds"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "capital-raise",
+      "change": "Structure pitch deck with tiered investment examples ($25k, $100k) showing specific return math per investor level",
+      "evidence": "Justin told Samir: 'duplicate that page for a $25,000 investor... your first few investors are going to be 25kers. Then one at 100K or 75k... may get couple at 50 and that finishes your raise'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Verify property and neighborhood in three site visits (Sunday PM, evening, random time) before closing to detect tenant/condition issues",
+      "evidence": "Justin explained: 'when you're going to take a look at the property you want to see it three different times... Sunday afternoons... in the evening when people are coming home from work... one other random time. So that way you get a feel for the neighborhood'"
+    },
+    {
+      "skill": "capital-raise",
+      "change": "Sell properties in Q1 to enable 9-10 month window for bonus depreciation reinvestment to offset capital gains without 1031 complexity",
+      "evidence": "Justin stated: 'you always want to sell your properties in Q1 of the year. So that way it gives both you and your investors the entire year to go find another deal to wipe out your taxes... you don't need to do a 1031 exchange'"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Establish dedicated LLC bank account (Bank of America preferred) for property and only accept investor wire transfers after signed paperwork",
+      "evidence": "Justin instructed: 'establish a Texas LLC... establish a bank account... establish wire instructions... once the investor signed their paperwork, then you can physically accept their money. You cannot accept their money legally until their paperwork is signed... It goes right into that property's LLC bank account'"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Transparently position yourself as newer operator in 10-30 unit segment with strategic partner alignment; brokers will reward honesty with pre-market deal flow",
+      "evidence": "Justin described Charlotte meeting: 'said Hey you know Victor's newer in the space. We're strategic partners... starting in 10 to 30 unit space. They're like Yep totally agree... We got Victor onto three deals right there pre-market... four deals right now we can send your way that aren't on the websites yet'"
+    },
+    {
+      "skill": "capital-raise",
+      "change": "Lead capital raise pitch to high-income professionals (doctors, attorneys) facing year-end tax liability by emphasizing bonus depreciation wipeout vs. IRS payment",
+      "evidence": "Justin advised: 'I'd be leveraging the crap out of the taxable event and I'd be leading in with taxes... anybody that's in that profession, high net worth individuals... if they know they have to pay Uncle Sam 100 grand this year... goes into an apartment building and they wipe out their taxes and then they own the asset'"
+    }
+  ],
+  "id": "zSYPLI7Ix6w",
+  "title": "Tuesday Mentorship Q&A - How to Attract Investors Fast_10-07-25  | Justin Brennan",
+  "duration": 3116
+}

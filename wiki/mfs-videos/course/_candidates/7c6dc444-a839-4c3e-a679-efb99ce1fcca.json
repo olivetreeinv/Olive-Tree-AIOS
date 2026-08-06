@@ -1,0 +1,24 @@
+{
+  "deal_relevant": "partial",
+  "topic": "capital-raise",
+  "summary": "Justin Brennan explains partnership and syndication structures for multifamily deals, detailing how general partners and limited partners work together through Reg D SEC filings. He uses a $35M deal example showing ~60-65% debt financing, ~10% GP equity, and ~90% LP equity, with LPs receiving preferred returns, cash-on-cash projections, and exit profits while GPs manage operations and sign loans.",
+  "takeaways": [
+    "$35M deal structure: $20-22M loan (60-65% LTC), $1.4M GP equity, $12-14M LP equity",
+    "Preferred return is minimum base return to LPs before any profit splits between GP and LP",
+    "Limited partners expect 2x equity multiple (e.g., $200K return on $100K invested) plus cost segregation depreciation bonuses not included in projections",
+    "General partners sign all loans, operate property/construction/asset management, take all risk; LPs are passive, get updates, and collect checks",
+    "Typical hold period is 3-5-7+ years with distributions throughout, then cash out via refinance or sale",
+    "Reg D filings are either 506C or 506B offerings",
+    "You run out of your own money at some point and need to scale through syndications, REITs, or crowdfunding"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "capital-raise",
+      "change": "Structure a syndication using Reg D 506C offering with preferred return + equity multiple + bonus depreciation",
+      "evidence": "Justin details exact deal structure: loan sourcing at 60-65% LTC, separating GP (1-3 people) equity from LP equity, offering 2x equity multiple projections plus tax benefits to attract passive investors"
+    }
+  ],
+  "id": "7c6dc444-a839-4c3e-a679-efb99ce1fcca",
+  "title": "Lesson 3 - Partnerships & Syndications",
+  "module": "Module 7 - Ways To Invest In Apartments"
+}

@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan mentors multifamily investors on market reconnaissance, deal underwriting, and relationship-building with brokers/property managers. Key focus: physical market visits (3-day trips) are essential for connecting with deal sources and understanding neighborhood dynamics before analyzing properties online. Discusses deal structures including assumable loans, seller financing, and mezzanine debt strategies.",
+  "takeaways": [
+    "Conduct a mandatory 3-day 'reconnaissance trip' to target market: Sunday arrival, Monday-Tuesday broker/property tours, Wednesday departure",
+    "Set up meetings with 2-3 brokers, 2 property managers, and lenders during market visit\u2014location (office, coffee, property) matters less than face-to-face connection",
+    "Target 15-30 unit deals in bank-owned/stressed portfolios using the deal analyzer spreadsheet to plug in financials before submitting offers",
+    "For older buildings (pre-1970s): avoid if plumbing, electrical, roof, HVAC haven't been updated\u2014high maintenance costs kill deals unless major systems already replaced",
+    "Deferred maintenance = improvements that don't raise rents; avoid these in underwriting",
+    "Assumable loans (subject-to): only viable if term is favorable (e.g., 3.78% interest-only for 7 years)\u2014layer seller financing on top if needed to close gap",
+    "Mezzanine debt (9-15% interest, second position) only works on value-add deals you can refinance within 24 months post-renovation at 65-70% LTV with stabilized rents"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Use deal analyzer tool to quickly model assumable loans + seller financing combinations before submitting offers on stressed/bank-owned multifamily",
+      "evidence": "Justin explains plugging terms into analyzer for 15-30 unit deals with layered debt (first loan + mezzanine/seller financing); shows example of Victor's 3.2M property with 1.8M assumable loan at 3.78% interest-only + seller carry to make numbers work"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Schedule face-to-face meetings with 2-3 commercial brokers in target market during 3-day trip to get added to off-market deal flow list",
+      "evidence": "Justin repeatedly emphasizes that brokers won't send off-market deals until they've met you in person; Rose's example: broker continued communicating after in-person 2-hour market drive and later presented her deal; Cristiano scheduled lender/broker meetings for upcoming trip"
+    },
+    {
+      "skill": "market-research",
+      "change": "Drive neighborhoods in person to validate property locations\u2014online maps miss critical safety/tenant-quality signals that determine actual value-add potential",
+      "evidence": "Justin recounts touring 6 Austin deals over 2.5 days: properties that looked great digitally were in unsafe areas; one 'ugliest property on the street in greatest neighborhood' became clear investment; John's feedback: broker meeting 'ties everything together' about how city flows and bad areas are layout; Victor added contacts across 4 TN markets (Charlotte\u2192Nashville\u2192Knoxville\u2192Asheville) through broker introductions during trips"
+    }
+  ],
+  "id": "__xfBWC-p3U",
+  "title": "Tuesday Mentorship Q&A - Winning Multifamily Negotiation Tactics_11-18-25 | Justin Brennan",
+  "duration": 3443
+}

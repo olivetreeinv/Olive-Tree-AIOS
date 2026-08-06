@@ -1,0 +1,86 @@
+{
+  "conversation": {
+    "id": "LuB2NjMJf4dfzjQAYAWh",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906058710,
+    "dateUpdated": 1783364642249,
+    "lastMessageDate": 1783364642244,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Pat, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906059567,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "9yP6LYL9jnOyrv2dXmPk",
+    "fullName": "Pat Selvey",
+    "contactName": "Pat Selvey",
+    "companyName": "Wells For Humanity",
+    "phone": "+13368440737",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "profilePhoto": null,
+    "email": null,
+    "sort": [
+      1783364642244
+    ]
+  },
+  "messages": [
+    {
+      "id": "HygUyVYSlhoLpt1TYRxU",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Pat, a copy of the pitch deck has been sent to your email.",
+      "contactId": "9yP6LYL9jnOyrv2dXmPk",
+      "contentType": "text/plain",
+      "conversationId": "LuB2NjMJf4dfzjQAYAWh",
+      "dateAdded": "2026-07-06T19:04:01.503Z",
+      "dateUpdated": "2026-07-06T19:04:01.503Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+13368440737",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "Qla1sTCaaDxTlxq3BSCR",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Pat, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "9yP6LYL9jnOyrv2dXmPk",
+      "contentType": "text/plain",
+      "conversationId": "LuB2NjMJf4dfzjQAYAWh",
+      "dateAdded": "2026-06-19T21:54:18.979Z",
+      "dateUpdated": "2026-06-19T21:54:20.613Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+13368440737",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

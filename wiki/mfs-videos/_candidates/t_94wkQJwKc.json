@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "partial",
+  "topic": "market-research",
+  "summary": "Brian Coons discusses ADU development and market dynamics in San Diego, emphasizing understanding municipal codes to identify value before the market catches on. The conversation covers construction costs ($250-350/sq ft), market saturation in North Park, and secondary markets like Linda Vista showing better cash flow. While tangentially related to Brian Norton's 15-50 unit value-add focus, the content is heavily weighted toward single-family ADU conversion rather than traditional multifamily underwriting.",
+  "takeaways": [
+    "Municipal code changes create arbitrage opportunities before mass adoption catches on",
+    "Construction costs now run $250-350 per square foot for R2 (apartment) buildings including site prep and materials/labor",
+    "Land value = only what you can legally build on it; back into land residual from exit assumptions",
+    "Smaller unit sizes (200 sq ft studios) increase per-unit costs due to kitchen/bathroom density; larger units are cheaper to build per SF",
+    "North Park saturation is real; secondary markets 5 minutes away (City Heights, Linda Vista, areas above the 8) show less density competition",
+    "Highest and best use requires understanding both zoning capability AND market demand\u2014you can technically build 70-80 units in studios on a 7,000 sq ft lot but renters prefer larger units at $200+ premium",
+    "Development timelines are extending due to permit delays and construction cost inflation; projects are squeezing or breaking as interest rates and build costs diverge from original underwriting"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Reverse-engineer development deals from exit assumptions rather than top-down pro formas",
+      "evidence": "'Land is only worth what you can do to it'\u2014Brian demonstrates backing into land residual from unit count, rent, and build cost ($250-350/SF). He emphasizes cost of capital must correlate with achievable rents or the deal doesn't pencil even if land is free."
+    },
+    {
+      "skill": "market-research",
+      "change": "Identify secondary markets by cross-referencing lot size, zoning, rents, and development status across geographies",
+      "evidence": "Brian spent time cross-referencing every lot from border to San Marcos with zoning data, comparing rents to development status. He found Linda Vista was underdeveloped with high rents and good zoning\u2014the same pattern that made North Park attractive 3 years prior."
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Account for R2 vs R3 fire code differences in construction cost modeling",
+      "evidence": "R2 (apartment/3+ units) requires fire sprinkler, ADA-compliant first floor, and California Building Code vs California Residential Code; R3 (single family/duplex) avoids these. This can add $50-100/SF to costs and materially changes deal economics."
+    }
+  ],
+  "id": "t_94wkQJwKc",
+  "title": "ADU's Flipping & Real Estate with Brian and Nick | Abundance2Give",
+  "duration": 4703
+}

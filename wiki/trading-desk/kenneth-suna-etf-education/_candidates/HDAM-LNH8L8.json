@@ -1,0 +1,21 @@
+{
+  "trading_relevant": "partial",
+  "strategy": "covered-calls",
+  "summary": "Kenneth reviews covered call ETFs (JEPI, JEPQ) as potential income vehicles, comparing share counts, annual dividend yields (~$1,100 and ~$900 respectively), and expense ratios ($35/year each). Video provides educational overview of how covered call ETFs generate monthly variable income but doesn't deliver actionable trading rules for Brian's Premium Desk.",
+  "takeaways": [
+    "JEPI: $10k investment = 182 shares, ~$1,100 annual dividend, $35 expense ratio",
+    "JEPQ: $10k investment = 209 shares, ~$900 annual dividend, $35 expense ratio",
+    "Covered call ETF dividends are variable/monthly due to dynamic call-selling strategies",
+    "Covered call ETFs generate income through selling covered calls on underlying positions"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Evaluate covered call ETF dividends ($1,100-900/year per $10k) against Premium Desk's $1,250/month target ($15k/year) to benchmark personal covered call efficiency",
+      "evidence": "Video quantifies ETF dividend income and expense ratios, allowing direct comparison to Brian's stated premium generation goal of $1,250/mo from a $50k portfolio"
+    }
+  ],
+  "id": "HDAM-LNH8L8",
+  "title": "$30,000 into Covered Call ETFs?!",
+  "duration": 61
+}

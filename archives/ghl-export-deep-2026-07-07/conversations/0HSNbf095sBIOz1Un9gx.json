@@ -1,0 +1,54 @@
+{
+  "conversation": {
+    "id": "0HSNbf095sBIOz1Un9gx",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249876119,
+    "dateUpdated": 1750249876119,
+    "lastMessageDate": 1750249876119,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "RpBv1soAUskG85RweNWS",
+    "fullName": "Rita Liston",
+    "contactName": "Rita Liston",
+    "companyName": null,
+    "email": "rhliston@thelistons.net",
+    "tags": [
+      "friend",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "phone": null,
+    "attributed": null,
+    "profilePhoto": null,
+    "sort": [
+      1750249876119
+    ]
+  },
+  "messages": [
+    {
+      "id": "dVVSlTbnItydqmDj62yo",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "RpBv1soAUskG85RweNWS",
+      "conversationId": "0HSNbf095sBIOz1Un9gx",
+      "dateAdded": "2025-06-18T12:31:01.331Z",
+      "dateUpdated": "2025-06-18T12:32:20.512Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "ilbnTFVvHg59jAdgfnn0"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

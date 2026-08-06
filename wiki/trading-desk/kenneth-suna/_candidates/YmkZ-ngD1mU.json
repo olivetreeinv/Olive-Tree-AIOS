@@ -1,0 +1,29 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth documents his week trading covered calls across 6 stocks with $64,881 deployed, generating $2,647 in net premium (4% return). Five positions were assigned at expiration while HIMS declined, leaving $23,420 tied up\u2014illustrating both the income consistency and capital lock-up risks of the covered call wheel strategy.",
+  "takeaways": [
+    "Target stocks with 100-share minimum positions (1 contract = 100 shares)",
+    "Accept assignment as normal outcome; capital gets returned and redeployed",
+    "Stock appreciation beyond strike price means missed upside but consistent premium income\u2014'the goal isn't to make all of the money, just some of it'",
+    "Multiple positions per week (5-6 stocks) provides diversification and consistent income vs. timing single home runs",
+    "Recognize downside: capital can be tied up for extended periods if shares don't clear (HIMS locked $23,420 after dropping from $58 to $52)",
+    "Weekly format allows flexibility to adjust subsequent week selling if mid-week stock recovery occurs",
+    "Frame strategy as generating predictable passive income where 'you know what you're going to make ahead of time' vs. day/swing trading"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Establish hard rule: if assigned stock drops >10% intra-week (like HIMS: $58\u2192$52), immediately plan covered call sale for further-out expiration (10-21 DTE) rather than waiting for Monday to assess premium decay",
+      "evidence": "Kenneth explicitly noted HIMS Friday drop reduced Monday covered call premium outlook; proactive further-out strikes on dips would maintain income targeting while managing gap-down assignment risk"
+    },
+    {
+      "strategy": "trading-desk",
+      "change": "Track and report weekly premium-to-capital-deployed ratio as leading metric (currently 4.1% weekly \u2248 $1,250/mo on $50k desk); flag when ratio drops below 3.5% to trigger position concentration review",
+      "evidence": "Kenneth achieved $2,647 on $64,881 deployed (4%); establishing thresholds ensures consistency with Brian's $1,250/mo target and flags when stock selection or strike selection needs adjustment"
+    }
+  ],
+  "id": "YmkZ-ngD1mU",
+  "title": "Part 17: 9/29-10/3: I made $2600 THIS WEEK. Here's How",
+  "duration": 322
+}

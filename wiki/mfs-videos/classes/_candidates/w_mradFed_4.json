@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "partial",
+  "topic": "other",
+  "summary": "This transcript is primarily a 3-day multifamily workshop event with Justin Brennan covering deal analysis, market research, capital raising, legal structuring, and property management. While relevant to multifamily investing generally, it contains significant non-deal content including music, personal stories, and administrative announcements that dilute deal-specific guidance for Brian Norton's deal sourcing and underwriting challenges.",
+  "takeaways": [
+    "Use the five-pillar method: Find deals \u2192 Analyze deals \u2192 Write offers \u2192 Finance (debt + equity) \u2192 Close escrow and manage. Focus on 10-30 unit deals first before scaling larger.",
+    "Never overly leverage properties; overleveraging is the only way to lose in real estate. Buy conservatively and keep cash reserves; market conditions will test your deals.",
+    "The 3-day reconnaissance mission: Fly in Sunday afternoon, tour 3 properties Monday morning, meet 2-3 property managers and lenders Monday-Tuesday, fly out Tuesday afternoon. This establishes your core team before deal flow.",
+    "Deal structure: Form Wyoming holding company (LLC, $125, 15 minutes); each property gets its own LLC in the property's state. Holding company owns each property LLC as sole member. This isolates liability and protects assets.",
+    "On your first 10-30 unit deal, plan for 8-10% total management costs (blended fee + commissions + leasing). Use 10% vacancy/economic loss in proformas to account for physical vacancy, loss-to-lease, concessions, and bad debt.",
+    "For raising capital: Soft-commit 25-50 investors before deal; when you have LOI, pre-market with pitch deck; get earnest money in escrow (fully refundable during due diligence); close in 60-90 days. Distributions to LPs are 60-70% of cash profits for 90% of capital with 6-8% preferred return.",
+    "Ask brokers 22 pointed pre-contract questions and get written answers before going into contract; these answers become an addendum and protect you if seller lied during due diligence."
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Implement detailed due diligence checklist covering 22 pre-contract seller questions, lease audits, financial verification, and physical inspections with property manager before closing",
+      "evidence": "Justin emphasized using detailed due diligence checklists, getting 22 questions answered by sellers/brokers in writing as an addendum, and having PM companies help audit leases and financials before escrow closes. He warned 'don't skip due diligence' and said this is a top 10 mistake."
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Use conservative underwriting: plan 8-10% management fees, 10% economic loss, and realistic expense/revenue assumptions; have PM company underwrite and validate numbers",
+      "evidence": "Jason said to budget 8-10% net effective management (not just 4-6%), 10-15% economic loss conservatively. Justin repeatedly warned against overestimating rents and underestimating expenses. Discussed cost-seg studies, tax benefits, and the importance of accurate number modeling."
+    },
+    {
+      "skill": "broker-search",
+      "change": "Set up formal team in target market before deal flow: identify 3 brokers, 3 property managers, 3 lenders, 3 construction crews via 3-day on-site reconnaissance mission",
+      "evidence": "Justin outlined the 'reconnaissance mission': fly in Sunday, tour properties Monday with broker, meet 2-3 property managers and lenders Monday-Tuesday, fly out Tuesday. This establishes the local team before pursuing deals."
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Create and maintain soft-commit investor list of 25-50 people before sourcing deals; when deal is under contract, immediately pre-market with pitch deck and LP package",
+      "evidence": "Joshua McCleary sent to 12 people on day 1; Gideon had 15 teed up. Justin said 'soft commitments' are built by telling people your new identity as multifamily investor and having them indicate interest before you have a deal. Time-sensitive raise once LOI is signed."
+    }
+  ],
+  "id": "w_mradFed_4",
+  "title": "Day 3 of 3 Multifamily Workshop Event with Justin Brennan",
+  "duration": 22890
+}

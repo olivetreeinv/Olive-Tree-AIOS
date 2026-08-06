@@ -1,0 +1,57 @@
+{
+  "conversation": {
+    "id": "jEbXnMby1S7E67qhlNjd",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364269641,
+    "dateUpdated": 1783364270333,
+    "lastMessageDate": 1783364270327,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "John, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "E1pZ6fX8YkkKv5i3ghcf",
+    "fullName": "John Powell",
+    "contactName": "John Powell",
+    "companyName": "Agent / Flipper",
+    "phone": "+14047885748",
+    "tags": [
+      "agent",
+      "flipper",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364270327
+    ]
+  },
+  "messages": [
+    {
+      "id": "wHN1JYqtB7hR9QUgJDNx",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "John, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "E1pZ6fX8YkkKv5i3ghcf",
+      "contentType": "text/plain",
+      "conversationId": "jEbXnMby1S7E67qhlNjd",
+      "dateAdded": "2026-07-06T18:57:49.689Z",
+      "dateUpdated": "2026-07-06T18:57:56.300Z",
+      "source": "workflow",
+      "altId": "SM8050779ee7fe260958bb52e63fcac230",
+      "from": "+16789712411",
+      "to": "+14047885748",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

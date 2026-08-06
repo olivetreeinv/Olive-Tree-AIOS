@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "yes",
+  "topic": "capital-raise",
+  "summary": "Justin Brennan mentors multifamily investors on raising capital for deals, covering the deal pipeline from LOI writing through closing, capital raising strategies, and deal underwriting fundamentals. The session emphasizes building infrastructure (websites, CRM, landing pages) to signal professionalism to investors and lenders, and demonstrates how rent increases directly impact property value and NOI.",
+  "takeaways": [
+    "Write 10 to 20 LOIs to lock in a good deal because it takes that volume to find a motivated seller willing to sell at financial fundamentals",
+    "LOIs are not legally binding and should be written aggressively as a lure to start broker conversations, not as a final offer",
+    "Bump rents $50-100/month per unit and you add $180,000-260,000 in property value on a 25-unit deal with a 6% cap rate",
+    "Use 5-year or 7-year fixed-rate, low-leverage debt (65-70% LTV) to maximize appreciation as rents grow at 3% annually",
+    "If you're halfway through capital raise by end of due diligence with commitments secured, you proceed with the deal\u2014timing is flexible with loan extensions",
+    "Professional website and landing page signal credibility to brokers and investors, directly influencing deal acceptance (Doug's example)",
+    "Prepayment penalties step down (3% year 1, 2% year 2, 1% year 3 on 5-year loans), allowing refinance without penalty after year 3 to capture rate drops"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Understand that broker NOI projections are designed to inflate property value; focus disagreements on expense line items and economic loss reserves rather than revenue or renovation costs",
+      "evidence": "Justin walks through analyzer showing brokers 'squeeze down' vacancy/credit loss and 'cheapkate' on insurance/property taxes; Kelly is dealing with property tax issues on historic property purchase"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Recognize that rent growth compounds property value: 3% annual rent increases on fixed-debt properties drive 6-figure equity gains every 2 years independent of market comps",
+      "evidence": "Justin demonstrates $260k value gain from $50 rent bump, then $180k additional gain from 3% annual increases\u2014all while debt payment stays fixed"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Write LOIs as relationship-building exercises with volume (10-20 per deal cycle) to get broker trust and access to pre-market deals, not as serious opening offers",
+      "evidence": "Justin tells mentees to send LOIs to random brokers 'just for fun' to practice; Dean notes brokers looking for motivated sellers; Doug closed deal after broker saw professional website"
+    },
+    {
+      "skill": "capital-raise",
+      "change": "Build capital foundation (CRM, website, landing page) before finding deals so when you go into contract, lenders and investors are already warmed up and familiar with your company",
+      "evidence": "Julian (post-close on 23-unit) regrets not nurturing database pre-deal; Doug should have called Hannah Capital sooner than deal acceptance; Kelly's mock deal prep prevented 'frazzled' capital raise"
+    }
+  ],
+  "id": "N37a82oq39M",
+  "title": "Tuesday Mentorship Q&A - How to Raise Capital for Deals_06/16/26 | Justin Brennan",
+  "duration": 7407
+}

@@ -1,0 +1,56 @@
+{
+  "conversation": {
+    "id": "kct015r6PB5gMp03IRqo",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364130220,
+    "dateUpdated": 1783364130886,
+    "lastMessageDate": 1783364130879,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Victor, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "kTN3JAC0bGfT3G8ZeAa9",
+    "fullName": "Victor Vasquez",
+    "contactName": "Victor Vasquez",
+    "companyName": "JVC Remodeling",
+    "phone": "+16784253150",
+    "tags": [
+      "contractor",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364130879
+    ]
+  },
+  "messages": [
+    {
+      "id": "Xfr435X57LkupcyCS6n5",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Victor, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "kTN3JAC0bGfT3G8ZeAa9",
+      "contentType": "text/plain",
+      "conversationId": "kct015r6PB5gMp03IRqo",
+      "dateAdded": "2026-07-06T18:55:30.278Z",
+      "dateUpdated": "2026-07-06T18:55:37.018Z",
+      "source": "workflow",
+      "altId": "SMfeee27bae72d734fab8c3560bf464848",
+      "from": "+16789712411",
+      "to": "+16784253150",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

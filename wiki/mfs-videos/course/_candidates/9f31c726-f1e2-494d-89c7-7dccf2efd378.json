@@ -1,0 +1,40 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan walks through underwriting a 35-unit value-add multifamily deal in Decatur, Georgia using his pro forma model. He demonstrates how to extract rent roll and T12 financial data, populate unit types and rents, identify operational upside (moving from $487k to $585k NOI through collections and occupancy improvements), and calculate returns at various purchase prices ($4.0M-$4.5M range), ultimately showing how a GP investing $200k can realize $1.5M returns while LPs earn 20% annualized returns.",
+  "takeaways": [
+    "Download rent roll and T12 (last 12 months P&L) from broker after signing NDA; T12 shows month-by-month income and expenses",
+    "Count exact unit mix and market rents from rent roll; pull gross potential rent directly from rent roll total",
+    "Use T12 total column only (not monthly breakouts) for expense inputs; verify all numbers with 'trust and verify' principle",
+    "Expenses as % of EGI should run 'upper 30s to low 40s' for a stabilized 1975-era property depending on market (insurance/property taxes vary by region)",
+    "Debt service coverage ratio minimum 1.25 required by banks; if DSCR drops below 1.25, increase down payment from 35% to 40% to reduce loan amount",
+    "Properties like this are 'operational games'\u2014move needle through collections, occupancy, and expense control, not renovation",
+    "A 10-unit deal is ideal first deal size: 'small enough but also large enough, economies of scale'",
+    "As GP bringing 10% ($200k on $2M equity raise), structure preferred return (6%) for LPs first, then split remaining cash flow 70% LP / 30% GP (promote)"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Systematically verify T12 and rent roll data against pro forma inputs before finalizing purchase price assumptions",
+      "evidence": "Justin emphasized 'trust and verify' multiple times, showed how to spot discrepancies (maintenance expense was $60k vs implied $25k), and cross-checked rent roll market rents against collected rents ($9k gap identified)"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Use DSCR of 1.25 as hard floor for financing feasibility; adjust down payment (35% to 40%+) if DSCR falls below threshold",
+      "evidence": "Justin demonstrated that at $4.5M purchase price DSCR was 1.13 (unbanked), then raised down payment to 40% to achieve 1.22 DSCR; stated 'you're not going to be able to get a bank loan unless you're covering 1.25'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Benchmark operating expense ratios (% of EGI) against market comparables by asset age and location; flag outliers as value-add opportunities or red flags",
+      "evidence": "Justin stated stabilized older assets should run 'upper 30s to low 40s' EGI ratio and flagged when property was running higher, then identified $9k rent gap and collection issues as operational upside"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Start with 8-10 unit deals to build track record before scaling to 35+ unit deals requiring $1.8M+ LP capital raises",
+      "evidence": "When asked about deal size, Justin replied '10 unit is a great starting point' and later told Brian 'Deal two, deal three, absolutely' for larger deals after proving concept"
+    }
+  ],
+  "id": "9f31c726-f1e2-494d-89c7-7dccf2efd378",
+  "title": "Case Study 2 - Underwriting a 20-50 unit deal",
+  "module": "Module 2: How To Analyze Deals"
+}

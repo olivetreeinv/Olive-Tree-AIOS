@@ -1,0 +1,49 @@
+{
+  "conversation": {
+    "id": "eiMy4yK2lQJRT3LkLJyt",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249981926,
+    "dateUpdated": 1750249981926,
+    "lastMessageDate": 1750249981926,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "IwSeDvsoDCo5Kpxv0Kvs",
+    "fullName": "Karen Desoto",
+    "contactName": "Karen DeSoto",
+    "companyName": null,
+    "email": "kdesoto@yahoo.com",
+    "phone": "+16786297811",
+    "tags": [],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "sort": [
+      1750249981926
+    ]
+  },
+  "messages": [
+    {
+      "id": "5Y57wXUFB0HescTTmown",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "IwSeDvsoDCo5Kpxv0Kvs",
+      "conversationId": "eiMy4yK2lQJRT3LkLJyt",
+      "dateAdded": "2025-06-18T12:31:20.425Z",
+      "dateUpdated": "2025-06-18T12:34:11.028Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "6hKDEb46X6iMDh1R8O91"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

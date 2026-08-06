@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin teaches a systematic framework for identifying good multifamily properties through location assessment, people/processes evaluation, and competitive comp analysis. He emphasizes that location (neighborhood feel, single-family adjacency, path of progress) cannot be changed and is foundational, while people and processes can be improved through operational value-add.",
+  "takeaways": [
+    "Drive the property at multiple times (morning, midday, evening, weekday, weekend) to assess neighborhood dynamics",
+    "Target properties abutting single-family home neighborhoods, not isolated in commercial/industrial zones",
+    "Count bars on windows as a crime indicator during initial property assessment",
+    "Seek unit mix of 55%+ two-bedrooms (ideally more two-bedrooms than anything else, minimum 50-50 ratio)",
+    "Evaluate comps in person - 'get boots on the ground, walk the neighborhoods'",
+    "Property management staff, maintenance staff, and tenant base demographics make up 'the people' evaluation pillar",
+    "Expect to replace property management staff and update processes in 9 out of 10 acquisitions for operational value-add"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Systematize property evaluation with 4-pillar framework (Location, People, Processes, Comps) rather than ad-hoc assessment",
+      "evidence": "Justin teaches specific checklist: location feel/adjacency/path-of-progress, people/PM-staff/tenant-demo assessment, process documentation (PM software, work order handling, reporting cadence), and competitive comp analysis"
+    },
+    {
+      "skill": "market-research",
+      "change": "Conduct in-person neighborhood reconnaissance at multiple time periods before underwriting",
+      "evidence": "'We'll drive down the street... We'll go in the morning. We'll go in the midday. We'll go in the evening. We'll go on the weekday and weekend' - emphasizes personal observation over computer-based data"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Apply unit-mix targeting rule of 55%+ two-bedrooms minimum 50-50 as initial screening filter",
+      "evidence": "'We'd like to see 55 plus percent two-bedrooms in the complex... we can push the delta on a value add typically greater on a two bedroom'"
+    }
+  ],
+  "id": "7ef0dbd9-b381-42a3-816f-821d09b4934c",
+  "title": "Lesson 2: How To Select Properties",
+  "module": "Module 1A: Selecting Markets & Properties"
+}

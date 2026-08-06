@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "Krhh4dww0xHHFwalPzCY",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781906408627,
+    "dateUpdated": 1783364990563,
+    "lastMessageDate": 1783364990560,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Brandon, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781906409849,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "dfGhV8KGiYRpH3y7bZ5B",
+    "fullName": "Brandon Lopez",
+    "contactName": "Brandon Lopez",
+    "companyName": null,
+    "phone": "+17703143616",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364990560
+    ]
+  },
+  "messages": [
+    {
+      "id": "1Q4TeCECNB8VRMNGo5eS",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Brandon, a copy of the pitch deck has been sent to your email.",
+      "contactId": "dfGhV8KGiYRpH3y7bZ5B",
+      "contentType": "text/plain",
+      "conversationId": "Krhh4dww0xHHFwalPzCY",
+      "dateAdded": "2026-07-06T19:09:49.887Z",
+      "dateUpdated": "2026-07-06T19:09:49.888Z",
+      "source": "workflow",
+      "from": "+16789712411",
+      "to": "+17703143616",
+      "error": "You have reached your SMS sending limit of 250 for the day. You can start sending message after 2026-07-07 15:03 US/Eastern.",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "tKWgc1Me776Ah2Muj6ZC",
+      "direction": "outbound",
+      "status": "failed",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Brandon, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "dfGhV8KGiYRpH3y7bZ5B",
+      "contentType": "text/plain",
+      "conversationId": "Krhh4dww0xHHFwalPzCY",
+      "dateAdded": "2026-06-19T22:00:09.103Z",
+      "dateUpdated": "2026-06-19T22:00:10.496Z",
+      "source": "app",
+      "from": "+16789712411",
+      "to": "+17703143616",
+      "error": "You have reached your SMS sending limit of 100 for the day. You can start sending message after 2026-06-20 17:52 US/Eastern.",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

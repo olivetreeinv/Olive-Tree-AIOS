@@ -1,0 +1,54 @@
+{
+  "conversation": {
+    "id": "c919m91CBk8gFaYS9TAw",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249878433,
+    "dateUpdated": 1750249878433,
+    "lastMessageDate": 1750249878433,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "Tlh77n6gdloowS5XVK8k",
+    "fullName": "Shawn Blanc",
+    "contactName": "Shawn Blanc",
+    "companyName": null,
+    "email": "shawnblanc@ihop.org",
+    "tags": [
+      "friend",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "phone": null,
+    "attributed": null,
+    "profilePhoto": null,
+    "sort": [
+      1750249878433
+    ]
+  },
+  "messages": [
+    {
+      "id": "uYWgNA0KmBTH6bG6PP6i",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "Tlh77n6gdloowS5XVK8k",
+      "conversationId": "c919m91CBk8gFaYS9TAw",
+      "dateAdded": "2025-06-18T12:31:04.489Z",
+      "dateUpdated": "2025-06-18T12:33:08.894Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "Q6UFeZ6Khovf7qMs0gYS"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

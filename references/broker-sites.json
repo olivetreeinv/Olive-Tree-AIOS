@@ -1,0 +1,690 @@
+{
+  "_readme": "Broker \u2192 listings-page URL registry for the off-market site sweep (scripts/broker_sites.py). Off-market deals post here BEFORE Crexi/LoopNet. Add entries as brokers are discovered; M&M advisors follow marcusmillichap.com/advisors/{first-last}. status: active | 404 (checked, wrong URL \u2014 fix slug) | dead | status js-app = client-rendered, needs browser capture; skip in curl fetch",
+  "sites": [
+    {
+      "broker": "Patrick Cosgrove",
+      "brokerage": "Marcus & Millichap - Nashville",
+      "url": "https://www.marcusmillichap.com/advisors/patrick-cosgrove",
+      "status": "active",
+      "note": "server-renders closed transactions only; active listings via /mm/related/contentSearch \u2014 browser capture pending"
+    },
+    {
+      "broker": "Joe Mitchell",
+      "brokerage": "Marcus & Millichap - Atlanta",
+      "url": "https://www.marcusmillichap.com/advisors/joe-mitchell",
+      "status": "active",
+      "note": "server-renders closed transactions only; active listings via /mm/related/contentSearch \u2014 browser capture pending"
+    },
+    {
+      "broker": "Scott Spaulding",
+      "brokerage": "Marcus & Millichap - Atlanta",
+      "url": "https://www.marcusmillichap.com/advisors/scott-spaulding",
+      "status": "active",
+      "note": "server-renders closed transactions only; active listings via /mm/related/contentSearch \u2014 browser capture pending"
+    },
+    {
+      "broker": "Marco Welch",
+      "brokerage": "Marcus & Millichap - Atlanta",
+      "url": "https://www.marcusmillichap.com/advisors/marco-welch",
+      "status": "active",
+      "note": "server-renders closed transactions only; active listings via /mm/related/contentSearch \u2014 browser capture pending"
+    },
+    {
+      "broker": "Harold Shepard",
+      "brokerage": "Marcus & Millichap - Atlanta",
+      "url": "https://www.marcusmillichap.com/advisors/harold-shepard",
+      "status": "active",
+      "note": "server-renders closed transactions only; active listings via /mm/related/contentSearch \u2014 browser capture pending"
+    },
+    {
+      "broker": "Paul Johnson",
+      "brokerage": "Marcus & Millichap - Atlanta",
+      "url": "https://www.marcusmillichap.com/advisors/paul-johnson",
+      "status": "active",
+      "note": "server-renders closed transactions only; active listings via /mm/related/contentSearch \u2014 browser capture pending"
+    },
+    {
+      "broker": "John Edward Brigel",
+      "brokerage": "Marcus & Millichap - Atlanta",
+      "url": "https://www.marcusmillichap.com/advisors/john-brigel",
+      "status": "active",
+      "note": "server-renders closed transactions only; active listings via /mm/related/contentSearch \u2014 browser capture pending"
+    },
+    {
+      "broker": "William Graves",
+      "brokerage": "Marcus & Millichap - Charleston",
+      "url": "https://www.marcusmillichap.com/advisors/william-graves",
+      "status": "active",
+      "note": "server-renders closed transactions only; active listings via /mm/related/contentSearch \u2014 browser capture pending"
+    },
+    {
+      "broker": "Ryan Lipomi",
+      "brokerage": "Marcus & Millichap - Charleston",
+      "url": "https://www.marcusmillichap.com/advisors/ryan-lipomi",
+      "status": "active",
+      "note": "server-renders closed transactions only; active listings via /mm/related/contentSearch \u2014 browser capture pending"
+    },
+    {
+      "broker": "Price Brazzel",
+      "brokerage": "Marcus & Millichap - Charleston",
+      "url": "https://www.marcusmillichap.com/advisors/price-brazzel",
+      "status": "active",
+      "note": "server-renders closed transactions only; active listings via /mm/related/contentSearch \u2014 browser capture pending"
+    },
+    {
+      "broker": "Michael Wess",
+      "brokerage": "Bull Realty",
+      "url": "https://www.bullrealty.com/brokers/12281",
+      "status": "active",
+      "note": "page = closed assignments only; active-listings section needs browser capture"
+    },
+    {
+      "broker": "Andy Lundsberg",
+      "brokerage": "Bull Realty",
+      "url": "https://www.bullrealty.com/brokers/12258",
+      "status": "active",
+      "note": "page = closed assignments only; active-listings section needs browser capture"
+    },
+    {
+      "broker": "Jimmy Shanken",
+      "brokerage": "Coldwell Banker Commercial Southern Coast",
+      "url": "https://www.cbcworldwide.com/professionals/pkz1Md9L/jimmy-shanken",
+      "status": "active"
+    },
+    {
+      "broker": "William Ferguson",
+      "brokerage": "Sun Realty Group",
+      "url": "https://www.sunrealtyga.com",
+      "status": "active"
+    },
+    {
+      "broker": "Drew Lekowski / Talia Barras",
+      "brokerage": "MRG Realty Partners",
+      "url": "https://mrgrealtypartners.com/properties/",
+      "status": "js-app"
+    },
+    {
+      "broker": "Taylor Brown / Chandler Brown / John Topping",
+      "brokerage": "GREA",
+      "url": "https://www.grea.com/properties",
+      "status": "js-app"
+    },
+    {
+      "broker": "Mason Taylor / John McCalla / Benjamin Papizan",
+      "brokerage": "Franklin Street Atlanta",
+      "url": "https://franklinst.com/properties/for-sale/",
+      "status": "js-app"
+    },
+    {
+      "broker": "Charlie Moye / Danielle Meikrantz",
+      "brokerage": "Meybohm Commercial",
+      "url": "https://meybohmcre.com/property-search",
+      "status": "js-app"
+    },
+    {
+      "broker": "Patty Burns / Trip Wilhoit / Jonathan Schuemann",
+      "brokerage": "Fickling & Company",
+      "url": "https://commercial.fickling.com/",
+      "status": "active"
+    },
+    {
+      "broker": "Joe Edge",
+      "brokerage": "Sherman & Hemstreet",
+      "url": "https://shermanandhemstreet.com/property-search/commercial-property-search/",
+      "status": "js-app"
+    },
+    {
+      "broker": "Harrison Johnson",
+      "brokerage": "Marcus & Millichap",
+      "url": "https://www.marcusmillichap.com/advisors/harrison-johnson",
+      "status": "js-app",
+      "source": "template"
+    },
+    {
+      "broker": "Nick Fluellen",
+      "brokerage": "Marcus & Millichap",
+      "url": "https://www.marcusmillichap.com/advisors/nick-fluellen",
+      "status": "js-app",
+      "source": "template"
+    },
+    {
+      "broker": "Willie Acree",
+      "brokerage": "Berkshire Hathaway Home Services",
+      "url": "",
+      "status": "none",
+      "source": "residential"
+    },
+    {
+      "broker": "Karen Stephens",
+      "brokerage": "Skyline Realty Group",
+      "url": "",
+      "status": "none",
+      "source": "residential"
+    },
+    {
+      "broker": "Jingru Sui",
+      "brokerage": "Keller Williams Realty Atlanta Partners",
+      "url": "",
+      "status": "none",
+      "source": "residential"
+    },
+    {
+      "broker": "Jeil Howell",
+      "brokerage": "First United Realty, Inc.",
+      "url": "",
+      "status": "none",
+      "source": "residential"
+    },
+    {
+      "broker": "Syed Firoz",
+      "brokerage": "Virtual Properties Realty.com",
+      "url": "",
+      "status": "none",
+      "source": "residential"
+    },
+    {
+      "broker": "Jessica Stoddard",
+      "brokerage": "PMI Atlanta West",
+      "url": "",
+      "status": "none",
+      "source": "residential"
+    },
+    {
+      "broker": "Tim Cowan",
+      "brokerage": "Keller Williams Realty Signature Partners",
+      "url": "",
+      "status": "none",
+      "source": "residential"
+    },
+    {
+      "broker": "Danielle McCurdy",
+      "brokerage": "Keller Williams Realty Atl Partners",
+      "url": "",
+      "status": "none",
+      "source": "residential"
+    },
+    {
+      "broker": "River Bonds",
+      "brokerage": "Fleur De Lee Realty, LLC",
+      "url": "",
+      "status": "none",
+      "source": "residential"
+    },
+    {
+      "broker": "Roman Cottle",
+      "brokerage": "KW Commercial Realty River Cities",
+      "url": "",
+      "status": "none",
+      "source": "residential"
+    },
+    {
+      "broker": "Kyra Cottle",
+      "brokerage": "Keller Williams Realty River Cities",
+      "url": "",
+      "status": "none",
+      "source": "residential"
+    },
+    {
+      "broker": "Casey McGuirt",
+      "brokerage": "Century 21 Connect Realty Roswell",
+      "url": "",
+      "status": "none",
+      "source": "residential"
+    },
+    {
+      "broker": "Steve Massell",
+      "brokerage": "KW Commercial First Atlanta",
+      "url": "",
+      "status": "none",
+      "source": "residential"
+    },
+    {
+      "broker": "David Moody",
+      "brokerage": "ERA Sunrise Realty",
+      "url": "",
+      "status": "none",
+      "source": "residential"
+    },
+    {
+      "broker": "James McGeehan",
+      "brokerage": "Virtual Properties Realty",
+      "url": "",
+      "status": "none",
+      "source": "residential"
+    },
+    {
+      "broker": "Brandon Fargo",
+      "brokerage": "Keller Williams Coastal Area Partners",
+      "url": "",
+      "status": "none",
+      "source": "residential"
+    },
+    {
+      "broker": "Jake Stumb",
+      "brokerage": "Charles Hawkins Co.",
+      "url": "https://www.charleshawkinsco.com/",
+      "status": "active",
+      "source": "brokerage"
+    },
+    {
+      "broker": "Mart Martindale",
+      "brokerage": "EDGE Realty Partners Dallas / Fort Worth",
+      "url": "https://edge-re.com/properties/",
+      "status": "active",
+      "source": "brokerage"
+    },
+    {
+      "broker": "Troy Reynolds",
+      "brokerage": "G2 Commercial Real Estate Services",
+      "url": "https://g2cre.com/",
+      "status": "active",
+      "source": "brokerage"
+    },
+    {
+      "broker": "Caroline Nicolella",
+      "brokerage": "Keller Williams Realty-Atlanta Partners",
+      "url": "",
+      "status": "none",
+      "source": "residential"
+    },
+    {
+      "broker": "Cindy LaDuke",
+      "brokerage": "EXP Realty",
+      "url": "",
+      "status": "none",
+      "source": "residential"
+    },
+    {
+      "broker": "Jade Johnson",
+      "brokerage": "Keller Williams Georgia Communities",
+      "url": "",
+      "status": "none",
+      "source": "residential"
+    },
+    {
+      "broker": "Bobby Parish",
+      "brokerage": "RE/MAX Five Star",
+      "url": "",
+      "status": "none",
+      "source": "residential"
+    },
+    {
+      "broker": "Kelli Head",
+      "brokerage": "RE/MAX Classic Realty Lavonia",
+      "url": "",
+      "status": "none",
+      "source": "residential"
+    },
+    {
+      "broker": "Bill Nickerson",
+      "brokerage": "RE/MAX Five Star",
+      "url": "",
+      "status": "none",
+      "source": "residential"
+    },
+    {
+      "broker": "Karen Graiser",
+      "brokerage": "Keller Williams Rlty Atl. Part",
+      "url": "",
+      "status": "none",
+      "source": "residential"
+    },
+    {
+      "broker": "Grant Arencibia",
+      "brokerage": "Century 21 Community Realty",
+      "url": "",
+      "status": "none",
+      "source": "residential"
+    },
+    {
+      "broker": "Dustin Kimberley",
+      "brokerage": "Livian (Keller Williams North Atlanta)",
+      "url": "",
+      "status": "none",
+      "source": "residential"
+    },
+    {
+      "broker": "Shelley Phillips",
+      "brokerage": "RE/MAX Classic Realty Lavonia",
+      "url": "",
+      "status": "none",
+      "source": "residential"
+    },
+    {
+      "broker": "Tom Ellicott",
+      "brokerage": "HomeSmart",
+      "url": "",
+      "status": "none",
+      "source": "residential"
+    },
+    {
+      "broker": "Jerrod Otting",
+      "brokerage": "Keller Williams Middle Georgia",
+      "url": "",
+      "status": "none",
+      "source": "residential"
+    },
+    {
+      "broker": "Jon Roosen",
+      "brokerage": "SVN",
+      "url": "https://svnwood.com/multifamily-properties/",
+      "status": "js-app",
+      "source": "discovered"
+    },
+    {
+      "broker": "Connor Kerns",
+      "brokerage": "Matthews",
+      "url": "https://www.matthews.com/agents/connor-kerns",
+      "status": "js-app",
+      "source": "discovered"
+    },
+    {
+      "broker": "Kevin Tipton",
+      "brokerage": "PWA Properties",
+      "url": "",
+      "status": "none",
+      "source": "discovered"
+    },
+    {
+      "broker": "Chip Watts",
+      "brokerage": "Watts Realty",
+      "url": "https://www.wattsrealty.com/commercial-properties",
+      "status": "js-app",
+      "source": "discovered"
+    },
+    {
+      "broker": "Stephan Dickie",
+      "brokerage": "Atlanta Leasing & Investment",
+      "url": "https://www.atlantaleasing.com/agent/stephan-dickie/",
+      "status": "active",
+      "source": "discovered"
+    },
+    {
+      "broker": "Chris Hann\u00e9",
+      "brokerage": "Taillefer Commercial",
+      "url": "",
+      "status": "none",
+      "source": "discovered"
+    },
+    {
+      "broker": "Anthony Lacy",
+      "brokerage": "Lacy And Associates LLC",
+      "url": "",
+      "status": "none",
+      "source": "discovered"
+    },
+    {
+      "broker": "Jack Marbut",
+      "brokerage": "Cushman & Wakefield",
+      "url": "https://multifamily.cushwake.com/Listings?OfficeID=1",
+      "status": "active",
+      "source": "discovered"
+    },
+    {
+      "broker": "John Courson",
+      "brokerage": "Coldwell Banker Commercial Premier",
+      "url": "https://www.coldwellbanker.com/ga/valdosta/agents/john-courson/aid-P00200000Fqd9Q2RymOTGpAPUwkC2LritapXJFY9/listings",
+      "status": "active",
+      "source": "discovered"
+    },
+    {
+      "broker": "Josh Landmon",
+      "brokerage": "Elevation Property Group LLC",
+      "url": "https://www.elevationpropgroup.com/listing",
+      "status": "active",
+      "source": "discovered"
+    },
+    {
+      "broker": "Autumn Wibright",
+      "brokerage": "Coldwell Banker Commercial Premier",
+      "url": "https://www.coldwellbanker.com/ga/valdosta/agents/autumn-wibright/aid-P00200000000039zrqW0fRsKlsaaNARz76KURl8K",
+      "status": "js-app",
+      "source": "discovered"
+    },
+    {
+      "broker": "Austin Graham",
+      "brokerage": "Matthews",
+      "url": "https://www.matthews.com/agents/austin-graham",
+      "status": "js-app",
+      "source": "discovered"
+    },
+    {
+      "broker": "Michael Bullard",
+      "brokerage": "M. Bullard and Company",
+      "url": "",
+      "status": "none",
+      "source": "discovered"
+    },
+    {
+      "broker": "Andrea Anderegg",
+      "brokerage": "Adams Realty Inc.",
+      "url": "https://adamsrealty.georgiamls.com/",
+      "status": "active",
+      "source": "discovered"
+    },
+    {
+      "broker": "Nik Hatzis",
+      "brokerage": "City Realty Advisors LLC",
+      "url": "https://www.cityrealty.net/properties/for-sale/",
+      "status": "active",
+      "source": "discovered"
+    },
+    {
+      "broker": "Kenneth Ficken",
+      "brokerage": "Ficken Commercial Real Estate",
+      "url": "",
+      "status": "none",
+      "source": "discovered"
+    },
+    {
+      "broker": "Ed Lee",
+      "brokerage": "Capital Properties Group",
+      "url": "https://www.capitalpropertiesgroup.com/currentlistings.html",
+      "status": "active",
+      "source": "discovered"
+    },
+    {
+      "broker": "Jordan Orivin",
+      "brokerage": "Elevation Property Group LLC",
+      "url": "https://www.elevationpropgroup.com/listing",
+      "status": "active",
+      "source": "discovered"
+    },
+    {
+      "broker": "Jill Jones",
+      "brokerage": "Bob Mathews",
+      "url": "",
+      "status": "none",
+      "source": "discovered"
+    },
+    {
+      "broker": "Reginald Jackson",
+      "brokerage": "Reggie Jackson Realty LLC",
+      "url": "",
+      "status": "none",
+      "source": "discovered"
+    },
+    {
+      "broker": "Kim Lyle",
+      "brokerage": "The Commercial Group",
+      "url": "",
+      "status": "none",
+      "source": "discovered"
+    },
+    {
+      "broker": "Harry Patel",
+      "brokerage": "JDH Developers",
+      "url": "",
+      "status": "none",
+      "source": "discovered"
+    },
+    {
+      "broker": "Wallace Fridy",
+      "brokerage": "CCRE Investments",
+      "url": "https://www.ccreinvestments.com/products",
+      "status": "active",
+      "source": "discovered"
+    },
+    {
+      "broker": "Ian Shaw",
+      "brokerage": "Berkadia Commercial Mortgage Atlanta",
+      "url": "",
+      "status": "none",
+      "source": "discovered"
+    },
+    {
+      "broker": "John Patel",
+      "brokerage": "JDH Developers",
+      "url": "",
+      "status": "none",
+      "source": "discovered"
+    },
+    {
+      "broker": "Damien Lanclos CCIM",
+      "brokerage": "SVN KD Lanclos & Associates LLC",
+      "url": "",
+      "status": "none",
+      "source": "discovered"
+    },
+    {
+      "broker": "Lee Malchow",
+      "brokerage": "Palomar Real Estate Group",
+      "url": "https://www.thepalomargroup.com/properties/",
+      "status": "active",
+      "source": "discovered"
+    },
+    {
+      "broker": "Tuy Dewey Luong",
+      "brokerage": "SERHANT",
+      "url": "https://serhant.com/agents/tuy-dewey-luong",
+      "status": "active",
+      "source": "discovered"
+    },
+    {
+      "broker": "Michelle Parker-Scott",
+      "brokerage": "Parker Scott Properties",
+      "url": "https://www.parkerscottproperties.com/view-expert/?id=1",
+      "status": "active",
+      "source": "discovered"
+    },
+    {
+      "broker": "Jessica Kelly",
+      "brokerage": "Engel & Volkers Savannah",
+      "url": "https://evrealestate.com/en/shops/savannah/our-advisors/jessicakelly/488b3bad-dc80-43b3-b08d-7598c2ce1b5d",
+      "status": "js-app",
+      "source": "discovered"
+    },
+    {
+      "broker": "Robin Moore",
+      "brokerage": "RCAM Properties",
+      "url": "",
+      "status": "none",
+      "source": "discovered"
+    },
+    {
+      "broker": "Melissa Faircloth",
+      "brokerage": "Faircloth Realty",
+      "url": "",
+      "status": "none",
+      "source": "discovered"
+    },
+    {
+      "broker": "CJ Harman",
+      "brokerage": "The Norton Agency Gainesville",
+      "url": "https://nortoncommercial.com/agents/cj-harman/",
+      "status": "active",
+      "source": "discovered"
+    },
+    {
+      "broker": "Tambi Wingate Williams",
+      "brokerage": "Cobblestone Realty Partners LLC",
+      "url": "",
+      "status": "none",
+      "source": "discovered"
+    },
+    {
+      "broker": "Joseph Eterno",
+      "brokerage": "The Rezerve LLC",
+      "url": "",
+      "status": "none",
+      "source": "discovered"
+    },
+    {
+      "broker": "Zach Rogers",
+      "brokerage": "Acme Property Group",
+      "url": "https://acmerealestatecompany.com/",
+      "status": "js-app",
+      "source": "discovered"
+    },
+    {
+      "broker": "Robert Head",
+      "brokerage": "Modern Heart Realty",
+      "url": "https://roberthead.georgiamls.com/",
+      "status": "active",
+      "source": "discovered"
+    },
+    {
+      "broker": "Prashant Patel",
+      "brokerage": "Blokk Commercial Real Estate",
+      "url": "https://www.blokkcre.com/our-team/prashant-patel",
+      "status": "active",
+      "source": "discovered"
+    },
+    {
+      "broker": "Sam Stowell",
+      "brokerage": "Ansley Real Estate",
+      "url": "https://www.ansleyre.com/agents/7739/sam-stowell",
+      "status": "js-app",
+      "source": "discovered"
+    },
+    {
+      "broker": "Michael Nolen",
+      "brokerage": "SVN Second Story Real Estate Management - Atlanta",
+      "url": "https://www.svn-atl.com/",
+      "status": "active",
+      "source": "discovered"
+    },
+    {
+      "broker": "Larissa Sahakyan",
+      "brokerage": "Sahakyan Group",
+      "url": "",
+      "status": "none",
+      "source": "discovered"
+    },
+    {
+      "broker": "Thomas Johnson",
+      "brokerage": "Avison Young - Atlanta",
+      "url": "",
+      "status": "none",
+      "source": "discovered"
+    },
+    {
+      "broker": "Adrian Provost",
+      "brokerage": "Realty ONE Group Terminus",
+      "url": "",
+      "status": "none",
+      "source": "discovered"
+    },
+    {
+      "broker": "Danny Worsley",
+      "brokerage": "Bare Real Estate",
+      "url": "https://www.barerealestatesavannah.com/listings/city/Savannah/",
+      "status": "active",
+      "source": "discovered"
+    },
+    {
+      "broker": "Roger Haikal",
+      "brokerage": "independent",
+      "url": "",
+      "status": "none",
+      "source": "discovered"
+    },
+    {
+      "broker": "Ishrat Jahan",
+      "brokerage": "independent",
+      "url": "",
+      "status": "none",
+      "source": "discovered"
+    }
+  ]
+}

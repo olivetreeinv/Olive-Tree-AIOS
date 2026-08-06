@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan conducts a live mentorship Q&A where he deep-dives into Christian's 48-unit value-add multifamily deal in Portage, Michigan (asking price $4.495M, negotiable down to ~$4.2M). He walks through deal analyzer mechanics, underwriting adjustments, refinance strategies to return investor capital, and negotiation tactics. A second deal analyzer for a 15-unit in Bennett, Texas is also reviewed for expense verification and pricing benchmarks.",
+  "takeaways": [
+    "Run stress tests at 45% expense ratio minimum for 1980s properties with partial renovations to be conservative",
+    "Section 8 housing programs pay a total housing allowance that includes utilities\u2014if you charge higher rent, you must cover utilities, so the tenant's total benefit remains constant; verify this with housing authority before underwriting",
+    "Negotiate LLC purchase instead of property sale to potentially avoid property tax reassessment, but require seller indemnity for historical liabilities and ensure it's a single-purpose entity; budget for possible legal fees if school districts challenge the structure",
+    "Insurance replacement cost should be based on rebuild cost (unchanged day-before vs day-after purchase), not sale price; only increase coverage if currently undercovered",
+    "Refinance strategy: invest $1.7M total capital ($180K of yours, $1.5M raised), bump rents ~$100/month via renovations, refinance in years 3-4 to return ~40-50% of investor capital tax-free while maintaining ownership and cash flow; repeat every 3-5 years until full payout by year 10",
+    "Three levers to improve deal economics: increase revenue (rents), decrease expenses, or reduce purchase price; interest rates are market-dependent, so focus on what you control",
+    "Get soft insurance quotes early (use community vendor network) and double-check property tax assessments, repairs/maintenance baseline (~$700-800/unit for 1980s properties), and utility bills directly from seller; confirm all expense assumptions before increasing offer price"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Stress test expenses conservatively; adjust seller's underwriting from low 40s to 45%+ for 1980s value-add properties",
+      "evidence": "Justin tells Christian: 'I'd probably want to see these things definitely for safety purposes...I'd probably just throw in some numbers in here to get it up um closer to a 45% or something like that...just to get it up because I want to see what this looks like if I'm going to stress test it somewhere in that 44 range on a 1980 property'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Verify Section 8 rent assumptions by calling housing authority; confirm total housing allowance structure impacts both rent and utility coverage",
+      "evidence": "Allan shares story: 'I talked to the housing authority about the section 8 people in there, too. And as it turned out, the section 8 program, it pays out, it it adds in the utilities. So if you don't cover the utilities, they subtract that out of what they pay you...You could charge more rent, but then you got to cover utilities'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Request and validate seller's T12 financials and utility bills directly; don't rely solely on broker's OM summary or investor assumptions",
+      "evidence": "Justin asks Christian: 'did you go through their T12 and put that together' and advises others 'Get the utility bills. Yeah, they can show you the bills to double check those'"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Start broker outreach in markets outside your target area first to build confidence and practice conversation skills without fear of local reputation damage",
+      "evidence": "Tanner's strategy: 'he started calling brokers like completely out of the area. Uh, but then he realized, hey, it was actually a lot more calm and chill and not, you know, as um tense as I kind of expected it to be around having relationships and talking with brokers'"
+    }
+  ],
+  "id": "MVg01qXot3Q",
+  "title": "Tuesday Mentorship Q&A - Investor Conversations That Convert_02/17/26 | Justin Brennan",
+  "duration": 3377
+}

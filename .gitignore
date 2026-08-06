@@ -1,0 +1,55 @@
+.env
+.env.local
+.env.bak*
+.env.*.bak
+.DS_Store
+*.log
+__pycache__/
+node_modules/
+.claude/settings.local.json
+audits/
+.codex-review/
+
+# Obsidian editor config (machine-specific)
+.obsidian/
+wiki/.obsidian/
+
+# Raw source docs processed into the wiki (kept local)
+wiki/raw/
+
+# Local database (rebuildable from Sheets + markdown; not committed)
+data/*.db
+
+# MCP server config — contains API secrets/tokens, stays local
+.mcp.json
+
+# Generated artifacts (LOI/land-mail/capital-raise outputs; may contain PII)
+output/
+
+# Transient SQLite WAL/SHM files (churn on every DB write)
+data/*.db-wal
+data/*.db-shm
+.qb_tokens
+
+# GHL contact export — 804 contacts w/ addresses+phones (PII, never push)
+archives/ghl-export-2026-07-06/
+
+# Trading-desk runtime state (churns every cycle)
+data/cc_last_run.txt
+data/trading_halt.json
+data/suna_uncovered.json
+
+# Root scratch files
+scratchpad_*
+data/*.bak-*
+# Any database backup, whatever the suffix — these carry live contact PII and
+# run ~14MB each. data/*.bak-* alone missed .pre-cutover.bak.
+data/*.bak
+# Cutover debris: a stale duplicate of data/ copied in during the 2026-08-05
+# MacBook -> mini move. Nothing reads it; ignored so it can't be committed.
+data/data/
+
+# Generated artifacts that embed absolute machine paths.
+# Both are rebuilt on demand, so tracking them only propagates stale paths.
+jarvis/viewer/graph-data.js
+data/deal_intake_seen.json

@@ -1,0 +1,54 @@
+{
+  "conversation": {
+    "id": "SHgupYG9wL11u8h1DziJ",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1750249889956,
+    "dateUpdated": 1750249889956,
+    "lastMessageDate": 1750249889956,
+    "lastMessageType": "TYPE_CAMPAIGN_EMAIL",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "2fCDf6gM4Oc8cOVAqEPj",
+    "fullName": "Bud And Cathy Meder",
+    "contactName": "Bud and Cathy Meder",
+    "companyName": null,
+    "email": "pais1@pipeline.com",
+    "tags": [
+      "friend",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "phone": null,
+    "attributed": null,
+    "profilePhoto": null,
+    "sort": [
+      1750249889956
+    ]
+  },
+  "messages": [
+    {
+      "id": "q14PwTU7uxE18DQk6hP9",
+      "type": 3,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "contactId": "2fCDf6gM4Oc8cOVAqEPj",
+      "conversationId": "SHgupYG9wL11u8h1DziJ",
+      "dateAdded": "2025-06-18T12:31:15.419Z",
+      "dateUpdated": "2025-06-18T12:33:37.872Z",
+      "meta": {
+        "email": {
+          "messageIds": [
+            "ZoWWk8jDexIZYBnzAgXK"
+          ],
+          "direction": "outbound",
+          "subject": "The Olive Tree Insights: Deals Await When Others Hesitate"
+        }
+      },
+      "source": "campaign",
+      "messageType": "TYPE_EMAIL"
+    }
+  ]
+}

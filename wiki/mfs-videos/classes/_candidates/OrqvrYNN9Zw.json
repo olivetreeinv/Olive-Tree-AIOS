@@ -1,0 +1,40 @@
+{
+  "deal_relevant": "partial",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan conducts a mentorship Q&A covering wealth protection/currency diversification (off-topic) and deal analysis fundamentals. The relevant portion focuses on Rose's Indianapolis multifamily deals ($3.8M, 30-unit property and others) where Justin teaches specific underwriting steps, financial documentation requirements, and valuation methodology for value-add multifamily deals.",
+  "takeaways": [
+    "Require T12 and rent roll before writing LOI: 'Send me over the T12 and rent roll and I'll go ahead and analyze and get you an LOI based off the financials'",
+    "Use 50% expense ratio as baseline for underwriting Midwest 1960s properties: 'You're in a 1962 property in the Midwest, upper Midwest. You're going to be right around 50-55% expense ratio'",
+    "Interior renovation budgets: '7 to 15,000 a unit for interior renos, light to heavy. And then your exterior maybe five or so thousand exterior per unit'",
+    "Never get attached to asking price; let financials dictate offer: 'I never get attached to what they ask. I watch what the property's telling me'",
+    "Use Goal Seek in Excel to back into purchase price based on cap rate or IRR targets",
+    "Ask brokers for 3 vendor referrals: PM companies, local commercial lenders/CMBs, and renovation/construction contractors",
+    "Deferred maintenance items (roof replacement) warrant price reduction or seller credit, not capital raise: 'that's a deferred maintenance item that you'd probably be asking for all or portion of credit for from the seller'",
+    "Verify lease documents: sample audit to confirm rent roll names/terms match actual lease agreements"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Systematically require complete financials (T12 + rent roll) before underwriting, rather than proceeding with P&L alone or making LOI without rent detail",
+      "evidence": "Rose provided P&L but lacked rent roll; Justin mandates: 'You need to call this guy and you say, Listen, sir. I need the financials so I can underwrite this deal and give you a proper LOI on the financials. Send me over the rent roll, the T12'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Apply 50-55% expense ratio assumption for older Midwest properties rather than relying on seller's stated expenses",
+      "evidence": "Justin walks through Rose's $3.8M Indianapolis 1962 property and states: 'You're in a 1962 property in the Midwest, upper Midwest. You're going to have snow. You're going to have this. You're going to have that. I guarantee you're going to be right around 50-55% expense ratio'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Use Excel Goal Seek to back into rational purchase price from required IRR/cap rate, stopping when assumptions break down instead of negotiating from asking price",
+      "evidence": "When Rose's deal 'implodes' at $3.8M, Justin uses Goal Seek to show deal only makes sense at $1.621M: 'You're just backing into numbers. That's what I'm going to write...goal seek...set cell...by changing that'"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Request and document three vendor categories from each broker (PMs, lenders, contractors) to build local market team simultaneously while sourcing deals",
+      "evidence": "Justin tells Rose: 'I would talk to your broker friend that's super nice to you and say, Hey, do you have a couple other PM companies that you can refer me to...same question of the property manager. This is how you're going to get your little team in Indianapolis set up'"
+    }
+  ],
+  "id": "OrqvrYNN9Zw",
+  "title": "Tuesday Mentorship Q&A - Wealth Protection & Currency Shift _06-03-25 | Justin Brennan",
+  "duration": 3393
+}

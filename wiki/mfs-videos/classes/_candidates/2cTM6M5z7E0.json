@@ -1,0 +1,54 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan coaches Kurt through underwriting a 14-unit off-market deal in Nampa, Idaho being offered at $2.65M with seller financing at 5.5% interest. The deal struggles to pencil at current pricing due to low fundamentals and Idaho's tax-avoidance-driven market dynamics, with fundamental issues in expense assumptions (management fees underestimated, utilities, insurance, maintenance) and overall returns that don't support multifamily investment criteria.",
+  "takeaways": [
+    "Ask broker directly: 'How many apartments do you own and manage?' to verify real management costs are 8% all-in (5-6% fee + lease commissions, turnover costs)",
+    "Triple-check R&M costs on 1980 buildings: should be $600+ per unit, not $430; verify what CapEx has been deferred",
+    "Demand to see broker's non-operational expense line (below NOI line on P&L) where operators hide true costs; if broker 'smirks' they know they're hiding expenses",
+    "Metering setup matters: understand individual electric/gas meters vs. master meter to properly allocate utility reimbursement at 60-65% recovery rate",
+    "Utilities passed back: landlord currently pays all utilities but should implement RUBS (ratio utility billing system) to charge tenants back; verify this with broker",
+    "On 1980 duplex properties (7 duplexes = 14 units): multiple roofs and systems increase maintenance vs. single building; expect higher expense ratios",
+    "Idaho market buying on fundamentals at 5.4 cap rate signals 1031 exchange tax-avoidance buyers, not operational buyers; ask broker if deals are marketed to 1031 buyers vs. fundamentals players"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Implement 8% management fee as standard (vs underestimating at 5%), including lease commissions and turnover costs",
+      "evidence": "Justin corrected Kurt's 5% management assumption, stating 'What he's not accounting for is lease up, commissions, all the other costs that go into management...your net effective will be 8% guaranteed. Guaranteed.'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Always request broker's non-operational expense line items and verify what costs are being hidden below the NOI line",
+      "evidence": "Justin taught: 'Let me see your non-operational expense line...below the net operating income line that they don't show you. I guarantee it's not on their OM...They stick it down there...hiding expenses.' This reveals brokers knowingly hide costs."
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "For older buildings (1980+), verify historical CapEx spend over ownership period and benchmark R&M at $600+/unit, not accepting low figures without explanation",
+      "evidence": "Justin questioned: 'What amount of expenses are they sticking below the NOI line?...What kind of non-operational CapEx has been spent?...How many years have they owned it?' For 1980 building with $430/unit R&M, should be $600+/unit."
+    },
+    {
+      "skill": "broker-search",
+      "change": "Ask brokers point-blank: 'Are people buying here on fundamentals or cash preservation/tax avoidance?' to understand market dynamics before underwriting",
+      "evidence": "Justin coached: 'I would ask the broker...are people even buying properties on fundamentals? I mean cuz if even if we want to...people are parking money right now...it's a 1031 exchange buyer that's going to buy this property.'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Verify metering configuration (individual electric/gas meters vs. master meter) before underwriting utilities; clarify gas vs. electric heating/appliances",
+      "evidence": "Justin questioned Kurt: 'Is there a meter for gas for each unit, meter for electric for each unit...are they individually metered?...Is it gas or is it electric? So, you'd want to understand that.'"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Apply '20 seconds of courage' mindset to networking: use gratitude/edification (compliment, ask about them) before pitching yourself to build warm capital contacts",
+      "evidence": "Justin's restaurant example: 'I had 20 seconds of courage...I just wanted you...your staff let me know...you're unbelievable...blah blah blah...he stands up out of his chair...15 minutes...exchanged information...now he's a possible investor...put him in my CRM...weekly newsletter.'"
+    },
+    {
+      "skill": "market-research",
+      "change": "Benchmark market cap rates vs. financing terms: buying at 5.4 cap with 5.5% interest on fundamentals doesn't work unless market is tax-driven",
+      "evidence": "Justin noted: 'You're buying it at 5.4...they're giving you a 5.5 interest rate...it doesn't make fundamental sense...people are parking money...avoiding taxes...this is a 1031 exchange buyer.'"
+    }
+  ],
+  "id": "2cTM6M5z7E0",
+  "title": "Weekly Coaching_05/28/26 | Justin Brennan",
+  "duration": 3566
+}

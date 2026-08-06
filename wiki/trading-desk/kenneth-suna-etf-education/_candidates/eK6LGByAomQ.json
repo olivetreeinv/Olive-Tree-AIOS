@@ -1,0 +1,24 @@
+{
+  "trading_relevant": "partial",
+  "strategy": "market-analysis",
+  "summary": "Kenneth Suna provides stock analysis and investment commentary on various tickers (NVDA, CAVA, QYLD, etc.) during a TikTok live stream. While primarily focused on long-term stock picking and market outlook, he briefly touches on covered calls and options strategies, noting his personal preference to avoid options trading due to consistent losses.",
+  "takeaways": [
+    "Average up into strength rather than waiting for dips; buy quality stocks as they go up (NVDA example: bought at $125, $154, $226, $389, $413, $380, $400)",
+    "QYLD only sells covered calls with no buy-and-hold component, so it won't capture full market upside in rallies like hybrid ETFs (JEPI, SCHD) do",
+    "Don't chase stocks up 1,000% in a year or chase penny stocks up 60%+ in days\u2014usually dumps afterward",
+    "For speculative positions, focus on 'how much am I willing to lose' not 'how much can I make'; size positions accordingly (e.g., $3M NVIDIA investment on $2.18T market cap)",
+    "Covered calls lock in opportunity cost\u2014if you bought NVDA at $125 and sold calls, you'd miss the $900 move; only sell calls on stocks you're planning to exit anyway",
+    "Don't wait for pullbacks or corrections; young investors sitting on sidelines missed 20%+ S&P returns and 60%+ tech returns in recent years",
+    "When buying speculative assets like Joby Aviation at $5.29/share, ask how many shares you'd buy if bankrupt (e.g., 100 shares = $529 loss tolerance)"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Implement selective covered call selling on positions planned for exit, avoiding opportunity cost on growth stocks held long-term",
+      "evidence": "Kenneth explicitly states he avoids covered calls on NVDA (bought at $125, now $900) due to lost upside, but would sell them on Microsoft if exiting anyway. This aligns with Brian's wheel strategy\u2014sell calls only on positions ready to liquidate to capture premium without sacrificing appreciation."
+    }
+  ],
+  "id": "eK6LGByAomQ",
+  "title": "Tiktok Live 3/7: NVDA, CAVA, SOUNDHOUND, QYLD, Crypto and More! #kennethsuna",
+  "duration": 3899
+}

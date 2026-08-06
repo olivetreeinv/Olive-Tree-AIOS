@@ -1,0 +1,42 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan walks through the complete A-to-Z process of finding, analyzing, underwriting, and closing multifamily deals, with emphasis on the find-analyze-LOI cycle that must repeat 20-30 times before landing a deal. He details his own first 27-unit deal journey in Kansas City (2019) and explains the financing structure, capital raising mechanics via syndication, and how to build investor soft commitments through pitch decks and CRM management.",
+  "takeaways": [
+    "Repeat the find-analyze-LOI cycle relentlessly; you may need 20-30 properties before getting one accepted deal",
+    "Write as many LOIs as possible (even 400/day) since they are non-binding; an LOI is 'literally worth the paper it's written on'",
+    "Target deals at $50,000-$150,000 per unit in markets like GA/TN/AL/OK to minimize out-of-pocket capital (goal: under $50k personal investment)",
+    "Use Craigslist/Cruxy only to identify brokers in your target market, not to find actual deals",
+    "Good deals attract both debt and equity automatically; 14-20% annual return, 6-10% cash-on-cash, 1.8x+ equity multiple are the thresholds",
+    "Raise equity by creating FOMO: email prospects asking 'who do you know' rather than 'are you interested,' triggering self-selection into the deal",
+    "Set LOIs with 60-day escrow: 30-day due diligence period (refundable), 30-day closing, plus optional 30-day extension (90 days total max)",
+    "Minimum investor check is $25,000; typical first deal raises $600k-$900k from 5-8 investors ($25k, $50k, $150k, $200k check sizes)",
+    "Never allow money to go hard on day one to get contract; maintain 30-day refundable due diligence window for inspections and financials",
+    "Use income approach (NOI-based) not comparable approach to value commercial properties; two identical buildings with different NOIs have different values"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Apply target acquisition thresholds of $50,000-$150,000 per unit in high-growth markets to ensure deals remain fundable with <$50k personal capital",
+      "evidence": "Justin emphasizes 'you're looking for deals $50 to $150,000 per unit. That's what you're looking for' and explains this is why most good deals are in GA/TN/AL/OK, not California, since capital efficiency directly impacts ability to close first deals"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Use 14-20% annual return, 6-10% cash-on-cash, and 1.8x+ equity multiple as minimum underwriting hurdles before writing an LOI",
+      "evidence": "Justin states explicitly: '14 to 20% return...6 to 10% cash on cash, 1.8x or more on your equity multiple. Those are the things that are in all the videos. We talk about them left and right. That's a good deal because that deal will attract the debt. That deal will attract the equity.'"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Execute a disciplined daily find-analyze-LOI cycle with target of 20-30 deal submissions before expecting first acceptance",
+      "evidence": "Justin emphasizes repeating 'find, analyze, find, analyze, find, analyze, LOI, find, analyze, LOI...You may have to go through 20 or 30 properties to get your one' and models his own process scouring Craigslist/Cruxy every evening 8:30-10:30pm while working full-time as a realtor"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Contact identified brokers with specific LOI offers (even significantly under asking price) to establish relationships and receive pre-market deal flow",
+      "evidence": "Justin explains the broker conversation script: 'Yeah, this one may not [work]. Unfortunately, it's just too far off. I'd love it to, but it looks like it may not work right now...So, if you can send me some pre-market other deals, maybe you're working on something will make sense.'"
+    }
+  ],
+  "id": "m7IuhpZZA_s",
+  "title": "Weekly Coaching_05-08-25 | Justin Brennan",
+  "duration": 3763
+}

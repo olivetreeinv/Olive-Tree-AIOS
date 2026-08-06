@@ -1,0 +1,56 @@
+{
+  "conversation": {
+    "id": "Eso6LxZDXbUZd0pTCcYs",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1783364386164,
+    "dateUpdated": 1783364386758,
+    "lastMessageDate": 1783364386756,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Sharon, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "unreadCount": 0,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "QsttiQZ2RoDO6JAUJLgs",
+    "fullName": "Sharon Washney",
+    "contactName": "Sharon Washney",
+    "companyName": "Appraiser",
+    "phone": "+14042740605",
+    "tags": [
+      "appraiser",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364386756
+    ]
+  },
+  "messages": [
+    {
+      "id": "m5oMw7QUGLUSNDskPiGP",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Sharon, a copy of the pitch deck has been sent to your email.\nReply STOP to Unsubscribe\nThanks, Brian Norton",
+      "contactId": "QsttiQZ2RoDO6JAUJLgs",
+      "contentType": "text/plain",
+      "conversationId": "Eso6LxZDXbUZd0pTCcYs",
+      "dateAdded": "2026-07-06T18:59:46.208Z",
+      "dateUpdated": "2026-07-06T18:59:51.962Z",
+      "source": "workflow",
+      "altId": "SMd6e61da3563b7d1fa147449d71cb2894",
+      "from": "+16789712411",
+      "to": "+14042740605",
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

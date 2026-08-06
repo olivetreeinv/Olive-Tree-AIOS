@@ -1,0 +1,35 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin walks through analyzing a 47-unit Kansas City multifamily deal using his deal analyzer, correcting underwriting assumptions (vacancy rates, expense ratios, cap rates) and demonstrating how to adjust pricing to hit target IRR metrics. He also explains cost segregation strategy as a capital-raising tool to attract high-net-worth investors seeking tax benefits.",
+  "takeaways": [
+    "Use Crexy/Loopnet to find brokers (representing ~30% of deals), not to find deals directly",
+    "Target minimum 6-10% cash-on-cash and 15%+ IRR on a 3-5 year hold",
+    "Expense ratios on 1926-era buildings should be 48-50% even with renovations",
+    "Typical vacancy/credit loss assumption should be 10-15% for Kansas City market",
+    "Cost segregation on $2M property generates ~$800K in year-one bonus depreciation, creating 1.3X paper loss multiplier for investors",
+    "Real estate professional status (15 hrs/week) allows unlimited writeoff of ordinary income + capital gains vs. capital gains only",
+    "Hold properties 5+ years to minimize depreciation recapture tax hit on sale; refinancing avoids recapture entirely",
+    "Cost segregation cost ($5-7K on 25-unit) is paid by the deal, not out-of-pocket"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Apply consistent vacancy/credit loss assumption of 10-15% and expense ratios of 48-50% for older buildings when underwriting",
+      "evidence": "Josh's initial deal used 6% vacancy and underestimated expenses; Justin corrected to 10% and ~50% expense ratio, which significantly improved IRR from below-target to 15%+"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Validate all broker assumptions (taxes, other income, expense categories) independently before relying on OM numbers",
+      "evidence": "Justin found broker claimed 69% tax assessment decrease and $76K other income without clear documentation; advised Josh to verify with spreadsheet and call broker"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Identify and target top brokers by frequency of deal listings on Crexy, not by analyzing individual listings",
+      "evidence": "Justin explained Indiana has ~489 properties for sale but only 200 visible on Crexy (30%); strategy is to find brokers with most logos/presence and get behind-the-scenes deals, e.g., Bryce Bradshaw in KC"
+    }
+  ],
+  "id": "8-_lZFzQtRQ",
+  "title": "Tuesday Mentorship Q&A - Passive Income Path_07-08-25 | Justin Brennan",
+  "duration": 3036
+}

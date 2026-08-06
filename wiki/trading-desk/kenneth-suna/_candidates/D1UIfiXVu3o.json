@@ -1,0 +1,23 @@
+{
+  "trading_relevant": "yes",
+  "strategy": "covered-calls",
+  "summary": "Kenneth advises against selling covered calls immediately after a stock has surged dramatically (e.g., HIMS up 16% in one day). The premiums appear attractive but the risk of a sharp pullback in the following days/weeks makes the risk-reward unfavorable for small premium gains. Instead, he recommends waiting for the inevitable pullback before entering the position.",
+  "takeaways": [
+    "Do not sell covered calls on a stock that has just experienced a massive single-day rip (16%+ moves)",
+    "After extreme runups, expect a pullback within days to 1-2 weeks; use Fibonacci retracements to identify likely support levels",
+    "Calculate if the premium justifies the capital at risk; $159-$182 premium on $5,800 capital is insufficient risk-reward",
+    "When a stock is overbought after a rip, redeploy capital to other stocks with better risk-adjusted premiums rather than forcing a trade on the surged stock",
+    "Cash-secured puts on pulled-back stocks offer better entry points than covered calls on fresh runups, if the strike price aligns with your buy target",
+    "Wait for the stock to drop to your desired entry price (e.g., $54 on HIMS) before committing capital, rather than chasing after a surge"
+  ],
+  "strategy_candidates": [
+    {
+      "strategy": "trading-desk",
+      "change": "Add a rule to skip covered call entries on stocks with >10% single-day moves; redeploy that capital to other positions with better risk-adjusted premiums or wait for pullback confirmation via technical levels (Fibonacci retracements).",
+      "evidence": "Kenneth explicitly states he avoids selling covered calls on surged stocks and instead moves capital elsewhere or waits. He demonstrates Fibonacci retracements as a tool to time re-entry and notes that $159 premium on $5,800 (2.7%) for 2-day hold with pullback risk is poor risk-reward for the Premium Desk's $1,250/mo target."
+    }
+  ],
+  "id": "D1UIfiXVu3o",
+  "title": "Should you sell covered calls on a stock AFTER it surges? ",
+  "duration": 288
+}

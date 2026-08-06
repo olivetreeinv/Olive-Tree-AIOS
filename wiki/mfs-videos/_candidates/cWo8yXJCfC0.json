@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan teaches a comprehensive framework for analyzing multifamily deals using five pillars: find, analyze, finance, close, and manage. He demonstrates real deal analyzers submitted by mentees, showing how to properly underwrite properties using realistic expense assumptions and key metrics (IRR, cash-on-cash return, equity multiple) rather than broker fluff. He emphasizes finding deals that pencil at 14-20% IRR, 6-10% cash-on-cash, and 1.8-2.0x equity multiple to attract investor capital.",
+  "takeaways": [
+    "Use 12-15% economic loss (vacancy + lost to lease + bad debt + concessions) for non-coastal markets, not the 4-5% brokers advertise",
+    "Value = NOI \u00f7 Cap Rate; with two variables you can solve for the third",
+    "Target deal metrics: IRR 14-20%, Cash-on-Cash 6-10%, Equity Multiple 1.8-2.0+",
+    "60% of commercial deals trade in pre-market before hitting websites like LoopNet; leverage on-market deals to identify brokers and access their pre-market inventory",
+    "Tour 3 properties with 3 different brokers to break bread and build relationships for off-market deal flow",
+    "Structure: bring 10% equity as GP (general partner) to control deal; raise remaining 30% equity (total 40%) from limited partners; debt covers 60-70%",
+    "Acquisition fee: 2-3% of purchase price covers your GP compensation at close; allows controlling deals with minimal personal capital"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Implement realistic expense assumptions: use 12-15% economic loss vs. broker 4-5% for non-coastal deals; verify tax (2-2.5% of assessed value), insurance ($1,500/unit in TX), repairs ($650-700/unit), and management fees (6% for small properties vs. 3% stated)",
+      "evidence": "Justin shows mentee analysis where brokers understate vacancy at 4%, but market reality in Texas is 8-12% vacancy alone plus 1-2% lost to lease, 2-3% bad debt, and 2-3% concessions = 12-15% total economic loss. He highlights this gap in his review of the Houston deal analyzer."
+    },
+    {
+      "skill": "broker-search",
+      "change": "Systematize broker prospecting by calling 3 brokers on 3 different on-market deals in your target market, touring each property, and explicitly requesting pre-market access list by saying 'we are buyers in this market, can we get on your pre-market list?'",
+      "evidence": "Justin describes his Kansas City entry strategy: attended conference, met broker, toured 3 on-market properties with 3 different brokers in January, then received regular pre-market deal flow. He emphasizes 'the more hands you shake the more money you make' and instructs: 'call John, Joanne, Susette\u2014hey, how you doing, when can we tour?'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Use standardized deal analyzer focusing on 3 critical return metrics only: IRR (target 14-20%), Cash-on-Cash (target 6-10%), Equity Multiple (target 1.8-2.0+); if deal doesn't meet these thresholds, pass",
+      "evidence": "Justin shows real mentee deal analyzer, highlights only these 3 metrics, and states: 'Those are your three most important because that's going to drive a lot of your decision-making' and 'if the property aligns with those percentage metrics it's probably a fair deal to dive in further, if it doesn't meet that, move on, pass, go.'"
+    }
+  ],
+  "id": "cWo8yXJCfC0",
+  "title": "How To Find And Analyze Multifamily Deals - A step by step guide | Justin Brennan",
+  "duration": 5019
+}

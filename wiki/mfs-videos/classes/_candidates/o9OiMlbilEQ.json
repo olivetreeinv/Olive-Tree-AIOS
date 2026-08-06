@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan conducts a live deal analysis of a 42-unit multifamily property in Logansport, Indiana with mentee Michael, focusing on market cap rates, underwriting assumptions, and tertiary market considerations. The discussion covers realistic exit cap rates (7-7.5% vs. seller's 7.75%), expense ratios, debt service coverage ratios, and due diligence priorities for small-market deals.",
+  "takeaways": [
+    "Run tertiary market deals at 6.5% minimum exit cap rate for safety, even if market data shows 7-8%",
+    "Stress test assumptions: use realistic 5% credit loss rather than seller's optimistic numbers",
+    "Verify historical cap rates using ChatGPT data aggregation across multiple real estate websites",
+    "Check for pipeline of new construction units in development department over next 2 years to assess downward pressure",
+    "Tertiary market lending rates typically run high fives to middle-low sixes (currently improving toward sub-5%)",
+    "For small towns, prioritize job market diversity: need 6+ strong employers, not single-employer dependency like 'one Walmart'",
+    "Due diligence must include historical occupancy verification and confirmation market hasn't changed since seller's T12 projections"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Apply minimum 6.5% cap rate floor for tertiary market exit underwriting rather than matching broker's optimistic assumptions",
+      "evidence": "Justin's direct guidance: 'from a safe perspective, I would run it at a six and a half, right?' and later 'I wouldn't go any lower than a seven' when discussing Logan's Port, Indiana deal"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Cross-verify seller's expense ratios and credit loss percentages using stress-tested assumptions before accepting proforma",
+      "evidence": "Justin noted seller used 'glowing assumptions' with 5% credit loss, then walked through stress-testing the numbers with Michael to validate 7.4-7.6% realistic cap rate vs. seller's 7.75%"
+    },
+    {
+      "skill": "market-research",
+      "change": "Document employer diversity and job market stability for small markets using multi-source verification before committing",
+      "evidence": "Discussion of Logan's Port required confirmation of multiple employers (Tyson Chicken, healthcare providers) rather than single dominant employer; Justin emphasized 'your biggest kicker' is understanding job security for tertiary markets"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Require utility bills and actual operating expense documentation, walking away from deals where sellers refuse to provide verification",
+      "evidence": "Josh's case study: seller wouldn't provide water bills, gave made-up T12 numbers ($150 vs. actual ~$700/month), prompting Josh to exit; Justin validated: 'common 101' that utilities must be verified and 'this affects his price'"
+    }
+  ],
+  "id": "o9OiMlbilEQ",
+  "title": "Tuesday Mentorship Q&A - Live Multifamily Deal Analysis_09-16-25 | Justin Brennan",
+  "duration": 3104
+}

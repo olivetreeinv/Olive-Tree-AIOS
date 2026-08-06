@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "partial",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan conducts a detailed walkthrough of an updated deal analyzer tool (V7) used for underwriting small multifamily deals (5-50 units). While the tool itself is highly relevant to Brian's underwriting drag, much of the session involves community updates, networking discussion, and tangential conversations about space exploration, reducing direct deal-sourcing or market-specific guidance for Brian's target GA/TN/AL markets.",
+  "takeaways": [
+    "Use unit-type methodology for larger deals: group similar units (e.g., '5 two-bed/one-bath units at $1,850 avg rent') rather than listing each unit individually to streamline analysis",
+    "For small 5-10 unit self-managed properties, operating expense ratio can run in the low 30% range (self-management saves on PM fees)",
+    "Vacancy assumption: assume at least 10% vacancy or one month of rent loss per year; on a 5-unit with $2K/month rent, budget ~$2,000 annual turnover/lease-up costs",
+    "Target refinance in year 3-4 at 70% LTV with 3 years interest-only to maximize cash-on-cash returns and pull proceeds for investor buyouts",
+    "IRR takeout threshold: set preferred return between 16-18% annualized; once cumulative returns + principal repayment hit this level, investors exit and sponsor owns property outright",
+    "Acquisition fee: ~2% of purchase price; asset management fee: 1-2% annually; refinance fee: 0.5-1% of new loan amount; disposition fee: 0.5% of sale price",
+    "'Buy 3, sell 1' portfolio strategy: continuously acquire deals while periodically liquidating to recycle capital; use tax-free refinance proceeds to fund new acquisitions without triggering capital gains"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Establish systematic expense benchmarking by property size and management model (self-managed vs. hired PM)",
+      "evidence": "Justin corrects Matt's 5-unit expense assumptions upward, changing maintenance from $700/unit placeholder to higher amounts, noting 'you can run in the low 30s on a little five unit' for self-managed but must double-check insurance and vacancy assumptions; emphasizes 'you want to double check that' on insurance specific to Florida market conditions"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Use conditional formatting guidelines in the analyzer to validate deal underwriting against return thresholds in real-time",
+      "evidence": "Justin demonstrates red/green conditional formatting rules: 'This needs to be 6 to 10%' for cap rate, '1.8 or more' for debt service coverage, '15% or greater' for IRR; states 'if it's green, it's good, means the deal's good, if it's red, not good'"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Model investor takeout scenarios using refinance proceeds and IRR thresholds to validate exit mechanics before marketing deals",
+      "evidence": "Justin walks through 'IRR takeout' feature: 'once they receive this cumulatively on an annualized basis and they get all their money back, the investors are out of the deal'; sets 16-18% threshold and shows how refinancing in year 3-4 allows sponsor to buy out LPs tax-free and retain property"
+    }
+  ],
+  "id": "um49xhh5T0Q",
+  "title": "Weekly Coaching - 04-02-26 | Justin Brennan",
+  "duration": 3773
+}

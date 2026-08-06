@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "partial",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan demonstrates the deal landing page backend system for creating mock deals during the capital foundation stage (Stage 6). He shows how to edit deal funnels, set URLs, and create professional landing pages with pitch decks and summary videos. The coaching also covers broker calling strategy, market selection (focusing on OKC), deal analysis fundamentals, and using return-on-cost metrics to evaluate value-add feasibility. While the content includes technical backend setup, the deal-analysis components directly support Brian's underwriting and deal-sourcing challenges.",
+  "takeaways": [
+    "Return on cost should be 18% or greater to justify value-add spending; use the new analyzer metric to determine if repairs make financial sense",
+    "Pre-market deals (80% of market) come through broker databases of 25-50 investors before hitting CoStar/LoopNet; focus on building broker relationships to access pre-market flow, not website listings",
+    "Market trips are critical to move broker relationships from phone to face-to-face; visit brokers, property managers, lenders, and construction crews in person to signal seriousness and access deal flow",
+    "Landing page URL structure: domain.com/dealname (e.g., rococapitalpartners.com/1234EStreet); must edit both desktop AND mobile versions separately or changes won't display on phone",
+    "For first deals, use local commercial banks and credit unions (via HB Capital or MVP Capital) rather than Fannie Mae/Freddy Mac, which require track record",
+    "Call brokers using listed properties as 'lures' even if deal doesn't work financially; goal is pre-market relationship access, not the specific deal",
+    "Email signature must include website URL and multifamily investor title so brokers can click through, verify credibility, read your story, and see your advisory board/team"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Apply return-on-cost threshold of 18%+ before committing repair budget to value-add deals",
+      "evidence": "Justin demonstrates using the analyzer's return-on-cost metric, showing that when rent bumps from 1,030/1,195 to 1,230/1,395 on 180k repairs the ROC stays green, but dropping rent bump to 100/month turns it red; teaches using this metric to determine optimal repair spend"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Prioritize pre-market access over CoStar/LoopNet deals by building personal broker relationships through phone calls and market trips",
+      "evidence": "Justin explains 80% of deals sell in pre-market broker databases before listing online; calls brokers using listed properties as relationship-building 'lures' even if deals don't pencil; emphasizes market trips move relationships to next level: 'Until I get belly-to-belly with you...that's when that relationship goes to the next level'"
+    },
+    {
+      "skill": "broker-search",
+      "change": "Include professional website URL and multifamily investor identity in email signature for broker credibility verification",
+      "evidence": "Justin states brokers will click email signature links to verify credibility, read investor story, and see advisory board; recommends signature include website, email, current title plus 'multifamily investor' designation so 'they're going to connect to you personally'"
+    }
+  ],
+  "id": "kGUu-o4a7NY",
+  "title": "Weekly Coaching - 04-16-26 | Justin Brennan",
+  "duration": 3803
+}

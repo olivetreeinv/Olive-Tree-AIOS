@@ -1,0 +1,102 @@
+{
+  "conversation": {
+    "id": "QK910rhKBjiaB2MKVsN0",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781905786431,
+    "dateUpdated": 1783364149875,
+    "lastMessageDate": 1783364149871,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Tyler, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 1,
+    "lastManualMessageDate": 1781915275398,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "h9SIvh2L3OrS28YIt25U",
+    "fullName": "Tyler Jones",
+    "contactName": "Tyler Jones",
+    "companyName": null,
+    "phone": "+16784716177",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364149871
+    ]
+  },
+  "messages": [
+    {
+      "id": "V81Xxu5mKCKlOK5i4Let",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Tyler, a copy of the pitch deck has been sent to your email.",
+      "contactId": "h9SIvh2L3OrS28YIt25U",
+      "contentType": "text/plain",
+      "conversationId": "QK910rhKBjiaB2MKVsN0",
+      "dateAdded": "2026-07-06T18:55:49.255Z",
+      "dateUpdated": "2026-07-06T18:55:52.758Z",
+      "source": "workflow",
+      "altId": "SM30a9732171370374c2de838f4dcb302a",
+      "from": "+16789712411",
+      "to": "+16784716177",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "GcIgFNG7Mgm2YzIspfuW",
+      "direction": "inbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey! Looks promising! Would absolutely love to talk! What would be the best way to connect?",
+      "contactId": "h9SIvh2L3OrS28YIt25U",
+      "contentType": "text/plain",
+      "conversationId": "QK910rhKBjiaB2MKVsN0",
+      "dateAdded": "2026-06-20T00:27:55.472Z",
+      "dateUpdated": "2026-06-20T00:27:55.472Z",
+      "altId": "SMc3e144365ca1de0fcd0556656d8beeaa",
+      "from": "+16784716177",
+      "to": "+16789712411",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "wIEMkcoT9JR9WVEtD7w1",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Tyler, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "h9SIvh2L3OrS28YIt25U",
+      "contentType": "text/plain",
+      "conversationId": "QK910rhKBjiaB2MKVsN0",
+      "dateAdded": "2026-06-19T21:49:46.800Z",
+      "dateUpdated": "2026-06-19T21:49:51.121Z",
+      "source": "app",
+      "altId": "SM0b33766ada0d329e4594df83c2ac96cd",
+      "from": "+16789712411",
+      "to": "+16784716177",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

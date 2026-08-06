@@ -1,0 +1,39 @@
+{
+  "deal_relevant": "yes",
+  "topic": "deal-analysis",
+  "summary": "Justin Brennan mentors on analyzing a 27-unit value-add multifamily deal in Colleen, Texas. The group walks through underwriting adjustments including rent comps verification, expense reconciliation, DCR improvement strategies, and capital structure optimization using a deal analyzer tool.",
+  "takeaways": [
+    "Use AI/ChatGPT to verify property taxes by address: input purchase price and get assessed value projections (expect ~90% of purchase price initial assessment)",
+    "1970s multifamily buildings should operate at 45-55% expense ratio; anything above 55% signals bad operations or cost overruns requiring detailed investigation",
+    "Maintain 3% annual rent growth assumptions in proformas; brokers tend to overestimate\u2014use 10% economic loss (vacancy/bad debt/concessions) minimum in Texas markets, not 5-8%",
+    "Separate bank accounts by function: operating account (daily rents/expenses), CapEx account (renovations/big ticket items), entity account (distributions)\u2014prevents forensic accounting problems",
+    "For DCR below acceptable threshold, options are: increase down payment (35-45%), reduce purchase price, cut expenses, or refinance at year 3 to improve cash flow profile",
+    "Always include 'other income' line items even if broker OM shows zero: late fees, admin fees, application fees, pet rent, parking fees, utility reimbursements typically add $5k+ annually on 27-unit property",
+    "Submit LOI even when numbers are close but not perfect; use LOI process to build broker relationships and negotiate expense details rather than rejecting deals outright"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Systematically verify broker-provided expense figures against market benchmarks using expense ratio guidelines before accepting underwriting",
+      "evidence": "Justin identifies 1970 property expenses running 57%+ when 45-55% is target range; teaches to hover over analyzer fields for benchmarks; stresses 'you got bad operations' if expenses exceed 55%"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Cross-check rent growth assumptions and cap rate inputs using AI tools and public tax assessor data rather than accepting broker estimates",
+      "evidence": "Justin uses ChatGPT/AI to input property address and purchase price to pull assessed values and future tax projections; corrects Marco's 6.5% cap rate assumption and verifies rent comps against Rentometer"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Adjust economic loss (vacancy/bad debt) to market-specific minimums: 10% minimum for Texas/Midwest, only 5-8% in top coastal markets",
+      "evidence": "Justin states 'there's just no way around it' for 10% in Midwest; explicitly warns against brokers underwriting at 5% when realistic numbers require 10%; notes Huntsville AL is rare exception due to rocket industry concentration"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Use DCR constraint as pricing lever: if DCR fails at asking price, back into acceptable down payment % rather than rejecting deal",
+      "evidence": "Justin shows 0.94 DCR is unacceptable; calculates backward that 35-40% down payment gets deal to acceptable DCR range; tests 45% down initially, then optimizes to 35% when expenses are corrected"
+    }
+  ],
+  "id": "leKA-8Rrd3g",
+  "title": "Tuesday Mentorship Q&A - Real Estate Deal Breakdown_04/21/26 | Justin Brennan",
+  "duration": 3350
+}

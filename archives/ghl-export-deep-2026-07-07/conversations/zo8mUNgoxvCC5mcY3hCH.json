@@ -1,0 +1,84 @@
+{
+  "conversation": {
+    "id": "zo8mUNgoxvCC5mcY3hCH",
+    "locationId": "SLq7B2pldVzfQLKjGpvw",
+    "dateAdded": 1781905918072,
+    "dateUpdated": 1783364401968,
+    "lastMessageDate": 1783364401964,
+    "lastMessageType": "TYPE_SMS",
+    "lastMessageBody": "Seth, a copy of the pitch deck has been sent to your email.",
+    "lastOutboundMessageAction": "automated",
+    "lastMessageDirection": "outbound",
+    "inbox": true,
+    "unreadCount": 0,
+    "lastManualMessageDate": 1781905919028,
+    "followers": [],
+    "mentions": [],
+    "isLastMessageInternalComment": false,
+    "contactId": "zT6Zf6F9yqZxZJ3bMSrv",
+    "fullName": "Seth Shaw",
+    "contactName": "Seth Shaw",
+    "companyName": null,
+    "phone": "+14045455196",
+    "tags": [
+      "friend",
+      "raise-641-sms-sent",
+      "raise-641-enrolled",
+      "pitchdeck"
+    ],
+    "type": "TYPE_PHONE",
+    "scoring": [],
+    "attributed": null,
+    "messageTypes": [
+      2
+    ],
+    "sort": [
+      1783364401964
+    ]
+  },
+  "messages": [
+    {
+      "id": "BEAAyvdnZpynxcYaYrVk",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Seth, a copy of the pitch deck has been sent to your email.",
+      "contactId": "zT6Zf6F9yqZxZJ3bMSrv",
+      "contentType": "text/plain",
+      "conversationId": "zo8mUNgoxvCC5mcY3hCH",
+      "dateAdded": "2026-07-06T19:00:01.361Z",
+      "dateUpdated": "2026-07-06T19:00:04.143Z",
+      "source": "workflow",
+      "altId": "SM576d22900919c0a97c5aacd097e5aa4f",
+      "from": "+16789712411",
+      "to": "+14045455196",
+      "messageType": "TYPE_SMS"
+    },
+    {
+      "id": "ggzsdXV1pO29qVdsimGu",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 2,
+      "locationId": "SLq7B2pldVzfQLKjGpvw",
+      "attachments": [],
+      "body": "Hey Seth, it's Brian Norton. Got a new multifamily deal in Smyrna, GA \u2014 641 Powder Springs, 14 units. 6% pref, ~18% target ROI, $25K min. 2-min walkthrough + deck: https://olivetreeinv.io/641_powder \u2014 let me know if you want in. Reply STOP to opt out.\nReply STOP to Unsubscribe",
+      "contactId": "zT6Zf6F9yqZxZJ3bMSrv",
+      "contentType": "text/plain",
+      "conversationId": "zo8mUNgoxvCC5mcY3hCH",
+      "dateAdded": "2026-06-19T21:51:58.343Z",
+      "dateUpdated": "2026-06-19T21:52:03.437Z",
+      "source": "app",
+      "altId": "SMfae02cbb03324ee0210968b4ceaaca58",
+      "from": "+16789712411",
+      "to": "+14045455196",
+      "meta": {
+        "marketplace": {
+          "appId": "6a16c545a9fb7862097b8ee5"
+        }
+      },
+      "messageType": "TYPE_SMS"
+    }
+  ]
+}

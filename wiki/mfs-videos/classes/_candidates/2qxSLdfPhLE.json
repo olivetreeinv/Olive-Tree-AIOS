@@ -1,0 +1,34 @@
+{
+  "deal_relevant": "partial",
+  "topic": "asset-mgmt",
+  "summary": "Justin Brennan walks through Stage 4 of the multifamily acquisition process\u2014the closing timeline and documentation requirements. He covers the 60-90 day closing window from LOI execution through deal close, including due diligence periods, lender involvement, LLC formation, and property management setup. While foundational for deal closure, the content is educational scaffolding rather than deal-specific analysis or market research.",
+  "takeaways": [
+    "LOI to contract execution takes 7-14 days (the 'free look period' with no earnest money at risk)",
+    "Escrow opens upon contract execution; standard due diligence period is 30 days with refundable earnest money deposit",
+    "Due diligence can be extended an additional 15 days for additional earnest money deposit; final closing window extends to 90 days total via optional 30-day extension in LOI",
+    "Seller must answer 25-question due diligence checklist before contract execution; answers must be attached as addendum to contract (not just answered separately, per lesson learned costing $110k)",
+    "LLC formation for property should occur halfway through due diligence to ~closing; formed in state where property located, named by property address (e.g., '123 East Street LLC')",
+    "Close between 12th-18th of month, ideally Thursday, to allow 15 days runway before month-end rent collection and 2-3 day buffer for property management software transition",
+    "Lender term sheet initiates loan process in parallel with physical due diligence; lender orders appraisal and begins underwriting on same timeline as buyer inspections"
+  ],
+  "skill_candidates": [
+    {
+      "skill": "deal-analysis",
+      "change": "Create seller Q&A addendum before signing contract",
+      "evidence": "Justin emphasizes that the 25 seller questions must be answered and added as a contract addendum pre-signature, not just answered informally; he shares a $110k loss from not doing this because without the addendum, the only recourse for seller misrepresentation is costly litigation"
+    },
+    {
+      "skill": "deal-analysis",
+      "change": "Use comprehensive 50-page purchase agreement with representations & warranties for deals 15+ units",
+      "evidence": "Justin presents a sample 50-page transactional attorney contract showing Section 9 (representations & warranties) as critical protection in commercial (vs. residential) deals where 'buyer beware' applies; available in AIOS portal"
+    },
+    {
+      "skill": "lets-get-to-work",
+      "change": "Pre-stage market infrastructure 3-6 months before deal closes",
+      "evidence": "Justin advises building broker relationships, interviewing property managers, obtaining renovation bids, and identifying local lenders before deal lock-up so you're 'not catching your tail' when lender asks for PM confirmation or renovation crews"
+    }
+  ],
+  "id": "2qxSLdfPhLE",
+  "title": "Weekly Coaching_07-24-25 | Justin Brennan",
+  "duration": 3310
+}
