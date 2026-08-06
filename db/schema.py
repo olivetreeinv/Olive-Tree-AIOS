@@ -17,7 +17,8 @@ All other fields are typed columns with UNIQUE / FK constraints for dedup + join
 """
 
 from sqlalchemy import (
-    Boolean, Column, Float, ForeignKey, Integer, String, Text, UniqueConstraint
+    Boolean, Column, Float, ForeignKey, Index, Integer, String, Text,
+    UniqueConstraint, text
 )
 from sqlalchemy.orm import DeclarativeBase, relationship
 
@@ -537,3 +538,19 @@ class DripEnrollment(Base):
     status      = Column(String(20))    # active / done / stopped
 
     contact = relationship("Contact", back_populates="drip_enrollments")
+
+    # A contact enrolled twice in the same drip receives every step twice. Both
+    # writers (capital_raise.py, drip.py) already check before inserting, but an
+    # application check can't stop a race, a manual insert, or a future third
+    # writer — and it didn't: brian@olivetreeinv.io ended up enrolled 3x in
+    # 641-powder-springs and got 3 copies of every send (cleaned up 2026-08-05).
+    #
+    # PARTIAL index, not a plain unique constraint: both writers only skip on
+    # status active/done, so re-enrolling a 'stopped' contact is legitimate and
+    # a blanket constraint would turn that into an IntegrityError crash.
+    __table_args__ = (
+        Index("ux_drip_enrollment_active",
+              "contact_id", "drip_name",
+              unique=True,
+              sqlite_where=text("status IN ('active','done')")),
+    )
