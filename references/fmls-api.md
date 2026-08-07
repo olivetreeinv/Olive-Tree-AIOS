@@ -53,9 +53,11 @@ Client ID stored as `FMLS_CLIENT_ID` (not needed for API calls — kept for refe
 GET https://api.bridgedataoutput.com/api/v2/OData/{dataset_id}/Property
   ?access_token={token}
   &$filter=PropertyType eq 'Residential Income' and StandardStatus eq 'Active'
-  &$select=ListingKey,ListPrice,UnparsedAddress,PostalCode,BedroomsTotal,UnitCount,ListAgentEmail,ListAgentFullName,ListOfficeName,ListingUrl
+  &$select=ListingKey,ListPrice,UnparsedAddress,PostalCode,BedroomsTotal,UnitCount,ListAgentFullName,ListAgentDirectPhone,ListOfficeName,ListingUrl
   &$top=200
 ```
+
+**No `ListAgentEmail` in `$select`** — this dataset returns a 400 if you ask for it. Broker contact from FMLS is name + direct phone only (confirmed 2026-08-03, `scripts/deal_search.py`).
 
 **PropertyType values for multifamily:**
 - `ResidentialIncome` — RESO standard for income-producing residential (multifamily, 2–4 units, apartment buildings)
@@ -65,8 +67,10 @@ GET https://api.bridgedataoutput.com/api/v2/OData/{dataset_id}/Property
 ```
 $filter=PropertyType eq 'Residential Income'
   and StandardStatus eq 'Active'
-  and PostalCode in ('30341','30080','30005','37207','37115','37408','37087','35801','35205','35806')
+  and (PostalCode eq '30341' or PostalCode eq '30080' or PostalCode eq '30005' or PostalCode eq '37207' or PostalCode eq '37115' or PostalCode eq '37408' or PostalCode eq '37087' or PostalCode eq '35801' or PostalCode eq '35205' or PostalCode eq '35806')
 ```
+
+Bridge's OData does **not** support the v4.01 `in` operator — `PostalCode in (...)` returns a 400. Use the `eq`/`or` chain above (confirmed 2026-08-03, `scripts/deal_search.py`).
 
 ### Filter by unit count (15–50 units)
 ```
@@ -82,10 +86,10 @@ GET https://api.bridgedataoutput.com/api/v2/OData/{dataset_id}/Property
   ?access_token={token}
   &$filter=PropertyType eq 'Residential Income'
     and StandardStatus eq 'Active'
-    and PostalCode in ('30341','30080','30005','37207','37115','37408','37087','35801','35205','35806')
+    and (PostalCode eq '30341' or PostalCode eq '30080' or PostalCode eq '30005' or PostalCode eq '37207' or PostalCode eq '37115' or PostalCode eq '37408' or PostalCode eq '37087' or PostalCode eq '35801' or PostalCode eq '35205' or PostalCode eq '35806')
     and UnitCount ge 15
     and UnitCount le 50
-  &$select=ListingKey,ListPrice,UnparsedAddress,PostalCode,UnitCount,YearBuilt,ListAgentEmail,ListAgentFullName,ListOfficeName,ListingUrl,ModificationTimestamp
+  &$select=ListingKey,ListPrice,UnparsedAddress,PostalCode,UnitCount,YearBuilt,ListAgentFullName,ListAgentDirectPhone,ListOfficeName,ListingUrl,ModificationTimestamp
   &$orderby=ModificationTimestamp desc
   &$top=50
 ```
@@ -113,7 +117,7 @@ GET https://api.bridgedataoutput.com/api/v2/OData/{dataset_id}/Property('{Listin
 | `NetOperatingIncome` | NOI (if populated) |
 | `CapRate` | Cap rate (if populated — often blank, verify) |
 | `StandardStatus` | `Active`, `Pending`, `Closed` |
-| `ListAgentEmail` | Broker email — use for Brokers List auto-add |
+| `ListAgentEmail` | Broker email — **blocked in `$select`, 400s.** Not usable; broker contact from FMLS is name + phone only. |
 | `ListAgentFullName` | Broker name |
 | `ListAgentDirectPhone` | Broker phone |
 | `ListOfficeName` | Brokerage |
@@ -169,6 +173,6 @@ Logic:
 2. Delta filter on `ModificationTimestamp` for `--days N`
 3. Parse listing fields directly — no email parsing, no availability check needed (FMLS data is authoritative)
 4. Same dedup + sheet logging as current flow
-5. Broker extraction: if `ListAgentEmail` appears on 2+ listings → auto-add to Brokers List
+5. Broker extraction: if `ListAgentFullName` + `ListAgentDirectPhone` appears on 2+ listings → auto-add to Brokers List (no email available from FMLS — see field table above)
 
 This would make Phase 1 of `/lets-get-to-work` significantly more reliable than email alert parsing.
