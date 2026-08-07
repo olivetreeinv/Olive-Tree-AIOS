@@ -58,6 +58,11 @@ Brian Norton is the founder and CEO of Olive Tree Investments — a Georgia-base
 - `/crm` — Local contact database (804 contacts imported from GHL). Search, tag, note, unsub, and import contacts. Source of truth now that GoHighLevel is being decommissioned. Uses `scripts/crm.py`.
 - `/cinematic-website` — One-prompt cinematic website builder: interviews to pick one of 10 templates (product, journey, portfolio, e-commerce, restaurant, listing, vehicle, SaaS, studio, gym), generates Seedance 2.0 clips via KIE, builds a scroll-driven site, verifies on localhost. ⚠️ ~816 credits (~$4)/clip at 1080p — always confirms spend first. Uses `scripts/kie_video.py` + `scripts/serve_range.py`. Reference build: `site-cinematic/`.
 
+### Trading Desk (separate vertical — paper-trading income book, not part of the Q3 CRE goals)
+
+- `/trading-desk` — Paper-trading covered-call/wheel income desk, share-first (Premium Desk v3, Kenneth Suna weekly method — LIVE since 2026-07-10): movers discovery + stock screen + AI event-screen → buy 100-share lots, sell ~0.45Δ weekly calls (premium band 1.2–2.5%) → 60% profit-close / Friday ITM roll → wheel-back CSPs on assigned → Alpaca paper execution. All paper money until Brian explicitly approves real capital. Runs on a launchd loop; `--status` leads with premium week-to-date against the $500/week goal. Uses `scripts/trading_suna.py` (+ `trading_movers.py`, `trading_data.py`, `trading_risk.py`, `trading_report.py`). Method rationale: `decisions/log.md`, `wiki/trading-desk/`.
+- `/ipo-watch [TICKER] [ref price]` — Live IPO/stock-day monitoring via the `spcx-monitor` app: starts the recorder, arms the first-trade tripwire, runs a 5-minute judgment loop that texts plain-English sell signals via iMessage. Alert-only, no trading.
+
 ## Where things live
 
 - `context/` — about Brian, his business, his priorities (filled by `/onboard`)
