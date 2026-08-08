@@ -15,6 +15,7 @@ A double-send is the same contact receiving the same drip step twice in one day.
 Exit 0 = clean, 1 = duplicates found.
 """
 import argparse
+import os
 import sqlite3
 import subprocess
 import sys
@@ -69,6 +70,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", default=date.today().isoformat())
     ap.add_argument("--notify", action="store_true")
+    ap.add_argument("--retire", action="store_true",
+                    help="one-shot: unload and delete the drip-dupe-check launchd job after running")
     a = ap.parse_args()
 
     total, real, explained = check(a.date)
@@ -98,6 +101,16 @@ def main():
 
     if a.notify:
         subprocess.run([str(REPO / "scripts" / "notify.sh"), title, body], check=False)
+
+    if a.retire:
+        # Self-removal lives here rather than in a shell wrapper: launchd's /bin/sh
+        # has no TCC grant for ~/Documents, so `/bin/sh scripts/foo.sh` dies with
+        # "Operation not permitted" while the caffeinate+venv-python lane works.
+        label = "com.olivetree.drip-dupe-check"
+        plist = Path.home() / "Library/LaunchAgents" / f"{label}.plist"
+        subprocess.run(["launchctl", "bootout", f"gui/{os.getuid()}/{label}"], check=False)
+        plist.unlink(missing_ok=True)
+        print(f"  retired one-shot job {label}")
 
     return 1 if real else 0
 
